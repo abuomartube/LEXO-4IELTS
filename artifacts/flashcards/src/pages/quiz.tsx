@@ -37,13 +37,14 @@ export default function Quiz() {
   const [results, setResults] = useState<SessionResult>({ total: 0, correct: 0, wrong: 0 });
   const [done, setDone] = useState(false);
 
-  const questionCount = level === "ALL" ? 20 : 50;
+  const mcCount = level === "ALL" ? 20 : 100;
+  const fbCount = level === "ALL" ? 20 : 50;
 
   const { data: mcQuestions, isLoading: mcLoading, refetch: refetchMc } = useQuiz(
-    level === "ALL" ? undefined : level, questionCount
+    level === "ALL" ? undefined : level, mcCount
   );
   const { data: fbQuestions, isLoading: fbLoading, refetch: refetchFb } = useFillBlank(
-    level === "ALL" ? undefined : level, questionCount
+    level === "ALL" ? undefined : level, fbCount
   );
 
   const questions = mode === "multiple-choice" ? (mcQuestions ?? []) : (fbQuestions ?? []);
@@ -162,7 +163,9 @@ export default function Quiz() {
               </div>
               <div className="flex-1">
                 <p className="text-sm font-semibold text-foreground">
-                  {level === "ALL" ? "20 questions" : "50 questions"} · {level === "ALL" ? "All Levels" : `Level ${level}`}
+                  {mode === "multiple-choice"
+                    ? (level === "ALL" ? "20 questions" : "100 questions")
+                    : (level === "ALL" ? "20 questions" : "50 questions")} · {level === "ALL" ? "All Levels" : `Level ${level}`}
                 </p>
                 <p className="text-xs text-muted-foreground mt-0.5">
                   {mode === "multiple-choice"
