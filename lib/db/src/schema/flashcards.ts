@@ -1,4 +1,4 @@
-import { pgTable, text, serial, timestamp, boolean, integer } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, timestamp, boolean, integer, real, unique } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod/v4";
 
@@ -6,7 +6,7 @@ export const flashcardsTable = pgTable("flashcards", {
   id: serial("id").primaryKey(),
   english: text("english").notNull(),
   arabic: text("arabic").notNull(),
-  level: text("level").notNull(), // A1, A2, B1, B2
+  level: text("level").notNull(),
   category: text("category").notNull(),
   exampleSentence: text("example_sentence"),
   exampleSentenceArabic: text("example_sentence_arabic"),
@@ -27,3 +27,23 @@ export const progressTable = pgTable("progress", {
 export const insertProgressSchema = createInsertSchema(progressTable).omit({ id: true, reviewedAt: true });
 export type InsertProgress = z.infer<typeof insertProgressSchema>;
 export type Progress = typeof progressTable.$inferSelect;
+
+export const bookmarksTable = pgTable("bookmarks", {
+  id: serial("id").primaryKey(),
+  flashcardId: integer("flashcard_id").notNull().unique().references(() => flashcardsTable.id, { onDelete: "cascade" }),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export type Bookmark = typeof bookmarksTable.$inferSelect;
+
+export const cardSrsTable = pgTable("card_srs", {
+  id: serial("id").primaryKey(),
+  flashcardId: integer("flashcard_id").notNull().unique().references(() => flashcardsTable.id, { onDelete: "cascade" }),
+  nextReviewAt: timestamp("next_review_at", { withTimezone: true }).notNull().defaultNow(),
+  intervalDays: real("interval_days").notNull().default(1),
+  easeFactor: real("ease_factor").notNull().default(2.5),
+  reviewCount: integer("review_count").notNull().default(0),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export type CardSrs = typeof cardSrsTable.$inferSelect;

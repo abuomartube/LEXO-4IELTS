@@ -1,10 +1,13 @@
 import { useGetProgressSummary } from "@workspace/api-client-react";
+import { useWordOfDay, useStreak } from "@workspace/api-client-react";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
+import { LevelBadge } from "@/components/level-badge";
 import {
   BookOpen, Trophy, ArrowRight, Zap, Target,
-  Volume2, Globe, Layers, Award, ExternalLink
+  Volume2, Globe, Layers, Award, ExternalLink,
+  Flame, Star, HelpCircle, Sparkles
 } from "lucide-react";
 import { Layout } from "@/components/layout";
 
@@ -13,34 +16,45 @@ const features = [
     icon: Layers,
     title: "4 CEFR Levels",
     desc: "A1 · A2 · B1 · B2 — structured vocabulary from beginner to upper-intermediate.",
-    color: "bg-teal-50 text-teal-600",
+    color: "bg-teal-50 dark:bg-teal-900/20 text-teal-600",
   },
   {
     icon: Globe,
     title: "Arabic Translations",
     desc: "Every word comes with a full Arabic translation in clear, readable Cairo font.",
-    color: "bg-sky-50 text-sky-600",
+    color: "bg-sky-50 dark:bg-sky-900/20 text-sky-600",
   },
   {
     icon: Volume2,
     title: "Pronunciation Audio",
     desc: "Tap Listen on any card to hear the correct English pronunciation instantly.",
-    color: "bg-emerald-50 text-emerald-600",
+    color: "bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600",
   },
   {
     icon: Award,
-    title: "817 Flashcards",
-    desc: "Over 800 carefully selected words with bilingual example sentences in every card.",
-    color: "bg-amber-50 text-amber-600",
+    title: "1000 Flashcards",
+    desc: "1000 carefully selected words with bilingual example sentences in every card.",
+    color: "bg-amber-50 dark:bg-amber-900/20 text-amber-600",
   },
 ];
 
 export default function Home() {
   const { data: summary, isLoading } = useGetProgressSummary();
+  const { data: wordOfDay } = useWordOfDay();
+  const { data: streakInfo } = useStreak();
+
+  const speak = (text: string) => {
+    if ("speechSynthesis" in window) {
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = "en-GB";
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.speak(u);
+    }
+  };
 
   return (
     <Layout>
-      <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
+      <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
 
         {/* ── Hero ── */}
         <section className="relative rounded-3xl overflow-hidden bg-primary px-8 py-12 shadow-lg">
@@ -52,34 +66,70 @@ export default function Home() {
               Master English Vocabulary<br/>the Smart Way
             </h1>
             <p className="text-primary-foreground/80 text-lg mb-8 leading-relaxed">
-              800+ flashcards across A1–B2 levels, with Arabic translations and audio
-              pronunciation — built for Arabic-speaking IELTS students.
+              1000 flashcards across A1–B2 levels, with Arabic translations, audio
+              pronunciation and smart quizzes — built for Arabic-speaking IELTS students.
             </p>
             <div className="flex flex-wrap gap-3">
-              <Button
-                asChild
-                size="lg"
-                className="rounded-full bg-white text-primary hover:bg-white/90 font-bold shadow-md"
-              >
+              <Button asChild size="lg" className="rounded-full bg-white text-primary hover:bg-white/90 font-bold shadow-md">
                 <Link href="/study">
                   <BookOpen className="w-5 h-5 mr-2" />
                   Start Studying
                 </Link>
               </Button>
-              <Button
-                asChild
-                size="lg"
-                variant="outline"
-                className="rounded-full border-white/40 text-primary-foreground hover:bg-white/10 font-semibold"
-              >
-                <Link href="/browse">
-                  Browse All Cards <ArrowRight className="w-4 h-4 ml-2" />
+              <Button asChild size="lg" variant="outline" className="rounded-full border-white/40 text-primary-foreground hover:bg-white/10 font-semibold">
+                <Link href="/quiz">
+                  <HelpCircle className="w-4 h-4 mr-2" />
+                  Take a Quiz
                 </Link>
               </Button>
             </div>
           </div>
           <Zap className="absolute -bottom-8 -right-8 w-52 h-52 text-primary-foreground/8 rotate-12" />
           <div className="absolute top-0 right-0 w-64 h-64 rounded-full bg-white/5 -translate-y-1/3 translate-x-1/3" />
+        </section>
+
+        {/* ── Streak + Word of the Day ── */}
+        <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Streak */}
+          <div className="bg-card border border-border rounded-2xl p-6 flex items-center gap-5">
+            <div className="w-14 h-14 rounded-2xl bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center shrink-0">
+              <Flame className="w-7 h-7 text-orange-500" />
+            </div>
+            <div>
+              <p className="text-sm font-medium text-muted-foreground">Daily Streak</p>
+              <div className="flex items-end gap-1">
+                <span className="text-4xl font-extrabold text-foreground">{streakInfo?.streak ?? 0}</span>
+                <span className="text-lg font-semibold text-muted-foreground mb-1">day{streakInfo?.streak !== 1 ? "s" : ""}</span>
+              </div>
+              <p className="text-xs text-muted-foreground mt-1">{streakInfo?.totalDays ?? 0} total study days</p>
+            </div>
+          </div>
+
+          {/* Word of the Day */}
+          {wordOfDay && (
+            <div className="bg-card border border-primary/20 rounded-2xl p-6 relative overflow-hidden">
+              <div className="flex items-center gap-2 mb-3">
+                <Sparkles className="w-4 h-4 text-primary" />
+                <span className="text-xs font-semibold uppercase tracking-widest text-primary">Word of the Day</span>
+                <LevelBadge level={wordOfDay.level} className="ml-auto" />
+              </div>
+              <div className="flex items-center gap-3 mb-2">
+                <h3 className="text-2xl font-extrabold text-foreground">{wordOfDay.english}</h3>
+                <button
+                  onClick={() => speak(wordOfDay.english)}
+                  className="w-8 h-8 rounded-full bg-primary/10 hover:bg-primary/20 flex items-center justify-center transition-colors"
+                  aria-label="Listen"
+                >
+                  <Volume2 className="w-4 h-4 text-primary" />
+                </button>
+              </div>
+              <p className="text-xl font-bold arabic-text text-primary mb-2">{wordOfDay.arabic}</p>
+              {wordOfDay.exampleSentence && (
+                <p className="text-sm text-muted-foreground italic">{wordOfDay.exampleSentence}</p>
+              )}
+              <Star className="absolute -right-4 -bottom-4 w-20 h-20 text-primary/5" />
+            </div>
+          )}
         </section>
 
         {/* ── Features ── */}
@@ -106,41 +156,20 @@ export default function Home() {
         <section className="bg-card border border-border rounded-3xl overflow-hidden shadow-sm">
           <div className="flex flex-col md:flex-row">
             <div className="md:w-56 shrink-0">
-              <img
-                src="/owner.png"
-                alt="Instructor"
-                className="w-full h-64 md:h-full object-cover object-top"
-              />
+              <img src="/owner.png" alt="Instructor" className="w-full h-64 md:h-full object-cover object-top" />
             </div>
             <div className="p-8 flex flex-col justify-center">
-              <span className="text-xs font-semibold tracking-widest uppercase text-primary mb-2">
-                Meet Your Instructor
-              </span>
-              <h2 className="text-2xl font-extrabold text-foreground mb-1">
-                Abu Omar
-              </h2>
+              <span className="text-xs font-semibold tracking-widest uppercase text-primary mb-2">Meet Your Instructor</span>
+              <h2 className="text-2xl font-extrabold text-foreground mb-1">Abu Omar</h2>
               <p className="text-primary font-semibold mb-3">Your Guide to Band 7+</p>
               <p className="text-muted-foreground leading-relaxed mb-5">
                 This app was created by the team behind{" "}
-                <a
-                  href="https://www.4ielts.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-primary font-semibold hover:underline"
-                >
+                <a href="https://www.4ielts.com" target="_blank" rel="noopener noreferrer" className="text-primary font-semibold hover:underline">
                   4IELTS.com
                 </a>
-                {" "}— a platform dedicated to helping Arabic-speaking students achieve their
-                target IELTS band. Every word in this app has been hand-picked to match the
-                vocabulary demands of the IELTS exam, from everyday A1 words all the way to
-                advanced B2 academic language.
+                {" "}— a platform dedicated to helping Arabic-speaking students achieve their target IELTS band. Every word has been hand-picked to match the vocabulary demands of the IELTS exam.
               </p>
-              <a
-                href="https://www.4ielts.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline"
-              >
+              <a href="https://www.4ielts.com" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline">
                 Visit 4IELTS.com <ExternalLink className="w-4 h-4" />
               </a>
             </div>
@@ -149,10 +178,8 @@ export default function Home() {
 
         {/* ── Progress Dashboard ── */}
         {isLoading ? (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="h-32 bg-muted animate-pulse rounded-2xl" />
-            ))}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {[1, 2].map((i) => <div key={i} className="h-32 bg-muted animate-pulse rounded-2xl" />)}
           </div>
         ) : summary ? (
           <section className="space-y-6">
@@ -160,7 +187,6 @@ export default function Home() {
               <Trophy className="w-6 h-6 text-primary" />
               Your Progress
             </h2>
-
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="bg-primary text-primary-foreground p-6 rounded-3xl shadow-lg relative overflow-hidden">
                 <div className="relative z-10">
@@ -179,30 +205,28 @@ export default function Home() {
                 </div>
                 <Zap className="absolute -bottom-6 -right-6 w-32 h-32 text-primary-foreground/10 rotate-12" />
               </div>
-
               <div className="bg-card border border-border p-6 rounded-3xl shadow-sm flex flex-col justify-center">
                 <div className="flex items-center gap-2 mb-4 text-muted-foreground">
                   <Target className="w-5 h-5 text-primary" />
-                  <h3 className="font-semibold text-lg text-foreground">Next Goal</h3>
+                  <h3 className="font-semibold text-lg text-foreground">Quick Actions</h3>
                 </div>
-                <p className="text-lg">Review your unknown words to level up your vocabulary.</p>
-                <div className="mt-6">
-                  <Button asChild variant="outline" className="rounded-full shadow-sm">
-                    <Link href="/browse">
-                      Browse all words <ArrowRight className="w-4 h-4 ml-2" />
-                    </Link>
+                <div className="flex flex-col gap-3">
+                  <Button asChild className="rounded-full">
+                    <Link href="/study"><BookOpen className="w-4 h-4 mr-2" />Study Flashcards</Link>
+                  </Button>
+                  <Button asChild variant="outline" className="rounded-full">
+                    <Link href="/quiz"><HelpCircle className="w-4 h-4 mr-2" />Take a Quiz</Link>
                   </Button>
                 </div>
               </div>
             </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               {summary.byLevel.map((stat, i) => {
                 const percent = stat.total > 0 ? Math.round((stat.known / stat.total) * 100) : 0;
                 return (
                   <div
                     key={stat.level}
-                    className="bg-card border border-border p-5 rounded-2xl hover:border-primary/30 transition-colors animate-in fade-in slide-in-from-bottom-4"
+                    className="bg-card border border-border p-5 rounded-2xl hover:border-primary/30 transition-colors animate-in fade-in"
                     style={{ animationDelay: `${i * 100}ms` }}
                   >
                     <div className="flex justify-between items-center mb-3">
@@ -210,9 +234,7 @@ export default function Home() {
                       <span className="text-sm font-medium px-2 py-1 bg-muted rounded-md">{percent}%</span>
                     </div>
                     <Progress value={percent} className="h-2 mb-3" />
-                    <div className="text-sm text-muted-foreground">
-                      {stat.known} of {stat.total} known
-                    </div>
+                    <div className="text-sm text-muted-foreground">{stat.known} of {stat.total} known</div>
                   </div>
                 );
               })}
