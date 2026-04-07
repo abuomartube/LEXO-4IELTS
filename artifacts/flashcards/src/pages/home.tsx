@@ -186,7 +186,7 @@ export default function Home() {
         <section className="bg-card border border-border rounded-3xl overflow-hidden shadow-sm">
           <div className="flex flex-col md:flex-row">
             <div className="md:w-56 shrink-0">
-              <img src="/owner.png" alt="Instructor" className="w-full h-64 md:h-full object-cover object-top" />
+              <img src="/owner.png" alt="Instructor" className="w-full h-auto md:h-full md:w-56 object-cover object-center block" />
             </div>
             <div className="p-8 flex flex-col justify-center">
               <span className="text-xs font-semibold tracking-widest uppercase text-primary mb-2">Meet Your Instructor</span>
