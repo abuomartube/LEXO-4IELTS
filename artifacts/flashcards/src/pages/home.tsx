@@ -116,9 +116,10 @@ export default function Home() {
               <span className="text-xs font-semibold tracking-widest uppercase text-primary mb-2">
                 Meet Your Instructor
               </span>
-              <h2 className="text-2xl font-extrabold text-foreground mb-3">
-                Your Guide to Band 7+
+              <h2 className="text-2xl font-extrabold text-foreground mb-1">
+                Abu Omar
               </h2>
+              <p className="text-primary font-semibold mb-3">Your Guide to Band 7+</p>
               <p className="text-muted-foreground leading-relaxed mb-5">
                 This app was created by the team behind{" "}
                 <a
