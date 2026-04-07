@@ -37,7 +37,7 @@ export default function Quiz() {
   const [results, setResults] = useState<SessionResult>({ total: 0, correct: 0, wrong: 0 });
   const [done, setDone] = useState(false);
 
-  const questionCount = level === "ALL" ? 40 : 100;
+  const questionCount = level === "ALL" ? 20 : 50;
 
   const { data: mcQuestions, isLoading: mcLoading, refetch: refetchMc } = useQuiz(
     level === "ALL" ? undefined : level, questionCount
@@ -162,7 +162,7 @@ export default function Quiz() {
               </div>
               <div className="flex-1">
                 <p className="text-sm font-semibold text-foreground">
-                  {level === "ALL" ? "40 questions" : "100 questions"} · {level === "ALL" ? "All Levels" : `Level ${level}`}
+                  {level === "ALL" ? "20 questions" : "50 questions"} · {level === "ALL" ? "All Levels" : `Level ${level}`}
                 </p>
                 <p className="text-xs text-muted-foreground mt-0.5">
                   {mode === "multiple-choice"

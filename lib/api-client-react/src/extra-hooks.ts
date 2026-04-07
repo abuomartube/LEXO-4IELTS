@@ -92,7 +92,6 @@ export const useFillBlank = (level?: string, count = 10) =>
       params.set("count", String(count));
       return customFetch<FillBlankQuestion[]>(`/api/fill-blank?${params}`, { method: "GET" });
     },
-    enabled: false,
   });
 
 // ── SRS ────────────────────────────────────────────────────────────────────
