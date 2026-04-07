@@ -7,7 +7,7 @@ import { LevelBadge } from "@/components/level-badge";
 import {
   BookOpen, Trophy, ArrowRight, Zap, Target,
   Volume2, Globe, Layers, Award, ExternalLink,
-  Flame, Star, HelpCircle, Sparkles
+  Flame, Star, HelpCircle, Sparkles, MessageCircle
 } from "lucide-react";
 import { Layout } from "@/components/layout";
 
@@ -169,9 +169,20 @@ export default function Home() {
                 </a>
                 {" "}— a platform dedicated to helping Arabic-speaking students achieve their target IELTS band. Every word has been hand-picked to match the vocabulary demands of the IELTS exam.
               </p>
-              <a href="https://www.4ielts.com" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline">
-                Visit 4IELTS.com <ExternalLink className="w-4 h-4" />
-              </a>
+              <div className="flex flex-wrap gap-3">
+                <a href="https://www.4ielts.com" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline">
+                  Visit 4IELTS.com <ExternalLink className="w-4 h-4" />
+                </a>
+                <a
+                  href="https://wa.me/4ielts"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-500 hover:bg-green-600 text-white text-sm font-semibold transition-colors shadow-sm"
+                >
+                  <MessageCircle className="w-4 h-4" />
+                  Contact on WhatsApp
+                </a>
+              </div>
             </div>
           </div>
         </section>
