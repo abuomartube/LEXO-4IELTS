@@ -165,7 +165,7 @@ router.get("/streak", async (_req, res): Promise<void> => {
 
 router.get("/quiz", async (req, res): Promise<void> => {
   const level = req.query.level as string | undefined;
-  const count = Math.min(parseInt(req.query.count as string ?? "10", 10), 20);
+  const count = Math.min(parseInt(req.query.count as string ?? "10", 10), 100);
 
   const conditions = level && level !== "ALL" ? [eq(flashcardsTable.level, level)] : [];
   const allCards = conditions.length
@@ -194,7 +194,7 @@ router.get("/quiz", async (req, res): Promise<void> => {
 
 router.get("/fill-blank", async (req, res): Promise<void> => {
   const level = req.query.level as string | undefined;
-  const count = Math.min(parseInt(req.query.count as string ?? "10", 10), 20);
+  const count = Math.min(parseInt(req.query.count as string ?? "10", 10), 100);
 
   const conditions = level && level !== "ALL" ? [eq(flashcardsTable.level, level)] : [];
   const pool = conditions.length

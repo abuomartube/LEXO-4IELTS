@@ -37,11 +37,13 @@ export default function Quiz() {
   const [results, setResults] = useState<SessionResult>({ total: 0, correct: 0, wrong: 0 });
   const [done, setDone] = useState(false);
 
+  const questionCount = level === "ALL" ? 40 : 100;
+
   const { data: mcQuestions, isLoading: mcLoading, refetch: refetchMc } = useQuiz(
-    level === "ALL" ? undefined : level, 10
+    level === "ALL" ? undefined : level, questionCount
   );
   const { data: fbQuestions, isLoading: fbLoading, refetch: refetchFb } = useFillBlank(
-    level === "ALL" ? undefined : level, 10
+    level === "ALL" ? undefined : level, questionCount
   );
 
   const questions = mode === "multiple-choice" ? (mcQuestions ?? []) : (fbQuestions ?? []);
@@ -152,6 +154,22 @@ export default function Quiz() {
                   <SelectItem value="B2">B2 – Upper-Intermediate</SelectItem>
                 </SelectContent>
               </Select>
+            </div>
+
+            <div className="flex items-center gap-3 bg-primary/5 border border-primary/20 rounded-2xl px-5 py-4">
+              <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+                <HelpCircle className="w-5 h-5 text-primary" />
+              </div>
+              <div className="flex-1">
+                <p className="text-sm font-semibold text-foreground">
+                  {level === "ALL" ? "40 questions" : "100 questions"} · {level === "ALL" ? "All Levels" : `Level ${level}`}
+                </p>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  {mode === "multiple-choice"
+                    ? "Pick the correct Arabic translation for each word"
+                    : "Type the missing English word from the Arabic hint"}
+                </p>
+              </div>
             </div>
 
             <Button className="w-full rounded-full h-12 text-base font-bold" onClick={() => setStarted(true)}>
