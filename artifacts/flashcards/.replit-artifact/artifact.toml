@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "English Flashcards"
+version = "1.0.0"
+id = "artifacts/flashcards"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 22464
+
+[services.development]
+run = "pnpm --filter @workspace/flashcards run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/flashcards", "run", "build" ]
+publicDir = "artifacts/flashcards/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "22464"
+BASE_PATH = "/"

@@ -14,3 +14,99 @@ import * as zod from "zod";
 export const HealthCheckResponse = zod.object({
   status: zod.string(),
 });
+
+/**
+ * @summary List flashcards
+ */
+export const ListFlashcardsQueryParams = zod.object({
+  level: zod.enum(["A1", "A2", "B1", "B2"]).optional(),
+  category: zod.coerce.string().optional(),
+  search: zod.coerce.string().optional(),
+});
+
+export const ListFlashcardsResponseItem = zod.object({
+  id: zod.number(),
+  english: zod.string(),
+  arabic: zod.string(),
+  level: zod.enum(["A1", "A2", "B1", "B2"]),
+  category: zod.string(),
+  exampleSentence: zod.string().optional(),
+  exampleSentenceArabic: zod.string().optional(),
+});
+export const ListFlashcardsResponse = zod.array(ListFlashcardsResponseItem);
+
+/**
+ * @summary Get stats per level
+ */
+export const GetFlashcardLevelStatsResponseItem = zod.object({
+  level: zod.string(),
+  total: zod.number(),
+  known: zod.number(),
+});
+export const GetFlashcardLevelStatsResponse = zod.array(
+  GetFlashcardLevelStatsResponseItem,
+);
+
+/**
+ * @summary List all categories
+ */
+export const ListCategoriesResponseItem = zod.string();
+export const ListCategoriesResponse = zod.array(ListCategoriesResponseItem);
+
+/**
+ * @summary Get a flashcard by ID
+ */
+export const GetFlashcardParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const GetFlashcardResponse = zod.object({
+  id: zod.number(),
+  english: zod.string(),
+  arabic: zod.string(),
+  level: zod.enum(["A1", "A2", "B1", "B2"]),
+  category: zod.string(),
+  exampleSentence: zod.string().optional(),
+  exampleSentenceArabic: zod.string().optional(),
+});
+
+/**
+ * @summary Get user progress
+ */
+export const GetProgressResponseItem = zod.object({
+  id: zod.number(),
+  flashcardId: zod.number(),
+  known: zod.boolean(),
+  reviewedAt: zod.coerce.date(),
+});
+export const GetProgressResponse = zod.array(GetProgressResponseItem);
+
+/**
+ * @summary Record card result (known/unknown)
+ */
+export const UpsertProgressBody = zod.object({
+  flashcardId: zod.number(),
+  known: zod.boolean(),
+});
+
+export const UpsertProgressResponse = zod.object({
+  id: zod.number(),
+  flashcardId: zod.number(),
+  known: zod.boolean(),
+  reviewedAt: zod.coerce.date(),
+});
+
+/**
+ * @summary Get progress summary (totals per level)
+ */
+export const GetProgressSummaryResponse = zod.object({
+  totalCards: zod.number(),
+  totalKnown: zod.number(),
+  byLevel: zod.array(
+    zod.object({
+      level: zod.string(),
+      total: zod.number(),
+      known: zod.number(),
+    }),
+  ),
+});

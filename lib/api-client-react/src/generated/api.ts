@@ -5,18 +5,29 @@
  * API specification
  * OpenAPI spec version: 0.1.0
  */
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import type {
+  MutationFunction,
   QueryFunction,
   QueryKey,
+  UseMutationOptions,
+  UseMutationResult,
   UseQueryOptions,
   UseQueryResult,
 } from "@tanstack/react-query";
 
-import type { HealthStatus } from "./api.schemas";
+import type {
+  Flashcard,
+  HealthStatus,
+  LevelStat,
+  ListFlashcardsParams,
+  Progress,
+  ProgressSummary,
+  UpsertProgressBody,
+} from "./api.schemas";
 
 import { customFetch } from "../custom-fetch";
-import type { ErrorType } from "../custom-fetch";
+import type { ErrorType, BodyType } from "../custom-fetch";
 
 type AwaitedInput<T> = PromiseLike<T> | T;
 
@@ -92,6 +103,574 @@ export function useHealthCheck<
   request?: SecondParameter<typeof customFetch>;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getHealthCheckQueryOptions(options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary List flashcards
+ */
+export const getListFlashcardsUrl = (params?: ListFlashcardsParams) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : value.toString());
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0
+    ? `/api/flashcards?${stringifiedParams}`
+    : `/api/flashcards`;
+};
+
+export const listFlashcards = async (
+  params?: ListFlashcardsParams,
+  options?: RequestInit,
+): Promise<Flashcard[]> => {
+  return customFetch<Flashcard[]>(getListFlashcardsUrl(params), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getListFlashcardsQueryKey = (params?: ListFlashcardsParams) => {
+  return [`/api/flashcards`, ...(params ? [params] : [])] as const;
+};
+
+export const getListFlashcardsQueryOptions = <
+  TData = Awaited<ReturnType<typeof listFlashcards>>,
+  TError = ErrorType<unknown>,
+>(
+  params?: ListFlashcardsParams,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof listFlashcards>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getListFlashcardsQueryKey(params);
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof listFlashcards>>> = ({
+    signal,
+  }) => listFlashcards(params, { signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof listFlashcards>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type ListFlashcardsQueryResult = NonNullable<
+  Awaited<ReturnType<typeof listFlashcards>>
+>;
+export type ListFlashcardsQueryError = ErrorType<unknown>;
+
+/**
+ * @summary List flashcards
+ */
+
+export function useListFlashcards<
+  TData = Awaited<ReturnType<typeof listFlashcards>>,
+  TError = ErrorType<unknown>,
+>(
+  params?: ListFlashcardsParams,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof listFlashcards>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getListFlashcardsQueryOptions(params, options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary Get stats per level
+ */
+export const getGetFlashcardLevelStatsUrl = () => {
+  return `/api/flashcards/levels`;
+};
+
+export const getFlashcardLevelStats = async (
+  options?: RequestInit,
+): Promise<LevelStat[]> => {
+  return customFetch<LevelStat[]>(getGetFlashcardLevelStatsUrl(), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getGetFlashcardLevelStatsQueryKey = () => {
+  return [`/api/flashcards/levels`] as const;
+};
+
+export const getGetFlashcardLevelStatsQueryOptions = <
+  TData = Awaited<ReturnType<typeof getFlashcardLevelStats>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof getFlashcardLevelStats>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getGetFlashcardLevelStatsQueryKey();
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getFlashcardLevelStats>>
+  > = ({ signal }) => getFlashcardLevelStats({ signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getFlashcardLevelStats>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetFlashcardLevelStatsQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getFlashcardLevelStats>>
+>;
+export type GetFlashcardLevelStatsQueryError = ErrorType<unknown>;
+
+/**
+ * @summary Get stats per level
+ */
+
+export function useGetFlashcardLevelStats<
+  TData = Awaited<ReturnType<typeof getFlashcardLevelStats>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof getFlashcardLevelStats>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetFlashcardLevelStatsQueryOptions(options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary List all categories
+ */
+export const getListCategoriesUrl = () => {
+  return `/api/flashcards/categories`;
+};
+
+export const listCategories = async (
+  options?: RequestInit,
+): Promise<string[]> => {
+  return customFetch<string[]>(getListCategoriesUrl(), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getListCategoriesQueryKey = () => {
+  return [`/api/flashcards/categories`] as const;
+};
+
+export const getListCategoriesQueryOptions = <
+  TData = Awaited<ReturnType<typeof listCategories>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof listCategories>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getListCategoriesQueryKey();
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof listCategories>>> = ({
+    signal,
+  }) => listCategories({ signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof listCategories>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type ListCategoriesQueryResult = NonNullable<
+  Awaited<ReturnType<typeof listCategories>>
+>;
+export type ListCategoriesQueryError = ErrorType<unknown>;
+
+/**
+ * @summary List all categories
+ */
+
+export function useListCategories<
+  TData = Awaited<ReturnType<typeof listCategories>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof listCategories>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getListCategoriesQueryOptions(options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary Get a flashcard by ID
+ */
+export const getGetFlashcardUrl = (id: number) => {
+  return `/api/flashcards/${id}`;
+};
+
+export const getFlashcard = async (
+  id: number,
+  options?: RequestInit,
+): Promise<Flashcard> => {
+  return customFetch<Flashcard>(getGetFlashcardUrl(id), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getGetFlashcardQueryKey = (id: number) => {
+  return [`/api/flashcards/${id}`] as const;
+};
+
+export const getGetFlashcardQueryOptions = <
+  TData = Awaited<ReturnType<typeof getFlashcard>>,
+  TError = ErrorType<void>,
+>(
+  id: number,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof getFlashcard>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetFlashcardQueryKey(id);
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getFlashcard>>> = ({
+    signal,
+  }) => getFlashcard(id, { signal, ...requestOptions });
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!id,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof getFlashcard>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetFlashcardQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getFlashcard>>
+>;
+export type GetFlashcardQueryError = ErrorType<void>;
+
+/**
+ * @summary Get a flashcard by ID
+ */
+
+export function useGetFlashcard<
+  TData = Awaited<ReturnType<typeof getFlashcard>>,
+  TError = ErrorType<void>,
+>(
+  id: number,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof getFlashcard>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetFlashcardQueryOptions(id, options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary Get user progress
+ */
+export const getGetProgressUrl = () => {
+  return `/api/progress`;
+};
+
+export const getProgress = async (
+  options?: RequestInit,
+): Promise<Progress[]> => {
+  return customFetch<Progress[]>(getGetProgressUrl(), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getGetProgressQueryKey = () => {
+  return [`/api/progress`] as const;
+};
+
+export const getGetProgressQueryOptions = <
+  TData = Awaited<ReturnType<typeof getProgress>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof getProgress>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetProgressQueryKey();
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getProgress>>> = ({
+    signal,
+  }) => getProgress({ signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getProgress>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetProgressQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getProgress>>
+>;
+export type GetProgressQueryError = ErrorType<unknown>;
+
+/**
+ * @summary Get user progress
+ */
+
+export function useGetProgress<
+  TData = Awaited<ReturnType<typeof getProgress>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof getProgress>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetProgressQueryOptions(options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary Record card result (known/unknown)
+ */
+export const getUpsertProgressUrl = () => {
+  return `/api/progress`;
+};
+
+export const upsertProgress = async (
+  upsertProgressBody: UpsertProgressBody,
+  options?: RequestInit,
+): Promise<Progress> => {
+  return customFetch<Progress>(getUpsertProgressUrl(), {
+    ...options,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(upsertProgressBody),
+  });
+};
+
+export const getUpsertProgressMutationOptions = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof upsertProgress>>,
+    TError,
+    { data: BodyType<UpsertProgressBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof upsertProgress>>,
+  TError,
+  { data: BodyType<UpsertProgressBody> },
+  TContext
+> => {
+  const mutationKey = ["upsertProgress"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof upsertProgress>>,
+    { data: BodyType<UpsertProgressBody> }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return upsertProgress(data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type UpsertProgressMutationResult = NonNullable<
+  Awaited<ReturnType<typeof upsertProgress>>
+>;
+export type UpsertProgressMutationBody = BodyType<UpsertProgressBody>;
+export type UpsertProgressMutationError = ErrorType<unknown>;
+
+/**
+ * @summary Record card result (known/unknown)
+ */
+export const useUpsertProgress = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof upsertProgress>>,
+    TError,
+    { data: BodyType<UpsertProgressBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof upsertProgress>>,
+  TError,
+  { data: BodyType<UpsertProgressBody> },
+  TContext
+> => {
+  return useMutation(getUpsertProgressMutationOptions(options));
+};
+
+/**
+ * @summary Get progress summary (totals per level)
+ */
+export const getGetProgressSummaryUrl = () => {
+  return `/api/progress/summary`;
+};
+
+export const getProgressSummary = async (
+  options?: RequestInit,
+): Promise<ProgressSummary> => {
+  return customFetch<ProgressSummary>(getGetProgressSummaryUrl(), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getGetProgressSummaryQueryKey = () => {
+  return [`/api/progress/summary`] as const;
+};
+
+export const getGetProgressSummaryQueryOptions = <
+  TData = Awaited<ReturnType<typeof getProgressSummary>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof getProgressSummary>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetProgressSummaryQueryKey();
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getProgressSummary>>
+  > = ({ signal }) => getProgressSummary({ signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getProgressSummary>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetProgressSummaryQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getProgressSummary>>
+>;
+export type GetProgressSummaryQueryError = ErrorType<unknown>;
+
+/**
+ * @summary Get progress summary (totals per level)
+ */
+
+export function useGetProgressSummary<
+  TData = Awaited<ReturnType<typeof getProgressSummary>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof getProgressSummary>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetProgressSummaryQueryOptions(options);
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;

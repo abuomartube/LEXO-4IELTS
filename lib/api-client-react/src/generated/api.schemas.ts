@@ -8,3 +8,63 @@
 export interface HealthStatus {
   status: string;
 }
+
+export type FlashcardLevel =
+  (typeof FlashcardLevel)[keyof typeof FlashcardLevel];
+
+export const FlashcardLevel = {
+  A1: "A1",
+  A2: "A2",
+  B1: "B1",
+  B2: "B2",
+} as const;
+
+export interface Flashcard {
+  id: number;
+  english: string;
+  arabic: string;
+  level: FlashcardLevel;
+  category: string;
+  exampleSentence?: string;
+  exampleSentenceArabic?: string;
+}
+
+export interface LevelStat {
+  level: string;
+  total: number;
+  known: number;
+}
+
+export interface Progress {
+  id: number;
+  flashcardId: number;
+  known: boolean;
+  reviewedAt: string;
+}
+
+export interface ProgressSummary {
+  totalCards: number;
+  totalKnown: number;
+  byLevel: LevelStat[];
+}
+
+export interface UpsertProgressBody {
+  flashcardId: number;
+  known: boolean;
+}
+
+export type ListFlashcardsParams = {
+  level?: ListFlashcardsLevel;
+  category?: string;
+  search?: string;
+};
+
+export type ListFlashcardsLevel =
+  (typeof ListFlashcardsLevel)[keyof typeof ListFlashcardsLevel];
+
+export const ListFlashcardsLevel = {
+  A1: "A1",
+  A2: "A2",
+  B1: "B1",
+  B2: "B2",
+} as const;

@@ -10,6 +10,8 @@ servers:
 tags:
   - name: health
     description: Health operations
+  - name: flashcards
+    description: Flashcard operations
 paths:
   /healthz:
     get:
@@ -24,6 +26,132 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /flashcards:
+    get:
+      operationId: listFlashcards
+      tags: [flashcards]
+      summary: List flashcards
+      parameters:
+        - name: level
+          in: query
+          schema:
+            type: string
+            enum: [A1, A2, B1, B2]
+        - name: category
+          in: query
+          schema:
+            type: string
+        - name: search
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of flashcards
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Flashcard"
+
+  /flashcards/levels:
+    get:
+      operationId: getFlashcardLevelStats
+      tags: [flashcards]
+      summary: Get stats per level
+      responses:
+        "200":
+          description: Stats per level
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/LevelStat"
+
+  /flashcards/categories:
+    get:
+      operationId: listCategories
+      tags: [flashcards]
+      summary: List all categories
+      responses:
+        "200":
+          description: List of categories
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+
+  /flashcards/{id}:
+    get:
+      operationId: getFlashcard
+      tags: [flashcards]
+      summary: Get a flashcard by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Flashcard
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Flashcard"
+        "404":
+          description: Not found
+
+  /progress:
+    get:
+      operationId: getProgress
+      tags: [flashcards]
+      summary: Get user progress
+      responses:
+        "200":
+          description: Progress records
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Progress"
+    post:
+      operationId: upsertProgress
+      tags: [flashcards]
+      summary: Record card result (known/unknown)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpsertProgressBody"
+      responses:
+        "200":
+          description: Updated progress
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Progress"
+
+  /progress/summary:
+    get:
+      operationId: getProgressSummary
+      tags: [flashcards]
+      summary: Get progress summary (totals per level)
+      responses:
+        "200":
+          description: Summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProgressSummary"
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +162,86 @@ components:
       required:
         - status
 
+    Flashcard:
+      type: object
+      properties:
+        id:
+          type: integer
+        english:
+          type: string
+        arabic:
+          type: string
+        level:
+          type: string
+          enum: [A1, A2, B1, B2]
+        category:
+          type: string
+        exampleSentence:
+          type: string
+        exampleSentenceArabic:
+          type: string
+      required:
+        - id
+        - english
+        - arabic
+        - level
+        - category
+
+    LevelStat:
+      type: object
+      properties:
+        level:
+          type: string
+        total:
+          type: integer
+        known:
+          type: integer
+      required:
+        - level
+        - total
+        - known
+
+    Progress:
+      type: object
+      properties:
+        id:
+          type: integer
+        flashcardId:
+          type: integer
+        known:
+          type: boolean
+        reviewedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - flashcardId
+        - known
+        - reviewedAt
+
+    ProgressSummary:
+      type: object
+      properties:
+        totalCards:
+          type: integer
+        totalKnown:
+          type: integer
+        byLevel:
+          type: array
+          items:
+            $ref: "#/components/schemas/LevelStat"
+      required:
+        - totalCards
+        - totalKnown
+        - byLevel
+
+    UpsertProgressBody:
+      type: object
+      properties:
+        flashcardId:
+          type: integer
+        known:
+          type: boolean
+      required:
+        - flashcardId
+        - known
