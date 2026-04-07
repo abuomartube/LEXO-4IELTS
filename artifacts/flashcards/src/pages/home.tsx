@@ -7,7 +7,8 @@ import { LevelBadge } from "@/components/level-badge";
 import {
   BookOpen, Trophy, ArrowRight, Zap, Target,
   Volume2, Globe, Layers, Award, ExternalLink,
-  Flame, Star, HelpCircle, Sparkles, MessageCircle
+  Flame, Star, HelpCircle, Sparkles, MessageCircle,
+  FileText, Download
 } from "lucide-react";
 import { Layout } from "@/components/layout";
 
@@ -149,6 +150,35 @@ export default function Home() {
                 <p className="text-sm text-muted-foreground leading-relaxed">{f.desc}</p>
               </div>
             ))}
+          </div>
+        </section>
+
+        {/* ── Bilingual Vocabulary Download ── */}
+        <section className="bg-gradient-to-br from-teal-50 to-sky-50 dark:from-teal-900/20 dark:to-sky-900/20 border border-teal-200 dark:border-teal-800 rounded-3xl p-8 shadow-sm">
+          <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
+            <div className="w-14 h-14 rounded-2xl bg-teal-600 flex items-center justify-center shrink-0 shadow-md">
+              <FileText className="w-7 h-7 text-white" />
+            </div>
+            <div className="flex-1">
+              <h2 className="text-xl font-extrabold text-foreground mb-1">
+                Bilingual Vocabulary Reference
+              </h2>
+              <p className="text-muted-foreground leading-relaxed mb-1">
+                Download the full bilingual vocabulary list — all 3,000 IELTS words across 5 CEFR levels (A1–C1), with Arabic translations for every word and example sentence. Print-ready and formatted for study.
+              </p>
+              <p className="text-sm text-teal-700 dark:text-teal-400 font-medium" dir="rtl" lang="ar">
+                قائمة المفردات الكاملة ثنائية اللغة · 3000 كلمة · 5 مستويات · ترجمة عربية لكل كلمة وجملة
+              </p>
+            </div>
+            <a
+              href="/vocabulary-bilingual.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-teal-600 hover:bg-teal-700 text-white font-semibold transition-colors shadow-md shrink-0 text-sm"
+            >
+              <Download className="w-4 h-4" />
+              Download Bilingual Vocabulary
+            </a>
           </div>
         </section>
 
