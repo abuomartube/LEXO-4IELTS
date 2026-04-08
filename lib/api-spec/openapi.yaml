@@ -37,7 +37,7 @@ paths:
           in: query
           schema:
             type: string
-            enum: [A1, A2, B1, B2]
+            enum: [A2, B1, B2, C1]
         - name: category
           in: query
           schema:
@@ -173,7 +173,7 @@ components:
           type: string
         level:
           type: string
-          enum: [A1, A2, B1, B2]
+          enum: [A2, B1, B2, C1]
         category:
           type: string
         exampleSentence:

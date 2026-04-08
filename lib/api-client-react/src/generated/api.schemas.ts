@@ -13,7 +13,6 @@ export type FlashcardLevel =
   (typeof FlashcardLevel)[keyof typeof FlashcardLevel];
 
 export const FlashcardLevel = {
-  A1: "A1",
   A2: "A2",
   B1: "B1",
   B2: "B2",
@@ -64,7 +63,6 @@ export type ListFlashcardsLevel =
   (typeof ListFlashcardsLevel)[keyof typeof ListFlashcardsLevel];
 
 export const ListFlashcardsLevel = {
-  A1: "A1",
   A2: "A2",
   B1: "B1",
   B2: "B2",
