@@ -28,6 +28,7 @@ function VocabDownloadSection() {
       if (data.status === "not_started") {
         fetch("/api/vocab-pdf").catch(() => {});
       }
+      setPdfState("generating");
       if (attempt < 72) {
         setTimeout(() => poll(attempt + 1), 5000);
       } else {
@@ -35,6 +36,7 @@ function VocabDownloadSection() {
         setPdfState("error");
       }
     } catch {
+      setPdfState("generating");
       if (attempt < 5) {
         setTimeout(() => poll(attempt + 1), 3000);
       } else {
