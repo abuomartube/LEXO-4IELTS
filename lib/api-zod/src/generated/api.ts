@@ -19,7 +19,7 @@ export const HealthCheckResponse = zod.object({
  * @summary List flashcards
  */
 export const ListFlashcardsQueryParams = zod.object({
-  level: zod.enum(["A1", "A2", "B1", "B2"]).optional(),
+  level: zod.enum(["A1", "A2", "B1", "B2", "C1"]).optional(),
   category: zod.coerce.string().optional(),
   search: zod.coerce.string().optional(),
 });
@@ -28,7 +28,7 @@ export const ListFlashcardsResponseItem = zod.object({
   id: zod.number(),
   english: zod.string(),
   arabic: zod.string(),
-  level: zod.enum(["A1", "A2", "B1", "B2"]),
+  level: zod.enum(["A1", "A2", "B1", "B2", "C1"]),
   category: zod.string(),
   exampleSentence: zod.string().optional(),
   exampleSentenceArabic: zod.string().optional(),
@@ -64,7 +64,7 @@ export const GetFlashcardResponse = zod.object({
   id: zod.number(),
   english: zod.string(),
   arabic: zod.string(),
-  level: zod.enum(["A1", "A2", "B1", "B2"]),
+  level: zod.enum(["A1", "A2", "B1", "B2", "C1"]),
   category: zod.string(),
   exampleSentence: zod.string().optional(),
   exampleSentenceArabic: zod.string().optional(),
