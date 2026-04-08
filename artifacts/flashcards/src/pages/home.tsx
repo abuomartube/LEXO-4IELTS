@@ -8,74 +8,11 @@ import {
   BookOpen, Trophy, Zap, Target,
   Volume2, Globe, Layers, Award, ExternalLink,
   Flame, Star, HelpCircle, Sparkles, MessageCircle,
-  FileText, Download, Loader2, CheckCircle2
+  FileText
 } from "lucide-react";
 import { Layout } from "@/components/layout";
-import { useState, useCallback, useEffect } from "react";
 
 function VocabDownloadSection() {
-  const [pdfState, setPdfState] = useState<"checking" | "ready" | "generating" | "downloading" | "error">("checking");
-  const [errorMsg, setErrorMsg] = useState("");
-
-  const poll = useCallback(async (attempt = 0) => {
-    try {
-      const res = await fetch("/api/vocab-pdf/status");
-      const data: { status: string } = await res.json();
-      if (data.status === "ready") {
-        setPdfState("ready");
-        return;
-      }
-      if (data.status === "not_started") {
-        fetch("/api/vocab-pdf").catch(() => {});
-      }
-      setPdfState("generating");
-      if (attempt < 72) {
-        setTimeout(() => poll(attempt + 1), 5000);
-      } else {
-        setErrorMsg("Still generating — please refresh and try again.");
-        setPdfState("error");
-      }
-    } catch {
-      setPdfState("generating");
-      if (attempt < 5) {
-        setTimeout(() => poll(attempt + 1), 3000);
-      } else {
-        setErrorMsg("Could not connect to server.");
-        setPdfState("error");
-      }
-    }
-  }, []);
-
-  useEffect(() => { poll(0); }, [poll]);
-
-  const busy = pdfState === "generating" || pdfState === "checking" || pdfState === "downloading";
-
-  const handlePdfDownload = useCallback(async () => {
-    if (pdfState === "generating" || pdfState === "checking" || pdfState === "downloading") return;
-    setErrorMsg("");
-    try {
-      const statusRes = await fetch("/api/vocab-pdf/status");
-      const status: { status: string } = await statusRes.json();
-      if (status.status === "ready") {
-        setPdfState("downloading");
-        const a = document.createElement("a");
-        a.href = "/api/vocab-pdf";
-        a.download = "IELTS-Vocabulary-3000-Words-EN-AR.pdf";
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        setTimeout(() => setPdfState("ready"), 3000);
-      } else {
-        setPdfState("generating");
-        fetch("/api/vocab-pdf").catch(() => {});
-        poll(0);
-      }
-    } catch {
-      setErrorMsg("Could not connect to server. Please try again.");
-      setPdfState("error");
-    }
-  }, [pdfState, poll]);
-
   return (
     <section className="bg-gradient-to-br from-teal-50 to-sky-50 dark:from-teal-900/20 dark:to-sky-900/20 border border-teal-200 dark:border-teal-800 rounded-3xl p-8 shadow-sm">
       <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
@@ -87,39 +24,13 @@ function VocabDownloadSection() {
             Bilingual Vocabulary Reference
           </h2>
           <p className="text-muted-foreground leading-relaxed mb-1">
-            Download the full bilingual vocabulary list — all 3,000 IELTS words across 5 CEFR levels (A1–C1), with Arabic translations for every word and example sentence. Print-ready and formatted for study.
+            Browse the full bilingual vocabulary list — all 3,000 IELTS words across 5 CEFR levels (A1–C1), with Arabic translations for every word and example sentence.
           </p>
           <p className="text-sm text-teal-700 dark:text-teal-400 font-medium" dir="rtl" lang="ar">
             قائمة المفردات الكاملة ثنائية اللغة · 3000 كلمة · 5 مستويات · ترجمة عربية لكل كلمة وجملة
           </p>
-          {errorMsg && (
-            <p className="text-sm text-red-600 dark:text-red-400 mt-2">{errorMsg}</p>
-          )}
-          {pdfState === "generating" && (
-            <p className="text-sm text-teal-700 dark:text-teal-400 mt-2 flex items-center gap-2">
-              <Loader2 className="w-3 h-3 animate-spin" />
-              Generating your PDF — please wait up to 90 seconds…
-            </p>
-          )}
-          {pdfState === "ready" && (
-            <p className="text-sm text-green-600 dark:text-green-400 mt-2 flex items-center gap-2">
-              <CheckCircle2 className="w-3 h-3" />
-              PDF ready — click to download
-            </p>
-          )}
         </div>
         <div className="flex flex-col gap-2 shrink-0">
-          <button
-            onClick={handlePdfDownload}
-            disabled={busy}
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-teal-600 hover:bg-teal-700 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold transition-colors shadow-md text-sm"
-          >
-            {busy ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
-            {pdfState === "generating" ? "Generating PDF…"
-              : pdfState === "checking" ? "Checking…"
-              : pdfState === "downloading" ? "Downloading…"
-              : "Download PDF"}
-          </button>
           <a
             href="/vocabulary-bilingual.html"
             target="_blank"
