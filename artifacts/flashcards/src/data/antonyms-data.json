@@ -1,0 +1,5002 @@
+[
+  {
+    "id": 1,
+    "word": "abandon",
+    "antonym": "maintain",
+    "skill": "Writing",
+    "translation": "يتخلى / يهجر",
+    "pronunciation": "ə-BAN-dən",
+    "example": "The company decided to abandon the project due to financial difficulties.",
+    "exampleAr": "قررت الشركة التخلي عن المشروع بسبب الصعوبات المالية."
+  },
+  {
+    "id": 2,
+    "word": "abstract",
+    "antonym": "concrete",
+    "skill": "Writing",
+    "translation": "مجرد / غير ملموس",
+    "pronunciation": "AB-strakt",
+    "example": "The essay introduced abstract concepts that were difficult to grasp.",
+    "exampleAr": "قدّمت المقالة مفاهيم مجردة يصعب استيعابها."
+  },
+  {
+    "id": 3,
+    "word": "accept",
+    "antonym": "reject",
+    "skill": "Writing",
+    "translation": "يقبل",
+    "pronunciation": "ak-SEPT",
+    "example": "She was willing to accept the challenge despite the risks.",
+    "exampleAr": "كانت مستعدة لقبول التحدي رغم المخاطر."
+  },
+  {
+    "id": 4,
+    "word": "accurate",
+    "antonym": "misleading",
+    "skill": "Writing",
+    "translation": "دقيق",
+    "pronunciation": "AK-yər-ət",
+    "example": "The scientist provided accurate data to support the theory.",
+    "exampleAr": "قدّم العالم بيانات دقيقة لدعم النظرية."
+  },
+  {
+    "id": 5,
+    "word": "active",
+    "antonym": "passive",
+    "skill": "All Skills",
+    "translation": "نشيط / فعّال",
+    "pronunciation": "AK-tiv",
+    "example": "An active lifestyle helps maintain good physical health.",
+    "exampleAr": "أسلوب الحياة النشط يساعد على الحفاظ على الصحة الجيدة."
+  },
+  {
+    "id": 6,
+    "word": "adapt",
+    "antonym": "resist",
+    "skill": "Writing",
+    "translation": "يتكيف",
+    "pronunciation": "ə-DAPT",
+    "example": "Animals must adapt to survive in changing environments.",
+    "exampleAr": "يجب على الحيوانات التكيف للبقاء في بيئات متغيرة."
+  },
+  {
+    "id": 7,
+    "word": "adequate",
+    "antonym": "insufficient",
+    "skill": "Writing",
+    "translation": "كافٍ / مناسب",
+    "pronunciation": "AD-i-kwət",
+    "example": "The resources provided were adequate to complete the task.",
+    "exampleAr": "كانت الموارد المُقدَّمة كافية لإتمام المهمة."
+  },
+  {
+    "id": 8,
+    "word": "advance",
+    "antonym": "retreat",
+    "skill": "Writing",
+    "translation": "يتقدم",
+    "pronunciation": "ad-VANS",
+    "example": "Technology continues to advance at a remarkable pace.",
+    "exampleAr": "تواصل التكنولوجيا التقدم بوتيرة ملحوظة."
+  },
+  {
+    "id": 9,
+    "word": "adverse",
+    "antonym": "favourable",
+    "skill": "Writing",
+    "translation": "سلبي / ضار",
+    "pronunciation": "AD-vərs",
+    "example": "Pollution has adverse effects on public health.",
+    "exampleAr": "للتلوث آثار سلبية على الصحة العامة."
+  },
+  {
+    "id": 10,
+    "word": "affluent",
+    "antonym": "poor",
+    "skill": "Reading",
+    "translation": "ثري / غني",
+    "pronunciation": "AF-loo-ənt",
+    "example": "The affluent neighbourhood had excellent schools and facilities.",
+    "exampleAr": "كان الحي الثري يضم مدارس ومرافق ممتازة."
+  },
+  {
+    "id": 11,
+    "word": "allow",
+    "antonym": "prohibit",
+    "skill": "Writing",
+    "translation": "يسمح",
+    "pronunciation": "ə-LOW",
+    "example": "The new policy would allow citizens greater freedom of expression.",
+    "exampleAr": "ستمنح السياسة الجديدة المواطنين حرية تعبير أكبر."
+  },
+  {
+    "id": 12,
+    "word": "ancient",
+    "antonym": "modern",
+    "skill": "Reading",
+    "translation": "قديم",
+    "pronunciation": "AYN-shənt",
+    "example": "The ancient ruins attracted thousands of tourists each year.",
+    "exampleAr": "اجتذبت الآثار القديمة آلاف السياح كل عام."
+  },
+  {
+    "id": 13,
+    "word": "apparent",
+    "antonym": "hidden",
+    "skill": "Writing",
+    "translation": "واضح / ظاهر",
+    "pronunciation": "ə-PAIR-ənt",
+    "example": "It was apparent that the situation required immediate action.",
+    "exampleAr": "كان من الواضح أن الوضع يستلزم اتخاذ إجراء فوري."
+  },
+  {
+    "id": 14,
+    "word": "approve",
+    "antonym": "reject",
+    "skill": "Writing",
+    "translation": "يوافق",
+    "pronunciation": "ə-PROOV",
+    "example": "The board voted to approve the new development plan.",
+    "exampleAr": "صوّت مجلس الإدارة لصالح الموافقة على خطة التطوير الجديدة."
+  },
+  {
+    "id": 15,
+    "word": "argue",
+    "antonym": "agree",
+    "skill": "Writing",
+    "translation": "يجادل",
+    "pronunciation": "AR-gyoo",
+    "example": "Both sides continued to argue their case before the committee.",
+    "exampleAr": "واصل كلا الطرفين الجدال في قضيتهما أمام اللجنة."
+  },
+  {
+    "id": 16,
+    "word": "artificial",
+    "antonym": "natural",
+    "skill": "Writing",
+    "translation": "اصطناعي",
+    "pronunciation": "ar-ti-FISH-əl",
+    "example": "The artificial sweeteners were added to reduce the sugar content.",
+    "exampleAr": "أُضيفت المُحلّيات الاصطناعية لتقليل محتوى السكر."
+  },
+  {
+    "id": 17,
+    "word": "ascend",
+    "antonym": "descend",
+    "skill": "Writing",
+    "translation": "يصعد",
+    "pronunciation": "ə-SEND",
+    "example": "The team managed to ascend to the mountain's summit by noon.",
+    "exampleAr": "تمكّن الفريق من الصعود إلى قمة الجبل بحلول الظهيرة."
+  },
+  {
+    "id": 18,
+    "word": "assert",
+    "antonym": "deny",
+    "skill": "Writing",
+    "translation": "يؤكد",
+    "pronunciation": "ə-SURT",
+    "example": "She continued to assert her innocence throughout the trial.",
+    "exampleAr": "واصلت التأكيد على براءتها طوال فترة المحاكمة."
+  },
+  {
+    "id": 19,
+    "word": "attain",
+    "antonym": "fail",
+    "skill": "Writing",
+    "translation": "يحقق / يبلغ",
+    "pronunciation": "ə-TAYN",
+    "example": "Hard work is often the key to attaining long-term success.",
+    "exampleAr": "العمل الجاد هو في الغالب مفتاح تحقيق النجاح على المدى البعيد."
+  },
+  {
+    "id": 20,
+    "word": "attract",
+    "antonym": "repel",
+    "skill": "Writing",
+    "translation": "يجذب",
+    "pronunciation": "ə-TRAKT",
+    "example": "The city's cultural events attract visitors from around the world.",
+    "exampleAr": "تجذب الفعاليات الثقافية في المدينة زوارًا من جميع أنحاء العالم."
+  },
+  {
+    "id": 21,
+    "word": "authoritative",
+    "antonym": "unreliable",
+    "skill": "Reading",
+    "translation": "موثوق / ذو سلطة",
+    "pronunciation": "ə-THOR-i-tay-tiv",
+    "example": "The professor gave an authoritative lecture on climate change.",
+    "exampleAr": "ألقى الأستاذ محاضرة موثوقة حول تغير المناخ."
+  },
+  {
+    "id": 22,
+    "word": "aware",
+    "antonym": "oblivious",
+    "skill": "Writing",
+    "translation": "مدرك / واعٍ",
+    "pronunciation": "ə-WAIR",
+    "example": "Students should be aware of the consequences of academic dishonesty.",
+    "exampleAr": "يجب أن يكون الطلاب على دراية بعواقب عدم الأمانة الأكاديمية."
+  },
+  {
+    "id": 23,
+    "word": "abundance",
+    "antonym": "scarcity",
+    "skill": "Writing",
+    "translation": "وفرة",
+    "pronunciation": "ə-BUN-dəns",
+    "example": "The region is known for its abundance of natural resources.",
+    "exampleAr": "تشتهر المنطقة بوفرة مواردها الطبيعية."
+  },
+  {
+    "id": 24,
+    "word": "accelerate",
+    "antonym": "decelerate",
+    "skill": "Writing",
+    "translation": "يُسرّع",
+    "pronunciation": "ak-SEL-ə-rayt",
+    "example": "Investment in technology can accelerate economic growth significantly.",
+    "exampleAr": "يمكن للاستثمار في التكنولوجيا أن يُسرّع النمو الاقتصادي بشكل ملحوظ."
+  },
+  {
+    "id": 25,
+    "word": "accessible",
+    "antonym": "exclusive",
+    "skill": "Writing",
+    "translation": "سهل الوصول",
+    "pronunciation": "ak-SES-ə-bəl",
+    "example": "The library should be accessible to all members of the community.",
+    "exampleAr": "يجب أن تكون المكتبة في متناول جميع أفراد المجتمع."
+  },
+  {
+    "id": 26,
+    "word": "achievement",
+    "antonym": "failure",
+    "skill": "Writing",
+    "translation": "إنجاز",
+    "pronunciation": "ə-CHEEV-mənt",
+    "example": "Winning the award was a remarkable achievement for the young scientist.",
+    "exampleAr": "كان الفوز بالجائزة إنجازًا رائعًا للعالم الشاب."
+  },
+  {
+    "id": 27,
+    "word": "acquire",
+    "antonym": "lose",
+    "skill": "Writing",
+    "translation": "يكتسب",
+    "pronunciation": "ə-KWYRE",
+    "example": "Children acquire language skills at an astonishing rate.",
+    "exampleAr": "يكتسب الأطفال مهارات اللغة بمعدل مذهل."
+  },
+  {
+    "id": 28,
+    "word": "advantage",
+    "antonym": "drawback",
+    "skill": "Writing",
+    "translation": "ميزة / فائدة",
+    "pronunciation": "əd-VAN-tij",
+    "example": "Speaking multiple languages is a great advantage in today's job market.",
+    "exampleAr": "التحدث بعدة لغات ميزة كبيرة في سوق العمل اليوم."
+  },
+  {
+    "id": 29,
+    "word": "aid",
+    "antonym": "hinder",
+    "skill": "Writing",
+    "translation": "يساعد / مساعدة",
+    "pronunciation": "AYD",
+    "example": "Foreign aid was sent to support victims of the natural disaster.",
+    "exampleAr": "أُرسلت المساعدات الخارجية لدعم ضحايا الكارثة الطبيعية."
+  },
+  {
+    "id": 30,
+    "word": "alleviate",
+    "antonym": "worsen",
+    "skill": "Writing",
+    "translation": "يخفف",
+    "pronunciation": "ə-LEE-vee-ayt",
+    "example": "The new medication helped alleviate the patient's chronic pain.",
+    "exampleAr": "ساعد الدواء الجديد على تخفيف الألم المزمن للمريض."
+  },
+  {
+    "id": 31,
+    "word": "ambitious",
+    "antonym": "complacent",
+    "skill": "Speaking",
+    "translation": "طموح",
+    "pronunciation": "am-BISH-əs",
+    "example": "The ambitious student worked tirelessly to secure a scholarship.",
+    "exampleAr": "عمل الطالب الطموح بلا كلل لضمان منحة دراسية."
+  },
+  {
+    "id": 32,
+    "word": "amplify",
+    "antonym": "reduce",
+    "skill": "Writing",
+    "translation": "يُكبّر / يُضخّم",
+    "pronunciation": "AM-plə-fy",
+    "example": "Social media can amplify both positive and negative messages.",
+    "exampleAr": "يمكن لوسائل التواصل الاجتماعي تضخيم الرسائل الإيجابية والسلبية على حد سواء."
+  },
+  {
+    "id": 33,
+    "word": "analyse",
+    "antonym": "ignore",
+    "skill": "Writing",
+    "translation": "يحلل",
+    "pronunciation": "AN-ə-lyz",
+    "example": "Researchers were asked to analyse the data collected over five years.",
+    "exampleAr": "طُلب من الباحثين تحليل البيانات التي جُمعت على مدى خمس سنوات."
+  },
+  {
+    "id": 34,
+    "word": "anonymous",
+    "antonym": "identified",
+    "skill": "Reading",
+    "translation": "مجهول الهوية",
+    "pronunciation": "ə-NON-ə-məs",
+    "example": "The anonymous donor gave a million pounds to the charity.",
+    "exampleAr": "قدّم المتبرع مجهول الهوية مليون جنيه إسترليني للجمعية الخيرية."
+  },
+  {
+    "id": 35,
+    "word": "appropriate",
+    "antonym": "unsuitable",
+    "skill": "Writing",
+    "translation": "مناسب",
+    "pronunciation": "ə-PROH-pree-ət",
+    "example": "The teacher chose an appropriate level of difficulty for the exam.",
+    "exampleAr": "اختار المعلم مستوى مناسبًا من الصعوبة للاختبار."
+  },
+  {
+    "id": 36,
+    "word": "arrest",
+    "antonym": "release",
+    "skill": "Reading",
+    "translation": "يعتقل",
+    "pronunciation": "ə-REST",
+    "example": "The police decided to arrest the suspect after gathering evidence.",
+    "exampleAr": "قرّرت الشرطة اعتقال المشتبه به بعد جمع الأدلة."
+  },
+  {
+    "id": 37,
+    "word": "assist",
+    "antonym": "obstruct",
+    "skill": "Writing",
+    "translation": "يساعد",
+    "pronunciation": "ə-SIST",
+    "example": "Volunteers came forward to assist the flood victims.",
+    "exampleAr": "تطوّع متطوعون للمساعدة في إغاثة ضحايا الفيضانات."
+  },
+  {
+    "id": 38,
+    "word": "authority",
+    "antonym": "subordinate",
+    "skill": "Writing",
+    "translation": "سلطة",
+    "pronunciation": "ə-THOR-i-tee",
+    "example": "The local authority was responsible for maintaining public services.",
+    "exampleAr": "كانت السلطة المحلية مسؤولة عن صيانة الخدمات العامة."
+  },
+  {
+    "id": 39,
+    "word": "available",
+    "antonym": "scarce",
+    "skill": "Writing",
+    "translation": "متاح",
+    "pronunciation": "ə-VAY-lə-bəl",
+    "example": "The doctor was available to answer questions after the lecture.",
+    "exampleAr": "كان الطبيب متاحًا للإجابة على الأسئلة بعد المحاضرة."
+  },
+  {
+    "id": 40,
+    "word": "acknowledge",
+    "antonym": "deny",
+    "skill": "Reading",
+    "translation": "يُقرّ / يعترف",
+    "pronunciation": "ak-NOL-ij",
+    "example": "The company had to acknowledge its mistake publicly.",
+    "exampleAr": "اضطرت الشركة إلى الاعتراف بخطئها على الملأ."
+  },
+  {
+    "id": 41,
+    "word": "ambiguous",
+    "antonym": "clear",
+    "skill": "Reading",
+    "translation": "غامض / ملتبس",
+    "pronunciation": "am-BIG-yoo-əs",
+    "example": "The instructions were so ambiguous that nobody knew what to do.",
+    "exampleAr": "كانت التعليمات غامضة للغاية لدرجة أنه لا أحد يعرف ما يجب فعله."
+  },
+  {
+    "id": 42,
+    "word": "arrival",
+    "antonym": "departure",
+    "skill": "Listening",
+    "translation": "وصول",
+    "pronunciation": "ə-RYE-vəl",
+    "example": "The arrival of the relief team gave survivors new hope.",
+    "exampleAr": "أعطى وصول فريق الإغاثة المنقذين أملًا جديدًا."
+  },
+  {
+    "id": 43,
+    "word": "achieve",
+    "antonym": "fail",
+    "skill": "Speaking",
+    "translation": "ينجز / يحقق",
+    "pronunciation": "ə-CHEEV",
+    "example": "With consistent effort, anyone can achieve their goals.",
+    "exampleAr": "بجهود مستمرة، يمكن لأي شخص تحقيق أهدافه."
+  },
+  {
+    "id": 44,
+    "word": "adventurous",
+    "antonym": "cautious",
+    "skill": "Speaking",
+    "translation": "مغامر",
+    "pronunciation": "əd-VEN-chər-əs",
+    "example": "The adventurous traveller explored remote regions of the Amazon.",
+    "exampleAr": "استكشف المسافر المغامر مناطق نائية في حوض الأمازون."
+  },
+  {
+    "id": 45,
+    "word": "anxious",
+    "antonym": "calm",
+    "skill": "Speaking",
+    "translation": "قلق",
+    "pronunciation": "ANK-shəs",
+    "example": "She felt anxious before delivering the speech in front of thousands.",
+    "exampleAr": "شعرت بقلق قبل إلقاء الخطاب أمام الآلاف."
+  },
+  {
+    "id": 46,
+    "word": "aggressive",
+    "antonym": "peaceful",
+    "skill": "Writing",
+    "translation": "عدواني",
+    "pronunciation": "ə-GRES-iv",
+    "example": "An aggressive marketing campaign was launched to boost sales.",
+    "exampleAr": "أُطلقت حملة تسويقية عدوانية لتعزيز المبيعات."
+  },
+  {
+    "id": 47,
+    "word": "alert",
+    "antonym": "unaware",
+    "skill": "Writing",
+    "translation": "يقظ / منتبه",
+    "pronunciation": "ə-LURT",
+    "example": "Staying alert during long-haul flights is important for safety.",
+    "exampleAr": "البقاء يقظًا خلال الرحلات الطويلة أمر مهم للسلامة."
+  },
+  {
+    "id": 48,
+    "word": "allocate",
+    "antonym": "withhold",
+    "skill": "Writing",
+    "translation": "يخصص",
+    "pronunciation": "AL-ə-kayt",
+    "example": "The government decided to allocate more funds to public health.",
+    "exampleAr": "قررت الحكومة تخصيص مزيد من الأموال للصحة العامة."
+  },
+  {
+    "id": 49,
+    "word": "alternative",
+    "antonym": "compulsory",
+    "skill": "Writing",
+    "translation": "بديل",
+    "pronunciation": "ol-TUR-nə-tiv",
+    "example": "The committee proposed an alternative approach to reduce costs.",
+    "exampleAr": "اقترحت اللجنة نهجًا بديلًا لخفض التكاليف."
+  },
+  {
+    "id": 50,
+    "word": "appealing",
+    "antonym": "repulsive",
+    "skill": "Writing",
+    "translation": "جذاب / مغرٍ",
+    "pronunciation": "ə-PEE-ling",
+    "example": "The new apartment was very appealing due to its central location.",
+    "exampleAr": "كانت الشقة الجديدة جذابة جدًا بسبب موقعها المركزي."
+  },
+  {
+    "id": 51,
+    "word": "associate",
+    "antonym": "separate",
+    "skill": "Writing",
+    "translation": "يربط / يرتبط",
+    "pronunciation": "ə-SOH-shee-ayt",
+    "example": "Most people associate a healthy diet with physical fitness.",
+    "exampleAr": "يربط معظم الناس بين النظام الغذائي الصحي واللياقة البدنية."
+  },
+  {
+    "id": 52,
+    "word": "attempt",
+    "antonym": "abandon",
+    "skill": "Writing",
+    "translation": "يحاول / محاولة",
+    "pronunciation": "ə-TEMPT",
+    "example": "The climber made a final attempt to reach the summit before sunset.",
+    "exampleAr": "قام المتسلق بمحاولة أخيرة للوصول إلى القمة قبل الغروب."
+  },
+  {
+    "id": 53,
+    "word": "authorise",
+    "antonym": "ban",
+    "skill": "Writing",
+    "translation": "يأذن / يخوّل",
+    "pronunciation": "AW-thə-ryz",
+    "example": "Only the manager can authorise large financial transactions.",
+    "exampleAr": "المدير فقط هو من يمكنه الإذن بالمعاملات المالية الكبيرة."
+  },
+  {
+    "id": 54,
+    "word": "accumulate",
+    "antonym": "disperse",
+    "skill": "Writing",
+    "translation": "يتراكم / يجمع",
+    "pronunciation": "ə-KYOOM-yə-layt",
+    "example": "Over time, small savings can accumulate into a significant amount.",
+    "exampleAr": "مع مرور الوقت، يمكن للمدخرات الصغيرة أن تتراكم لتصبح مبلغًا كبيرًا."
+  },
+  {
+    "id": 55,
+    "word": "advocate",
+    "antonym": "oppose",
+    "skill": "Writing",
+    "translation": "يدعو إلى / يؤيد",
+    "pronunciation": "AD-və-kayt",
+    "example": "The charity advocates for the rights of homeless families.",
+    "exampleAr": "تدعو الجمعية الخيرية إلى حقوق الأسر المشردة."
+  },
+  {
+    "id": 56,
+    "word": "ambivalent",
+    "antonym": "certain",
+    "skill": "Reading",
+    "translation": "متردد / مزدوج المشاعر",
+    "pronunciation": "am-BIV-ə-lənt",
+    "example": "She felt ambivalent about accepting the job offer abroad.",
+    "exampleAr": "شعرت بتردد حيال قبول عرض العمل في الخارج."
+  },
+  {
+    "id": 57,
+    "word": "adamant",
+    "antonym": "flexible",
+    "skill": "Speaking",
+    "translation": "مصرّ / حازم",
+    "pronunciation": "AD-ə-mənt",
+    "example": "He was adamant that the decision should not be changed.",
+    "exampleAr": "كان مصرًا على أن القرار لا ينبغي تغييره."
+  },
+  {
+    "id": 58,
+    "word": "apprehensive",
+    "antonym": "confident",
+    "skill": "Speaking",
+    "translation": "قلق / خائف",
+    "pronunciation": "ap-ri-HEN-siv",
+    "example": "Many students feel apprehensive before their first job interview.",
+    "exampleAr": "يشعر كثير من الطلاب بالقلق قبل مقابلة العمل الأولى."
+  },
+  {
+    "id": 59,
+    "word": "articulate",
+    "antonym": "incoherent",
+    "skill": "Speaking",
+    "translation": "يعبّر بوضوح / واضح",
+    "pronunciation": "ar-TIK-yə-lət",
+    "example": "An articulate speaker can convey complex ideas with ease.",
+    "exampleAr": "يمكن للمتحدث الواضح نقل الأفكار المعقدة بسهولة."
+  },
+  {
+    "id": 60,
+    "word": "assertive",
+    "antonym": "passive",
+    "skill": "Speaking",
+    "translation": "حازم / واثق",
+    "pronunciation": "ə-SUR-tiv",
+    "example": "Being assertive in the workplace helps in achieving recognition.",
+    "exampleAr": "الحزم في بيئة العمل يساعد في الحصول على التقدير."
+  },
+  {
+    "id": 61,
+    "word": "absorb",
+    "antonym": "emit",
+    "skill": "Writing",
+    "translation": "يمتص / يستوعب",
+    "pronunciation": "əb-ZORB",
+    "example": "A sponge can absorb a large amount of water very quickly.",
+    "exampleAr": "يمكن للإسفنج أن يمتص كمية كبيرة من الماء بسرعة كبيرة."
+  },
+  {
+    "id": 62,
+    "word": "acclaim",
+    "antonym": "criticise",
+    "skill": "Writing",
+    "translation": "يُشيد بـ / يُمجّد",
+    "pronunciation": "ə-KLAYM",
+    "example": "The director received widespread acclaim for the award-winning film.",
+    "exampleAr": "حظي المخرج بإشادة واسعة على الفيلم الحائز على الجائزة."
+  },
+  {
+    "id": 63,
+    "word": "acute",
+    "antonym": "chronic",
+    "skill": "Reading",
+    "translation": "حاد",
+    "pronunciation": "ə-KYOOT",
+    "example": "The patient was admitted for acute chest pain.",
+    "exampleAr": "دُخّل المريض المستشفى بسبب ألم حاد في الصدر."
+  },
+  {
+    "id": 64,
+    "word": "adhere",
+    "antonym": "deviate",
+    "skill": "Writing",
+    "translation": "يلتزم / يتمسك",
+    "pronunciation": "əd-HIIR",
+    "example": "All staff must adhere to the company's code of conduct.",
+    "exampleAr": "يجب على جميع الموظفين الالتزام بمدونة قواعد السلوك الخاصة بالشركة."
+  },
+  {
+    "id": 65,
+    "word": "affluence",
+    "antonym": "poverty",
+    "skill": "Writing",
+    "translation": "الثروة / الغنى",
+    "pronunciation": "AF-loo-əns",
+    "example": "The city's affluence was evident in its gleaming skyscrapers.",
+    "exampleAr": "كانت ثروة المدينة واضحة في ناطحات السحاب المتلألئة."
+  },
+  {
+    "id": 66,
+    "word": "aggravate",
+    "antonym": "soothe",
+    "skill": "Writing",
+    "translation": "يُفاقم / يُفسد",
+    "pronunciation": "AG-rə-vayt",
+    "example": "Stress can aggravate existing health conditions significantly.",
+    "exampleAr": "يمكن للتوتر أن يُفاقم الحالات الصحية القائمة بشكل ملحوظ."
+  },
+  {
+    "id": 67,
+    "word": "analytical",
+    "antonym": "intuitive",
+    "skill": "Writing",
+    "translation": "تحليلي",
+    "pronunciation": "an-ə-LIT-i-kəl",
+    "example": "An analytical approach helps solve complex problems more effectively.",
+    "exampleAr": "يساعد النهج التحليلي على حل المشكلات المعقدة بشكل أكثر فاعلية."
+  },
+  {
+    "id": 68,
+    "word": "anchor",
+    "antonym": "destabilise",
+    "skill": "Writing",
+    "translation": "يُثبّت / يُرسي",
+    "pronunciation": "ANK-ər",
+    "example": "Strong values anchor individuals during times of uncertainty.",
+    "exampleAr": "القيم الراسخة تُثبّت الأفراد في أوقات عدم اليقين."
+  },
+  {
+    "id": 69,
+    "word": "antagonise",
+    "antonym": "reconcile",
+    "skill": "Writing",
+    "translation": "يُعادي / يُعكّر",
+    "pronunciation": "an-TAG-ə-nyz",
+    "example": "It is unwise to antagonise your colleagues in the workplace.",
+    "exampleAr": "من الحماقة معاداة زملائك في مكان العمل."
+  },
+  {
+    "id": 70,
+    "word": "anticipate",
+    "antonym": "overlook",
+    "skill": "Writing",
+    "translation": "يتوقع",
+    "pronunciation": "an-TIS-i-payt",
+    "example": "Analysts failed to anticipate the sharp rise in inflation.",
+    "exampleAr": "فشل المحللون في توقع الارتفاع الحاد في التضخم."
+  },
+  {
+    "id": 71,
+    "word": "arbitrary",
+    "antonym": "systematic",
+    "skill": "Writing",
+    "translation": "تعسفي / اعتباطي",
+    "pronunciation": "AR-bi-trehr-ee",
+    "example": "The decision seemed arbitrary and lacked clear justification.",
+    "exampleAr": "بدا القرار تعسفيًا وافتقر إلى مبرر واضح."
+  },
+  {
+    "id": 72,
+    "word": "arduous",
+    "antonym": "effortless",
+    "skill": "Writing",
+    "translation": "شاق / صعب",
+    "pronunciation": "AR-joo-əs",
+    "example": "The expedition through the desert was an arduous journey.",
+    "exampleAr": "كانت الرحلة عبر الصحراء رحلة شاقة."
+  },
+  {
+    "id": 73,
+    "word": "assimilate",
+    "antonym": "exclude",
+    "skill": "Writing",
+    "translation": "يستوعب / يندمج",
+    "pronunciation": "ə-SIM-ə-layt",
+    "example": "Immigrants often struggle to assimilate into a new culture.",
+    "exampleAr": "كثيرًا ما يكافح المهاجرون للاندماج في ثقافة جديدة."
+  },
+  {
+    "id": 74,
+    "word": "attentive",
+    "antonym": "negligent",
+    "skill": "Writing",
+    "translation": "منتبه / متيقظ",
+    "pronunciation": "ə-TEN-tiv",
+    "example": "Being attentive in class greatly improves academic performance.",
+    "exampleAr": "الانتباه في الفصل يُحسّن الأداء الأكاديمي بشكل كبير."
+  },
+  {
+    "id": 75,
+    "word": "authentic",
+    "antonym": "counterfeit",
+    "skill": "Writing",
+    "translation": "أصيل / حقيقي",
+    "pronunciation": "aw-THEN-tik",
+    "example": "The painting was confirmed to be an authentic work of the artist.",
+    "exampleAr": "تأكّد أن اللوحة عمل أصيل للفنان."
+  },
+  {
+    "id": 76,
+    "word": "autonomous",
+    "antonym": "controlled",
+    "skill": "Writing",
+    "translation": "مستقل / ذاتي",
+    "pronunciation": "aw-TON-ə-məs",
+    "example": "The region was granted autonomous governance over local affairs.",
+    "exampleAr": "مُنحت المنطقة حكمًا ذاتيًا على شؤونها المحلية."
+  },
+  {
+    "id": 77,
+    "word": "aggregate",
+    "antonym": "individual",
+    "skill": "Writing",
+    "translation": "مجموع / إجمالي",
+    "pronunciation": "AG-ri-gət",
+    "example": "The aggregate score of both teams determined the overall winner.",
+    "exampleAr": "حدّد المجموع الإجمالي لكلا الفريقين الفائز النهائي."
+  },
+  {
+    "id": 78,
+    "word": "amplification",
+    "antonym": "reduction",
+    "skill": "Writing",
+    "translation": "تضخيم / توسيع",
+    "pronunciation": "am-plə-fi-KAY-shən",
+    "example": "The amplification of the signal allowed the message to be heard.",
+    "exampleAr": "سمح تضخيم الإشارة بسماع الرسالة بوضوح."
+  },
+  {
+    "id": 79,
+    "word": "antagonist",
+    "antonym": "ally",
+    "skill": "Reading",
+    "translation": "خصم / معارض",
+    "pronunciation": "an-TAG-ə-nist",
+    "example": "In the novel, the antagonist constantly challenged the hero.",
+    "exampleAr": "في الرواية، يتحدى الخصم البطل باستمرار."
+  },
+  {
+    "id": 80,
+    "word": "ascertain",
+    "antonym": "guess",
+    "skill": "Reading",
+    "translation": "يتحقق من / يثبت",
+    "pronunciation": "as-ər-TAYN",
+    "example": "The investigator worked hard to ascertain the true cause of the accident.",
+    "exampleAr": "عمل المحقق بجد للتحقق من السبب الحقيقي للحادث."
+  },
+  {
+    "id": 81,
+    "word": "attest",
+    "antonym": "deny",
+    "skill": "Reading",
+    "translation": "يشهد / يثبت",
+    "pronunciation": "ə-TEST",
+    "example": "Several witnesses were called to attest to the events of that evening.",
+    "exampleAr": "استُدعي عدة شهود للشهادة على أحداث تلك الليلة."
+  },
+  {
+    "id": 82,
+    "word": "attribute",
+    "antonym": "deny",
+    "skill": "Writing",
+    "translation": "يعزو / صفة",
+    "pronunciation": "ə-TRIB-yoot",
+    "example": "Success can often be attributed to consistent hard work.",
+    "exampleAr": "كثيرًا ما يمكن عزو النجاح إلى العمل الجاد المستمر."
+  },
+  {
+    "id": 83,
+    "word": "ban",
+    "antonym": "allow",
+    "skill": "Writing",
+    "translation": "يحظر / حظر",
+    "pronunciation": "BAN",
+    "example": "The city decided to ban single-use plastics to protect the environment.",
+    "exampleAr": "قررت المدينة حظر البلاستيك أحادي الاستخدام لحماية البيئة."
+  },
+  {
+    "id": 84,
+    "word": "beneficial",
+    "antonym": "harmful",
+    "skill": "Writing",
+    "translation": "مفيد / نافع",
+    "pronunciation": "ben-ə-FISH-əl",
+    "example": "Regular exercise is beneficial for both mental and physical health.",
+    "exampleAr": "التمارين المنتظمة مفيدة لكل من الصحة العقلية والجسدية."
+  },
+  {
+    "id": 85,
+    "word": "bold",
+    "antonym": "timid",
+    "skill": "Speaking",
+    "translation": "جريء / شجاع",
+    "pronunciation": "BOHLD",
+    "example": "The entrepreneur made a bold decision to enter an untested market.",
+    "exampleAr": "اتخذ رجل الأعمال قرارًا جريئًا بدخول سوق غير مجرّبة."
+  },
+  {
+    "id": 86,
+    "word": "boom",
+    "antonym": "decline",
+    "skill": "Writing",
+    "translation": "ازدهار / طفرة",
+    "pronunciation": "BOOM",
+    "example": "The technology sector experienced an unprecedented economic boom.",
+    "exampleAr": "شهد قطاع التكنولوجيا طفرة اقتصادية غير مسبوقة."
+  },
+  {
+    "id": 87,
+    "word": "broad",
+    "antonym": "narrow",
+    "skill": "Writing",
+    "translation": "واسع",
+    "pronunciation": "BRAWD",
+    "example": "She has a broad understanding of international relations.",
+    "exampleAr": "لديها فهم واسع للعلاقات الدولية."
+  },
+  {
+    "id": 88,
+    "word": "build",
+    "antonym": "destroy",
+    "skill": "Writing",
+    "translation": "يبني",
+    "pronunciation": "BILD",
+    "example": "The city aims to build affordable housing for all residents.",
+    "exampleAr": "تهدف المدينة إلى بناء مساكن ميسورة التكلفة لجميع السكان."
+  },
+  {
+    "id": 89,
+    "word": "balanced",
+    "antonym": "biased",
+    "skill": "Writing",
+    "translation": "متوازن",
+    "pronunciation": "BAL-ənst",
+    "example": "A balanced diet includes a variety of nutrients from different food groups.",
+    "exampleAr": "يشمل النظام الغذائي المتوازن مجموعة متنوعة من العناصر الغذائية."
+  },
+  {
+    "id": 90,
+    "word": "barrier",
+    "antonym": "opportunity",
+    "skill": "Writing",
+    "translation": "عائق / حاجز",
+    "pronunciation": "BEHR-ee-ər",
+    "example": "Language can be a significant barrier to social integration.",
+    "exampleAr": "يمكن أن تكون اللغة عائقًا كبيرًا أمام الاندماج الاجتماعي."
+  },
+  {
+    "id": 91,
+    "word": "basic",
+    "antonym": "advanced",
+    "skill": "Writing",
+    "translation": "أساسي",
+    "pronunciation": "BAY-sik",
+    "example": "Every student should master basic mathematical skills.",
+    "exampleAr": "يجب على كل طالب إتقان المهارات الرياضية الأساسية."
+  },
+  {
+    "id": 92,
+    "word": "benefit",
+    "antonym": "drawback",
+    "skill": "Writing",
+    "translation": "فائدة / يستفيد",
+    "pronunciation": "BEN-ə-fit",
+    "example": "The community benefited greatly from the new sports centre.",
+    "exampleAr": "استفاد المجتمع كثيرًا من المركز الرياضي الجديد."
+  },
+  {
+    "id": 93,
+    "word": "bias",
+    "antonym": "fairness",
+    "skill": "Writing",
+    "translation": "تحيز",
+    "pronunciation": "BY-əs",
+    "example": "Researchers must eliminate bias from their experimental designs.",
+    "exampleAr": "يجب على الباحثين التخلص من التحيز في تصاميم تجاربهم."
+  },
+  {
+    "id": 94,
+    "word": "brief",
+    "antonym": "lengthy",
+    "skill": "Writing",
+    "translation": "موجز / مختصر",
+    "pronunciation": "BREEF",
+    "example": "The manager gave a brief summary of the quarterly results.",
+    "exampleAr": "قدّم المدير ملخصًا موجزًا للنتائج الفصلية."
+  },
+  {
+    "id": 95,
+    "word": "burden",
+    "antonym": "relief",
+    "skill": "Writing",
+    "translation": "عبء",
+    "pronunciation": "BUR-dən",
+    "example": "High taxes can become a heavy burden for small businesses.",
+    "exampleAr": "يمكن أن تُصبح الضرائب المرتفعة عبئًا ثقيلًا على الشركات الصغيرة."
+  },
+  {
+    "id": 96,
+    "word": "brave",
+    "antonym": "cowardly",
+    "skill": "Speaking",
+    "translation": "شجاع",
+    "pronunciation": "BRAYV",
+    "example": "It takes a brave person to speak the truth in difficult times.",
+    "exampleAr": "يحتاج الأمر إلى شخص شجاع ليقول الحقيقة في الأوقات الصعبة."
+  },
+  {
+    "id": 97,
+    "word": "broaden",
+    "antonym": "narrow",
+    "skill": "Writing",
+    "translation": "يوسّع",
+    "pronunciation": "BRAW-dən",
+    "example": "Travelling abroad can help broaden your perspective on the world.",
+    "exampleAr": "يمكن أن يساعدك السفر إلى الخارج على توسيع منظورك تجاه العالم."
+  },
+  {
+    "id": 98,
+    "word": "biased",
+    "antonym": "neutral",
+    "skill": "Reading",
+    "translation": "متحيز",
+    "pronunciation": "BY-əst",
+    "example": "The report was criticised for being biased towards one side.",
+    "exampleAr": "انتُقد التقرير لكونه متحيزًا لجانب واحد."
+  },
+  {
+    "id": 99,
+    "word": "brevity",
+    "antonym": "verbosity",
+    "skill": "Writing",
+    "translation": "إيجاز",
+    "pronunciation": "BREV-i-tee",
+    "example": "The speech was admired for its brevity and clarity.",
+    "exampleAr": "أُعجب بالخطاب لإيجازه ووضوحه."
+  },
+  {
+    "id": 100,
+    "word": "capable",
+    "antonym": "incompetent",
+    "skill": "Writing",
+    "translation": "قادر / كفء",
+    "pronunciation": "KAY-pə-bəl",
+    "example": "The team proved itself capable of handling large-scale projects.",
+    "exampleAr": "أثبت الفريق قدرته على التعامل مع المشاريع الكبيرة."
+  },
+  {
+    "id": 101,
+    "word": "certain",
+    "antonym": "doubtful",
+    "skill": "Writing",
+    "translation": "متأكد / يقيني",
+    "pronunciation": "SUR-tən",
+    "example": "Scientists are not yet certain about the long-term effects of the drug.",
+    "exampleAr": "لم يتأكد العلماء بعد من الآثار طويلة الأمد للدواء."
+  },
+  {
+    "id": 102,
+    "word": "coherent",
+    "antonym": "disjointed",
+    "skill": "Writing",
+    "translation": "متماسك / متسق",
+    "pronunciation": "koh-HIIR-ənt",
+    "example": "The essay presented a coherent argument supported by strong evidence.",
+    "exampleAr": "قدّمت المقالة حجة متماسكة مدعومة بأدلة قوية."
+  },
+  {
+    "id": 103,
+    "word": "complex",
+    "antonym": "simple",
+    "skill": "Writing",
+    "translation": "معقد",
+    "pronunciation": "KOM-pleks",
+    "example": "The issue of climate change is highly complex and multifaceted.",
+    "exampleAr": "قضية تغير المناخ بالغة التعقيد ومتعددة الجوانب."
+  },
+  {
+    "id": 104,
+    "word": "compulsory",
+    "antonym": "optional",
+    "skill": "Writing",
+    "translation": "إلزامي",
+    "pronunciation": "kəm-PUL-sə-ree",
+    "example": "Secondary education is compulsory for all children in this country.",
+    "exampleAr": "التعليم الثانوي إلزامي لجميع الأطفال في هذا البلد."
+  },
+  {
+    "id": 105,
+    "word": "confident",
+    "antonym": "insecure",
+    "skill": "Speaking",
+    "translation": "واثق / متأكد",
+    "pronunciation": "KON-fi-dənt",
+    "example": "A confident speaker engages the audience from the very first word.",
+    "exampleAr": "يجذب المتحدث الواثق الجمهور منذ الكلمة الأولى."
+  },
+  {
+    "id": 106,
+    "word": "consistent",
+    "antonym": "unpredictable",
+    "skill": "Writing",
+    "translation": "ثابت / منسجم",
+    "pronunciation": "kən-SIS-tənt",
+    "example": "Consistent practice is the key to mastering any skill.",
+    "exampleAr": "الممارسة المستمرة هي مفتاح إتقان أي مهارة."
+  },
+  {
+    "id": 107,
+    "word": "constructive",
+    "antonym": "destructive",
+    "skill": "Writing",
+    "translation": "بنّاء",
+    "pronunciation": "kən-STRUK-tiv",
+    "example": "The manager gave constructive feedback to help improve performance.",
+    "exampleAr": "قدّم المدير ملاحظات بنّاءة لمساعدة الموظفين على تحسين أدائهم."
+  },
+  {
+    "id": 108,
+    "word": "controversial",
+    "antonym": "accepted",
+    "skill": "Writing",
+    "translation": "مثير للجدل",
+    "pronunciation": "kon-trə-VUR-shəl",
+    "example": "The new immigration law proved to be highly controversial.",
+    "exampleAr": "أثبت قانون الهجرة الجديد أنه بالغ الجدل."
+  },
+  {
+    "id": 109,
+    "word": "cooperative",
+    "antonym": "antagonistic",
+    "skill": "Writing",
+    "translation": "تعاوني",
+    "pronunciation": "koh-OP-ər-ə-tiv",
+    "example": "A cooperative approach is essential in resolving international disputes.",
+    "exampleAr": "النهج التعاوني ضروري في حل النزاعات الدولية."
+  },
+  {
+    "id": 110,
+    "word": "creative",
+    "antonym": "unimaginative",
+    "skill": "Writing",
+    "translation": "إبداعي / مبدع",
+    "pronunciation": "kree-AY-tiv",
+    "example": "Employers increasingly value creative thinking in job candidates.",
+    "exampleAr": "يُقدّر أصحاب العمل بشكل متزايد التفكير الإبداعي في المرشحين."
+  },
+  {
+    "id": 111,
+    "word": "crucial",
+    "antonym": "trivial",
+    "skill": "Writing",
+    "translation": "حاسم / بالغ الأهمية",
+    "pronunciation": "KROO-shəl",
+    "example": "Access to clean water is crucial for human survival.",
+    "exampleAr": "الحصول على المياه النظيفة أمر بالغ الأهمية لبقاء الإنسان."
+  },
+  {
+    "id": 112,
+    "word": "current",
+    "antonym": "outdated",
+    "skill": "Writing",
+    "translation": "حالي / راهن",
+    "pronunciation": "KUR-ənt",
+    "example": "The current situation demands immediate and decisive action.",
+    "exampleAr": "يتطلب الوضع الراهن اتخاذ إجراء فوري وحاسم."
+  },
+  {
+    "id": 113,
+    "word": "cause",
+    "antonym": "effect",
+    "skill": "Writing",
+    "translation": "سبب",
+    "pronunciation": "KAWZ",
+    "example": "Scientists are still researching the exact cause of the disease.",
+    "exampleAr": "لا يزال العلماء يبحثون في السبب الدقيق للمرض."
+  },
+  {
+    "id": 114,
+    "word": "centralise",
+    "antonym": "decentralise",
+    "skill": "Writing",
+    "translation": "يُمركز",
+    "pronunciation": "SEN-trə-lyz",
+    "example": "Some governments centralise power to improve decision-making speed.",
+    "exampleAr": "تلجأ بعض الحكومات إلى مركزة السلطة لتحسين سرعة اتخاذ القرار."
+  },
+  {
+    "id": 115,
+    "word": "clarity",
+    "antonym": "confusion",
+    "skill": "Writing",
+    "translation": "وضوح",
+    "pronunciation": "KLEHR-i-tee",
+    "example": "The instructions were rewritten for greater clarity.",
+    "exampleAr": "أُعيدت كتابة التعليمات لمزيد من الوضوح."
+  },
+  {
+    "id": 116,
+    "word": "collapse",
+    "antonym": "recover",
+    "skill": "Writing",
+    "translation": "ينهار",
+    "pronunciation": "kə-LAPS",
+    "example": "The economy began to collapse following years of mismanagement.",
+    "exampleAr": "بدأ الاقتصاد في الانهيار بعد سنوات من سوء الإدارة."
+  },
+  {
+    "id": 117,
+    "word": "competitive",
+    "antonym": "cooperative",
+    "skill": "Writing",
+    "translation": "تنافسي",
+    "pronunciation": "kəm-PET-i-tiv",
+    "example": "The job market is increasingly competitive, requiring specialised skills.",
+    "exampleAr": "سوق العمل أصبح أكثر تنافسية، مما يتطلب مهارات متخصصة."
+  },
+  {
+    "id": 118,
+    "word": "concentrated",
+    "antonym": "dispersed",
+    "skill": "Writing",
+    "translation": "مركّز",
+    "pronunciation": "KON-sən-tray-tid",
+    "example": "A concentrated effort from all team members led to success.",
+    "exampleAr": "أفضى المجهود المركّز من جميع أعضاء الفريق إلى النجاح."
+  },
+  {
+    "id": 119,
+    "word": "confirm",
+    "antonym": "deny",
+    "skill": "Writing",
+    "translation": "يؤكد",
+    "pronunciation": "kən-FURM",
+    "example": "The laboratory tests were needed to confirm the initial diagnosis.",
+    "exampleAr": "كانت هناك حاجة لاختبارات المختبر لتأكيد التشخيص الأولي."
+  },
+  {
+    "id": 120,
+    "word": "connect",
+    "antonym": "isolate",
+    "skill": "Writing",
+    "translation": "يربط / يوصّل",
+    "pronunciation": "kə-NEKT",
+    "example": "The new motorway will connect the two major cities.",
+    "exampleAr": "سيربط الطريق السريع الجديد بين المدينتين الرئيسيتين."
+  },
+  {
+    "id": 121,
+    "word": "conscious",
+    "antonym": "oblivious",
+    "skill": "Writing",
+    "translation": "مدرك / واعٍ",
+    "pronunciation": "KON-shəs",
+    "example": "People are increasingly conscious of their environmental impact.",
+    "exampleAr": "يزداد وعي الناس بتأثيرهم البيئي."
+  },
+  {
+    "id": 122,
+    "word": "conservative",
+    "antonym": "progressive",
+    "skill": "Writing",
+    "translation": "محافظ",
+    "pronunciation": "kən-SUR-və-tiv",
+    "example": "The conservative approach minimised risk but limited growth.",
+    "exampleAr": "حدّ النهج المحافظ من المخاطر لكنه أعاق النمو."
+  },
+  {
+    "id": 123,
+    "word": "contribute",
+    "antonym": "withdraw",
+    "skill": "Writing",
+    "translation": "يساهم",
+    "pronunciation": "kən-TRIB-yoot",
+    "example": "Everyone can contribute to the success of the project.",
+    "exampleAr": "يمكن للجميع المساهمة في نجاح المشروع."
+  },
+  {
+    "id": 124,
+    "word": "control",
+    "antonym": "freedom",
+    "skill": "Writing",
+    "translation": "يتحكم / سيطرة",
+    "pronunciation": "kən-TROHL",
+    "example": "The pilot maintained control of the aircraft during the storm.",
+    "exampleAr": "حافظ الطيار على السيطرة على الطائرة خلال العاصفة."
+  },
+  {
+    "id": 125,
+    "word": "converge",
+    "antonym": "diverge",
+    "skill": "Reading",
+    "translation": "يتقارب",
+    "pronunciation": "kən-VURJ",
+    "example": "The two research paths converge at the same conclusion.",
+    "exampleAr": "يلتقي مسارا البحثين عند نفس الاستنتاج."
+  },
+  {
+    "id": 126,
+    "word": "convince",
+    "antonym": "dissuade",
+    "skill": "Writing",
+    "translation": "يُقنع",
+    "pronunciation": "kən-VINS",
+    "example": "The data was compelling enough to convince the board of directors.",
+    "exampleAr": "كانت البيانات مقنعة بما يكفي لإقناع مجلس الإدارة."
+  },
+  {
+    "id": 127,
+    "word": "create",
+    "antonym": "destroy",
+    "skill": "Writing",
+    "translation": "يخلق / يبتكر",
+    "pronunciation": "kree-AYT",
+    "example": "The new scheme was designed to create thousands of jobs.",
+    "exampleAr": "صُمّمت الخطة الجديدة لخلق آلاف فرص العمل."
+  },
+  {
+    "id": 128,
+    "word": "credible",
+    "antonym": "dubious",
+    "skill": "Reading",
+    "translation": "موثوق / مصداقية",
+    "pronunciation": "KRED-i-bəl",
+    "example": "A credible source of information is essential for academic research.",
+    "exampleAr": "المصدر الموثوق للمعلومات ضروري للبحث الأكاديمي."
+  },
+  {
+    "id": 129,
+    "word": "crowded",
+    "antonym": "empty",
+    "skill": "Writing",
+    "translation": "مزدحم",
+    "pronunciation": "KROW-did",
+    "example": "The streets became crowded as the festival drew thousands of visitors.",
+    "exampleAr": "امتلأت الشوارع بالحشود مع قدوم آلاف الزوار إلى المهرجان."
+  },
+  {
+    "id": 130,
+    "word": "cultural",
+    "antonym": "universal",
+    "skill": "Writing",
+    "translation": "ثقافي",
+    "pronunciation": "KUL-chər-əl",
+    "example": "Cultural exchange programmes promote mutual understanding.",
+    "exampleAr": "تُعزّز برامج التبادل الثقافي التفاهم المتبادل."
+  },
+  {
+    "id": 131,
+    "word": "claim",
+    "antonym": "deny",
+    "skill": "Reading",
+    "translation": "يدّعي / يطالب",
+    "pronunciation": "KLAYM",
+    "example": "The politician's claim was not supported by any factual evidence.",
+    "exampleAr": "لم تكن ادعاءات السياسي مدعومة بأي دليل واقعي."
+  },
+  {
+    "id": 132,
+    "word": "conclude",
+    "antonym": "question",
+    "skill": "Reading",
+    "translation": "يستنتج / يختتم",
+    "pronunciation": "kən-KLOOD",
+    "example": "The report concluded that further research was necessary.",
+    "exampleAr": "خلص التقرير إلى أن مزيدًا من البحث كان ضروريًا."
+  },
+  {
+    "id": 133,
+    "word": "contradict",
+    "antonym": "support",
+    "skill": "Reading",
+    "translation": "يتناقض / يعارض",
+    "pronunciation": "kon-trə-DIKT",
+    "example": "New evidence seemed to contradict the original findings.",
+    "exampleAr": "بدت الأدلة الجديدة وكأنها تتناقض مع النتائج الأصلية."
+  },
+  {
+    "id": 134,
+    "word": "cheerful",
+    "antonym": "sad",
+    "skill": "Speaking",
+    "translation": "مبهج / مرح",
+    "pronunciation": "CHEER-fəl",
+    "example": "Her cheerful attitude made her popular with both students and staff.",
+    "exampleAr": "جعلها موقفها المرح محبوبة لدى الطلاب والموظفين."
+  },
+  {
+    "id": 135,
+    "word": "comfortable",
+    "antonym": "unsettling",
+    "skill": "Speaking",
+    "translation": "مريح",
+    "pronunciation": "KUM-fər-tə-bəl",
+    "example": "A comfortable working environment increases employee productivity.",
+    "exampleAr": "بيئة العمل المريحة تزيد من إنتاجية الموظفين."
+  },
+  {
+    "id": 136,
+    "word": "curious",
+    "antonym": "indifferent",
+    "skill": "Speaking",
+    "translation": "فضولي",
+    "pronunciation": "KYOOR-ee-əs",
+    "example": "Curious students tend to explore topics beyond the school curriculum.",
+    "exampleAr": "يميل الطلاب الفضوليون إلى استكشاف موضوعات تتجاوز المنهج المدرسي."
+  },
+  {
+    "id": 137,
+    "word": "cautious",
+    "antonym": "reckless",
+    "skill": "Writing",
+    "translation": "حذر / متحرز",
+    "pronunciation": "KAW-shəs",
+    "example": "Investors are cautious when markets are unpredictable.",
+    "exampleAr": "يكون المستثمرون حذرين عندما تكون الأسواق غير متوقعة."
+  },
+  {
+    "id": 138,
+    "word": "committed",
+    "antonym": "indifferent",
+    "skill": "Writing",
+    "translation": "ملتزم",
+    "pronunciation": "kə-MIT-id",
+    "example": "The organisation is deeply committed to environmental sustainability.",
+    "exampleAr": "الشركة ملتزمة التزامًا عميقًا بالاستدامة البيئية."
+  },
+  {
+    "id": 139,
+    "word": "concise",
+    "antonym": "verbose",
+    "skill": "Writing",
+    "translation": "موجز / مختصر",
+    "pronunciation": "kən-SYS",
+    "example": "IELTS examiners prefer concise and well-structured answers.",
+    "exampleAr": "يُفضّل ممتحنو IELTS الإجابات الموجزة والمنظّمة جيدًا."
+  },
+  {
+    "id": 140,
+    "word": "corrupt",
+    "antonym": "honest",
+    "skill": "Writing",
+    "translation": "فاسد",
+    "pronunciation": "kə-RUPT",
+    "example": "The corrupt official was arrested for accepting bribes.",
+    "exampleAr": "اعتُقل المسؤول الفاسد بتهمة قبول الرشاوى."
+  },
+  {
+    "id": 141,
+    "word": "clarify",
+    "antonym": "confuse",
+    "skill": "Writing",
+    "translation": "يوضّح",
+    "pronunciation": "KLEHR-ə-fy",
+    "example": "The teacher paused to clarify the complex concept for the students.",
+    "exampleAr": "توقّف المعلم لتوضيح المفهوم المعقد للطلاب."
+  },
+  {
+    "id": 142,
+    "word": "challenge",
+    "antonym": "opportunity",
+    "skill": "Writing",
+    "translation": "تحدٍ",
+    "pronunciation": "CHAL-inj",
+    "example": "Overcoming personal challenges builds character and resilience.",
+    "exampleAr": "التغلب على التحديات الشخصية يبني الشخصية والمرونة."
+  },
+  {
+    "id": 143,
+    "word": "compel",
+    "antonym": "discourage",
+    "skill": "Writing",
+    "translation": "يُجبر / يُلزم",
+    "pronunciation": "kəm-PEL",
+    "example": "The harsh economic climate compelled many people to seek new jobs.",
+    "exampleAr": "أجبر المناخ الاقتصادي القاسي كثيرين على البحث عن وظائف جديدة."
+  },
+  {
+    "id": 144,
+    "word": "compensate",
+    "antonym": "penalise",
+    "skill": "Writing",
+    "translation": "يُعوّض",
+    "pronunciation": "KOM-pən-sayt",
+    "example": "The company offered to compensate all affected customers.",
+    "exampleAr": "عرضت الشركة تعويض جميع العملاء المتضررين."
+  },
+  {
+    "id": 145,
+    "word": "consent",
+    "antonym": "refuse",
+    "skill": "Writing",
+    "translation": "يوافق / موافقة",
+    "pronunciation": "kən-SENT",
+    "example": "All participants must give informed consent before joining the study.",
+    "exampleAr": "يجب على جميع المشاركين إعطاء موافقتهم المستنيرة قبل الانضمام إلى الدراسة."
+  },
+  {
+    "id": 146,
+    "word": "cumulative",
+    "antonym": "isolated",
+    "skill": "Writing",
+    "translation": "تراكمي",
+    "pronunciation": "KYOO-myə-lə-tiv",
+    "example": "The cumulative effects of pollution on the ecosystem are alarming.",
+    "exampleAr": "الآثار التراكمية للتلوث على النظام البيئي مثيرة للقلق."
+  },
+  {
+    "id": 147,
+    "word": "contentious",
+    "antonym": "uncontested",
+    "skill": "Reading",
+    "translation": "مثير للخلاف",
+    "pronunciation": "kən-TEN-shəs",
+    "example": "The contentious debate about immigration remains unresolved.",
+    "exampleAr": "لا يزال النقاش الخلافي حول الهجرة دون حسم."
+  },
+  {
+    "id": 148,
+    "word": "candid",
+    "antonym": "evasive",
+    "skill": "Speaking",
+    "translation": "صريح / صادق",
+    "pronunciation": "KAN-did",
+    "example": "She gave a candid assessment of her team's weaknesses.",
+    "exampleAr": "قدّمت تقييمًا صريحًا لنقاط ضعف فريقها."
+  },
+  {
+    "id": 149,
+    "word": "compelling",
+    "antonym": "unconvincing",
+    "skill": "Speaking",
+    "translation": "مقنع / ملزم",
+    "pronunciation": "kəm-PEL-ing",
+    "example": "The lawyer presented a compelling argument in favour of the defendant.",
+    "exampleAr": "قدّم المحامي حجة مقنعة لصالح المتهم."
+  },
+  {
+    "id": 150,
+    "word": "cynical",
+    "antonym": "optimistic",
+    "skill": "Speaking",
+    "translation": "متشكك / ساخر",
+    "pronunciation": "SIN-i-kəl",
+    "example": "A cynical attitude can undermine trust in institutions.",
+    "exampleAr": "يمكن أن يُقوّض الموقف الساخر الثقة في المؤسسات."
+  },
+  {
+    "id": 151,
+    "word": "coherence",
+    "antonym": "fragmentation",
+    "skill": "Writing",
+    "translation": "تماسك / اتساق",
+    "pronunciation": "koh-HIIR-əns",
+    "example": "The report lacked coherence, making it difficult to follow.",
+    "exampleAr": "افتقر التقرير إلى التماسك، مما جعل متابعته أمرًا صعبًا."
+  },
+  {
+    "id": 152,
+    "word": "collaborate",
+    "antonym": "compete",
+    "skill": "Writing",
+    "translation": "يتعاون",
+    "pronunciation": "kə-LAB-ə-rayt",
+    "example": "Scientists from different countries collaborate on climate research.",
+    "exampleAr": "يتعاون علماء من دول مختلفة في أبحاث المناخ."
+  },
+  {
+    "id": 153,
+    "word": "convey",
+    "antonym": "conceal",
+    "skill": "Writing",
+    "translation": "ينقل / يوصل",
+    "pronunciation": "kən-VAY",
+    "example": "The writer uses metaphors to convey emotion effectively.",
+    "exampleAr": "يستخدم الكاتب الاستعارات لنقل العاطفة بفاعلية."
+  },
+  {
+    "id": 154,
+    "word": "cease",
+    "antonym": "persist",
+    "skill": "Writing",
+    "translation": "يتوقف / ينتهي",
+    "pronunciation": "SEES",
+    "example": "The two countries agreed to cease hostilities immediately.",
+    "exampleAr": "اتفق البلدان على وقف الأعمال العدائية فورًا."
+  },
+  {
+    "id": 155,
+    "word": "chronic",
+    "antonym": "temporary",
+    "skill": "Reading",
+    "translation": "مزمن",
+    "pronunciation": "KRON-ik",
+    "example": "Chronic stress can have severe long-term health consequences.",
+    "exampleAr": "يمكن أن يكون للتوتر المزمن عواقب صحية خطيرة على المدى البعيد."
+  },
+  {
+    "id": 156,
+    "word": "coerce",
+    "antonym": "persuade",
+    "skill": "Writing",
+    "translation": "يُكره / يُجبر",
+    "pronunciation": "koh-URS",
+    "example": "No one should coerce others into making decisions against their will.",
+    "exampleAr": "لا ينبغي لأحد إجبار الآخرين على اتخاذ قرارات تخالف إرادتهم."
+  },
+  {
+    "id": 157,
+    "word": "competent",
+    "antonym": "incapable",
+    "skill": "Writing",
+    "translation": "كفء / ماهر",
+    "pronunciation": "KOM-pi-tənt",
+    "example": "A competent manager can motivate the team even in difficult times.",
+    "exampleAr": "يمكن للمدير الكفء تحفيز الفريق حتى في الأوقات الصعبة."
+  },
+  {
+    "id": 158,
+    "word": "concede",
+    "antonym": "insist",
+    "skill": "Writing",
+    "translation": "يُقرّ / يتنازل",
+    "pronunciation": "kən-SEED",
+    "example": "After a long debate, he finally conceded that he was wrong.",
+    "exampleAr": "بعد نقاش طويل، أقرّ في النهاية بأنه كان مخطئًا."
+  },
+  {
+    "id": 159,
+    "word": "condemn",
+    "antonym": "praise",
+    "skill": "Writing",
+    "translation": "يُدين / يُندّد",
+    "pronunciation": "kən-DEM",
+    "example": "World leaders were quick to condemn the act of aggression.",
+    "exampleAr": "سارع قادة العالم إلى إدانة عمل العدوان."
+  },
+  {
+    "id": 160,
+    "word": "consolidate",
+    "antonym": "fragment",
+    "skill": "Writing",
+    "translation": "يُعزّز / يُوحّد",
+    "pronunciation": "kən-SOL-i-dayt",
+    "example": "The merger helped consolidate the two companies' market position.",
+    "exampleAr": "أسهم الاندماج في تعزيز مكانة الشركتين في السوق."
+  },
+  {
+    "id": 161,
+    "word": "catalyst",
+    "antonym": "inhibitor",
+    "skill": "Writing",
+    "translation": "محفّز / عامل",
+    "pronunciation": "KAT-ə-list",
+    "example": "The protest acted as a catalyst for major political reform.",
+    "exampleAr": "أسهمت الاحتجاجات كمحفّز للإصلاح السياسي الكبير."
+  },
+  {
+    "id": 162,
+    "word": "causation",
+    "antonym": "coincidence",
+    "skill": "Writing",
+    "translation": "سببية",
+    "pronunciation": "kaw-ZAY-shən",
+    "example": "Proving causation rather than correlation is a key goal in research.",
+    "exampleAr": "إثبات السببية بدلًا من الترابط هو هدف رئيسي في البحث العلمي."
+  },
+  {
+    "id": 163,
+    "word": "circulate",
+    "antonym": "contain",
+    "skill": "Writing",
+    "translation": "يتداول / يدور",
+    "pronunciation": "SUR-kyə-layt",
+    "example": "Rumours about the merger began to circulate in the media.",
+    "exampleAr": "بدأت الشائعات حول الاندماج تتداول في وسائل الإعلام."
+  },
+  {
+    "id": 164,
+    "word": "coexist",
+    "antonym": "conflict",
+    "skill": "Writing",
+    "translation": "يتعايش",
+    "pronunciation": "koh-ig-ZIST",
+    "example": "Different cultures can coexist peacefully within one society.",
+    "exampleAr": "يمكن للثقافات المختلفة أن تتعايش بسلام داخل مجتمع واحد."
+  },
+  {
+    "id": 165,
+    "word": "cohesion",
+    "antonym": "division",
+    "skill": "Writing",
+    "translation": "تماسك / وحدة",
+    "pronunciation": "koh-HEE-zhən",
+    "example": "Social cohesion is vital for a stable and functioning society.",
+    "exampleAr": "التماسك الاجتماعي ضروري لمجتمع مستقر وفعّال."
+  },
+  {
+    "id": 166,
+    "word": "coincide",
+    "antonym": "diverge",
+    "skill": "Reading",
+    "translation": "يتزامن / يتطابق",
+    "pronunciation": "koh-in-SYD",
+    "example": "The two events coincided, causing a major scheduling conflict.",
+    "exampleAr": "تزامن الحدثان، مما أدى إلى تعارض كبير في الجدول الزمني."
+  },
+  {
+    "id": 167,
+    "word": "commence",
+    "antonym": "terminate",
+    "skill": "Writing",
+    "translation": "يبدأ",
+    "pronunciation": "kə-MENS",
+    "example": "Construction is expected to commence at the start of next year.",
+    "exampleAr": "من المتوقع أن يبدأ البناء في مطلع العام القادم."
+  },
+  {
+    "id": 168,
+    "word": "complexity",
+    "antonym": "simplicity",
+    "skill": "Writing",
+    "translation": "تعقيد",
+    "pronunciation": "kəm-PLEK-si-tee",
+    "example": "The complexity of the situation required a team of specialists.",
+    "exampleAr": "اقتضى تعقيد الوضع فريقًا من المتخصصين."
+  },
+  {
+    "id": 169,
+    "word": "condone",
+    "antonym": "condemn",
+    "skill": "Writing",
+    "translation": "يغضّ الطرف / يتسامح",
+    "pronunciation": "kən-DOHN",
+    "example": "The school does not condone any form of bullying.",
+    "exampleAr": "لا تتسامح المدرسة مع أي شكل من أشكال التنمر."
+  },
+  {
+    "id": 170,
+    "word": "confine",
+    "antonym": "liberate",
+    "skill": "Writing",
+    "translation": "يقيد / يحبس",
+    "pronunciation": "kən-FYN",
+    "example": "The illness confined her to her bed for several weeks.",
+    "exampleAr": "حبستها المرض في سريرها لعدة أسابيع."
+  },
+  {
+    "id": 171,
+    "word": "definite",
+    "antonym": "uncertain",
+    "skill": "Writing",
+    "translation": "محدد / قاطع",
+    "pronunciation": "DEF-i-nit",
+    "example": "The manager gave a definite answer to end the uncertainty.",
+    "exampleAr": "أعطى المدير إجابة قاطعة لإنهاء حالة عدم اليقين."
+  },
+  {
+    "id": 172,
+    "word": "demand",
+    "antonym": "supply",
+    "skill": "Writing",
+    "translation": "طلب / يطالب",
+    "pronunciation": "di-MAND",
+    "example": "There is a growing demand for renewable energy solutions.",
+    "exampleAr": "هناك طلب متزايد على حلول الطاقة المتجددة."
+  },
+  {
+    "id": 173,
+    "word": "dense",
+    "antonym": "sparse",
+    "skill": "Reading",
+    "translation": "كثيف",
+    "pronunciation": "DENS",
+    "example": "The city centre has a dense population of over two million people.",
+    "exampleAr": "يضم مركز المدينة كثافة سكانية تزيد على مليوني شخص."
+  },
+  {
+    "id": 174,
+    "word": "dependent",
+    "antonym": "self-sufficient",
+    "skill": "Writing",
+    "translation": "معتمد / تابع",
+    "pronunciation": "di-PEN-dənt",
+    "example": "Many rural areas are still dependent on agriculture for income.",
+    "exampleAr": "لا تزال كثير من المناطق الريفية تعتمد على الزراعة كمصدر للدخل."
+  },
+  {
+    "id": 175,
+    "word": "develop",
+    "antonym": "decline",
+    "skill": "Writing",
+    "translation": "يطوّر",
+    "pronunciation": "di-VEL-əp",
+    "example": "The company plans to develop a new range of eco-friendly products.",
+    "exampleAr": "تخطط الشركة لتطوير مجموعة جديدة من المنتجات الصديقة للبيئة."
+  },
+  {
+    "id": 176,
+    "word": "difficult",
+    "antonym": "easy",
+    "skill": "All Skills",
+    "translation": "صعب",
+    "pronunciation": "DIF-i-kəlt",
+    "example": "It can be difficult to balance work and personal life effectively.",
+    "exampleAr": "قد يكون من الصعب تحقيق التوازن بين الحياة المهنية والشخصية بفاعلية."
+  },
+  {
+    "id": 177,
+    "word": "diverse",
+    "antonym": "uniform",
+    "skill": "Writing",
+    "translation": "متنوع",
+    "pronunciation": "di-VURS",
+    "example": "A diverse workforce brings a wider range of perspectives to a company.",
+    "exampleAr": "يجلب فريق العمل المتنوع طيفًا أوسع من وجهات النظر للشركة."
+  },
+  {
+    "id": 178,
+    "word": "dominant",
+    "antonym": "subordinate",
+    "skill": "Writing",
+    "translation": "مهيمن / سائد",
+    "pronunciation": "DOM-i-nənt",
+    "example": "English has become the dominant language of international business.",
+    "exampleAr": "أصبحت اللغة الإنجليزية اللغة السائدة في الأعمال الدولية."
+  },
+  {
+    "id": 179,
+    "word": "domestic",
+    "antonym": "international",
+    "skill": "Writing",
+    "translation": "محلي / داخلي",
+    "pronunciation": "də-MES-tik",
+    "example": "The policy aims to boost domestic production to reduce imports.",
+    "exampleAr": "تهدف السياسة إلى تعزيز الإنتاج المحلي لتقليل الواردات."
+  },
+  {
+    "id": 180,
+    "word": "dynamic",
+    "antonym": "static",
+    "skill": "Writing",
+    "translation": "ديناميكي / نشط",
+    "pronunciation": "dy-NAM-ik",
+    "example": "The company operates in a dynamic and constantly changing market.",
+    "exampleAr": "تعمل الشركة في سوق ديناميكية ومتغيرة باستمرار."
+  },
+  {
+    "id": 181,
+    "word": "decline",
+    "antonym": "improvement",
+    "skill": "Writing",
+    "translation": "يتراجع / رفض",
+    "pronunciation": "di-KLYNE",
+    "example": "The number of wild species continues to decline at an alarming rate.",
+    "exampleAr": "يستمر عدد الأنواع البرية في التراجع بمعدل مقلق."
+  },
+  {
+    "id": 182,
+    "word": "defend",
+    "antonym": "attack",
+    "skill": "Writing",
+    "translation": "يدافع عن",
+    "pronunciation": "di-FEND",
+    "example": "The lawyer had to defend her client against serious allegations.",
+    "exampleAr": "كان على المحامية الدفاع عن موكّلها ضد اتهامات خطيرة."
+  },
+  {
+    "id": 183,
+    "word": "delay",
+    "antonym": "accelerate",
+    "skill": "Writing",
+    "translation": "يؤخر / تأخير",
+    "pronunciation": "di-LAY",
+    "example": "The bad weather caused a significant delay to the construction schedule.",
+    "exampleAr": "تسبّب الطقس السيئ في تأخير كبير لجدول البناء."
+  },
+  {
+    "id": 184,
+    "word": "democratic",
+    "antonym": "authoritarian",
+    "skill": "Writing",
+    "translation": "ديمقراطي",
+    "pronunciation": "dem-ə-KRAT-ik",
+    "example": "A democratic society gives citizens the right to choose their leaders.",
+    "exampleAr": "المجتمع الديمقراطي يمنح المواطنين حق اختيار قادتهم."
+  },
+  {
+    "id": 185,
+    "word": "deplete",
+    "antonym": "replenish",
+    "skill": "Writing",
+    "translation": "يستنفد",
+    "pronunciation": "di-PLEET",
+    "example": "Overfishing threatens to deplete ocean fish stocks permanently.",
+    "exampleAr": "يهدد الصيد الجائر باستنفاد مخزون الأسماك في المحيطات بشكل دائم."
+  },
+  {
+    "id": 186,
+    "word": "deserve",
+    "antonym": "forfeit",
+    "skill": "Writing",
+    "translation": "يستحق",
+    "pronunciation": "di-ZURV",
+    "example": "Every child deserves access to quality education.",
+    "exampleAr": "يستحق كل طفل الوصول إلى تعليم جيد."
+  },
+  {
+    "id": 187,
+    "word": "deteriorate",
+    "antonym": "improve",
+    "skill": "Writing",
+    "translation": "يتدهور",
+    "pronunciation": "di-TIIR-ee-ə-rayt",
+    "example": "Living conditions began to deteriorate after the conflict started.",
+    "exampleAr": "بدأت الأوضاع المعيشية في التدهور بعد اندلاع النزاع."
+  },
+  {
+    "id": 188,
+    "word": "devote",
+    "antonym": "neglect",
+    "skill": "Writing",
+    "translation": "يكرّس / يُخصّص",
+    "pronunciation": "di-VOHT",
+    "example": "She decided to devote her career to helping underprivileged communities.",
+    "exampleAr": "قرّرت تكريس مسيرتها المهنية لمساعدة المجتمعات المحرومة."
+  },
+  {
+    "id": 189,
+    "word": "diminish",
+    "antonym": "increase",
+    "skill": "Writing",
+    "translation": "يتضاءل / يُقلّص",
+    "pronunciation": "di-MIN-ish",
+    "example": "The government's credibility began to diminish after the scandal.",
+    "exampleAr": "بدأت مصداقية الحكومة تتضاءل بعد الفضيحة."
+  },
+  {
+    "id": 190,
+    "word": "discourage",
+    "antonym": "encourage",
+    "skill": "Writing",
+    "translation": "يُحبط / يثني عن",
+    "pronunciation": "dis-KUR-ij",
+    "example": "High costs can discourage students from pursuing higher education.",
+    "exampleAr": "يمكن أن تُحبط التكاليف المرتفعة الطلاب عن متابعة التعليم العالي."
+  },
+  {
+    "id": 191,
+    "word": "disrupt",
+    "antonym": "stabilise",
+    "skill": "Writing",
+    "translation": "يُعطّل / يُخلّ",
+    "pronunciation": "dis-RUPT",
+    "example": "The storm threatened to disrupt flight operations at the airport.",
+    "exampleAr": "هدد العاصفة بتعطيل عمليات الطيران في المطار."
+  },
+  {
+    "id": 192,
+    "word": "distribute",
+    "antonym": "collect",
+    "skill": "Writing",
+    "translation": "يوزّع",
+    "pronunciation": "dis-TRIB-yoot",
+    "example": "The charity worked to distribute food and medicine across the region.",
+    "exampleAr": "عملت الجمعية الخيرية على توزيع الغذاء والدواء في جميع أنحاء المنطقة."
+  },
+  {
+    "id": 193,
+    "word": "doubt",
+    "antonym": "certainty",
+    "skill": "Writing",
+    "translation": "يشك / شك",
+    "pronunciation": "DOWT",
+    "example": "There is growing doubt about the accuracy of the official figures.",
+    "exampleAr": "تتزايد الشكوك حول دقة الأرقام الرسمية."
+  },
+  {
+    "id": 194,
+    "word": "drive",
+    "antonym": "discourage",
+    "skill": "Writing",
+    "translation": "دافع / يدفع",
+    "pronunciation": "DRYV",
+    "example": "A strong drive to succeed motivated her to work extra hours.",
+    "exampleAr": "دفعها الدافع القوي للنجاح إلى العمل ساعات إضافية."
+  },
+  {
+    "id": 195,
+    "word": "deduce",
+    "antonym": "assume",
+    "skill": "Reading",
+    "translation": "يستنتج / يستخلص",
+    "pronunciation": "di-DYOOS",
+    "example": "From the evidence presented, the investigator could deduce the motive.",
+    "exampleAr": "من الأدلة المقدّمة، تمكّن المحقق من استنتاج الدافع."
+  },
+  {
+    "id": 196,
+    "word": "disputable",
+    "antonym": "certain",
+    "skill": "Reading",
+    "translation": "قابل للجدل",
+    "pronunciation": "di-SPYOO-tə-bəl",
+    "example": "The findings of the study are disputable and require further investigation.",
+    "exampleAr": "نتائج الدراسة قابلة للجدل وتتطلب مزيدًا من التحقيق."
+  },
+  {
+    "id": 197,
+    "word": "determined",
+    "antonym": "indecisive",
+    "skill": "Speaking",
+    "translation": "عازم / مصمّم",
+    "pronunciation": "di-TUR-mind",
+    "example": "She remained determined to finish the marathon despite the pain.",
+    "exampleAr": "ظلت عازمة على إكمال الماراثون رغم الألم."
+  },
+  {
+    "id": 198,
+    "word": "disappointed",
+    "antonym": "pleased",
+    "skill": "Speaking",
+    "translation": "خائب الأمل",
+    "pronunciation": "dis-ə-POYN-tid",
+    "example": "He was deeply disappointed when he failed to get the promotion.",
+    "exampleAr": "شعر بخيبة أمل عميقة حين فشل في الحصول على الترقية."
+  },
+  {
+    "id": 199,
+    "word": "decisive",
+    "antonym": "hesitant",
+    "skill": "Writing",
+    "translation": "حاسم / قاطع",
+    "pronunciation": "di-SY-siv",
+    "example": "A good leader must be decisive, especially in a crisis.",
+    "exampleAr": "يجب أن يكون القائد الجيد حاسمًا، خاصة في وقت الأزمات."
+  },
+  {
+    "id": 200,
+    "word": "dedicated",
+    "antonym": "uncommitted",
+    "skill": "Writing",
+    "translation": "مخلص / متفانٍ",
+    "pronunciation": "DED-i-kay-tid",
+    "example": "The dedicated doctor worked long hours to help her patients.",
+    "exampleAr": "عملت الطبيبة المتفانية ساعات طويلة لمساعدة مرضاها."
+  },
+  {
+    "id": 201,
+    "word": "desirable",
+    "antonym": "unappealing",
+    "skill": "Writing",
+    "translation": "مرغوب / مستحسن",
+    "pronunciation": "di-ZY-rə-bəl",
+    "example": "Work experience is a highly desirable quality in job applicants.",
+    "exampleAr": "تُعدّ الخبرة العملية ميزة مرغوبة للغاية في المتقدمين للوظائف."
+  },
+  {
+    "id": 202,
+    "word": "detailed",
+    "antonym": "vague",
+    "skill": "Writing",
+    "translation": "مفصّل / تفصيلي",
+    "pronunciation": "DEE-tayld",
+    "example": "The report provided a detailed analysis of current market trends.",
+    "exampleAr": "قدّم التقرير تحليلًا تفصيليًا لاتجاهات السوق الحالية."
+  },
+  {
+    "id": 203,
+    "word": "derive",
+    "antonym": "discard",
+    "skill": "Writing",
+    "translation": "يشتق / يستمد",
+    "pronunciation": "di-RYV",
+    "example": "Many English words derive their origins from Latin or Greek.",
+    "exampleAr": "تشتق كثير من الكلمات الإنجليزية أصولها من اللاتينية أو اليونانية."
+  },
+  {
+    "id": 204,
+    "word": "deviate",
+    "antonym": "conform",
+    "skill": "Writing",
+    "translation": "ينحرف / يخرج عن",
+    "pronunciation": "DEE-vee-ayt",
+    "example": "Scientists who deviate from established methods must provide strong justification.",
+    "exampleAr": "يجب على العلماء الذين يخرجون عن الأساليب الراسخة تقديم مبرر قوي."
+  },
+  {
+    "id": 205,
+    "word": "distort",
+    "antonym": "clarify",
+    "skill": "Writing",
+    "translation": "يُشوّه / يُحرّف",
+    "pronunciation": "dis-TORT",
+    "example": "The media was accused of trying to distort the truth.",
+    "exampleAr": "اتُّهمت وسائل الإعلام بمحاولة تشويه الحقيقة."
+  },
+  {
+    "id": 206,
+    "word": "disproportionate",
+    "antonym": "balanced",
+    "skill": "Writing",
+    "translation": "غير متناسب",
+    "pronunciation": "dis-prə-POR-shə-nit",
+    "example": "The sentence was disproportionate to the seriousness of the crime.",
+    "exampleAr": "كانت العقوبة غير متناسبة مع خطورة الجريمة."
+  },
+  {
+    "id": 207,
+    "word": "daunting",
+    "antonym": "manageable",
+    "skill": "Speaking",
+    "translation": "مرهب / مُخيف",
+    "pronunciation": "DAWN-ting",
+    "example": "Giving a speech in front of thousands can be a daunting experience.",
+    "exampleAr": "قد يكون إلقاء خطاب أمام الآلاف تجربة مُرهِبة."
+  },
+  {
+    "id": 208,
+    "word": "deceptive",
+    "antonym": "transparent",
+    "skill": "Writing",
+    "translation": "مُضلِّل / خادع",
+    "pronunciation": "di-SEP-tiv",
+    "example": "The advertisement was found to be deceptive and misleading.",
+    "exampleAr": "تبيّن أن الإعلان كان مُضلِّلًا وخادعًا."
+  },
+  {
+    "id": 209,
+    "word": "deficient",
+    "antonym": "sufficient",
+    "skill": "Writing",
+    "translation": "ناقص / قاصر",
+    "pronunciation": "di-FISH-ənt",
+    "example": "The report was deficient in supporting evidence.",
+    "exampleAr": "كان التقرير ناقصًا في الأدلة الداعمة."
+  },
+  {
+    "id": 210,
+    "word": "durable",
+    "antonym": "fragile",
+    "skill": "Writing",
+    "translation": "متين / دائم",
+    "pronunciation": "DYOOR-ə-bəl",
+    "example": "The company produces durable goods designed to last for decades.",
+    "exampleAr": "تُنتج الشركة سلعًا متينة مُصمَّمة لتدوم لعقود."
+  },
+  {
+    "id": 211,
+    "word": "dwindle",
+    "antonym": "increase",
+    "skill": "Writing",
+    "translation": "يتضاءل / يتناقص",
+    "pronunciation": "DWIN-dəl",
+    "example": "The population of the small town began to dwindle over the years.",
+    "exampleAr": "بدأ عدد سكان المدينة الصغيرة يتناقص عبر السنين."
+  },
+  {
+    "id": 212,
+    "word": "deliberate",
+    "antonym": "spontaneous",
+    "skill": "Writing",
+    "translation": "متعمّد / مقصود",
+    "pronunciation": "di-LIB-ər-ət",
+    "example": "The decision to delay the announcement was entirely deliberate.",
+    "exampleAr": "كان قرار تأخير الإعلان متعمّدًا تمامًا."
+  },
+  {
+    "id": 213,
+    "word": "deprive",
+    "antonym": "grant",
+    "skill": "Writing",
+    "translation": "يحرم",
+    "pronunciation": "di-PRYV",
+    "example": "War can deprive people of their basic rights and needs.",
+    "exampleAr": "يمكن للحرب أن تحرم الناس من حقوقهم واحتياجاتهم الأساسية."
+  },
+  {
+    "id": 214,
+    "word": "dismantle",
+    "antonym": "construct",
+    "skill": "Writing",
+    "translation": "يفكّك / يهدم",
+    "pronunciation": "dis-MAN-təl",
+    "example": "The new government promised to dismantle the old bureaucratic system.",
+    "exampleAr": "وعدت الحكومة الجديدة بتفكيك النظام البيروقراطي القديم."
+  },
+  {
+    "id": 215,
+    "word": "dormant",
+    "antonym": "active",
+    "skill": "Writing",
+    "translation": "خامد / كامن",
+    "pronunciation": "DOR-mənt",
+    "example": "The volcano had been dormant for over two centuries.",
+    "exampleAr": "كان البركان خامدًا لأكثر من قرنين من الزمن."
+  },
+  {
+    "id": 216,
+    "word": "effective",
+    "antonym": "futile",
+    "skill": "Writing",
+    "translation": "فعّال / ناجع",
+    "pronunciation": "i-FEK-tiv",
+    "example": "The new treatment proved to be effective in reducing symptoms.",
+    "exampleAr": "أثبت العلاج الجديد فاعليته في تقليل الأعراض."
+  },
+  {
+    "id": 217,
+    "word": "efficient",
+    "antonym": "wasteful",
+    "skill": "Writing",
+    "translation": "كفء / فعّال",
+    "pronunciation": "i-FISH-ənt",
+    "example": "An efficient public transport system reduces traffic congestion.",
+    "exampleAr": "نظام النقل العام الكفء يُقلّل من الاختناقات المرورية."
+  },
+  {
+    "id": 218,
+    "word": "equal",
+    "antonym": "inequitable",
+    "skill": "Writing",
+    "translation": "متساوٍ / عادل",
+    "pronunciation": "EE-kwəl",
+    "example": "All citizens should have equal access to healthcare.",
+    "exampleAr": "يجب أن يتمتع جميع المواطنين بإمكانية وصول متساوية إلى الرعاية الصحية."
+  },
+  {
+    "id": 219,
+    "word": "essential",
+    "antonym": "unnecessary",
+    "skill": "Writing",
+    "translation": "أساسي / ضروري",
+    "pronunciation": "i-SEN-shəl",
+    "example": "Clean water is essential for human survival.",
+    "exampleAr": "المياه النظيفة ضرورية لبقاء الإنسان."
+  },
+  {
+    "id": 220,
+    "word": "ethical",
+    "antonym": "corrupt",
+    "skill": "Writing",
+    "translation": "أخلاقي",
+    "pronunciation": "ETH-i-kəl",
+    "example": "Scientists must ensure their research methods are fully ethical.",
+    "exampleAr": "يجب على العلماء التأكد من أن مناهج بحثهم أخلاقية تمامًا."
+  },
+  {
+    "id": 221,
+    "word": "evident",
+    "antonym": "unclear",
+    "skill": "Writing",
+    "translation": "واضح / جليّ",
+    "pronunciation": "EV-i-dənt",
+    "example": "It was evident that the plan had several major flaws.",
+    "exampleAr": "كان من الواضح أن الخطة كان بها عدة عيوب كبيرة."
+  },
+  {
+    "id": 222,
+    "word": "excessive",
+    "antonym": "moderate",
+    "skill": "Writing",
+    "translation": "مفرط / زائد عن الحد",
+    "pronunciation": "ik-SES-iv",
+    "example": "Excessive use of social media can negatively affect mental health.",
+    "exampleAr": "الاستخدام المفرط لوسائل التواصل الاجتماعي قد يؤثر سلبًا على الصحة النفسية."
+  },
+  {
+    "id": 223,
+    "word": "explicit",
+    "antonym": "implicit",
+    "skill": "Reading",
+    "translation": "صريح / واضح",
+    "pronunciation": "ik-SPLIS-it",
+    "example": "The contract included explicit terms and conditions.",
+    "exampleAr": "تضمّن العقد شروطًا صريحة وواضحة."
+  },
+  {
+    "id": 224,
+    "word": "export",
+    "antonym": "import",
+    "skill": "Writing",
+    "translation": "يصدّر / صادرات",
+    "pronunciation": "EK-sport",
+    "example": "The country relies heavily on oil exports for government revenue.",
+    "exampleAr": "تعتمد الدولة بشكل كبير على صادرات النفط لتحقيق إيرادات الحكومة."
+  },
+  {
+    "id": 225,
+    "word": "educated",
+    "antonym": "uninformed",
+    "skill": "Writing",
+    "translation": "متعلم / مثقف",
+    "pronunciation": "EJ-oo-kay-tid",
+    "example": "An educated workforce is a key driver of economic growth.",
+    "exampleAr": "القوى العاملة المتعلمة محرك رئيسي للنمو الاقتصادي."
+  },
+  {
+    "id": 226,
+    "word": "emphasise",
+    "antonym": "downplay",
+    "skill": "Writing",
+    "translation": "يُشدّد / يُبرز",
+    "pronunciation": "EM-fə-syz",
+    "example": "The report emphasised the urgent need for policy reform.",
+    "exampleAr": "أكّد التقرير الحاجة الملحة للإصلاح السياسي."
+  },
+  {
+    "id": 227,
+    "word": "enable",
+    "antonym": "prevent",
+    "skill": "Writing",
+    "translation": "يُمكّن / يُتيح",
+    "pronunciation": "en-AY-bəl",
+    "example": "Technology can enable people to access education from anywhere.",
+    "exampleAr": "يمكن للتكنولوجيا أن تُتيح للناس الوصول إلى التعليم من أي مكان."
+  },
+  {
+    "id": 228,
+    "word": "enforce",
+    "antonym": "relax",
+    "skill": "Writing",
+    "translation": "يُطبّق / يُنفّذ",
+    "pronunciation": "en-FORS",
+    "example": "The authorities must enforce traffic laws more strictly.",
+    "exampleAr": "يجب على السلطات تطبيق قوانين المرور بصرامة أكبر."
+  },
+  {
+    "id": 229,
+    "word": "enhance",
+    "antonym": "diminish",
+    "skill": "Writing",
+    "translation": "يُعزّز / يُحسّن",
+    "pronunciation": "en-HANS",
+    "example": "The training programme was designed to enhance employees' digital skills.",
+    "exampleAr": "صُمّم برنامج التدريب لتعزيز المهارات الرقمية للموظفين."
+  },
+  {
+    "id": 230,
+    "word": "enormous",
+    "antonym": "tiny",
+    "skill": "Writing",
+    "translation": "ضخم / هائل",
+    "pronunciation": "i-NOR-məs",
+    "example": "The company made an enormous profit in its first year of operation.",
+    "exampleAr": "حققت الشركة ربحًا هائلًا في سنة تشغيلها الأولى."
+  },
+  {
+    "id": 231,
+    "word": "ensure",
+    "antonym": "risk",
+    "skill": "Writing",
+    "translation": "يكفل / يضمن",
+    "pronunciation": "en-SHOOR",
+    "example": "Regular inspections help ensure the safety of food products.",
+    "exampleAr": "تساعد عمليات التفتيش المنتظمة على ضمان سلامة المنتجات الغذائية."
+  },
+  {
+    "id": 232,
+    "word": "established",
+    "antonym": "new",
+    "skill": "Writing",
+    "translation": "راسخ / مستقر",
+    "pronunciation": "i-STAB-lisht",
+    "example": "The company is an established leader in the pharmaceutical industry.",
+    "exampleAr": "الشركة رائد راسخ في صناعة الأدوية."
+  },
+  {
+    "id": 233,
+    "word": "exceed",
+    "antonym": "fall short",
+    "skill": "Writing",
+    "translation": "يتجاوز / يتخطى",
+    "pronunciation": "ik-SEED",
+    "example": "The actual cost of the project exceeded the original budget by 30%.",
+    "exampleAr": "تجاوزت التكلفة الفعلية للمشروع الميزانية الأصلية بنسبة 30٪."
+  },
+  {
+    "id": 234,
+    "word": "expensive",
+    "antonym": "cheap",
+    "skill": "All Skills",
+    "translation": "مكلف / غالٍ",
+    "pronunciation": "ik-SPEN-siv",
+    "example": "Housing in major cities has become increasingly expensive.",
+    "exampleAr": "أصبحت تكاليف السكن في المدن الكبرى مرتفعة بشكل متزايد."
+  },
+  {
+    "id": 235,
+    "word": "exploit",
+    "antonym": "protect",
+    "skill": "Writing",
+    "translation": "يستغل",
+    "pronunciation": "ik-SPLOYT",
+    "example": "Corporations should not be allowed to exploit natural resources without limits.",
+    "exampleAr": "لا ينبغي السماح للشركات باستغلال الموارد الطبيعية دون قيود."
+  },
+  {
+    "id": 236,
+    "word": "expose",
+    "antonym": "conceal",
+    "skill": "Writing",
+    "translation": "يكشف / يفضح",
+    "pronunciation": "ik-SPOHZ",
+    "example": "The journalist worked to expose the corruption within the organisation.",
+    "exampleAr": "عمل الصحفي على كشف الفساد داخل المنظمة."
+  },
+  {
+    "id": 237,
+    "word": "extend",
+    "antonym": "shorten",
+    "skill": "Writing",
+    "translation": "يمتد / يوسّع",
+    "pronunciation": "ik-STEND",
+    "example": "The government agreed to extend the deadline by two weeks.",
+    "exampleAr": "وافقت الحكومة على تمديد الموعد النهائي بأسبوعين."
+  },
+  {
+    "id": 238,
+    "word": "extreme",
+    "antonym": "moderate",
+    "skill": "Writing",
+    "translation": "متطرف / شديد",
+    "pronunciation": "ik-STREEM",
+    "example": "The charity works to prevent people from adopting extreme views.",
+    "exampleAr": "تعمل الجمعية الخيرية على منع الناس من اعتناق آراء متطرفة."
+  },
+  {
+    "id": 239,
+    "word": "empirical",
+    "antonym": "theoretical",
+    "skill": "Reading",
+    "translation": "تجريبي",
+    "pronunciation": "em-PIR-i-kəl",
+    "example": "The theory was supported by empirical evidence from multiple studies.",
+    "exampleAr": "دعمت النظرية أدلة تجريبية من دراسات متعددة."
+  },
+  {
+    "id": 240,
+    "word": "enthusiastic",
+    "antonym": "apathetic",
+    "skill": "Speaking",
+    "translation": "متحمس",
+    "pronunciation": "en-thyoo-zee-AS-tik",
+    "example": "The enthusiastic response to the new product exceeded all expectations.",
+    "exampleAr": "تجاوز الرد المتحمس على المنتج الجديد كل التوقعات."
+  },
+  {
+    "id": 241,
+    "word": "exciting",
+    "antonym": "dull",
+    "skill": "Speaking",
+    "translation": "مثير / رائع",
+    "pronunciation": "ik-SY-ting",
+    "example": "The discovery of a new species was an exciting moment for the research team.",
+    "exampleAr": "كان اكتشاف أنواع جديدة لحظة مثيرة لفريق البحث."
+  },
+  {
+    "id": 242,
+    "word": "elaborate",
+    "antonym": "simple",
+    "skill": "Writing",
+    "translation": "مفصّل / يوضّح",
+    "pronunciation": "i-LAB-ə-rət",
+    "example": "The scientist was asked to elaborate on her initial findings.",
+    "exampleAr": "طُلب من العالمة التوضيح بشأن نتائجها الأولية."
+  },
+  {
+    "id": 243,
+    "word": "emerge",
+    "antonym": "disappear",
+    "skill": "Writing",
+    "translation": "يظهر / يبرز",
+    "pronunciation": "i-MURJ",
+    "example": "New evidence began to emerge about the origins of the disease.",
+    "exampleAr": "بدأت أدلة جديدة تظهر حول أصل المرض."
+  },
+  {
+    "id": 244,
+    "word": "evaluate",
+    "antonym": "overlook",
+    "skill": "Writing",
+    "translation": "يُقيّم",
+    "pronunciation": "i-VAL-yoo-ayt",
+    "example": "Teachers must regularly evaluate student progress and performance.",
+    "exampleAr": "يجب على المعلمين تقييم تقدم الطلاب وأدائهم بانتظام."
+  },
+  {
+    "id": 245,
+    "word": "evolve",
+    "antonym": "stagnate",
+    "skill": "Writing",
+    "translation": "يتطور",
+    "pronunciation": "i-VOLV",
+    "example": "Business strategies must evolve to keep pace with changing markets.",
+    "exampleAr": "يجب أن تتطور استراتيجيات الأعمال لمواكبة الأسواق المتغيرة."
+  },
+  {
+    "id": 246,
+    "word": "exacerbate",
+    "antonym": "alleviate",
+    "skill": "Writing",
+    "translation": "يُفاقم / يزيد الأمر سوءاً",
+    "pronunciation": "ig-ZAS-ər-bayt",
+    "example": "Lack of sleep can exacerbate both physical and mental health problems.",
+    "exampleAr": "يمكن أن يُفاقم نقص النوم مشكلات الصحة الجسدية والعقلية على حد سواء."
+  },
+  {
+    "id": 247,
+    "word": "eloquent",
+    "antonym": "inarticulate",
+    "skill": "Speaking",
+    "translation": "بليغ / فصيح",
+    "pronunciation": "EL-ə-kwənt",
+    "example": "The eloquent speech moved the audience to tears.",
+    "exampleAr": "حرّك الخطاب البليغ الجمهور حتى الدموع."
+  },
+  {
+    "id": 248,
+    "word": "empathetic",
+    "antonym": "indifferent",
+    "skill": "Speaking",
+    "translation": "متعاطف",
+    "pronunciation": "em-pə-THET-ik",
+    "example": "An empathetic teacher understands the challenges faced by students.",
+    "exampleAr": "يفهم المعلم المتعاطف التحديات التي يواجهها الطلاب."
+  },
+  {
+    "id": 249,
+    "word": "escalate",
+    "antonym": "de-escalate",
+    "skill": "Writing",
+    "translation": "يتصاعد",
+    "pronunciation": "ES-kə-layt",
+    "example": "Tensions between the two sides began to escalate rapidly.",
+    "exampleAr": "بدأ التوتر بين الجانبين يتصاعد بسرعة."
+  },
+  {
+    "id": 250,
+    "word": "endure",
+    "antonym": "succumb",
+    "skill": "Writing",
+    "translation": "يتحمل / يصمد",
+    "pronunciation": "en-DYOOR",
+    "example": "The community had to endure months of hardship after the flood.",
+    "exampleAr": "اضطر المجتمع إلى تحمّل شهور من الشدائد بعد الفيضان."
+  },
+  {
+    "id": 251,
+    "word": "erode",
+    "antonym": "strengthen",
+    "skill": "Writing",
+    "translation": "يتآكل / ينحسر",
+    "pronunciation": "i-ROHD",
+    "example": "Public trust in institutions can erode if corruption is left unchecked.",
+    "exampleAr": "يمكن أن تتآكل ثقة الجمهور في المؤسسات إذا تُرك الفساد دون رادع."
+  },
+  {
+    "id": 252,
+    "word": "exclusion",
+    "antonym": "inclusion",
+    "skill": "Writing",
+    "translation": "استبعاد / إقصاء",
+    "pronunciation": "ik-SKLOO-zhən",
+    "example": "Social exclusion is a major barrier to achieving equality.",
+    "exampleAr": "الإقصاء الاجتماعي عقبة كبرى أمام تحقيق المساواة."
+  },
+  {
+    "id": 253,
+    "word": "fair",
+    "antonym": "biased",
+    "skill": "Writing",
+    "translation": "عادل",
+    "pronunciation": "FAIR",
+    "example": "The judge was known for being fair and impartial in all cases.",
+    "exampleAr": "كان القاضي معروفًا بعدالته وحياده في جميع القضايا."
+  },
+  {
+    "id": 254,
+    "word": "famous",
+    "antonym": "unknown",
+    "skill": "Writing",
+    "translation": "مشهور",
+    "pronunciation": "FAY-məs",
+    "example": "The city became famous for its vibrant arts and music scene.",
+    "exampleAr": "اشتهرت المدينة بمشهدها الفني والموسيقي النابض بالحياة."
+  },
+  {
+    "id": 255,
+    "word": "flexible",
+    "antonym": "rigid",
+    "skill": "Writing",
+    "translation": "مرن",
+    "pronunciation": "FLEK-si-bəl",
+    "example": "A flexible approach allows organisations to adapt to change quickly.",
+    "exampleAr": "النهج المرن يُمكّن المنظمات من التكيف مع التغيير بسرعة."
+  },
+  {
+    "id": 256,
+    "word": "formal",
+    "antonym": "casual",
+    "skill": "Speaking",
+    "translation": "رسمي",
+    "pronunciation": "FOR-məl",
+    "example": "A formal letter of application is required for all candidates.",
+    "exampleAr": "خطاب طلب رسمي مطلوب من جميع المرشحين."
+  },
+  {
+    "id": 257,
+    "word": "frequent",
+    "antonym": "rare",
+    "skill": "Writing",
+    "translation": "متكرر",
+    "pronunciation": "FREE-kwənt",
+    "example": "Frequent disruptions to the power supply frustrated local businesses.",
+    "exampleAr": "أزعجت الانقطاعات المتكررة للكهرباء الشركات المحلية."
+  },
+  {
+    "id": 258,
+    "word": "future",
+    "antonym": "past",
+    "skill": "Writing",
+    "translation": "مستقبل",
+    "pronunciation": "FYOO-chər",
+    "example": "Investing in education shapes the future of any nation.",
+    "exampleAr": "الاستثمار في التعليم يُشكّل مستقبل أي أمة."
+  },
+  {
+    "id": 259,
+    "word": "fail",
+    "antonym": "succeed",
+    "skill": "All Skills",
+    "translation": "يفشل",
+    "pronunciation": "FAYL",
+    "example": "The project was likely to fail without adequate resources.",
+    "exampleAr": "كان من المرجح أن يفشل المشروع دون موارد كافية."
+  },
+  {
+    "id": 260,
+    "word": "familiar",
+    "antonym": "alien",
+    "skill": "Speaking",
+    "translation": "مألوف / معروف",
+    "pronunciation": "fə-MIL-yər",
+    "example": "Students find it easier to learn when topics are familiar.",
+    "exampleAr": "يجد الطلاب التعلم أسهل عندما تكون الموضوعات مألوفة."
+  },
+  {
+    "id": 261,
+    "word": "finite",
+    "antonym": "inexhaustible",
+    "skill": "Writing",
+    "translation": "محدود / منتهٍ",
+    "pronunciation": "FY-nyt",
+    "example": "Fossil fuels are a finite resource that will eventually run out.",
+    "exampleAr": "الوقود الأحفوري مورد محدود سينفد في نهاية المطاف."
+  },
+  {
+    "id": 262,
+    "word": "focus",
+    "antonym": "distract",
+    "skill": "Writing",
+    "translation": "يُركّز",
+    "pronunciation": "FOH-kəs",
+    "example": "Students need to focus on their core subjects during exam preparation.",
+    "exampleAr": "يحتاج الطلاب إلى التركيز على المواد الأساسية أثناء التحضير للامتحانات."
+  },
+  {
+    "id": 263,
+    "word": "force",
+    "antonym": "persuade",
+    "skill": "Writing",
+    "translation": "قوة / يُجبر",
+    "pronunciation": "FORS",
+    "example": "The law should not force people to act against their beliefs.",
+    "exampleAr": "لا ينبغي للقانون أن يُجبر الناس على التصرف ضد معتقداتهم."
+  },
+  {
+    "id": 264,
+    "word": "fundamental",
+    "antonym": "trivial",
+    "skill": "Writing",
+    "translation": "أساسي / جوهري",
+    "pronunciation": "fun-də-MEN-təl",
+    "example": "Access to justice is a fundamental right in a democratic society.",
+    "exampleAr": "الوصول إلى العدالة حق أساسي في المجتمع الديمقراطي."
+  },
+  {
+    "id": 265,
+    "word": "factual",
+    "antonym": "fictional",
+    "skill": "Reading",
+    "translation": "واقعي / حقيقي",
+    "pronunciation": "FAK-choo-əl",
+    "example": "Reports should be factual and based on verified evidence.",
+    "exampleAr": "يجب أن تكون التقارير واقعية ومستندة إلى أدلة موثقة."
+  },
+  {
+    "id": 266,
+    "word": "friendly",
+    "antonym": "hostile",
+    "skill": "Speaking",
+    "translation": "ودّي / لطيف",
+    "pronunciation": "FREND-lee",
+    "example": "A friendly atmosphere encourages open communication in the workplace.",
+    "exampleAr": "الجو الودّي يشجع على التواصل المفتوح في بيئة العمل."
+  },
+  {
+    "id": 267,
+    "word": "favourable",
+    "antonym": "detrimental",
+    "skill": "Writing",
+    "translation": "مناسب / إيجابي",
+    "pronunciation": "FAY-vər-ə-bəl",
+    "example": "The report received a favourable response from the academic community.",
+    "exampleAr": "حظي التقرير باستجابة إيجابية من الأوساط الأكاديمية."
+  },
+  {
+    "id": 268,
+    "word": "flourish",
+    "antonym": "decline",
+    "skill": "Writing",
+    "translation": "يزدهر",
+    "pronunciation": "FLUR-ish",
+    "example": "Small businesses flourish when there is a supportive economic environment.",
+    "exampleAr": "تزدهر الشركات الصغيرة عندما تكون هناك بيئة اقتصادية داعمة."
+  },
+  {
+    "id": 269,
+    "word": "focused",
+    "antonym": "distracted",
+    "skill": "Writing",
+    "translation": "مركّز / منصبّ على",
+    "pronunciation": "FOH-kəst",
+    "example": "Staying focused during revision sessions greatly improves performance.",
+    "exampleAr": "البقاء مركّزًا خلال جلسات المراجعة يُحسّن الأداء بشكل كبير."
+  },
+  {
+    "id": 270,
+    "word": "fragile",
+    "antonym": "robust",
+    "skill": "Writing",
+    "translation": "هش / قابل للكسر",
+    "pronunciation": "FRAJ-əl",
+    "example": "The peace agreement remained fragile and could easily collapse.",
+    "exampleAr": "ظلّ اتفاق السلام هشًا وقابلًا للانهيار بسهولة."
+  },
+  {
+    "id": 271,
+    "word": "freedom",
+    "antonym": "restriction",
+    "skill": "Writing",
+    "translation": "حرية",
+    "pronunciation": "FREE-dəm",
+    "example": "Freedom of speech is a cornerstone of democratic societies.",
+    "exampleAr": "حرية التعبير ركيزة أساسية في المجتمعات الديمقراطية."
+  },
+  {
+    "id": 272,
+    "word": "facilitate",
+    "antonym": "obstruct",
+    "skill": "Writing",
+    "translation": "يُيسّر / يُسهّل",
+    "pronunciation": "fə-SIL-i-tayt",
+    "example": "Technology can facilitate better communication between people.",
+    "exampleAr": "يمكن للتكنولوجيا أن تُيسّر التواصل الأفضل بين الناس."
+  },
+  {
+    "id": 273,
+    "word": "fluctuate",
+    "antonym": "stabilise",
+    "skill": "Writing",
+    "translation": "يتقلب",
+    "pronunciation": "FLUK-choo-ayt",
+    "example": "Oil prices fluctuate according to global supply and demand.",
+    "exampleAr": "تتقلب أسعار النفط وفقًا للعرض والطلب العالميين."
+  },
+  {
+    "id": 274,
+    "word": "fluctuation",
+    "antonym": "stability",
+    "skill": "Writing",
+    "translation": "تقلّب",
+    "pronunciation": "fluk-choo-AY-shən",
+    "example": "Currency fluctuation can have a major impact on import costs.",
+    "exampleAr": "يمكن أن يكون لتقلّب العملة تأثير كبير على تكاليف الاستيراد."
+  },
+  {
+    "id": 275,
+    "word": "foster",
+    "antonym": "hinder",
+    "skill": "Writing",
+    "translation": "يُعزّز / يحتضن",
+    "pronunciation": "FOS-tər",
+    "example": "Good leadership can foster innovation and creative thinking.",
+    "exampleAr": "يمكن للقيادة الجيدة أن تُعزّز الابتكار والتفكير الإبداعي."
+  },
+  {
+    "id": 276,
+    "word": "fragment",
+    "antonym": "unify",
+    "skill": "Writing",
+    "translation": "يُجزّئ / شظية",
+    "pronunciation": "FRAG-mənt",
+    "example": "The conflict threatened to fragment the already divided society.",
+    "exampleAr": "هدّد النزاع بتجزئة المجتمع المنقسم أصلًا."
+  },
+  {
+    "id": 277,
+    "word": "feasible",
+    "antonym": "impractical",
+    "skill": "Writing",
+    "translation": "قابل للتطبيق",
+    "pronunciation": "FEE-zə-bəl",
+    "example": "The engineers confirmed that the design was technically feasible.",
+    "exampleAr": "أكّد المهندسون أن التصميم كان ممكنًا من الناحية التقنية."
+  },
+  {
+    "id": 278,
+    "word": "fragmented",
+    "antonym": "cohesive",
+    "skill": "Writing",
+    "translation": "مجزّأ / متشتت",
+    "pronunciation": "FRAG-men-tid",
+    "example": "The health system was fragmented and difficult to navigate.",
+    "exampleAr": "كان نظام الصحة مُجزّأً ويصعب التعامل معه."
+  },
+  {
+    "id": 279,
+    "word": "frugal",
+    "antonym": "extravagant",
+    "skill": "Speaking",
+    "translation": "مقتصد / بسيط",
+    "pronunciation": "FROO-gəl",
+    "example": "Being frugal during difficult times helps preserve financial stability.",
+    "exampleAr": "الاقتصاد في الأوقات الصعبة يُساعد في الحفاظ على الاستقرار المالي."
+  },
+  {
+    "id": 280,
+    "word": "futile",
+    "antonym": "productive",
+    "skill": "Writing",
+    "translation": "عبثي / لا طائل منه",
+    "pronunciation": "FYOO-tyl",
+    "example": "Without proper investment, the plan would prove futile.",
+    "exampleAr": "بدون استثمار مناسب، سيثبت أن الخطة عبثية."
+  },
+  {
+    "id": 281,
+    "word": "gain",
+    "antonym": "lose",
+    "skill": "Writing",
+    "translation": "يكسب / يحصل على",
+    "pronunciation": "GAYN",
+    "example": "Students can gain valuable experience through internship programmes.",
+    "exampleAr": "يمكن للطلاب اكتساب خبرة قيّمة من خلال برامج التدريب."
+  },
+  {
+    "id": 282,
+    "word": "general",
+    "antonym": "specific",
+    "skill": "Writing",
+    "translation": "عام / شامل",
+    "pronunciation": "JEN-ər-əl",
+    "example": "The general consensus was that reform was urgently needed.",
+    "exampleAr": "كان الإجماع العام أن الإصلاح كان مطلوبًا بإلحاح."
+  },
+  {
+    "id": 283,
+    "word": "genuine",
+    "antonym": "fake",
+    "skill": "Writing",
+    "translation": "حقيقي / أصيل",
+    "pronunciation": "JEN-yoo-in",
+    "example": "A genuine interest in learning is essential for academic success.",
+    "exampleAr": "الاهتمام الحقيقي بالتعلم ضروري للنجاح الأكاديمي."
+  },
+  {
+    "id": 284,
+    "word": "global",
+    "antonym": "local",
+    "skill": "Writing",
+    "translation": "عالمي",
+    "pronunciation": "GLOH-bəl",
+    "example": "Climate change is a global problem that requires international cooperation.",
+    "exampleAr": "تغير المناخ مشكلة عالمية تتطلب تعاونًا دوليًا."
+  },
+  {
+    "id": 285,
+    "word": "gradual",
+    "antonym": "sudden",
+    "skill": "Writing",
+    "translation": "تدريجي",
+    "pronunciation": "GRAJ-oo-əl",
+    "example": "The recovery from the economic crisis was gradual but steady.",
+    "exampleAr": "كان التعافي من الأزمة الاقتصادية تدريجيًا لكنه ثابتًا."
+  },
+  {
+    "id": 286,
+    "word": "grow",
+    "antonym": "shrink",
+    "skill": "Writing",
+    "translation": "ينمو",
+    "pronunciation": "GROH",
+    "example": "The economy is expected to grow by 3% over the next two years.",
+    "exampleAr": "من المتوقع أن ينمو الاقتصاد بنسبة 3٪ على مدى العامين المقبلين."
+  },
+  {
+    "id": 287,
+    "word": "guilty",
+    "antonym": "innocent",
+    "skill": "Reading",
+    "translation": "مذنب",
+    "pronunciation": "GIL-tee",
+    "example": "The jury found him guilty of all charges.",
+    "exampleAr": "وجدت هيئة المحلفين أنه مذنب بجميع التهم."
+  },
+  {
+    "id": 288,
+    "word": "generous",
+    "antonym": "selfish",
+    "skill": "Speaking",
+    "translation": "كريم / سخي",
+    "pronunciation": "JEN-ər-əs",
+    "example": "The generous donation will help fund vital medical research.",
+    "exampleAr": "التبرع السخي سيُساعد في تمويل الأبحاث الطبية الحيوية."
+  },
+  {
+    "id": 289,
+    "word": "growth",
+    "antonym": "contraction",
+    "skill": "Writing",
+    "translation": "نمو",
+    "pronunciation": "GROHTH",
+    "example": "Sustainable economic growth requires responsible resource management.",
+    "exampleAr": "النمو الاقتصادي المستدام يتطلب إدارة مسؤولة للموارد."
+  },
+  {
+    "id": 290,
+    "word": "generate",
+    "antonym": "consume",
+    "skill": "Writing",
+    "translation": "يُولّد / ينتج",
+    "pronunciation": "JEN-ə-rayt",
+    "example": "Solar panels can generate electricity without producing pollution.",
+    "exampleAr": "يمكن للألواح الشمسية توليد الكهرباء دون إنتاج التلوث."
+  },
+  {
+    "id": 291,
+    "word": "groundbreaking",
+    "antonym": "conventional",
+    "skill": "Writing",
+    "translation": "رائد / ثوري",
+    "pronunciation": "GROWND-bray-king",
+    "example": "The groundbreaking discovery changed the entire field of medicine.",
+    "exampleAr": "غيّر الاكتشاف الرائد مجال الطب بأكمله."
+  },
+  {
+    "id": 292,
+    "word": "harm",
+    "antonym": "benefit",
+    "skill": "Writing",
+    "translation": "يُلحق الضرر / أذى",
+    "pronunciation": "HARM",
+    "example": "Excessive screen time can harm children's social development.",
+    "exampleAr": "يمكن أن يؤثر وقت الشاشة المفرط سلبًا على التطور الاجتماعي للأطفال."
+  },
+  {
+    "id": 293,
+    "word": "harsh",
+    "antonym": "mild",
+    "skill": "Writing",
+    "translation": "قاسٍ / صارم",
+    "pronunciation": "HARSH",
+    "example": "The harsh winter conditions made it difficult for farmers.",
+    "exampleAr": "جعلت الأحوال الشتوية القاسية الأمر صعبًا على المزارعين."
+  },
+  {
+    "id": 294,
+    "word": "honest",
+    "antonym": "deceptive",
+    "skill": "Writing",
+    "translation": "صادق",
+    "pronunciation": "ON-ist",
+    "example": "An honest assessment of the situation is essential before making decisions.",
+    "exampleAr": "التقييم الصادق للوضع ضروري قبل اتخاذ القرارات."
+  },
+  {
+    "id": 295,
+    "word": "hopeful",
+    "antonym": "hopeless",
+    "skill": "Speaking",
+    "translation": "متفائل / واثق",
+    "pronunciation": "HOHP-fəl",
+    "example": "Despite the challenges, residents remained hopeful about the future.",
+    "exampleAr": "رغم التحديات، ظل السكان متفائلين حيال المستقبل."
+  },
+  {
+    "id": 296,
+    "word": "huge",
+    "antonym": "tiny",
+    "skill": "Writing",
+    "translation": "ضخم / هائل",
+    "pronunciation": "HYOOJ",
+    "example": "The charity event raised a huge amount for the children's hospital.",
+    "exampleAr": "جمع حدث الجمعية الخيرية مبلغًا ضخمًا لصالح مستشفى الأطفال."
+  },
+  {
+    "id": 297,
+    "word": "heavy",
+    "antonym": "light",
+    "skill": "All Skills",
+    "translation": "ثقيل",
+    "pronunciation": "HEV-ee",
+    "example": "Heavy rainfall caused widespread flooding across the region.",
+    "exampleAr": "تسبّبت الأمطار الغزيرة في فيضانات واسعة النطاق في المنطقة."
+  },
+  {
+    "id": 298,
+    "word": "helpful",
+    "antonym": "harmful",
+    "skill": "Writing",
+    "translation": "مفيد",
+    "pronunciation": "HELP-fəl",
+    "example": "Peer support can be incredibly helpful for students under exam pressure.",
+    "exampleAr": "يمكن أن يكون دعم الأقران مفيدًا للغاية للطلاب تحت ضغط الامتحانات."
+  },
+  {
+    "id": 299,
+    "word": "hidden",
+    "antonym": "visible",
+    "skill": "Writing",
+    "translation": "مخفي",
+    "pronunciation": "HID-ən",
+    "example": "The report revealed hidden costs that had not been disclosed.",
+    "exampleAr": "كشف التقرير عن تكاليف مخفية لم يُفصح عنها."
+  },
+  {
+    "id": 300,
+    "word": "homogeneous",
+    "antonym": "diverse",
+    "skill": "Writing",
+    "translation": "متجانس",
+    "pronunciation": "hoh-mə-JEE-nee-əs",
+    "example": "A homogeneous society may lack the diversity needed for innovation.",
+    "exampleAr": "قد يفتقر المجتمع المتجانس إلى التنوع اللازم للابتكار."
+  },
+  {
+    "id": 301,
+    "word": "humble",
+    "antonym": "arrogant",
+    "skill": "Speaking",
+    "translation": "متواضع",
+    "pronunciation": "HUM-bəl",
+    "example": "Despite his success, he remained humble and easy to approach.",
+    "exampleAr": "رغم نجاحه، ظل متواضعًا وسهل التعامل."
+  },
+  {
+    "id": 302,
+    "word": "hypothesis",
+    "antonym": "fact",
+    "skill": "Reading",
+    "translation": "فرضية",
+    "pronunciation": "hy-POTH-ə-sis",
+    "example": "The scientist proposed a hypothesis that was later confirmed by experiments.",
+    "exampleAr": "اقترح العالم فرضية أكّدتها التجارب لاحقًا."
+  },
+  {
+    "id": 303,
+    "word": "heighten",
+    "antonym": "reduce",
+    "skill": "Writing",
+    "translation": "يُعلي / يُشدّد",
+    "pronunciation": "HY-tən",
+    "example": "The crisis served to heighten public awareness of the issue.",
+    "exampleAr": "أسهمت الأزمة في تعزيز الوعي العام بهذه القضية."
+  },
+  {
+    "id": 304,
+    "word": "hamper",
+    "antonym": "assist",
+    "skill": "Writing",
+    "translation": "يُعيق",
+    "pronunciation": "HAM-pər",
+    "example": "Bureaucratic processes can hamper business growth significantly.",
+    "exampleAr": "يمكن للإجراءات البيروقراطية أن تُعيق نمو الأعمال بشكل ملحوظ."
+  },
+  {
+    "id": 305,
+    "word": "hypothetical",
+    "antonym": "factual",
+    "skill": "Reading",
+    "translation": "افتراضي",
+    "pronunciation": "hy-pə-THET-i-kəl",
+    "example": "The discussion was based on a hypothetical scenario rather than real data.",
+    "exampleAr": "استندت المناقشة إلى سيناريو افتراضي لا إلى بيانات حقيقية."
+  },
+  {
+    "id": 306,
+    "word": "identical",
+    "antonym": "different",
+    "skill": "Reading",
+    "translation": "متطابق / مماثل",
+    "pronunciation": "y-DEN-ti-kəl",
+    "example": "The two samples produced identical results in the laboratory.",
+    "exampleAr": "أنتجت العينتان نتائج متطابقة في المختبر."
+  },
+  {
+    "id": 307,
+    "word": "ignorant",
+    "antonym": "knowledgeable",
+    "skill": "Writing",
+    "translation": "جاهل",
+    "pronunciation": "IG-nər-ənt",
+    "example": "Being ignorant of the law is not an acceptable excuse in court.",
+    "exampleAr": "الجهل بالقانون ليس عذرًا مقبولًا في المحكمة."
+  },
+  {
+    "id": 308,
+    "word": "improve",
+    "antonym": "worsen",
+    "skill": "Writing",
+    "translation": "يُحسّن / يتطور",
+    "pronunciation": "im-PROOV",
+    "example": "Regular feedback helps employees improve their performance.",
+    "exampleAr": "التغذية الراجعة المنتظمة تُساعد الموظفين على تحسين أدائهم."
+  },
+  {
+    "id": 309,
+    "word": "include",
+    "antonym": "exclude",
+    "skill": "Writing",
+    "translation": "يشمل / يتضمن",
+    "pronunciation": "in-KLOOD",
+    "example": "The programme should include activities for all age groups.",
+    "exampleAr": "يجب أن يشمل البرنامج أنشطة لجميع الفئات العمرية."
+  },
+  {
+    "id": 310,
+    "word": "indirect",
+    "antonym": "direct",
+    "skill": "Writing",
+    "translation": "غير مباشر",
+    "pronunciation": "in-di-REKT",
+    "example": "Pollution can have indirect effects on food production.",
+    "exampleAr": "يمكن أن يكون للتلوث آثار غير مباشرة على إنتاج الغذاء."
+  },
+  {
+    "id": 311,
+    "word": "innovative",
+    "antonym": "conventional",
+    "skill": "Writing",
+    "translation": "مبتكر / ريادي",
+    "pronunciation": "IN-ə-vay-tiv",
+    "example": "The company's innovative products helped it stay ahead of competitors.",
+    "exampleAr": "ساعدت منتجات الشركة المبتكرة على التفوق على المنافسين."
+  },
+  {
+    "id": 312,
+    "word": "insignificant",
+    "antonym": "significant",
+    "skill": "Writing",
+    "translation": "تافه / ضئيل الأهمية",
+    "pronunciation": "in-sig-NIF-i-kənt",
+    "example": "The error appeared insignificant but had major consequences.",
+    "exampleAr": "بدا الخطأ ضئيل الأهمية لكنه أفضى إلى عواقب وخيمة."
+  },
+  {
+    "id": 313,
+    "word": "insufficient",
+    "antonym": "sufficient",
+    "skill": "Writing",
+    "translation": "غير كافٍ",
+    "pronunciation": "in-sə-FISH-ənt",
+    "example": "The funding was insufficient to cover the full cost of the project.",
+    "exampleAr": "كان التمويل غير كافٍ لتغطية التكلفة الإجمالية للمشروع."
+  },
+  {
+    "id": 314,
+    "word": "intentional",
+    "antonym": "accidental",
+    "skill": "Writing",
+    "translation": "مقصود / متعمّد",
+    "pronunciation": "in-TEN-shə-nəl",
+    "example": "The deception was intentional and led to serious consequences.",
+    "exampleAr": "كان الخداع متعمّدًا وأفضى إلى عواقب وخيمة."
+  },
+  {
+    "id": 315,
+    "word": "irrelevant",
+    "antonym": "relevant",
+    "skill": "Writing",
+    "translation": "غير ذي صلة",
+    "pronunciation": "i-REL-ə-vənt",
+    "example": "Several points raised in the discussion were completely irrelevant.",
+    "exampleAr": "عدة نقاط أُثيرت في النقاش كانت غير ذات صلة تمامًا."
+  },
+  {
+    "id": 316,
+    "word": "ideal",
+    "antonym": "flawed",
+    "skill": "Writing",
+    "translation": "مثالي",
+    "pronunciation": "y-DEEL",
+    "example": "The location was ideal for launching a new retail business.",
+    "exampleAr": "كان الموقع مثاليًا لإطلاق عمل تجاري جديد في مجال البيع بالتجزئة."
+  },
+  {
+    "id": 317,
+    "word": "ignore",
+    "antonym": "address",
+    "skill": "Writing",
+    "translation": "يتجاهل",
+    "pronunciation": "ig-NOR",
+    "example": "It is dangerous to ignore warning signs of health problems.",
+    "exampleAr": "من الخطورة تجاهل علامات التحذير من المشكلات الصحية."
+  },
+  {
+    "id": 318,
+    "word": "impartial",
+    "antonym": "biased",
+    "skill": "Writing",
+    "translation": "محايد / نزيه",
+    "pronunciation": "im-PAR-shəl",
+    "example": "Judges are expected to be impartial and unbiased in their rulings.",
+    "exampleAr": "من المتوقع أن يكون القضاة محايدين وغير متحيزين في أحكامهم."
+  },
+  {
+    "id": 319,
+    "word": "important",
+    "antonym": "trivial",
+    "skill": "Writing",
+    "translation": "مهم",
+    "pronunciation": "im-POR-tənt",
+    "example": "It is important to review your answers before submitting the exam.",
+    "exampleAr": "من المهم مراجعة إجاباتك قبل تسليم الامتحان."
+  },
+  {
+    "id": 320,
+    "word": "impose",
+    "antonym": "remove",
+    "skill": "Writing",
+    "translation": "يفرض",
+    "pronunciation": "im-POHZ",
+    "example": "The government decided to impose stricter regulations on emissions.",
+    "exampleAr": "قررت الحكومة فرض لوائح أكثر صرامة على الانبعاثات."
+  },
+  {
+    "id": 321,
+    "word": "incentive",
+    "antonym": "deterrent",
+    "skill": "Writing",
+    "translation": "حافز",
+    "pronunciation": "in-SEN-tiv",
+    "example": "Tax reductions serve as a strong incentive for foreign investment.",
+    "exampleAr": "تُشكّل التخفيضات الضريبية حافزًا قويًا للاستثمار الأجنبي."
+  },
+  {
+    "id": 322,
+    "word": "indifferent",
+    "antonym": "passionate",
+    "skill": "Speaking",
+    "translation": "لامبالٍ / محايد",
+    "pronunciation": "in-DIF-ər-ənt",
+    "example": "Being indifferent to social problems can make them worse over time.",
+    "exampleAr": "اللامبالاة تجاه المشكلات الاجتماعية قد تُفاقمها مع مرور الوقت."
+  },
+  {
+    "id": 323,
+    "word": "individual",
+    "antonym": "collective",
+    "skill": "Writing",
+    "translation": "فرد / فردي",
+    "pronunciation": "in-di-VIJ-oo-əl",
+    "example": "Each individual is responsible for their own learning journey.",
+    "exampleAr": "كل فرد مسؤول عن رحلة تعلّمه الخاصة."
+  },
+  {
+    "id": 324,
+    "word": "inequality",
+    "antonym": "equality",
+    "skill": "Writing",
+    "translation": "عدم مساواة",
+    "pronunciation": "in-i-KWOL-i-tee",
+    "example": "Economic inequality continues to be one of the most pressing global challenges.",
+    "exampleAr": "لا يزال عدم المساواة الاقتصادي من أكثر التحديات العالمية إلحاحًا."
+  },
+  {
+    "id": 325,
+    "word": "inflate",
+    "antonym": "deflate",
+    "skill": "Writing",
+    "translation": "يُضخّم / يرتفع",
+    "pronunciation": "in-FLAYT",
+    "example": "Over-reporting can inflate figures and lead to poor decisions.",
+    "exampleAr": "يمكن أن يُضخّم الإبلاغ المبالغ فيه الأرقام ويُفضي إلى قرارات سيئة."
+  },
+  {
+    "id": 326,
+    "word": "inhibit",
+    "antonym": "encourage",
+    "skill": "Writing",
+    "translation": "يُثبّط / يمنع",
+    "pronunciation": "in-HIB-it",
+    "example": "Fear of failure can inhibit creativity and risk-taking.",
+    "exampleAr": "يمكن أن يُثبّط الخوف من الفشل الإبداعية وتحمّل المخاطر."
+  },
+  {
+    "id": 327,
+    "word": "injustice",
+    "antonym": "justice",
+    "skill": "Writing",
+    "translation": "ظلم",
+    "pronunciation": "in-JUS-tis",
+    "example": "Social movements often arise in response to systemic injustice.",
+    "exampleAr": "كثيرًا ما تنشأ الحركات الاجتماعية استجابةً للظلم المنهجي."
+  },
+  {
+    "id": 328,
+    "word": "isolated",
+    "antonym": "connected",
+    "skill": "Writing",
+    "translation": "معزول",
+    "pronunciation": "Y-sə-lay-tid",
+    "example": "Remote villages can become isolated during severe winter storms.",
+    "exampleAr": "يمكن أن تصبح القرى النائية معزولة خلال العواصف الشتوية الشديدة."
+  },
+  {
+    "id": 329,
+    "word": "implied",
+    "antonym": "stated",
+    "skill": "Reading",
+    "translation": "ضمني / مُشار إليه",
+    "pronunciation": "im-PLYD",
+    "example": "The agreement contained several implied obligations not written explicitly.",
+    "exampleAr": "تضمّن الاتفاق عدة التزامات ضمنية لم تُكتب صراحةً."
+  },
+  {
+    "id": 330,
+    "word": "infer",
+    "antonym": "state",
+    "skill": "Reading",
+    "translation": "يستنتج",
+    "pronunciation": "in-FUR",
+    "example": "From the tone of the letter, we can infer that the writer was upset.",
+    "exampleAr": "من نبرة الخطاب، يمكننا استنتاج أن الكاتب كان منزعجًا."
+  },
+  {
+    "id": 331,
+    "word": "interesting",
+    "antonym": "dull",
+    "skill": "Speaking",
+    "translation": "مثير للاهتمام",
+    "pronunciation": "IN-trə-sting",
+    "example": "The lecture was highly interesting and sparked a lively debate.",
+    "exampleAr": "كانت المحاضرة مثيرة للاهتمام للغاية وأشعلت نقاشًا حيويًا."
+  },
+  {
+    "id": 332,
+    "word": "implement",
+    "antonym": "abandon",
+    "skill": "Writing",
+    "translation": "يُطبّق / ينفّذ",
+    "pronunciation": "IM-plə-ment",
+    "example": "The school decided to implement a new reading programme.",
+    "exampleAr": "قرّرت المدرسة تطبيق برنامج قراءة جديد."
+  },
+  {
+    "id": 333,
+    "word": "inclusive",
+    "antonym": "exclusive",
+    "skill": "Writing",
+    "translation": "شامل",
+    "pronunciation": "in-KLOO-siv",
+    "example": "An inclusive education system benefits all types of learners.",
+    "exampleAr": "نظام التعليم الشامل يُفيد جميع أنواع المتعلمين."
+  },
+  {
+    "id": 334,
+    "word": "inevitable",
+    "antonym": "avoidable",
+    "skill": "Writing",
+    "translation": "حتمي / لا مفر منه",
+    "pronunciation": "in-EV-i-tə-bəl",
+    "example": "Technological change is inevitable, and society must adapt.",
+    "exampleAr": "التغيير التكنولوجي أمر حتمي، ويجب على المجتمع التكيف معه."
+  },
+  {
+    "id": 335,
+    "word": "influential",
+    "antonym": "powerless",
+    "skill": "Writing",
+    "translation": "مؤثر",
+    "pronunciation": "in-floo-EN-shəl",
+    "example": "She became one of the most influential figures in modern science.",
+    "exampleAr": "أصبحت من أكثر الشخصيات تأثيرًا في العلوم الحديثة."
+  },
+  {
+    "id": 336,
+    "word": "innovation",
+    "antonym": "stagnation",
+    "skill": "Writing",
+    "translation": "ابتكار / إبداع",
+    "pronunciation": "in-ə-VAY-shən",
+    "example": "Business innovation is the driving force behind economic progress.",
+    "exampleAr": "الابتكار التجاري هو القوة الدافعة وراء التقدم الاقتصادي."
+  },
+  {
+    "id": 337,
+    "word": "inconclusive",
+    "antonym": "definitive",
+    "skill": "Reading",
+    "translation": "غير قاطع / مبهم",
+    "pronunciation": "in-kən-KLOO-siv",
+    "example": "The test results were inconclusive and required further investigation.",
+    "exampleAr": "كانت نتائج الاختبار غير قاطعة وتطلّبت مزيدًا من التحقيق."
+  },
+  {
+    "id": 338,
+    "word": "impede",
+    "antonym": "facilitate",
+    "skill": "Writing",
+    "translation": "يُعيق / يُعرقل",
+    "pronunciation": "im-PEED",
+    "example": "Excessive bureaucracy can impede economic development.",
+    "exampleAr": "يمكن أن تُعرقل البيروقراطية المفرطة التنمية الاقتصادية."
+  },
+  {
+    "id": 339,
+    "word": "imminent",
+    "antonym": "distant",
+    "skill": "Reading",
+    "translation": "وشيك الحدوث",
+    "pronunciation": "IM-i-nənt",
+    "example": "Scientists warned that a major climate crisis is imminent.",
+    "exampleAr": "حذّر العلماء من أن أزمة مناخية كبرى باتت وشيكة."
+  },
+  {
+    "id": 340,
+    "word": "incentivise",
+    "antonym": "deter",
+    "skill": "Writing",
+    "translation": "يُحفّز",
+    "pronunciation": "in-SEN-tə-vyz",
+    "example": "The policy was designed to incentivise businesses to reduce carbon emissions.",
+    "exampleAr": "صُمّمت السياسة لتحفيز الشركات على خفض انبعاثات الكربون."
+  },
+  {
+    "id": 341,
+    "word": "inconsistent",
+    "antonym": "uniform",
+    "skill": "Writing",
+    "translation": "غير متسق / متذبذب",
+    "pronunciation": "in-kən-SIS-tənt",
+    "example": "Inconsistent results raised doubts about the reliability of the study.",
+    "exampleAr": "أثارت النتائج غير المتسقة شكوكًا حول موثوقية الدراسة."
+  },
+  {
+    "id": 342,
+    "word": "indispensable",
+    "antonym": "redundant",
+    "skill": "Writing",
+    "translation": "لا غنى عنه",
+    "pronunciation": "in-di-SPEN-sə-bəl",
+    "example": "Technology has become indispensable in modern healthcare.",
+    "exampleAr": "أصبحت التكنولوجيا لا غنى عنها في الرعاية الصحية الحديثة."
+  },
+  {
+    "id": 343,
+    "word": "innate",
+    "antonym": "acquired",
+    "skill": "Reading",
+    "translation": "فطري / موروث",
+    "pronunciation": "i-NAYT",
+    "example": "Some researchers believe that language ability is innate in humans.",
+    "exampleAr": "يعتقد بعض الباحثين أن القدرة اللغوية فطرية في الإنسان."
+  },
+  {
+    "id": 344,
+    "word": "intervene",
+    "antonym": "withdraw",
+    "skill": "Writing",
+    "translation": "يتدخل",
+    "pronunciation": "in-tər-VEEN",
+    "example": "The international community decided to intervene to stop the conflict.",
+    "exampleAr": "قررت الجماعة الدولية التدخل لوقف النزاع."
+  },
+  {
+    "id": 345,
+    "word": "irreversible",
+    "antonym": "reversible",
+    "skill": "Writing",
+    "translation": "لا رجعة فيه",
+    "pronunciation": "i-ri-VUR-sə-bəl",
+    "example": "Environmental damage caused by deforestation is often irreversible.",
+    "exampleAr": "الأضرار البيئية التي تسببها إزالة الغابات غالبًا ما تكون لا رجعة فيها."
+  },
+  {
+    "id": 346,
+    "word": "justified",
+    "antonym": "arbitrary",
+    "skill": "Writing",
+    "translation": "مبرّر / مسوَّغ",
+    "pronunciation": "JUS-ti-fyd",
+    "example": "The decision to increase taxes was seen as justified given the deficit.",
+    "exampleAr": "نُظر إلى قرار رفع الضرائب باعتباره مبرّرًا في ضوء العجز."
+  },
+  {
+    "id": 347,
+    "word": "justify",
+    "antonym": "question",
+    "skill": "Writing",
+    "translation": "يُبرّر",
+    "pronunciation": "JUS-ti-fy",
+    "example": "The results do not justify such a large investment of public funds.",
+    "exampleAr": "النتائج لا تُبرّر هذا الاستثمار الضخم للأموال العامة."
+  },
+  {
+    "id": 348,
+    "word": "keep",
+    "antonym": "discard",
+    "skill": "All Skills",
+    "translation": "يحتفظ / يحفظ",
+    "pronunciation": "KEEP",
+    "example": "It is important to keep accurate records of all transactions.",
+    "exampleAr": "من المهم الاحتفاظ بسجلات دقيقة لجميع المعاملات."
+  },
+  {
+    "id": 349,
+    "word": "legal",
+    "antonym": "illegal",
+    "skill": "Writing",
+    "translation": "قانوني",
+    "pronunciation": "LEE-gəl",
+    "example": "All business activities must comply with legal requirements.",
+    "exampleAr": "يجب أن تمتثل جميع أنشطة الأعمال للمتطلبات القانونية."
+  },
+  {
+    "id": 350,
+    "word": "lenient",
+    "antonym": "strict",
+    "skill": "Writing",
+    "translation": "متساهل / رحيم",
+    "pronunciation": "LEE-nee-ənt",
+    "example": "Critics argued that the judge was too lenient with the defendant.",
+    "exampleAr": "جادل المنتقدون بأن القاضي كان متساهلًا للغاية مع المتهم."
+  },
+  {
+    "id": 351,
+    "word": "likely",
+    "antonym": "improbable",
+    "skill": "Writing",
+    "translation": "محتمل / مرجّح",
+    "pronunciation": "LYK-lee",
+    "example": "The new policy is likely to reduce unemployment in the region.",
+    "exampleAr": "من المرجح أن تُقلّل السياسة الجديدة البطالة في المنطقة."
+  },
+  {
+    "id": 352,
+    "word": "limited",
+    "antonym": "boundless",
+    "skill": "Writing",
+    "translation": "محدود",
+    "pronunciation": "LIM-i-tid",
+    "example": "Resources were limited, so priorities had to be carefully set.",
+    "exampleAr": "كانت الموارد محدودة، لذا كان لا بد من تحديد الأولويات بعناية."
+  },
+  {
+    "id": 353,
+    "word": "logical",
+    "antonym": "illogical",
+    "skill": "Writing",
+    "translation": "منطقي",
+    "pronunciation": "LOJ-i-kəl",
+    "example": "A logical argument is built on sound evidence and reasoning.",
+    "exampleAr": "الحجة المنطقية مبنية على أدلة وتفكير سليم."
+  },
+  {
+    "id": 354,
+    "word": "long-term",
+    "antonym": "short-term",
+    "skill": "Writing",
+    "translation": "طويل الأمد",
+    "pronunciation": "LONG-turm",
+    "example": "Investing in renewable energy brings long-term environmental benefits.",
+    "exampleAr": "الاستثمار في الطاقة المتجددة يُحقق فوائد بيئية طويلة الأمد."
+  },
+  {
+    "id": 355,
+    "word": "lessen",
+    "antonym": "increase",
+    "skill": "Writing",
+    "translation": "يُقلّل / يُخفّف",
+    "pronunciation": "LES-ən",
+    "example": "Regular exercise can help lessen the risk of chronic disease.",
+    "exampleAr": "يمكن للتمارين المنتظمة المساعدة في تقليل خطر الأمراض المزمنة."
+  },
+  {
+    "id": 356,
+    "word": "literal",
+    "antonym": "figurative",
+    "skill": "Reading",
+    "translation": "حرفي",
+    "pronunciation": "LIT-ər-əl",
+    "example": "The literal meaning of the phrase is different from its idiomatic use.",
+    "exampleAr": "المعنى الحرفي للعبارة يختلف عن استخدامها الاصطلاحي."
+  },
+  {
+    "id": 357,
+    "word": "lack",
+    "antonym": "abundance",
+    "skill": "Writing",
+    "translation": "يفتقر / نقص",
+    "pronunciation": "LAK",
+    "example": "A lack of investment in infrastructure hampers economic development.",
+    "exampleAr": "يُعيق نقص الاستثمار في البنية التحتية التنمية الاقتصادية."
+  },
+  {
+    "id": 358,
+    "word": "lengthen",
+    "antonym": "shorten",
+    "skill": "Writing",
+    "translation": "يُطيل",
+    "pronunciation": "LENG-thən",
+    "example": "The government agreed to lengthen the deadline for tax submissions.",
+    "exampleAr": "وافقت الحكومة على تمديد الموعد النهائي لتقديم الضرائب."
+  },
+  {
+    "id": 359,
+    "word": "major",
+    "antonym": "minor",
+    "skill": "Writing",
+    "translation": "رئيسي / كبير",
+    "pronunciation": "MAY-jər",
+    "example": "Pollution is a major threat to biodiversity worldwide.",
+    "exampleAr": "التلوث تهديد رئيسي للتنوع البيولوجي في جميع أنحاء العالم."
+  },
+  {
+    "id": 360,
+    "word": "maximum",
+    "antonym": "minimum",
+    "skill": "Writing",
+    "translation": "أقصى / حد أقصى",
+    "pronunciation": "MAK-si-məm",
+    "example": "Students should aim for maximum accuracy in their written exams.",
+    "exampleAr": "يجب أن يسعى الطلاب إلى أقصى درجة من الدقة في امتحاناتهم الكتابية."
+  },
+  {
+    "id": 361,
+    "word": "meaningful",
+    "antonym": "meaningless",
+    "skill": "Writing",
+    "translation": "ذو معنى / هادف",
+    "pronunciation": "MEEN-ing-fəl",
+    "example": "Developing meaningful relationships is central to wellbeing.",
+    "exampleAr": "بناء علاقات هادفة أمر محوري للرفاهية النفسية."
+  },
+  {
+    "id": 362,
+    "word": "modern",
+    "antonym": "traditional",
+    "skill": "Writing",
+    "translation": "حديث / عصري",
+    "pronunciation": "MOD-ərn",
+    "example": "Modern medicine has significantly extended human life expectancy.",
+    "exampleAr": "مدّد الطب الحديث متوسط العمر المتوقع للإنسان بشكل ملحوظ."
+  },
+  {
+    "id": 363,
+    "word": "moral",
+    "antonym": "corrupt",
+    "skill": "Writing",
+    "translation": "أخلاقي",
+    "pronunciation": "MOR-əl",
+    "example": "Society has a moral obligation to protect vulnerable individuals.",
+    "exampleAr": "للمجتمع التزام أخلاقي بحماية الأفراد الضعفاء."
+  },
+  {
+    "id": 364,
+    "word": "motivated",
+    "antonym": "demotivated",
+    "skill": "Speaking",
+    "translation": "متحفّز / دافع",
+    "pronunciation": "MOH-tə-vay-tid",
+    "example": "Motivated students tend to perform significantly better in examinations.",
+    "exampleAr": "يميل الطلاب المتحفّزون إلى الأداء بشكل أفضل بكثير في الامتحانات."
+  },
+  {
+    "id": 365,
+    "word": "maintain",
+    "antonym": "neglect",
+    "skill": "Writing",
+    "translation": "يحافظ على",
+    "pronunciation": "mayn-TAYN",
+    "example": "Governments must maintain infrastructure to ensure public safety.",
+    "exampleAr": "يجب على الحكومات صيانة البنية التحتية لضمان السلامة العامة."
+  },
+  {
+    "id": 366,
+    "word": "majority",
+    "antonym": "minority",
+    "skill": "Writing",
+    "translation": "الغالبية",
+    "pronunciation": "mə-JOR-i-tee",
+    "example": "The majority of voters supported the proposed reforms.",
+    "exampleAr": "أيّدت غالبية الناخبين الإصلاحات المقترحة."
+  },
+  {
+    "id": 367,
+    "word": "maximise",
+    "antonym": "minimise",
+    "skill": "Writing",
+    "translation": "يُعظّم / يرفع إلى أقصى",
+    "pronunciation": "MAK-si-myz",
+    "example": "The company restructured its operations to maximise efficiency.",
+    "exampleAr": "أعادت الشركة هيكلة عملياتها لتعظيم الكفاءة."
+  },
+  {
+    "id": 368,
+    "word": "mislead",
+    "antonym": "inform",
+    "skill": "Writing",
+    "translation": "يُضلّل",
+    "pronunciation": "mis-LEED",
+    "example": "Advertisements must not mislead consumers about product quality.",
+    "exampleAr": "لا يجوز للإعلانات تضليل المستهلكين بشأن جودة المنتج."
+  },
+  {
+    "id": 369,
+    "word": "modify",
+    "antonym": "keep",
+    "skill": "Writing",
+    "translation": "يُعدّل / يُغيّر",
+    "pronunciation": "MOD-i-fy",
+    "example": "The plan needed to be modified in response to new data.",
+    "exampleAr": "كانت الخطة بحاجة إلى التعديل استجابةً للبيانات الجديدة."
+  },
+  {
+    "id": 370,
+    "word": "memorable",
+    "antonym": "forgettable",
+    "skill": "Speaking",
+    "translation": "لا يُنسى / رائع",
+    "pronunciation": "MEM-ər-ə-bəl",
+    "example": "The graduation ceremony was a memorable occasion for all students.",
+    "exampleAr": "كان حفل التخرج مناسبة لا تُنسى لجميع الطلاب."
+  },
+  {
+    "id": 371,
+    "word": "measurable",
+    "antonym": "vague",
+    "skill": "Writing",
+    "translation": "قابل للقياس",
+    "pronunciation": "MEZH-ər-ə-bəl",
+    "example": "All targets should be specific, realistic, and measurable.",
+    "exampleAr": "يجب أن تكون جميع الأهداف محددة وواقعية وقابلة للقياس."
+  },
+  {
+    "id": 372,
+    "word": "mitigate",
+    "antonym": "worsen",
+    "skill": "Writing",
+    "translation": "يُخفّف / يُقلّص",
+    "pronunciation": "MIT-i-gayt",
+    "example": "Planting trees is one way to mitigate the effects of climate change.",
+    "exampleAr": "زراعة الأشجار إحدى الطرق للتخفيف من آثار تغير المناخ."
+  },
+  {
+    "id": 373,
+    "word": "meticulous",
+    "antonym": "careless",
+    "skill": "Writing",
+    "translation": "دقيق / يولي اهتماماً بالتفاصيل",
+    "pronunciation": "mə-TIK-yə-ləs",
+    "example": "A meticulous attention to detail is essential in scientific research.",
+    "exampleAr": "الاهتمام الدقيق بالتفاصيل ضروري في البحث العلمي."
+  },
+  {
+    "id": 374,
+    "word": "marginalise",
+    "antonym": "empower",
+    "skill": "Writing",
+    "translation": "يُهمّش",
+    "pronunciation": "MAR-ji-nə-lyz",
+    "example": "Certain groups have long been marginalised in the education system.",
+    "exampleAr": "تم تهميش فئات معينة لفترة طويلة في النظام التعليمي."
+  },
+  {
+    "id": 375,
+    "word": "negative",
+    "antonym": "positive",
+    "skill": "All Skills",
+    "translation": "سلبي",
+    "pronunciation": "NEG-ə-tiv",
+    "example": "A negative attitude can prevent individuals from reaching their potential.",
+    "exampleAr": "يمكن للموقف السلبي أن يمنع الأفراد من الوصول إلى إمكاناتهم."
+  },
+  {
+    "id": 376,
+    "word": "numerous",
+    "antonym": "few",
+    "skill": "Writing",
+    "translation": "عديد / كثير",
+    "pronunciation": "NYOO-mər-əs",
+    "example": "Numerous studies confirm the health benefits of a Mediterranean diet.",
+    "exampleAr": "تؤكد دراسات عديدة الفوائد الصحية للنظام الغذائي المتوسطي."
+  },
+  {
+    "id": 377,
+    "word": "neglect",
+    "antonym": "care for",
+    "skill": "Writing",
+    "translation": "يُهمل",
+    "pronunciation": "ni-GLEKT",
+    "example": "Neglect of public infrastructure can have serious long-term consequences.",
+    "exampleAr": "إهمال البنية التحتية العامة قد يُفضي إلى عواقب وخيمة على المدى البعيد."
+  },
+  {
+    "id": 378,
+    "word": "novel",
+    "antonym": "outdated",
+    "skill": "Writing",
+    "translation": "جديد / مبتكر",
+    "pronunciation": "NOV-əl",
+    "example": "The researcher proposed a novel approach to treating the disease.",
+    "exampleAr": "اقترح الباحث نهجًا مبتكرًا لعلاج المرض."
+  },
+  {
+    "id": 379,
+    "word": "necessary",
+    "antonym": "redundant",
+    "skill": "Writing",
+    "translation": "ضروري",
+    "pronunciation": "NES-ə-ser-ee",
+    "example": "Sacrifices are sometimes necessary to achieve long-term goals.",
+    "exampleAr": "التضحيات ضرورية أحيانًا لتحقيق الأهداف طويلة الأمد."
+  },
+  {
+    "id": 380,
+    "word": "nervous",
+    "antonym": "relaxed",
+    "skill": "Speaking",
+    "translation": "عصبي / متوتر",
+    "pronunciation": "NUR-vəs",
+    "example": "Many candidates feel nervous at the start of the IELTS speaking test.",
+    "exampleAr": "يشعر كثير من المرشحين بالتوتر في بداية اختبار المحادثة في IELTS."
+  },
+  {
+    "id": 381,
+    "word": "nuanced",
+    "antonym": "simplistic",
+    "skill": "Reading",
+    "translation": "دقيق / مُتفاوت",
+    "pronunciation": "NYOO-anst",
+    "example": "A nuanced analysis considers all possible interpretations of the data.",
+    "exampleAr": "يأخذ التحليل الدقيق بعين الاعتبار جميع التفسيرات الممكنة للبيانات."
+  },
+  {
+    "id": 382,
+    "word": "objective",
+    "antonym": "subjective",
+    "skill": "Writing",
+    "translation": "موضوعي / هدف",
+    "pronunciation": "əb-JEK-tiv",
+    "example": "An objective assessment requires consideration of all available evidence.",
+    "exampleAr": "يتطلب التقييم الموضوعي مراعاة جميع الأدلة المتاحة."
+  },
+  {
+    "id": 383,
+    "word": "obvious",
+    "antonym": "obscure",
+    "skill": "Writing",
+    "translation": "واضح / جليّ",
+    "pronunciation": "OB-vee-əs",
+    "example": "The solution to the problem was obvious to most engineers.",
+    "exampleAr": "كان الحل للمشكلة واضحًا لمعظم المهندسين."
+  },
+  {
+    "id": 384,
+    "word": "optimistic",
+    "antonym": "pessimistic",
+    "skill": "Speaking",
+    "translation": "متفائل",
+    "pronunciation": "op-ti-MIS-tik",
+    "example": "Despite the setbacks, the team remained optimistic about success.",
+    "exampleAr": "رغم النكسات، ظل الفريق متفائلًا بشأن النجاح."
+  },
+  {
+    "id": 385,
+    "word": "original",
+    "antonym": "copied",
+    "skill": "Writing",
+    "translation": "أصلي / مبتكر",
+    "pronunciation": "ə-RIJ-i-nəl",
+    "example": "The research group produced an original solution to a complex problem.",
+    "exampleAr": "ابتكر فريق البحث حلًا أصيلًا لمشكلة معقدة."
+  },
+  {
+    "id": 386,
+    "word": "outweigh",
+    "antonym": "underperform",
+    "skill": "Writing",
+    "translation": "يفوق / يرجح",
+    "pronunciation": "owt-WAY",
+    "example": "The benefits of the project outweigh the potential risks.",
+    "exampleAr": "فوائد المشروع تفوق المخاطر المحتملة."
+  },
+  {
+    "id": 387,
+    "word": "obscure",
+    "antonym": "clear",
+    "skill": "Writing",
+    "translation": "غامض / مبهم",
+    "pronunciation": "əb-SKYOOR",
+    "example": "The instructions were obscure and difficult to understand.",
+    "exampleAr": "كانت التعليمات غامضة ويصعب فهمها."
+  },
+  {
+    "id": 388,
+    "word": "oppose",
+    "antonym": "support",
+    "skill": "Writing",
+    "translation": "يعارض",
+    "pronunciation": "ə-POHZ",
+    "example": "Many citizens gathered to oppose the government's decision.",
+    "exampleAr": "تجمّع كثير من المواطنين لمعارضة قرار الحكومة."
+  },
+  {
+    "id": 389,
+    "word": "orderly",
+    "antonym": "chaotic",
+    "skill": "Writing",
+    "translation": "منظّم / منضبط",
+    "pronunciation": "OR-dər-lee",
+    "example": "An orderly evacuation saved many lives during the emergency.",
+    "exampleAr": "أنقذت عملية الإخلاء المنظّمة كثيرًا من الأرواح خلال حالة الطوارئ."
+  },
+  {
+    "id": 390,
+    "word": "overestimate",
+    "antonym": "underestimate",
+    "skill": "Writing",
+    "translation": "يُبالغ في التقدير",
+    "pronunciation": "oh-vər-ES-ti-mayt",
+    "example": "It is easy to overestimate the speed of social change.",
+    "exampleAr": "من السهل المبالغة في تقدير سرعة التغيير الاجتماعي."
+  },
+  {
+    "id": 391,
+    "word": "opinion",
+    "antonym": "fact",
+    "skill": "Reading",
+    "translation": "رأي",
+    "pronunciation": "ə-PIN-yən",
+    "example": "Public opinion shifted significantly after the release of the report.",
+    "exampleAr": "تحوّل الرأي العام بشكل ملحوظ بعد نشر التقرير."
+  },
+  {
+    "id": 392,
+    "word": "optimise",
+    "antonym": "neglect",
+    "skill": "Writing",
+    "translation": "يُحسّن / يُطوّر",
+    "pronunciation": "OP-ti-myz",
+    "example": "The team worked to optimise the efficiency of the production process.",
+    "exampleAr": "عمل الفريق على تحسين كفاءة عملية الإنتاج."
+  },
+  {
+    "id": 393,
+    "word": "powerful",
+    "antonym": "weak",
+    "skill": "Writing",
+    "translation": "قوي",
+    "pronunciation": "POW-ər-fəl",
+    "example": "A powerful speech can inspire an entire generation to take action.",
+    "exampleAr": "يمكن لخطاب قوي أن يُلهم جيلًا كاملًا لاتخاذ إجراء."
+  },
+  {
+    "id": 394,
+    "word": "practical",
+    "antonym": "idealistic",
+    "skill": "Writing",
+    "translation": "عملي",
+    "pronunciation": "PRAK-ti-kəl",
+    "example": "The training programme focused on practical skills rather than theory.",
+    "exampleAr": "ركّز برنامج التدريب على المهارات العملية بدلًا من النظرية."
+  },
+  {
+    "id": 395,
+    "word": "precise",
+    "antonym": "vague",
+    "skill": "Writing",
+    "translation": "دقيق / محدد",
+    "pronunciation": "pri-SYS",
+    "example": "Scientists must use precise measurements when conducting experiments.",
+    "exampleAr": "يجب على العلماء استخدام قياسات دقيقة عند إجراء التجارب."
+  },
+  {
+    "id": 396,
+    "word": "prevalent",
+    "antonym": "rare",
+    "skill": "Writing",
+    "translation": "سائد / منتشر",
+    "pronunciation": "PREV-ə-lənt",
+    "example": "Obesity has become increasingly prevalent in developed countries.",
+    "exampleAr": "أصبح السمنة منتشرة بشكل متزايد في الدول المتقدمة."
+  },
+  {
+    "id": 397,
+    "word": "productive",
+    "antonym": "counterproductive",
+    "skill": "Writing",
+    "translation": "منتج",
+    "pronunciation": "prə-DUK-tiv",
+    "example": "A productive work environment encourages both creativity and focus.",
+    "exampleAr": "بيئة العمل المنتجة تُعزّز الإبداع والتركيز معًا."
+  },
+  {
+    "id": 398,
+    "word": "progressive",
+    "antonym": "regressive",
+    "skill": "Writing",
+    "translation": "تقدمي / تطوري",
+    "pronunciation": "prə-GRES-iv",
+    "example": "A progressive tax system ensures that higher earners pay more.",
+    "exampleAr": "النظام الضريبي التصاعدي يضمن أن يدفع أصحاب الدخل الأعلى أكثر."
+  },
+  {
+    "id": 399,
+    "word": "public",
+    "antonym": "private",
+    "skill": "Writing",
+    "translation": "عام / جماهيري",
+    "pronunciation": "PUB-lik",
+    "example": "Public confidence in the health system needs to be restored.",
+    "exampleAr": "ثقة الجمهور في النظام الصحي تحتاج إلى استعادة."
+  },
+  {
+    "id": 400,
+    "word": "partial",
+    "antonym": "one-sided",
+    "skill": "Writing",
+    "translation": "جزئي / متحيز",
+    "pronunciation": "PAR-shəl",
+    "example": "A partial solution was agreed upon while talks continued.",
+    "exampleAr": "تمّ الاتفاق على حل جزئي بينما استمرت المحادثات."
+  },
+  {
+    "id": 401,
+    "word": "peaceful",
+    "antonym": "violent",
+    "skill": "Writing",
+    "translation": "سلمي / هادئ",
+    "pronunciation": "PEES-fəl",
+    "example": "Citizens gathered for a peaceful protest in the town square.",
+    "exampleAr": "تجمّع المواطنون لاحتجاج سلمي في ساحة البلدة."
+  },
+  {
+    "id": 402,
+    "word": "plentiful",
+    "antonym": "scarce",
+    "skill": "Writing",
+    "translation": "وفير / غزير",
+    "pronunciation": "PLEN-ti-fəl",
+    "example": "The harvest was plentiful thanks to the ideal growing conditions.",
+    "exampleAr": "كان الحصاد وفيرًا بفضل الظروف الزراعية المثالية."
+  },
+  {
+    "id": 403,
+    "word": "pollute",
+    "antonym": "clean",
+    "skill": "Writing",
+    "translation": "يُلوّث",
+    "pronunciation": "pə-LOOT",
+    "example": "Industrial waste continues to pollute rivers and oceans.",
+    "exampleAr": "تستمر النفايات الصناعية في تلويث الأنهار والمحيطات."
+  },
+  {
+    "id": 404,
+    "word": "poor",
+    "antonym": "wealthy",
+    "skill": "Writing",
+    "translation": "فقير",
+    "pronunciation": "POR",
+    "example": "The charity focuses on improving living conditions for poor communities.",
+    "exampleAr": "تُركّز الجمعية الخيرية على تحسين الظروف المعيشية للمجتمعات الفقيرة."
+  },
+  {
+    "id": 405,
+    "word": "prevent",
+    "antonym": "allow",
+    "skill": "Writing",
+    "translation": "يمنع",
+    "pronunciation": "pri-VENT",
+    "example": "Regular hand washing is one of the best ways to prevent illness.",
+    "exampleAr": "غسل اليدين بانتظام من أفضل الطرق للوقاية من المرض."
+  },
+  {
+    "id": 406,
+    "word": "primary",
+    "antonym": "secondary",
+    "skill": "Writing",
+    "translation": "رئيسي / أساسي",
+    "pronunciation": "PRY-mer-ee",
+    "example": "Education is the primary tool for reducing poverty.",
+    "exampleAr": "التعليم هو الأداة الرئيسية لتقليل الفقر."
+  },
+  {
+    "id": 407,
+    "word": "progress",
+    "antonym": "decline",
+    "skill": "Writing",
+    "translation": "تقدم",
+    "pronunciation": "PROH-gres",
+    "example": "Scientific progress has transformed the way we live and work.",
+    "exampleAr": "أحدث التقدم العلمي ثورة في أسلوب حياتنا وعملنا."
+  },
+  {
+    "id": 408,
+    "word": "promote",
+    "antonym": "discourage",
+    "skill": "Writing",
+    "translation": "يُعزّز / يروّج",
+    "pronunciation": "prə-MOHT",
+    "example": "Schools should promote healthy eating habits from an early age.",
+    "exampleAr": "يجب على المدارس تعزيز عادات الأكل الصحية منذ سن مبكرة."
+  },
+  {
+    "id": 409,
+    "word": "protect",
+    "antonym": "harm",
+    "skill": "Writing",
+    "translation": "يحمي",
+    "pronunciation": "prə-TEKT",
+    "example": "Governments have a duty to protect their citizens from harm.",
+    "exampleAr": "على الحكومات واجب حماية مواطنيها من الأذى."
+  },
+  {
+    "id": 410,
+    "word": "plausible",
+    "antonym": "far-fetched",
+    "skill": "Reading",
+    "translation": "معقول / محتمل",
+    "pronunciation": "PLAW-zə-bəl",
+    "example": "The explanation given by the scientist seemed plausible.",
+    "exampleAr": "بدا التفسير الذي قدّمه العالم معقولًا."
+  },
+  {
+    "id": 411,
+    "word": "patient",
+    "antonym": "impulsive",
+    "skill": "Speaking",
+    "translation": "صبور / مريض",
+    "pronunciation": "PAY-shənt",
+    "example": "Being patient is crucial when learning a new language.",
+    "exampleAr": "الصبر أمر بالغ الأهمية عند تعلم لغة جديدة."
+  },
+  {
+    "id": 412,
+    "word": "pleasant",
+    "antonym": "disagreeable",
+    "skill": "Speaking",
+    "translation": "لطيف / ممتع",
+    "pronunciation": "PLEZ-ənt",
+    "example": "The conference room was pleasant and conducive to focused discussion.",
+    "exampleAr": "كانت قاعة المؤتمرات لطيفة ومُهيَّأة للنقاش المركّز."
+  },
+  {
+    "id": 413,
+    "word": "polite",
+    "antonym": "rude",
+    "skill": "Speaking",
+    "translation": "مهذب / لبق",
+    "pronunciation": "pə-LYT",
+    "example": "A polite and professional manner is expected in formal interviews.",
+    "exampleAr": "الأسلوب المهذب والمهني مطلوب في المقابلات الرسمية."
+  },
+  {
+    "id": 414,
+    "word": "popular",
+    "antonym": "marginal",
+    "skill": "Writing",
+    "translation": "شعبي / رائج",
+    "pronunciation": "POP-yə-lər",
+    "example": "The policy became popular among younger voters.",
+    "exampleAr": "أصبحت السياسة شعبية بين الناخبين الأصغر سنًا."
+  },
+  {
+    "id": 415,
+    "word": "proud",
+    "antonym": "ashamed",
+    "skill": "Speaking",
+    "translation": "فخور",
+    "pronunciation": "PROWD",
+    "example": "She was proud to represent her country at the international competition.",
+    "exampleAr": "كانت فخورة بتمثيل بلادها في المسابقة الدولية."
+  },
+  {
+    "id": 416,
+    "word": "proportional",
+    "antonym": "skewed",
+    "skill": "Writing",
+    "translation": "متناسب",
+    "pronunciation": "prə-POR-shə-nəl",
+    "example": "Punishment should be proportional to the severity of the offence.",
+    "exampleAr": "يجب أن تتناسب العقوبة مع خطورة الجريمة."
+  },
+  {
+    "id": 417,
+    "word": "pragmatic",
+    "antonym": "idealistic",
+    "skill": "Speaking",
+    "translation": "براغماتي / عملي",
+    "pronunciation": "prag-MAT-ik",
+    "example": "A pragmatic approach to problem-solving yields better results.",
+    "exampleAr": "يُعطي النهج البراغماتي لحل المشكلات نتائج أفضل."
+  },
+  {
+    "id": 418,
+    "word": "paradoxical",
+    "antonym": "logical",
+    "skill": "Reading",
+    "translation": "متناقض / مفارق",
+    "pronunciation": "pehr-ə-DOK-si-kəl",
+    "example": "It is paradoxical that prosperity can sometimes increase dissatisfaction.",
+    "exampleAr": "من المفارقات أن الرخاء يمكن أن يزيد أحيانًا من عدم الرضا."
+  },
+  {
+    "id": 419,
+    "word": "pervasive",
+    "antonym": "localised",
+    "skill": "Reading",
+    "translation": "منتشر / واسع الانتشار",
+    "pronunciation": "pər-VAY-siv",
+    "example": "Social media has a pervasive influence on modern culture.",
+    "exampleAr": "لوسائل التواصل الاجتماعي تأثير واسع الانتشار على الثقافة الحديثة."
+  },
+  {
+    "id": 420,
+    "word": "postulate",
+    "antonym": "disprove",
+    "skill": "Reading",
+    "translation": "يفترض / يُقرّر",
+    "pronunciation": "POS-chə-layt",
+    "example": "Researchers postulate that the virus spread through contaminated water.",
+    "exampleAr": "يفترض الباحثون أن الفيروس انتشر عبر المياه الملوثة."
+  },
+  {
+    "id": 421,
+    "word": "predominant",
+    "antonym": "minor",
+    "skill": "Writing",
+    "translation": "سائد / مهيمن",
+    "pronunciation": "pri-DOM-i-nənt",
+    "example": "Agriculture was the predominant industry in the region for centuries.",
+    "exampleAr": "كانت الزراعة الصناعة السائدة في المنطقة لقرون."
+  },
+  {
+    "id": 422,
+    "word": "prolific",
+    "antonym": "unproductive",
+    "skill": "Writing",
+    "translation": "غزير الإنتاج",
+    "pronunciation": "prə-LIF-ik",
+    "example": "The prolific author published over fifty novels during her career.",
+    "exampleAr": "نشرت الكاتبة الغزيرة أكثر من خمسين رواية خلال مسيرتها المهنية."
+  },
+  {
+    "id": 423,
+    "word": "quantitative",
+    "antonym": "qualitative",
+    "skill": "Reading",
+    "translation": "كمّي / قابل للقياس الرقمي",
+    "pronunciation": "KWON-ti-tay-tiv",
+    "example": "Quantitative data provides measurable insights into trends and patterns.",
+    "exampleAr": "البيانات الكمّية تُقدّم رؤى قابلة للقياس حول الاتجاهات والأنماط."
+  },
+  {
+    "id": 424,
+    "word": "rapid",
+    "antonym": "slow",
+    "skill": "Writing",
+    "translation": "سريع",
+    "pronunciation": "RAP-id",
+    "example": "The rapid growth of the tech industry has transformed the economy.",
+    "exampleAr": "أحدث النمو السريع لقطاع التكنولوجيا تحولًا جذريًا في الاقتصاد."
+  },
+  {
+    "id": 425,
+    "word": "rational",
+    "antonym": "impulsive",
+    "skill": "Writing",
+    "translation": "عقلاني / منطقي",
+    "pronunciation": "RASH-ə-nəl",
+    "example": "A rational approach to decision-making minimises the risk of error.",
+    "exampleAr": "النهج العقلاني في اتخاذ القرارات يُقلّص خطر الوقوع في الأخطاء."
+  },
+  {
+    "id": 426,
+    "word": "realistic",
+    "antonym": "idealistic",
+    "skill": "Writing",
+    "translation": "واقعي",
+    "pronunciation": "ree-ə-LIS-tik",
+    "example": "It is important to set realistic goals during exam preparation.",
+    "exampleAr": "من المهم تحديد أهداف واقعية أثناء التحضير للامتحانات."
+  },
+  {
+    "id": 427,
+    "word": "reliable",
+    "antonym": "inconsistent",
+    "skill": "Reading",
+    "translation": "موثوق",
+    "pronunciation": "ri-LY-ə-bəl",
+    "example": "A reliable source of data is essential in academic research.",
+    "exampleAr": "مصدر البيانات الموثوق ضروري في البحث الأكاديمي."
+  },
+  {
+    "id": 428,
+    "word": "rich",
+    "antonym": "poor",
+    "skill": "Writing",
+    "translation": "ثري / غني",
+    "pronunciation": "RICH",
+    "example": "The country is rich in natural resources but struggles economically.",
+    "exampleAr": "الدولة غنية بالموارد الطبيعية لكنها تعاني اقتصاديًا."
+  },
+  {
+    "id": 429,
+    "word": "rare",
+    "antonym": "common",
+    "skill": "Writing",
+    "translation": "نادر",
+    "pronunciation": "RAIR",
+    "example": "This species of bird is increasingly rare in its native habitat.",
+    "exampleAr": "هذا النوع من الطيور يزداد ندرةً في موطنه الطبيعي."
+  },
+  {
+    "id": 430,
+    "word": "recover",
+    "antonym": "decline",
+    "skill": "Writing",
+    "translation": "يتعافى / يستعيد",
+    "pronunciation": "ri-KUV-ər",
+    "example": "The economy is expected to recover within the next two years.",
+    "exampleAr": "من المتوقع أن يتعافى الاقتصاد في غضون العامين المقبلين."
+  },
+  {
+    "id": 431,
+    "word": "reduce",
+    "antonym": "increase",
+    "skill": "Writing",
+    "translation": "يُقلّل",
+    "pronunciation": "ri-DYOOS",
+    "example": "Renewable energy can significantly reduce carbon emissions.",
+    "exampleAr": "يمكن للطاقة المتجددة أن تُقلّل بشكل ملحوظ من انبعاثات الكربون."
+  },
+  {
+    "id": 432,
+    "word": "refuse",
+    "antonym": "accept",
+    "skill": "Writing",
+    "translation": "يرفض",
+    "pronunciation": "ri-FYOOZ",
+    "example": "The government refused to negotiate with the extremist group.",
+    "exampleAr": "رفضت الحكومة التفاوض مع الجماعة المتطرفة."
+  },
+  {
+    "id": 433,
+    "word": "release",
+    "antonym": "restrict",
+    "skill": "Writing",
+    "translation": "يُطلق / يُحرّر",
+    "pronunciation": "ri-LEES",
+    "example": "The suspect was released after new evidence came to light.",
+    "exampleAr": "أُفرج عن المشتبه به بعد ظهور أدلة جديدة."
+  },
+  {
+    "id": 434,
+    "word": "remote",
+    "antonym": "accessible",
+    "skill": "Writing",
+    "translation": "بعيد / نائٍ",
+    "pronunciation": "ri-MOHT",
+    "example": "Internet access remains limited in many remote areas.",
+    "exampleAr": "لا يزال الوصول إلى الإنترنت محدودًا في كثير من المناطق النائية."
+  },
+  {
+    "id": 435,
+    "word": "renewable",
+    "antonym": "finite",
+    "skill": "Writing",
+    "translation": "متجدد",
+    "pronunciation": "ri-NYOO-ə-bəl",
+    "example": "Investing in renewable energy is essential for a sustainable future.",
+    "exampleAr": "الاستثمار في الطاقة المتجددة ضروري لمستقبل مستدام."
+  },
+  {
+    "id": 436,
+    "word": "restrict",
+    "antonym": "free",
+    "skill": "Writing",
+    "translation": "يُقيّد",
+    "pronunciation": "ri-STRIKT",
+    "example": "The new law seeks to restrict the sale of harmful products.",
+    "exampleAr": "يسعى القانون الجديد إلى تقييد بيع المنتجات الضارة."
+  },
+  {
+    "id": 437,
+    "word": "reveal",
+    "antonym": "conceal",
+    "skill": "Writing",
+    "translation": "يكشف",
+    "pronunciation": "ri-VEEL",
+    "example": "The audit revealed serious financial irregularities within the company.",
+    "exampleAr": "كشف التدقيق عن مخالفات مالية خطيرة داخل الشركة."
+  },
+  {
+    "id": 438,
+    "word": "reward",
+    "antonym": "punish",
+    "skill": "Writing",
+    "translation": "مكافأة / يُكافئ",
+    "pronunciation": "ri-WORD",
+    "example": "The company introduced a reward scheme to motivate employees.",
+    "exampleAr": "أطلقت الشركة برنامج مكافآت لتحفيز الموظفين."
+  },
+  {
+    "id": 439,
+    "word": "rewarding",
+    "antonym": "futile",
+    "skill": "Speaking",
+    "translation": "مجزٍ / مُرضٍ",
+    "pronunciation": "ri-WOR-ding",
+    "example": "Teaching can be a challenging but deeply rewarding career.",
+    "exampleAr": "قد تكون مهنة التدريس تحديًا لكنها مهنة مُرضية عميقة."
+  },
+  {
+    "id": 440,
+    "word": "redundant",
+    "antonym": "essential",
+    "skill": "Writing",
+    "translation": "زائد / مُضاف",
+    "pronunciation": "ri-DUN-dənt",
+    "example": "With automation, many routine jobs have become redundant.",
+    "exampleAr": "مع التشغيل الآلي، أصبحت كثير من الوظائف الروتينية زائدة."
+  },
+  {
+    "id": 441,
+    "word": "regulate",
+    "antonym": "deregulate",
+    "skill": "Writing",
+    "translation": "يُنظّم",
+    "pronunciation": "REG-yə-layt",
+    "example": "Governments must regulate financial markets to prevent abuse.",
+    "exampleAr": "يجب على الحكومات تنظيم الأسواق المالية لمنع الاستغلال."
+  },
+  {
+    "id": 442,
+    "word": "resilient",
+    "antonym": "fragile",
+    "skill": "Writing",
+    "translation": "مرن / قادر على التعافي",
+    "pronunciation": "ri-ZIL-yənt",
+    "example": "Resilient communities recover more quickly after natural disasters.",
+    "exampleAr": "تتعافى المجتمعات المرنة بشكل أسرع بعد الكوارث الطبيعية."
+  },
+  {
+    "id": 443,
+    "word": "restore",
+    "antonym": "damage",
+    "skill": "Writing",
+    "translation": "يُعيد / يُرمّم",
+    "pronunciation": "ri-STOR",
+    "example": "The government launched a programme to restore damaged public buildings.",
+    "exampleAr": "أطلقت الحكومة برنامجًا لترميم المباني العامة المتضررة."
+  },
+  {
+    "id": 444,
+    "word": "reconcile",
+    "antonym": "aggravate",
+    "skill": "Writing",
+    "translation": "يُصالح / يوفّق",
+    "pronunciation": "REK-ən-syl",
+    "example": "The mediator worked to reconcile the differences between both parties.",
+    "exampleAr": "عمل الوسيط على المصالحة بين الاختلافات بين الطرفين."
+  },
+  {
+    "id": 445,
+    "word": "rigid",
+    "antonym": "adaptable",
+    "skill": "Writing",
+    "translation": "صارم / جامد",
+    "pronunciation": "RIJ-id",
+    "example": "A rigid system struggles to adapt when circumstances change.",
+    "exampleAr": "يعاني النظام الجامد من صعوبة التكيف عندما تتغير الظروف."
+  },
+  {
+    "id": 446,
+    "word": "secure",
+    "antonym": "vulnerable",
+    "skill": "Writing",
+    "translation": "آمن / يُحكم",
+    "pronunciation": "si-KYOOR",
+    "example": "Citizens have a right to live in a secure and stable environment.",
+    "exampleAr": "للمواطنين الحق في العيش في بيئة آمنة ومستقرة."
+  },
+  {
+    "id": 447,
+    "word": "skilled",
+    "antonym": "incompetent",
+    "skill": "Writing",
+    "translation": "ماهر / حاذق",
+    "pronunciation": "SKILD",
+    "example": "A skilled workforce is one of the most valuable assets a nation can have.",
+    "exampleAr": "القوى العاملة الماهرة من أثمن الأصول التي يمكن أن تمتلكها أمة."
+  },
+  {
+    "id": 448,
+    "word": "stable",
+    "antonym": "turbulent",
+    "skill": "Writing",
+    "translation": "مستقر / ثابت",
+    "pronunciation": "STAY-bəl",
+    "example": "A stable political environment attracts foreign investment.",
+    "exampleAr": "البيئة السياسية المستقرة تجذب الاستثمار الأجنبي."
+  },
+  {
+    "id": 449,
+    "word": "standard",
+    "antonym": "substandard",
+    "skill": "Writing",
+    "translation": "معيار / مستوى",
+    "pronunciation": "STAN-dərd",
+    "example": "Educational standards must be maintained to ensure quality.",
+    "exampleAr": "يجب الحفاظ على المعايير التعليمية لضمان الجودة."
+  },
+  {
+    "id": 450,
+    "word": "successful",
+    "antonym": "futile",
+    "skill": "Writing",
+    "translation": "ناجح",
+    "pronunciation": "sək-SES-fəl",
+    "example": "The campaign proved highly successful in raising public awareness.",
+    "exampleAr": "أثبتت الحملة نجاحًا كبيرًا في رفع الوعي العام."
+  },
+  {
+    "id": 451,
+    "word": "sustainable",
+    "antonym": "destructive",
+    "skill": "Writing",
+    "translation": "مستدام",
+    "pronunciation": "sə-STAYN-ə-bəl",
+    "example": "Sustainable farming practices protect the environment for future generations.",
+    "exampleAr": "الممارسات الزراعية المستدامة تحمي البيئة للأجيال القادمة."
+  },
+  {
+    "id": 452,
+    "word": "scarce",
+    "antonym": "abundant",
+    "skill": "Writing",
+    "translation": "شحيح / نادر",
+    "pronunciation": "SKAIRS",
+    "example": "Fresh water is increasingly scarce in parts of sub-Saharan Africa.",
+    "exampleAr": "المياه العذبة شحيحة بشكل متزايد في أجزاء من أفريقيا جنوب الصحراء."
+  },
+  {
+    "id": 453,
+    "word": "sharp",
+    "antonym": "gradual",
+    "skill": "Writing",
+    "translation": "حاد / سريع",
+    "pronunciation": "SHARP",
+    "example": "A sharp increase in prices led to widespread public protests.",
+    "exampleAr": "أدى الارتفاع الحاد في الأسعار إلى احتجاجات شعبية واسعة النطاق."
+  },
+  {
+    "id": 454,
+    "word": "solve",
+    "antonym": "create",
+    "skill": "Writing",
+    "translation": "يحل / يُعالج",
+    "pronunciation": "SOLV",
+    "example": "Collaboration between nations is needed to solve global challenges.",
+    "exampleAr": "هناك حاجة إلى التعاون بين الدول لحل التحديات العالمية."
+  },
+  {
+    "id": 455,
+    "word": "spend",
+    "antonym": "save",
+    "skill": "Writing",
+    "translation": "ينفق / يُمضي",
+    "pronunciation": "SPEND",
+    "example": "Governments must spend wisely to ensure value for public money.",
+    "exampleAr": "يجب على الحكومات الإنفاق بحكمة لضمان قيمة المال العام."
+  },
+  {
+    "id": 456,
+    "word": "spread",
+    "antonym": "contain",
+    "skill": "Writing",
+    "translation": "يمتد / ينتشر",
+    "pronunciation": "SPRED",
+    "example": "The disease began to spread rapidly through the densely populated area.",
+    "exampleAr": "بدأ المرض ينتشر بسرعة في المنطقة المكتظة بالسكان."
+  },
+  {
+    "id": 457,
+    "word": "strengthen",
+    "antonym": "weaken",
+    "skill": "Writing",
+    "translation": "يُعزّز / يُقوّي",
+    "pronunciation": "STRENG-thən",
+    "example": "International cooperation can strengthen global security.",
+    "exampleAr": "يمكن للتعاون الدولي أن يُعزّز الأمن العالمي."
+  },
+  {
+    "id": 458,
+    "word": "superficial",
+    "antonym": "deep",
+    "skill": "Writing",
+    "translation": "سطحي",
+    "pronunciation": "soo-pər-FISH-əl",
+    "example": "A superficial understanding of the topic is not sufficient.",
+    "exampleAr": "الفهم السطحي للموضوع غير كافٍ."
+  },
+  {
+    "id": 459,
+    "word": "surge",
+    "antonym": "decline",
+    "skill": "Writing",
+    "translation": "يرتفع فجأة / تدفق",
+    "pronunciation": "SURJ",
+    "example": "There was a surge in demand for face masks during the pandemic.",
+    "exampleAr": "شهدت الكمامات ارتفاعًا مفاجئًا في الطلب خلال الجائحة."
+  },
+  {
+    "id": 460,
+    "word": "structured",
+    "antonym": "chaotic",
+    "skill": "Writing",
+    "translation": "منظّم / منهجي",
+    "pronunciation": "STRUK-chərd",
+    "example": "A structured approach to revision helps maximise exam performance.",
+    "exampleAr": "النهج المنظّم في المراجعة يُساعد على تعظيم الأداء في الامتحانات."
+  },
+  {
+    "id": 461,
+    "word": "supported",
+    "antonym": "contested",
+    "skill": "Reading",
+    "translation": "مدعوم / مؤيَّد",
+    "pronunciation": "sə-POR-tid",
+    "example": "The proposal was supported by the majority of committee members.",
+    "exampleAr": "حظي المقترح بدعم غالبية أعضاء اللجنة."
+  },
+  {
+    "id": 462,
+    "word": "satisfied",
+    "antonym": "discontented",
+    "skill": "Speaking",
+    "translation": "راضٍ / مُكتفٍ",
+    "pronunciation": "SAT-is-fyd",
+    "example": "Customers who feel satisfied are more likely to return.",
+    "exampleAr": "العملاء الراضون أكثر احتمالًا للعودة."
+  },
+  {
+    "id": 463,
+    "word": "serious",
+    "antonym": "trivial",
+    "skill": "Speaking",
+    "translation": "جادّ / خطير",
+    "pronunciation": "SIIR-ee-əs",
+    "example": "Climate change poses a serious threat to global food security.",
+    "exampleAr": "يُشكّل تغير المناخ تهديدًا خطيرًا للأمن الغذائي العالمي."
+  },
+  {
+    "id": 464,
+    "word": "sociable",
+    "antonym": "antisocial",
+    "skill": "Speaking",
+    "translation": "اجتماعي",
+    "pronunciation": "SOH-shə-bəl",
+    "example": "A sociable personality helps in forming strong professional networks.",
+    "exampleAr": "الشخصية الاجتماعية تُساعد في بناء شبكات مهنية قوية."
+  },
+  {
+    "id": 465,
+    "word": "stress",
+    "antonym": "relaxation",
+    "skill": "Speaking",
+    "translation": "ضغط / توتر",
+    "pronunciation": "STRES",
+    "example": "Chronic stress at work can lead to burnout and health problems.",
+    "exampleAr": "التوتر المزمن في العمل قد يؤدي إلى الإرهاق والمشكلات الصحية."
+  },
+  {
+    "id": 466,
+    "word": "surprising",
+    "antonym": "expected",
+    "skill": "Speaking",
+    "translation": "مفاجئ",
+    "pronunciation": "sər-PY-zing",
+    "example": "The results of the election were surprising to most analysts.",
+    "exampleAr": "كانت نتائج الانتخابات مفاجئة لمعظم المحللين."
+  },
+  {
+    "id": 467,
+    "word": "sophisticated",
+    "antonym": "primitive",
+    "skill": "Writing",
+    "translation": "متطور / راقٍ",
+    "pronunciation": "sə-FIS-ti-kay-tid",
+    "example": "The company uses a highly sophisticated data analysis system.",
+    "exampleAr": "تستخدم الشركة نظامًا بالغ التطور لتحليل البيانات."
+  },
+  {
+    "id": 468,
+    "word": "subsidise",
+    "antonym": "tax",
+    "skill": "Writing",
+    "translation": "يدعم مالياً",
+    "pronunciation": "SUB-si-dyz",
+    "example": "The government chose to subsidise public transport to reduce car use.",
+    "exampleAr": "اختارت الحكومة دعم وسائل النقل العام للحدّ من استخدام السيارات."
+  },
+  {
+    "id": 469,
+    "word": "scrutinise",
+    "antonym": "overlook",
+    "skill": "Reading",
+    "translation": "يُدقّق / يفحص",
+    "pronunciation": "SKROO-ti-nyz",
+    "example": "Journalists scrutinise government policies to ensure accountability.",
+    "exampleAr": "يُدقّق الصحفيون في سياسات الحكومة لضمان المساءلة."
+  },
+  {
+    "id": 470,
+    "word": "sceptical",
+    "antonym": "credulous",
+    "skill": "Speaking",
+    "translation": "متشكك",
+    "pronunciation": "SKEP-ti-kəl",
+    "example": "The public was sceptical about the government's proposed reforms.",
+    "exampleAr": "كان الجمهور متشككًا في الإصلاحات المقترحة من الحكومة."
+  },
+  {
+    "id": 471,
+    "word": "supplement",
+    "antonym": "reduce",
+    "skill": "Writing",
+    "translation": "يُكمّل / مكمّل",
+    "pronunciation": "SUP-lə-ment",
+    "example": "Some students choose to supplement their studies with online courses.",
+    "exampleAr": "يختار بعض الطلاب تكميل دراستهم بدورات عبر الإنترنت."
+  },
+  {
+    "id": 472,
+    "word": "transparent",
+    "antonym": "opaque",
+    "skill": "Writing",
+    "translation": "شفاف",
+    "pronunciation": "trans-PAIR-ənt",
+    "example": "A transparent system of governance builds public trust.",
+    "exampleAr": "نظام الحوكمة الشفاف يبني ثقة الجمهور."
+  },
+  {
+    "id": 473,
+    "word": "trivial",
+    "antonym": "significant",
+    "skill": "Writing",
+    "translation": "تافه / ضئيل",
+    "pronunciation": "TRIV-ee-əl",
+    "example": "Don't waste time arguing about trivial matters during negotiations.",
+    "exampleAr": "لا تُضيّع الوقت في الجدال حول أمور تافهة خلال المفاوضات."
+  },
+  {
+    "id": 474,
+    "word": "tense",
+    "antonym": "relaxed",
+    "skill": "Speaking",
+    "translation": "متوتر",
+    "pronunciation": "TENS",
+    "example": "The atmosphere in the meeting room was tense and uncomfortable.",
+    "exampleAr": "كان الجو في غرفة الاجتماعات متوترًا وغير مريح."
+  },
+  {
+    "id": 475,
+    "word": "threat",
+    "antonym": "opportunity",
+    "skill": "Writing",
+    "translation": "تهديد",
+    "pronunciation": "THRET",
+    "example": "Cybercrime poses a growing threat to national security.",
+    "exampleAr": "يُشكّل الجرائم الإلكترونية تهديدًا متزايدًا للأمن القومي."
+  },
+  {
+    "id": 476,
+    "word": "trust",
+    "antonym": "suspicion",
+    "skill": "Writing",
+    "translation": "ثقة / يثق",
+    "pronunciation": "TRUST",
+    "example": "Trust between citizens and government is essential for social stability.",
+    "exampleAr": "الثقة بين المواطنين والحكومة ضرورية للاستقرار الاجتماعي."
+  },
+  {
+    "id": 477,
+    "word": "theoretical",
+    "antonym": "practical",
+    "skill": "Reading",
+    "translation": "نظري",
+    "pronunciation": "thee-ə-RET-i-kəl",
+    "example": "The theoretical framework provided a basis for further research.",
+    "exampleAr": "قدّم الإطار النظري أساسًا لمزيد من البحث."
+  },
+  {
+    "id": 478,
+    "word": "talented",
+    "antonym": "mediocre",
+    "skill": "Speaking",
+    "translation": "موهوب",
+    "pronunciation": "TAL-ən-tid",
+    "example": "The school worked hard to develop its talented young musicians.",
+    "exampleAr": "عملت المدرسة بجد على تطوير موسيقييها الشباب الموهوبين."
+  },
+  {
+    "id": 479,
+    "word": "tiring",
+    "antonym": "energising",
+    "skill": "Speaking",
+    "translation": "مُتعب / مُضنٍ",
+    "pronunciation": "TY-ring",
+    "example": "The long hours made the job increasingly tiring over time.",
+    "exampleAr": "جعلت ساعات العمل الطويلة الوظيفة مُرهِقة بشكل متزايد مع مرور الوقت."
+  },
+  {
+    "id": 480,
+    "word": "tentative",
+    "antonym": "definitive",
+    "skill": "Reading",
+    "translation": "مؤقت / غير حاسم",
+    "pronunciation": "TEN-tə-tiv",
+    "example": "A tentative agreement was reached, subject to further review.",
+    "exampleAr": "تم التوصل إلى اتفاق مبدئي، خاضع لمزيد من المراجعة."
+  },
+  {
+    "id": 481,
+    "word": "tangible",
+    "antonym": "abstract",
+    "skill": "Writing",
+    "translation": "ملموس",
+    "pronunciation": "TAN-ji-bəl",
+    "example": "The project produced tangible benefits for the local community.",
+    "exampleAr": "حقق المشروع فوائد ملموسة للمجتمع المحلي."
+  },
+  {
+    "id": 482,
+    "word": "terminate",
+    "antonym": "initiate",
+    "skill": "Writing",
+    "translation": "ينهي / يُوقف",
+    "pronunciation": "TUR-mi-nayt",
+    "example": "The company decided to terminate the contract due to repeated delays.",
+    "exampleAr": "قررت الشركة إنهاء العقد بسبب التأخيرات المتكررة."
+  },
+  {
+    "id": 483,
+    "word": "unity",
+    "antonym": "division",
+    "skill": "Writing",
+    "translation": "وحدة / تماسك",
+    "pronunciation": "YOON-i-tee",
+    "example": "National unity is essential during times of crisis.",
+    "exampleAr": "الوحدة الوطنية ضرورية في أوقات الأزمات."
+  },
+  {
+    "id": 484,
+    "word": "understandable",
+    "antonym": "confusing",
+    "skill": "Speaking",
+    "translation": "مفهوم / واضح",
+    "pronunciation": "un-dər-STAND-ə-bəl",
+    "example": "The anxiety felt by students before exams is entirely understandable.",
+    "exampleAr": "القلق الذي يشعر به الطلاب قبل الامتحانات أمر مفهوم تمامًا."
+  },
+  {
+    "id": 485,
+    "word": "unique",
+    "antonym": "ordinary",
+    "skill": "Speaking",
+    "translation": "فريد / متميز",
+    "pronunciation": "yoo-NEEK",
+    "example": "Every individual has a unique set of skills and experiences.",
+    "exampleAr": "لكل فرد مجموعة فريدة من المهارات والخبرات."
+  },
+  {
+    "id": 486,
+    "word": "unified",
+    "antonym": "divided",
+    "skill": "Writing",
+    "translation": "موحّد",
+    "pronunciation": "YOON-i-fyd",
+    "example": "A unified approach is needed to address the climate crisis.",
+    "exampleAr": "هناك حاجة إلى نهج موحّد لمعالجة أزمة المناخ."
+  },
+  {
+    "id": 487,
+    "word": "unanimous",
+    "antonym": "divided",
+    "skill": "Reading",
+    "translation": "بالإجماع",
+    "pronunciation": "yoo-NAN-i-məs",
+    "example": "The committee reached a unanimous decision to implement the policy.",
+    "exampleAr": "توصّلت اللجنة إلى قرار بالإجماع لتطبيق السياسة."
+  },
+  {
+    "id": 488,
+    "word": "unprecedented",
+    "antonym": "commonplace",
+    "skill": "Writing",
+    "translation": "غير مسبوق",
+    "pronunciation": "un-PRES-i-den-tid",
+    "example": "The global pandemic caused unprecedented disruption to the world economy.",
+    "exampleAr": "أحدثت الجائحة العالمية اضطرابًا غير مسبوق في الاقتصاد العالمي."
+  },
+  {
+    "id": 489,
+    "word": "valid",
+    "antonym": "flawed",
+    "skill": "Writing",
+    "translation": "صحيح / سارٍ",
+    "pronunciation": "VAL-id",
+    "example": "A valid argument is supported by logic and reliable evidence.",
+    "exampleAr": "الحجة الصحيحة مدعومة بالمنطق والأدلة الموثوقة."
+  },
+  {
+    "id": 490,
+    "word": "vulnerable",
+    "antonym": "resilient",
+    "skill": "Writing",
+    "translation": "ضعيف / عرضة للخطر",
+    "pronunciation": "VUL-nər-ə-bəl",
+    "example": "Children in conflict zones are particularly vulnerable to harm.",
+    "exampleAr": "الأطفال في مناطق النزاع عرضة للأذى بشكل خاص."
+  },
+  {
+    "id": 491,
+    "word": "vibrant",
+    "antonym": "dull",
+    "skill": "Writing",
+    "translation": "نابض بالحياة",
+    "pronunciation": "VY-brənt",
+    "example": "The vibrant local economy attracted entrepreneurs from across the country.",
+    "exampleAr": "جذب الاقتصاد المحلي النابض بالحياة رواد الأعمال من جميع أنحاء البلاد."
+  },
+  {
+    "id": 492,
+    "word": "validate",
+    "antonym": "refute",
+    "skill": "Writing",
+    "translation": "يُصادق / يُثبت",
+    "pronunciation": "VAL-i-dayt",
+    "example": "The results were independently verified to validate the original findings.",
+    "exampleAr": "تم التحقق من النتائج بشكل مستقل للتحقق من صحة النتائج الأصلية."
+  },
+  {
+    "id": 493,
+    "word": "verify",
+    "antonym": "dispute",
+    "skill": "Writing",
+    "translation": "يتحقق / يُثبت",
+    "pronunciation": "VEH-ri-fy",
+    "example": "All sources should be verified before including them in an academic paper.",
+    "exampleAr": "يجب التحقق من جميع المصادر قبل إدراجها في ورقة بحثية أكاديمية."
+  },
+  {
+    "id": 494,
+    "word": "willing",
+    "antonym": "reluctant",
+    "skill": "Speaking",
+    "translation": "مستعد / راغب",
+    "pronunciation": "WIL-ing",
+    "example": "Both parties said they were willing to engage in further negotiations.",
+    "exampleAr": "أعرب الطرفان عن استعدادهما للمشاركة في مزيد من المفاوضات."
+  },
+  {
+    "id": 495,
+    "word": "worthwhile",
+    "antonym": "worthless",
+    "skill": "Writing",
+    "translation": "يستحق العناء",
+    "pronunciation": "wurth-WYL",
+    "example": "Investing time in developing strong writing skills is truly worthwhile.",
+    "exampleAr": "الاستثمار في تطوير مهارات الكتابة القوية أمر يستحق العناء حقًا."
+  },
+  {
+    "id": 496,
+    "word": "waste",
+    "antonym": "conserve",
+    "skill": "Writing",
+    "translation": "يُهدر / إهدار",
+    "pronunciation": "WAYST",
+    "example": "Reducing food waste is one of the simplest ways to help the environment.",
+    "exampleAr": "تقليل هدر الطعام من أبسط الطرق للمساعدة في حماية البيئة."
+  },
+  {
+    "id": 497,
+    "word": "widen",
+    "antonym": "narrow",
+    "skill": "Writing",
+    "translation": "يُوسّع",
+    "pronunciation": "WY-dən",
+    "example": "Improving education can help widen access to opportunities.",
+    "exampleAr": "تحسين التعليم يمكن أن يُوسّع إمكانية الوصول إلى الفرص."
+  },
+  {
+    "id": 498,
+    "word": "worried",
+    "antonym": "calm",
+    "skill": "Speaking",
+    "translation": "قلق",
+    "pronunciation": "WUR-eed",
+    "example": "Parents were worried about the long-term effects of screen time on children.",
+    "exampleAr": "كان الآباء قلقين بشأن الآثار طويلة الأمد لوقت الشاشة على الأطفال."
+  },
+  {
+    "id": 499,
+    "word": "widespread",
+    "antonym": "localised",
+    "skill": "Writing",
+    "translation": "واسع الانتشار",
+    "pronunciation": "WYD-spred",
+    "example": "The use of smartphones has become widespread across all age groups.",
+    "exampleAr": "أصبح استخدام الهواتف الذكية واسع الانتشار في جميع الفئات العمرية."
+  },
+  {
+    "id": 500,
+    "word": "yield",
+    "antonym": "resist",
+    "skill": "Writing",
+    "translation": "يُنتج / يُذعن",
+    "pronunciation": "YEELD",
+    "example": "The new farming techniques yield significantly higher crop production.",
+    "exampleAr": "تُنتج تقنيات الزراعة الجديدة محاصيل أعلى بكثير."
+  }
+]
