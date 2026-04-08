@@ -1,7 +1,16 @@
 import { Router } from "express";
-import { anthropic } from "@workspace/integrations-anthropic-ai";
+import Anthropic from "@anthropic-ai/sdk";
 
 const router = Router();
+
+function getAnthropicClient() {
+  const apiKey = process.env.AI_INTEGRATIONS_ANTHROPIC_API_KEY;
+  const baseURL = process.env.AI_INTEGRATIONS_ANTHROPIC_BASE_URL;
+  if (!apiKey || !baseURL) {
+    throw new Error("Anthropic env vars not configured.");
+  }
+  return new Anthropic({ apiKey, baseURL });
+}
 
 const SYSTEM_PROMPT = `You are an expert IELTS examiner with 20 years of experience.
 Analyze the essay strictly based on the four official IELTS scoring criteria.
@@ -57,6 +66,7 @@ router.post("/api/essay-check", async (req, res) => {
       return;
     }
 
+    const anthropic = getAnthropicClient();
     const userMessage = `Please analyze this IELTS ${taskType} essay:\n\n${essay}`;
 
     const message = await anthropic.messages.create({
@@ -72,7 +82,7 @@ router.post("/api/essay-check", async (req, res) => {
       return;
     }
 
-    let parsed;
+    let parsed: unknown;
     try {
       parsed = JSON.parse(block.text);
     } catch {
