@@ -61,8 +61,8 @@ async function generatePdf(): Promise<void> {
   try {
     const page = await browser.newPage();
 
-    const htmlContent = fs.readFileSync(HTML_FILE, "utf-8");
-    await page.setContent(htmlContent, { waitUntil: "networkidle0", timeout: 120000 });
+    const fileUrl = `file://${HTML_FILE}`;
+    await page.goto(fileUrl, { waitUntil: "networkidle0", timeout: 120000 });
 
     logger.info("Generating PDF...");
 
