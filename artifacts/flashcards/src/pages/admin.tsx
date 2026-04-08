@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { Eye, EyeOff, Loader2, CheckCircle2, XCircle, Clock, Trash2, RefreshCw, Lock, KeyRound, Users, AlertCircle } from "lucide-react";
+import { Eye, EyeOff, Loader2, CheckCircle2, XCircle, Clock, Trash2, RefreshCw, Lock, KeyRound, Users, AlertCircle, Calendar, CalendarX } from "lucide-react";
 
 interface AccessRequest {
   id: number;
@@ -7,10 +7,25 @@ interface AccessRequest {
   status: "pending" | "approved" | "rejected";
   requestedAt: string;
   reviewedAt: string | null;
+  expiresAt: string | null;
 }
 
 type Tab = "requests" | "settings";
 type Filter = "all" | "pending" | "approved" | "rejected";
+
+function formatDate(iso: string) {
+  return new Date(iso).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
+}
+
+function expiryStatus(expiresAt: string | null): { label: string; color: string } | null {
+  if (!expiresAt) return null;
+  const exp = new Date(expiresAt);
+  const now = new Date();
+  const diffDays = Math.ceil((exp.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+  if (diffDays < 0) return { label: "Expired", color: "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400" };
+  if (diffDays <= 7) return { label: `Expires in ${diffDays}d`, color: "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400" };
+  return { label: `Expires ${formatDate(expiresAt)}`, color: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400" };
+}
 
 export default function AdminPage() {
   const [adminPassword, setAdminPassword] = useState("");
@@ -24,6 +39,10 @@ export default function AdminPage() {
   const [filter, setFilter] = useState<Filter>("all");
   const [tab, setTab] = useState<Tab>("requests");
   const [actionLoading, setActionLoading] = useState<number | null>(null);
+
+  const [pendingExpiry, setPendingExpiry] = useState<Record<number, string>>({});
+  const [editExpiry, setEditExpiry] = useState<Record<number, string>>({});
+  const [expiryLoading, setExpiryLoading] = useState<number | null>(null);
 
   const [accessCode, setAccessCode] = useState("");
   const [newCode, setNewCode] = useState("");
@@ -59,17 +78,45 @@ export default function AdminPage() {
     finally { setLoginLoading(false); }
   };
 
-  const handleAction = async (id: number, action: "approve" | "reject" | "delete") => {
+  const handleApprove = async (id: number) => {
+    setActionLoading(id);
+    try {
+      const expiresAt = pendingExpiry[id] ? new Date(pendingExpiry[id] + "T23:59:59").toISOString() : null;
+      await fetch(`/api/admin/requests/${id}/approve`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-admin-password": adminPassword },
+        body: JSON.stringify({ adminPassword, expiresAt }),
+      });
+      await fetchRequests(adminPassword);
+    } finally { setActionLoading(null); }
+  };
+
+  const handleAction = async (id: number, action: "reject" | "delete") => {
     setActionLoading(id);
     try {
       const url = action === "delete" ? `/api/admin/requests/${id}` : `/api/admin/requests/${id}/${action}`;
       await fetch(url, {
         method: action === "delete" ? "DELETE" : "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", "x-admin-password": adminPassword },
         body: JSON.stringify({ adminPassword }),
       });
       await fetchRequests(adminPassword);
     } finally { setActionLoading(null); }
+  };
+
+  const handleSetExpiry = async (id: number) => {
+    setExpiryLoading(id);
+    try {
+      const dateStr = editExpiry[id];
+      const expiresAt = dateStr ? new Date(dateStr + "T23:59:59").toISOString() : null;
+      await fetch(`/api/admin/requests/${id}/set-expiry`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-admin-password": adminPassword },
+        body: JSON.stringify({ adminPassword, expiresAt }),
+      });
+      setEditExpiry(prev => { const n = { ...prev }; delete n[id]; return n; });
+      await fetchRequests(adminPassword);
+    } finally { setExpiryLoading(null); }
   };
 
   const handleChangeCode = async (e: React.FormEvent) => {
@@ -101,11 +148,19 @@ export default function AdminPage() {
     rejected: requests.filter(r => r.status === "rejected").length,
   };
 
-  const statusBadge = (status: string) => {
-    if (status === "approved") return <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"><CheckCircle2 className="w-3 h-3" />Approved</span>;
-    if (status === "rejected") return <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"><XCircle className="w-3 h-3" />Rejected</span>;
+  const statusBadge = (r: AccessRequest) => {
+    if (r.status === "approved") {
+      const exp = r.expiresAt ? expiryStatus(r.expiresAt) : null;
+      if (exp && exp.label === "Expired") {
+        return <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"><CalendarX className="w-3 h-3" />Expired</span>;
+      }
+      return <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"><CheckCircle2 className="w-3 h-3" />Approved</span>;
+    }
+    if (r.status === "rejected") return <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"><XCircle className="w-3 h-3" />Rejected</span>;
     return <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400"><Clock className="w-3 h-3" />Pending</span>;
   };
+
+  const todayStr = new Date().toISOString().split("T")[0];
 
   if (!loggedIn) {
     return (
@@ -191,50 +246,131 @@ export default function AdminPage() {
                 <p className="text-gray-500 dark:text-gray-400 text-sm">No {filter !== "all" ? filter : ""} requests yet.</p>
               </div>
             ) : (
-              <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden">
-                <table className="w-full">
-                  <thead>
-                    <tr className="border-b border-gray-100 dark:border-gray-800">
-                      <th className="text-left px-6 py-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Email</th>
-                      <th className="text-left px-6 py-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Status</th>
-                      <th className="text-left px-6 py-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Requested</th>
-                      <th className="text-right px-6 py-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {filtered.map((r, i) => (
-                      <tr key={r.id} className={`border-b border-gray-50 dark:border-gray-800/50 last:border-0 ${i % 2 === 0 ? "" : "bg-gray-50/50 dark:bg-gray-800/20"}`}>
-                        <td className="px-6 py-4 text-sm font-medium text-gray-900 dark:text-white">{r.email}</td>
-                        <td className="px-6 py-4">{statusBadge(r.status)}</td>
-                        <td className="px-6 py-4 text-xs text-gray-500 dark:text-gray-400">
-                          {new Date(r.requestedAt).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" })}
-                        </td>
-                        <td className="px-6 py-4">
-                          <div className="flex items-center justify-end gap-2">
-                            {r.status !== "approved" && (
-                              <button onClick={() => handleAction(r.id, "approve")} disabled={actionLoading === r.id}
-                                className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-green-600 hover:bg-green-700 text-white text-xs font-medium transition-colors disabled:opacity-50">
+              <div className="space-y-3">
+                {filtered.map((r) => {
+                  const exp = r.expiresAt ? expiryStatus(r.expiresAt) : null;
+                  const isEditingExpiry = editExpiry[r.id] !== undefined;
+                  return (
+                    <div key={r.id} className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-4">
+                      <div className="flex flex-wrap items-start gap-3">
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">{r.email}</p>
+                          <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">
+                            Requested {new Date(r.requestedAt).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}
+                          </p>
+                          <div className="flex flex-wrap gap-2 mt-2">
+                            {statusBadge(r)}
+                            {exp && (
+                              <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${exp.color}`}>
+                                <Calendar className="w-3 h-3" />
+                                {exp.label}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="flex flex-col gap-2 items-end shrink-0">
+                          {r.status === "pending" && (
+                            <div className="flex items-center gap-2 flex-wrap justify-end">
+                              <div className="flex items-center gap-1.5">
+                                <Calendar className="w-3.5 h-3.5 text-gray-400 shrink-0" />
+                                <input
+                                  type="date"
+                                  min={todayStr}
+                                  value={pendingExpiry[r.id] ?? ""}
+                                  onChange={e => setPendingExpiry(prev => ({ ...prev, [r.id]: e.target.value }))}
+                                  className="text-xs px-2 py-1.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                                  title="Expiration date (optional)"
+                                />
+                              </div>
+                              <button
+                                onClick={() => handleApprove(r.id)}
+                                disabled={actionLoading === r.id}
+                                className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-green-600 hover:bg-green-700 text-white text-xs font-medium transition-colors disabled:opacity-50"
+                              >
                                 {actionLoading === r.id ? <Loader2 className="w-3 h-3 animate-spin" /> : <CheckCircle2 className="w-3 h-3" />}
                                 Approve
                               </button>
-                            )}
-                            {r.status !== "rejected" && (
-                              <button onClick={() => handleAction(r.id, "reject")} disabled={actionLoading === r.id}
-                                className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-red-100 hover:bg-red-200 dark:bg-red-900/30 dark:hover:bg-red-900/50 text-red-700 dark:text-red-400 text-xs font-medium transition-colors disabled:opacity-50">
-                                {actionLoading === r.id ? <Loader2 className="w-3 h-3 animate-spin" /> : <XCircle className="w-3 h-3" />}
+                              <button
+                                onClick={() => handleAction(r.id, "reject")}
+                                disabled={actionLoading === r.id}
+                                className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-red-100 hover:bg-red-200 dark:bg-red-900/30 dark:hover:bg-red-900/50 text-red-700 dark:text-red-400 text-xs font-medium transition-colors disabled:opacity-50"
+                              >
+                                <XCircle className="w-3 h-3" />
                                 Reject
                               </button>
-                            )}
-                            <button onClick={() => handleAction(r.id, "delete")} disabled={actionLoading === r.id}
-                              className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400 text-xs font-medium transition-colors disabled:opacity-50">
-                              <Trash2 className="w-3 h-3" />
+                            </div>
+                          )}
+
+                          {r.status === "approved" && (
+                            <div className="flex items-center gap-2 flex-wrap justify-end">
+                              {isEditingExpiry ? (
+                                <>
+                                  <input
+                                    type="date"
+                                    min={todayStr}
+                                    value={editExpiry[r.id]}
+                                    onChange={e => setEditExpiry(prev => ({ ...prev, [r.id]: e.target.value }))}
+                                    className="text-xs px-2 py-1.5 rounded-lg border border-teal-400 dark:border-teal-600 bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                                  />
+                                  <button
+                                    onClick={() => handleSetExpiry(r.id)}
+                                    disabled={expiryLoading === r.id}
+                                    className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-teal-600 hover:bg-teal-700 text-white text-xs font-medium transition-colors disabled:opacity-50"
+                                  >
+                                    {expiryLoading === r.id ? <Loader2 className="w-3 h-3 animate-spin" /> : <CheckCircle2 className="w-3 h-3" />}
+                                    Save
+                                  </button>
+                                  <button
+                                    onClick={() => setEditExpiry(prev => { const n = { ...prev }; delete n[r.id]; return n; })}
+                                    className="text-xs px-2 py-1.5 rounded-lg border border-gray-200 dark:border-gray-700 text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                                  >
+                                    Cancel
+                                  </button>
+                                </>
+                              ) : (
+                                <button
+                                  onClick={() => setEditExpiry(prev => ({ ...prev, [r.id]: r.expiresAt ? r.expiresAt.split("T")[0] : "" }))}
+                                  className="flex items-center gap-1 px-3 py-1.5 rounded-lg border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 text-xs font-medium hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                                >
+                                  <Calendar className="w-3 h-3" />
+                                  {r.expiresAt ? "Change Expiry" : "Set Expiry"}
+                                </button>
+                              )}
+                              <button
+                                onClick={() => handleAction(r.id, "reject")}
+                                disabled={actionLoading === r.id}
+                                className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-red-100 hover:bg-red-200 dark:bg-red-900/30 dark:hover:bg-red-900/50 text-red-700 dark:text-red-400 text-xs font-medium transition-colors disabled:opacity-50"
+                              >
+                                <XCircle className="w-3 h-3" />
+                                Revoke
+                              </button>
+                            </div>
+                          )}
+
+                          {r.status === "rejected" && (
+                            <button
+                              onClick={() => handleApprove(r.id)}
+                              disabled={actionLoading === r.id}
+                              className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-green-600 hover:bg-green-700 text-white text-xs font-medium transition-colors disabled:opacity-50"
+                            >
+                              <CheckCircle2 className="w-3 h-3" />
+                              Re-approve
                             </button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                          )}
+
+                          <button
+                            onClick={() => handleAction(r.id, "delete")}
+                            disabled={actionLoading === r.id}
+                            className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400 text-xs font-medium transition-colors disabled:opacity-50"
+                          >
+                            <Trash2 className="w-3 h-3" />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             )}
           </>

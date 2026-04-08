@@ -59,4 +59,5 @@ export const accessRequestsTable = pgTable("access_requests", {
   status: text("status").notNull().default("pending"),
   requestedAt: timestamp("requested_at", { withTimezone: true }).notNull().defaultNow(),
   reviewedAt: timestamp("reviewed_at", { withTimezone: true }),
+  expiresAt: timestamp("expires_at", { withTimezone: true }),
 });

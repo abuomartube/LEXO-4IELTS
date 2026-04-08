@@ -29,6 +29,10 @@ function requireAdmin(req: import("express").Request, res: import("express").Res
   return true;
 }
 
+function isExpired(row: { expiresAt: Date | null }): boolean {
+  return row.expiresAt !== null && row.expiresAt < new Date();
+}
+
 router.post("/access/request", async (req, res): Promise<void> => {
   const { email, accessCode } = req.body ?? {};
   if (!email || typeof email !== "string" || !email.includes("@")) {
@@ -49,7 +53,11 @@ router.post("/access/request", async (req, res): Promise<void> => {
   if (existing.length > 0) {
     const row = existing[0];
     if (row.status === "approved") {
-      res.json({ status: "approved", token: makeToken(normalizedEmail) });
+      if (isExpired(row)) {
+        res.json({ status: "expired" });
+      } else {
+        res.json({ status: "approved", token: makeToken(normalizedEmail) });
+      }
     } else if (row.status === "rejected") {
       res.status(403).json({ error: "Your request was not approved. Please contact your instructor." });
     } else {
@@ -69,7 +77,11 @@ router.post("/access/check", async (req, res): Promise<void> => {
   if (rows.length === 0) { res.json({ status: "not_found" }); return; }
   const row = rows[0];
   if (row.status === "approved") {
-    res.json({ status: "approved", token: makeToken(normalizedEmail) });
+    if (isExpired(row)) {
+      res.json({ status: "expired" });
+    } else {
+      res.json({ status: "approved", token: makeToken(normalizedEmail) });
+    }
   } else {
     res.json({ status: row.status });
   }
@@ -86,8 +98,21 @@ router.post("/admin/requests/:id/approve", async (req, res): Promise<void> => {
   const id = Number(req.params.id);
   const rows = await db.select().from(accessRequestsTable).where(eq(accessRequestsTable.id, id));
   if (rows.length === 0) { res.status(404).json({ error: "Not found" }); return; }
+  const { expiresAt } = req.body ?? {};
+  const expiryDate = expiresAt ? new Date(expiresAt as string) : null;
   await db.update(accessRequestsTable)
-    .set({ status: "approved", reviewedAt: new Date() })
+    .set({ status: "approved", reviewedAt: new Date(), expiresAt: expiryDate })
+    .where(eq(accessRequestsTable.id, id));
+  res.json({ success: true });
+});
+
+router.post("/admin/requests/:id/set-expiry", async (req, res): Promise<void> => {
+  if (!requireAdmin(req, res)) return;
+  const id = Number(req.params.id);
+  const { expiresAt } = req.body ?? {};
+  const expiryDate = expiresAt ? new Date(expiresAt as string) : null;
+  await db.update(accessRequestsTable)
+    .set({ expiresAt: expiryDate })
     .where(eq(accessRequestsTable.id, id));
   res.json({ success: true });
 });

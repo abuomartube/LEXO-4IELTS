@@ -1,7 +1,9 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import { Mail, Lock, Eye, EyeOff, Loader2, Clock } from "lucide-react";
+import { Mail, Lock, Eye, EyeOff, Loader2, Clock, CalendarX, MessageCircle } from "lucide-react";
 
 const STORAGE_KEY = "4ielts_email";
+const WHATSAPP_URL = "https://wa.me/message/KMWPDZOBBNAAB1";
+const CONTACT_EMAIL = "askabuomar@gmail.com";
 
 async function checkStatus(email: string): Promise<{ status: string; token?: string }> {
   try {
@@ -30,7 +32,7 @@ async function requestAccess(email: string, accessCode: string): Promise<{ statu
 interface PasswordGateProps { children: React.ReactNode; }
 
 export function PasswordGate({ children }: PasswordGateProps) {
-  const [phase, setPhase] = useState<"checking" | "form" | "pending" | "unlocked">("checking");
+  const [phase, setPhase] = useState<"checking" | "form" | "pending" | "unlocked" | "expired">("checking");
   const [email, setEmail] = useState("");
   const [accessCode, setAccessCode] = useState("");
   const [showCode, setShowCode] = useState(false);
@@ -47,6 +49,9 @@ export function PasswordGate({ children }: PasswordGateProps) {
       if (result.status === "approved" && result.token) {
         localStorage.setItem(STORAGE_KEY, JSON.stringify({ email: em, token: result.token }));
         setPhase("unlocked");
+      } else if (result.status === "expired") {
+        localStorage.removeItem(STORAGE_KEY);
+        setPhase("expired");
       } else if (result.status === "rejected") {
         setError("Your access request was not approved. Please contact your instructor.");
         localStorage.removeItem(STORAGE_KEY);
@@ -66,6 +71,9 @@ export function PasswordGate({ children }: PasswordGateProps) {
       checkStatus(storedEmail).then((result) => {
         if (result.status === "approved" && result.token === token) {
           setPhase("unlocked");
+        } else if (result.status === "expired") {
+          localStorage.removeItem(STORAGE_KEY);
+          setPhase("expired");
         } else if (result.status === "pending") {
           setEmail(storedEmail);
           setPhase("pending");
@@ -90,6 +98,9 @@ export function PasswordGate({ children }: PasswordGateProps) {
     if (result.status === "approved" && result.token) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify({ email: normalizedEmail, token: result.token }));
       setPhase("unlocked");
+    } else if (result.status === "expired") {
+      localStorage.removeItem(STORAGE_KEY);
+      setPhase("expired");
     } else if (result.status === "pending") {
       localStorage.setItem(STORAGE_KEY, JSON.stringify({ email: normalizedEmail, token: "" }));
       setPhase("pending");
@@ -119,6 +130,49 @@ export function PasswordGate({ children }: PasswordGateProps) {
   }
 
   if (phase === "unlocked") return <>{children}</>;
+
+  if (phase === "expired") {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-teal-900 via-teal-800 to-sky-900 p-4">
+        <div className="w-full max-w-sm">
+          <div className="bg-white dark:bg-gray-900 rounded-3xl shadow-2xl p-8 text-center">
+            <img src="/4ielts-logo.png" alt="4IELTS" className="h-16 w-auto object-contain mx-auto mb-6" />
+            <div className="w-16 h-16 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center mx-auto mb-4">
+              <CalendarX className="w-8 h-8 text-red-500 dark:text-red-400" />
+            </div>
+            <h2 className="text-xl font-extrabold text-gray-900 dark:text-white mb-2">Subscription Expired</h2>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
+              Your access to 4IELTS has expired. Please contact Abu Omar to renew your subscription.
+            </p>
+            <p className="text-xs text-gray-400 dark:text-gray-500 mb-6" dir="rtl" lang="ar">
+              انتهت صلاحية اشتراكك. تواصل مع أبو عمر لتجديد الاشتراك.
+            </p>
+            <div className="space-y-3">
+              <a
+                href={WHATSAPP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-green-500 hover:bg-green-600 text-white font-semibold transition-colors text-sm"
+              >
+                <MessageCircle className="w-4 h-4" />
+                Contact on WhatsApp
+              </a>
+              <a
+                href={`mailto:${CONTACT_EMAIL}`}
+                className="flex items-center justify-center gap-2 w-full py-3 rounded-xl border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 font-semibold transition-colors text-sm"
+              >
+                <Mail className="w-4 h-4" />
+                {CONTACT_EMAIL}
+              </a>
+            </div>
+            <button onClick={resetForm} className="mt-6 text-xs text-gray-400 hover:text-gray-600 underline">
+              Use a different email
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (phase === "pending") {
     return (
@@ -221,7 +275,7 @@ export function PasswordGate({ children }: PasswordGateProps) {
 
           <p className="text-xs text-center text-gray-400 dark:text-gray-500 mt-6">
             Don't have an access code?{" "}
-            <a href="https://wa.me/4ielts" target="_blank" rel="noopener noreferrer"
+            <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer"
               className="text-teal-600 hover:underline font-medium">
               Contact us on WhatsApp
             </a>
