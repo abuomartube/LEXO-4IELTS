@@ -17,28 +17,26 @@ function VocabDownloadSection() {
   const [pdfState, setPdfState] = useState<"checking" | "ready" | "generating" | "downloading" | "error">("checking");
   const [errorMsg, setErrorMsg] = useState("");
 
-  const startPolling = useCallback(async (attempt = 0) => {
+  const poll = useCallback(async (attempt = 0) => {
     try {
       const res = await fetch("/api/vocab-pdf/status");
-      const data = await res.json();
+      const data: { status: string } = await res.json();
       if (data.status === "ready") {
         setPdfState("ready");
-      } else if (data.status === "generating" || data.status === "not_started") {
-        if (data.status === "not_started") {
-          fetch("/api/vocab-pdf").catch(() => {});
-        }
-        if (attempt < 60) {
-          setTimeout(() => startPolling(attempt + 1), 5000);
-        } else {
-          setErrorMsg("Taking longer than expected. Please try again.");
-          setPdfState("error");
-        }
+        return;
+      }
+      if (data.status === "not_started") {
+        fetch("/api/vocab-pdf").catch(() => {});
+      }
+      if (attempt < 72) {
+        setTimeout(() => poll(attempt + 1), 5000);
       } else {
-        setPdfState("ready");
+        setErrorMsg("Still generating — please refresh and try again.");
+        setPdfState("error");
       }
     } catch {
       if (attempt < 5) {
-        setTimeout(() => startPolling(attempt + 1), 3000);
+        setTimeout(() => poll(attempt + 1), 3000);
       } else {
         setErrorMsg("Could not connect to server.");
         setPdfState("error");
@@ -46,27 +44,33 @@ function VocabDownloadSection() {
     }
   }, []);
 
-  useEffect(() => {
-    startPolling(0);
-  }, [startPolling]);
+  useEffect(() => { poll(0); }, [poll]);
+
+  const triggerDownload = (blob: Blob) => {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "IELTS-Vocabulary-3000-Words-EN-AR.pdf";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 10000);
+  };
 
   const handlePdfDownload = useCallback(async () => {
-    if (pdfState === "ready") {
-      setPdfState("downloading");
-      window.location.href = "/api/vocab-pdf";
-      setTimeout(() => setPdfState("ready"), 3000);
-      return;
-    }
-    setPdfState("generating");
+    if (pdfState === "generating" || pdfState === "downloading") return;
+    setPdfState("downloading");
     setErrorMsg("");
     try {
       const res = await fetch("/api/vocab-pdf");
-      if (res.ok && res.headers.get("Content-Type")?.includes("pdf")) {
-        setPdfState("downloading");
-        window.location.href = "/api/vocab-pdf";
-        setTimeout(() => setPdfState("ready"), 3000);
+      const contentType = res.headers.get("Content-Type") ?? "";
+      if (res.ok && contentType.includes("pdf")) {
+        const blob = await res.blob();
+        triggerDownload(blob);
+        setPdfState("ready");
       } else if (res.status === 202) {
-        startPolling(0);
+        setPdfState("generating");
+        poll(0);
       } else {
         setErrorMsg("Download failed. Please try again.");
         setPdfState("error");
@@ -75,7 +79,7 @@ function VocabDownloadSection() {
       setErrorMsg("Could not connect to server. Please try again.");
       setPdfState("error");
     }
-  }, [pdfState, startPolling]);
+  }, [pdfState, poll]);
 
   const busy = pdfState === "generating" || pdfState === "checking" || pdfState === "downloading";
 
@@ -101,13 +105,7 @@ function VocabDownloadSection() {
           {pdfState === "generating" && (
             <p className="text-sm text-teal-700 dark:text-teal-400 mt-2 flex items-center gap-2">
               <Loader2 className="w-3 h-3 animate-spin" />
-              Generating your PDF — please wait 60–90 seconds…
-            </p>
-          )}
-          {pdfState === "checking" && (
-            <p className="text-sm text-muted-foreground mt-2 flex items-center gap-2">
-              <Loader2 className="w-3 h-3 animate-spin" />
-              Checking PDF status…
+              Generating your PDF — please wait up to 90 seconds…
             </p>
           )}
           {pdfState === "ready" && (
@@ -123,17 +121,10 @@ function VocabDownloadSection() {
             disabled={busy}
             className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-teal-600 hover:bg-teal-700 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold transition-colors shadow-md text-sm"
           >
-            {busy ? (
-              <Loader2 className="w-4 h-4 animate-spin" />
-            ) : pdfState === "ready" ? (
-              <Download className="w-4 h-4" />
-            ) : (
-              <Download className="w-4 h-4" />
-            )}
+            {busy ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
             {pdfState === "generating" ? "Generating PDF…"
               : pdfState === "checking" ? "Checking…"
               : pdfState === "downloading" ? "Downloading…"
-              : pdfState === "ready" ? "Download PDF"
               : "Download PDF"}
           </button>
           <a
