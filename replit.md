@@ -30,9 +30,10 @@ See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and pa
 
 ### English Flashcards App (`artifacts/flashcards`)
 - React + Vite frontend at `/` (previewPath)
-- **1000 flashcards** across A1 (269), A2 (242), B1 (242), B2 (247) levels
+- **2,198 unique flashcards** across A1 (378), A2 (520), B1 (313), B2 (261), C1 (726) — CEFR-corrected, deduplicated
 - Arabic translations with Cairo font, RTL layout; bilingual example sentences
 - Branding: 4IELTS teal/navy, Abu Omar photo, logo, 4ielts.com link
+- **Access control**: students enter email + access code (`ielts2025` default); admin panel at `/admin`
 
 #### Pages
 - **Dashboard** — Hero, streak counter, Word of the Day, feature grid, progress summary, instructor section
@@ -67,12 +68,12 @@ See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and pa
 - **Word of the Day** — Deterministic date-based pick, shown on homepage with audio
 - **Session Summary** — Modal after completing a study session
 - **Quiz Mode** — Multiple choice + fill-in-the-blank with score tracking
-- **PDF Download** — `GET /api/vocab-pdf` generates and serves a ~10MB PDF of all 3000 words; uses puppeteer-core + system chromium; cached in `.local/pdf-cache/`; `/api/vocab-pdf/status` for polling; "Download PDF" button on home page
+- **PDF Download** — `GET /api/vocab-pdf` generates and serves a PDF of all 2,198 words; uses puppeteer-core + system chromium; cached in `.local/pdf-cache/`; `/api/vocab-pdf/status` for polling
 
 #### Vocabulary PDF
-- **Source**: `artifacts/flashcards/public/vocabulary-bilingual.html` — 3000-word bilingual HTML (A1×750, A2×750, B1×500, B2×500, C1×500)
+- **Source**: `artifacts/flashcards/public/vocabulary-bilingual.html` — 2,198-word bilingual HTML (A1×378, A2×520, B1×313, B2×261, C1×726)
 - **PDF generation**: puppeteer-core renders the HTML; chromium discovered via `which chromium`
-- **Caching**: PDF cached at `.local/pdf-cache/ielts-vocabulary-3000.pdf`; on-demand generation with async polling
+- **Caching**: PDF cached at `.local/pdf-cache/ielts-vocabulary-2198.pdf`; on-demand generation with async polling
 
 ## Database Schema
 

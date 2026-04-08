@@ -10,7 +10,7 @@ const WORKSPACE_ROOT = process.env["REPL_HOME"] || "/home/runner/workspace";
 
 const HTML_FILE = path.join(WORKSPACE_ROOT, "artifacts/flashcards/public/vocabulary-bilingual.html");
 const CACHE_DIR = path.join(WORKSPACE_ROOT, ".local/pdf-cache");
-const CACHED_PDF = path.join(CACHE_DIR, "ielts-vocabulary-3000.pdf");
+const CACHED_PDF = path.join(CACHE_DIR, "ielts-vocabulary-2198.pdf");
 
 let generatingPdf = false;
 let pdfGenerationError: Error | null = null;
@@ -83,7 +83,7 @@ async function generatePdf(): Promise<void> {
       printBackground: true,
       margin: { top: "12mm", bottom: "14mm", left: "8mm", right: "8mm" },
       displayHeaderFooter: true,
-      headerTemplate: `<div style="font-size:8px;font-family:sans-serif;color:#6b7280;width:100%;padding:0 8mm;box-sizing:border-box;text-align:right;">IELTS Vocabulary · 3000 Words · A1–C1 · 4IELTS.com</div>`,
+      headerTemplate: `<div style="font-size:8px;font-family:sans-serif;color:#6b7280;width:100%;padding:0 8mm;box-sizing:border-box;text-align:right;">IELTS Vocabulary · 2,198 Words · A1–C1 · 4IELTS.com</div>`,
       footerTemplate: `<div style="font-size:8px;font-family:sans-serif;color:#6b7280;width:100%;padding:0 8mm;box-sizing:border-box;display:flex;justify-content:space-between;"><span>© 4IELTS.com</span><span><span class="pageNumber"></span> / <span class="totalPages"></span></span></div>`,
     });
 
@@ -97,7 +97,7 @@ router.get("/vocab-pdf", async (req, res): Promise<void> => {
   if (fs.existsSync(CACHED_PDF)) {
     const stat = fs.statSync(CACHED_PDF);
     res.setHeader("Content-Type", "application/pdf");
-    res.setHeader("Content-Disposition", 'attachment; filename="IELTS-Vocabulary-3000-Words-EN-AR.pdf"');
+    res.setHeader("Content-Disposition", 'attachment; filename="IELTS-Vocabulary-2198-Words-EN-AR.pdf"');
     res.setHeader("Content-Length", stat.size);
     res.setHeader("Cache-Control", "public, max-age=86400");
     fs.createReadStream(CACHED_PDF).pipe(res);
