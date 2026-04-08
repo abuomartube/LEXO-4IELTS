@@ -38,7 +38,7 @@ function VocabDownloadSection() {
             className="inline-flex items-center justify-center gap-2 px-6 py-2 rounded-full border border-teal-600 text-teal-700 dark:text-teal-400 hover:bg-teal-50 dark:hover:bg-teal-900/20 font-medium transition-colors text-sm"
           >
             <FileText className="w-4 h-4" />
-            View as HTML
+            Click for 3000 words
           </a>
         </div>
       </div>
