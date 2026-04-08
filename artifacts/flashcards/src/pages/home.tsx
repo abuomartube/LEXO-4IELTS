@@ -46,42 +46,33 @@ function VocabDownloadSection() {
 
   useEffect(() => { poll(0); }, [poll]);
 
-  const triggerDownload = (blob: Blob) => {
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "IELTS-Vocabulary-3000-Words-EN-AR.pdf";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    setTimeout(() => URL.revokeObjectURL(url), 10000);
-  };
+  const busy = pdfState === "generating" || pdfState === "checking" || pdfState === "downloading";
 
   const handlePdfDownload = useCallback(async () => {
-    if (pdfState === "generating" || pdfState === "downloading") return;
-    setPdfState("downloading");
+    if (pdfState === "generating" || pdfState === "checking" || pdfState === "downloading") return;
     setErrorMsg("");
     try {
-      const res = await fetch("/api/vocab-pdf");
-      const contentType = res.headers.get("Content-Type") ?? "";
-      if (res.ok && contentType.includes("pdf")) {
-        const blob = await res.blob();
-        triggerDownload(blob);
-        setPdfState("ready");
-      } else if (res.status === 202) {
-        setPdfState("generating");
-        poll(0);
+      const statusRes = await fetch("/api/vocab-pdf/status");
+      const status: { status: string } = await statusRes.json();
+      if (status.status === "ready") {
+        setPdfState("downloading");
+        const a = document.createElement("a");
+        a.href = "/api/vocab-pdf";
+        a.download = "IELTS-Vocabulary-3000-Words-EN-AR.pdf";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(() => setPdfState("ready"), 3000);
       } else {
-        setErrorMsg("Download failed. Please try again.");
-        setPdfState("error");
+        setPdfState("generating");
+        fetch("/api/vocab-pdf").catch(() => {});
+        poll(0);
       }
     } catch {
       setErrorMsg("Could not connect to server. Please try again.");
       setPdfState("error");
     }
   }, [pdfState, poll]);
-
-  const busy = pdfState === "generating" || pdfState === "checking" || pdfState === "downloading";
 
   return (
     <section className="bg-gradient-to-br from-teal-50 to-sky-50 dark:from-teal-900/20 dark:to-sky-900/20 border border-teal-200 dark:border-teal-800 rounded-3xl p-8 shadow-sm">
