@@ -15,6 +15,16 @@ const CACHED_PDF = path.join(CACHE_DIR, "ielts-vocabulary-3000.pdf");
 let generatingPdf = false;
 let pdfGenerationError: Error | null = null;
 
+export function warmUpPdf(): void {
+  if (fs.existsSync(CACHED_PDF) || generatingPdf) return;
+  generatingPdf = true;
+  pdfGenerationError = null;
+  logger.info("Pre-generating PDF at startup...");
+  generatePdf()
+    .then(() => { generatingPdf = false; logger.info("PDF pre-generation complete"); })
+    .catch((err) => { generatingPdf = false; pdfGenerationError = err; logger.error({ err }, "PDF pre-generation failed"); });
+}
+
 async function generatePdf(): Promise<void> {
   if (!fs.existsSync(HTML_FILE)) {
     throw new Error(`HTML source not found: ${HTML_FILE}`);

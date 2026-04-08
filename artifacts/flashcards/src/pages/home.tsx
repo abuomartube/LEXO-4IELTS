@@ -11,55 +11,62 @@ import {
   FileText, Download, Loader2, CheckCircle2
 } from "lucide-react";
 import { Layout } from "@/components/layout";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 
 function VocabDownloadSection() {
-  const [pdfState, setPdfState] = useState<"idle" | "downloading" | "generating" | "ready" | "error">("idle");
+  const [pdfState, setPdfState] = useState<"checking" | "ready" | "generating" | "downloading" | "error">("checking");
   const [errorMsg, setErrorMsg] = useState("");
 
-  const pollStatus = useCallback(async (attempt = 0) => {
+  const startPolling = useCallback(async (attempt = 0) => {
     try {
       const res = await fetch("/api/vocab-pdf/status");
       const data = await res.json();
       if (data.status === "ready") {
         setPdfState("ready");
-        window.location.href = "/api/vocab-pdf";
-      } else if (data.status === "generating") {
-        if (attempt < 40) {
-          setTimeout(() => pollStatus(attempt + 1), 5000);
+      } else if (data.status === "generating" || data.status === "not_started") {
+        if (data.status === "not_started") {
+          fetch("/api/vocab-pdf").catch(() => {});
+        }
+        if (attempt < 60) {
+          setTimeout(() => startPolling(attempt + 1), 5000);
         } else {
-          setErrorMsg("PDF generation is taking longer than expected. Please try again.");
+          setErrorMsg("Taking longer than expected. Please try again.");
           setPdfState("error");
         }
       } else {
-        setErrorMsg("Unexpected status. Please try again.");
-        setPdfState("error");
+        setPdfState("ready");
       }
     } catch {
-      setErrorMsg("Could not connect to server. Please try again.");
-      setPdfState("error");
+      if (attempt < 5) {
+        setTimeout(() => startPolling(attempt + 1), 3000);
+      } else {
+        setErrorMsg("Could not connect to server.");
+        setPdfState("error");
+      }
     }
   }, []);
 
+  useEffect(() => {
+    startPolling(0);
+  }, [startPolling]);
+
   const handlePdfDownload = useCallback(async () => {
-    setPdfState("downloading");
+    if (pdfState === "ready") {
+      setPdfState("downloading");
+      window.location.href = "/api/vocab-pdf";
+      setTimeout(() => setPdfState("ready"), 3000);
+      return;
+    }
+    setPdfState("generating");
     setErrorMsg("");
     try {
       const res = await fetch("/api/vocab-pdf");
       if (res.ok && res.headers.get("Content-Type")?.includes("pdf")) {
-        setPdfState("ready");
-        const blob = await res.blob();
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "IELTS-Vocabulary-3000-Words-EN-AR.pdf";
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
+        setPdfState("downloading");
+        window.location.href = "/api/vocab-pdf";
+        setTimeout(() => setPdfState("ready"), 3000);
       } else if (res.status === 202) {
-        setPdfState("generating");
-        setTimeout(() => pollStatus(0), 5000);
+        startPolling(0);
       } else {
         setErrorMsg("Download failed. Please try again.");
         setPdfState("error");
@@ -68,7 +75,9 @@ function VocabDownloadSection() {
       setErrorMsg("Could not connect to server. Please try again.");
       setPdfState("error");
     }
-  }, [pollStatus]);
+  }, [pdfState, startPolling]);
+
+  const busy = pdfState === "generating" || pdfState === "checking" || pdfState === "downloading";
 
   return (
     <section className="bg-gradient-to-br from-teal-50 to-sky-50 dark:from-teal-900/20 dark:to-sky-900/20 border border-teal-200 dark:border-teal-800 rounded-3xl p-8 shadow-sm">
@@ -90,25 +99,42 @@ function VocabDownloadSection() {
             <p className="text-sm text-red-600 dark:text-red-400 mt-2">{errorMsg}</p>
           )}
           {pdfState === "generating" && (
-            <p className="text-sm text-teal-700 dark:text-teal-400 mt-2">
-              Generating your PDF... this may take 60–90 seconds on first download.
+            <p className="text-sm text-teal-700 dark:text-teal-400 mt-2 flex items-center gap-2">
+              <Loader2 className="w-3 h-3 animate-spin" />
+              Generating your PDF — please wait 60–90 seconds…
+            </p>
+          )}
+          {pdfState === "checking" && (
+            <p className="text-sm text-muted-foreground mt-2 flex items-center gap-2">
+              <Loader2 className="w-3 h-3 animate-spin" />
+              Checking PDF status…
+            </p>
+          )}
+          {pdfState === "ready" && (
+            <p className="text-sm text-green-600 dark:text-green-400 mt-2 flex items-center gap-2">
+              <CheckCircle2 className="w-3 h-3" />
+              PDF ready — click to download
             </p>
           )}
         </div>
         <div className="flex flex-col gap-2 shrink-0">
           <button
             onClick={handlePdfDownload}
-            disabled={pdfState === "downloading" || pdfState === "generating"}
+            disabled={busy}
             className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-teal-600 hover:bg-teal-700 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold transition-colors shadow-md text-sm"
           >
-            {pdfState === "downloading" || pdfState === "generating" ? (
+            {busy ? (
               <Loader2 className="w-4 h-4 animate-spin" />
             ) : pdfState === "ready" ? (
-              <CheckCircle2 className="w-4 h-4" />
+              <Download className="w-4 h-4" />
             ) : (
               <Download className="w-4 h-4" />
             )}
-            {pdfState === "generating" ? "Generating PDF…" : pdfState === "downloading" ? "Preparing…" : "Download PDF"}
+            {pdfState === "generating" ? "Generating PDF…"
+              : pdfState === "checking" ? "Checking…"
+              : pdfState === "downloading" ? "Downloading…"
+              : pdfState === "ready" ? "Download PDF"
+              : "Download PDF"}
           </button>
           <a
             href="/vocabulary-bilingual.html"

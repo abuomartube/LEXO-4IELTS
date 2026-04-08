@@ -1,6 +1,7 @@
 import app from "./app";
 import { logger } from "./lib/logger";
 import { runSeed } from "./seed";
+import { warmUpPdf } from "./routes/vocab-pdf";
 
 const rawPort = process.env["PORT"];
 
@@ -29,6 +30,7 @@ async function main() {
       resolve();
     });
   });
+  warmUpPdf();
 }
 
 main().catch((err) => {
