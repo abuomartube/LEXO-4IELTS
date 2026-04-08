@@ -56,6 +56,8 @@ See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and pa
 - `GET /api/fill-blank` — fill-in-the-blank questions
 - `GET /api/srs/due` — cards due for spaced-repetition review
 - `POST /api/srs/:id` — update SM-2 SRS record (known/unknown)
+- `GET /api/vocab-pdf` — download full 3000-word vocabulary PDF (generates on first request; streams cached file thereafter)
+- `GET /api/vocab-pdf/status` — check PDF generation status (not_started | generating | ready | error)
 
 #### Features
 - **Dark mode** — ThemeContext, persists in localStorage, toggle in sidebar/mobile nav
@@ -65,6 +67,12 @@ See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and pa
 - **Word of the Day** — Deterministic date-based pick, shown on homepage with audio
 - **Session Summary** — Modal after completing a study session
 - **Quiz Mode** — Multiple choice + fill-in-the-blank with score tracking
+- **PDF Download** — `GET /api/vocab-pdf` generates and serves a ~10MB PDF of all 3000 words; uses puppeteer-core + system chromium; cached in `.local/pdf-cache/`; `/api/vocab-pdf/status` for polling; "Download PDF" button on home page
+
+#### Vocabulary PDF
+- **Source**: `artifacts/flashcards/public/vocabulary-bilingual.html` — 3000-word bilingual HTML (A1×750, A2×750, B1×500, B2×500, C1×500)
+- **PDF generation**: puppeteer-core renders the HTML; chromium discovered via `which chromium`
+- **Caching**: PDF cached at `.local/pdf-cache/ielts-vocabulary-3000.pdf`; on-demand generation with async polling
 
 ## Database Schema
 

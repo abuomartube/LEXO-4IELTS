@@ -5,12 +5,125 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { LevelBadge } from "@/components/level-badge";
 import {
-  BookOpen, Trophy, ArrowRight, Zap, Target,
+  BookOpen, Trophy, Zap, Target,
   Volume2, Globe, Layers, Award, ExternalLink,
   Flame, Star, HelpCircle, Sparkles, MessageCircle,
-  FileText, Download
+  FileText, Download, Loader2, CheckCircle2
 } from "lucide-react";
 import { Layout } from "@/components/layout";
+import { useState, useCallback } from "react";
+
+function VocabDownloadSection() {
+  const [pdfState, setPdfState] = useState<"idle" | "downloading" | "generating" | "ready" | "error">("idle");
+  const [errorMsg, setErrorMsg] = useState("");
+
+  const pollStatus = useCallback(async (attempt = 0) => {
+    try {
+      const res = await fetch("/api/vocab-pdf/status");
+      const data = await res.json();
+      if (data.status === "ready") {
+        setPdfState("ready");
+        window.location.href = "/api/vocab-pdf";
+      } else if (data.status === "generating") {
+        if (attempt < 40) {
+          setTimeout(() => pollStatus(attempt + 1), 5000);
+        } else {
+          setErrorMsg("PDF generation is taking longer than expected. Please try again.");
+          setPdfState("error");
+        }
+      } else {
+        setErrorMsg("Unexpected status. Please try again.");
+        setPdfState("error");
+      }
+    } catch {
+      setErrorMsg("Could not connect to server. Please try again.");
+      setPdfState("error");
+    }
+  }, []);
+
+  const handlePdfDownload = useCallback(async () => {
+    setPdfState("downloading");
+    setErrorMsg("");
+    try {
+      const res = await fetch("/api/vocab-pdf");
+      if (res.ok && res.headers.get("Content-Type")?.includes("pdf")) {
+        setPdfState("ready");
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "IELTS-Vocabulary-3000-Words-EN-AR.pdf";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      } else if (res.status === 202) {
+        setPdfState("generating");
+        setTimeout(() => pollStatus(0), 5000);
+      } else {
+        setErrorMsg("Download failed. Please try again.");
+        setPdfState("error");
+      }
+    } catch {
+      setErrorMsg("Could not connect to server. Please try again.");
+      setPdfState("error");
+    }
+  }, [pollStatus]);
+
+  return (
+    <section className="bg-gradient-to-br from-teal-50 to-sky-50 dark:from-teal-900/20 dark:to-sky-900/20 border border-teal-200 dark:border-teal-800 rounded-3xl p-8 shadow-sm">
+      <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
+        <div className="w-14 h-14 rounded-2xl bg-teal-600 flex items-center justify-center shrink-0 shadow-md">
+          <FileText className="w-7 h-7 text-white" />
+        </div>
+        <div className="flex-1">
+          <h2 className="text-xl font-extrabold text-foreground mb-1">
+            Bilingual Vocabulary Reference
+          </h2>
+          <p className="text-muted-foreground leading-relaxed mb-1">
+            Download the full bilingual vocabulary list — all 3,000 IELTS words across 5 CEFR levels (A1–C1), with Arabic translations for every word and example sentence. Print-ready and formatted for study.
+          </p>
+          <p className="text-sm text-teal-700 dark:text-teal-400 font-medium" dir="rtl" lang="ar">
+            قائمة المفردات الكاملة ثنائية اللغة · 3000 كلمة · 5 مستويات · ترجمة عربية لكل كلمة وجملة
+          </p>
+          {errorMsg && (
+            <p className="text-sm text-red-600 dark:text-red-400 mt-2">{errorMsg}</p>
+          )}
+          {pdfState === "generating" && (
+            <p className="text-sm text-teal-700 dark:text-teal-400 mt-2">
+              Generating your PDF... this may take 60–90 seconds on first download.
+            </p>
+          )}
+        </div>
+        <div className="flex flex-col gap-2 shrink-0">
+          <button
+            onClick={handlePdfDownload}
+            disabled={pdfState === "downloading" || pdfState === "generating"}
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-teal-600 hover:bg-teal-700 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold transition-colors shadow-md text-sm"
+          >
+            {pdfState === "downloading" || pdfState === "generating" ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : pdfState === "ready" ? (
+              <CheckCircle2 className="w-4 h-4" />
+            ) : (
+              <Download className="w-4 h-4" />
+            )}
+            {pdfState === "generating" ? "Generating PDF…" : pdfState === "downloading" ? "Preparing…" : "Download PDF"}
+          </button>
+          <a
+            href="/vocabulary-bilingual.html"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-2 px-6 py-2 rounded-full border border-teal-600 text-teal-700 dark:text-teal-400 hover:bg-teal-50 dark:hover:bg-teal-900/20 font-medium transition-colors text-sm"
+          >
+            <FileText className="w-4 h-4" />
+            View as HTML
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
 
 const features = [
   {
@@ -154,33 +267,7 @@ export default function Home() {
         </section>
 
         {/* ── Bilingual Vocabulary Download ── */}
-        <section className="bg-gradient-to-br from-teal-50 to-sky-50 dark:from-teal-900/20 dark:to-sky-900/20 border border-teal-200 dark:border-teal-800 rounded-3xl p-8 shadow-sm">
-          <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
-            <div className="w-14 h-14 rounded-2xl bg-teal-600 flex items-center justify-center shrink-0 shadow-md">
-              <FileText className="w-7 h-7 text-white" />
-            </div>
-            <div className="flex-1">
-              <h2 className="text-xl font-extrabold text-foreground mb-1">
-                Bilingual Vocabulary Reference
-              </h2>
-              <p className="text-muted-foreground leading-relaxed mb-1">
-                Download the full bilingual vocabulary list — all 3,000 IELTS words across 5 CEFR levels (A1–C1), with Arabic translations for every word and example sentence. Print-ready and formatted for study.
-              </p>
-              <p className="text-sm text-teal-700 dark:text-teal-400 font-medium" dir="rtl" lang="ar">
-                قائمة المفردات الكاملة ثنائية اللغة · 3000 كلمة · 5 مستويات · ترجمة عربية لكل كلمة وجملة
-              </p>
-            </div>
-            <a
-              href="/vocabulary-bilingual.html"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-teal-600 hover:bg-teal-700 text-white font-semibold transition-colors shadow-md shrink-0 text-sm"
-            >
-              <Download className="w-4 h-4" />
-              Download Bilingual Vocabulary
-            </a>
-          </div>
-        </section>
+        <VocabDownloadSection />
 
         {/* ── Owner / About ── */}
         <section className="bg-card border border-border rounded-3xl overflow-hidden shadow-sm">
