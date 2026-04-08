@@ -46,70 +46,115 @@
       width: var(--page-w);
       min-height: var(--page-h);
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      background: linear-gradient(135deg, #1a6fae 0%, #0e4a7a 100%);
-      color: white;
-      padding: 20mm;
+      flex-direction: row;
+      overflow: hidden;
       page-break-after: always;
+      background: linear-gradient(135deg, #0e4a7a 0%, #1a6fae 100%);
+      color: white;
+    }
+
+    .cover-photo-panel {
+      width: 42%;
+      flex-shrink: 0;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .cover-photo-panel img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 15%;
+      display: block;
+    }
+
+    .cover-photo-panel::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, transparent 70%, rgba(14,74,122,0.5) 100%);
+    }
+
+    .cover-text-panel {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 14mm 16mm 14mm 12mm;
+      text-align: left;
     }
 
     .cover-logo {
-      font-size: 1rem;
+      font-size: 0.85rem;
       font-weight: 700;
-      letter-spacing: 0.15em;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
-      opacity: 0.8;
-      margin-bottom: 8mm;
+      opacity: 0.7;
+      margin-bottom: 5mm;
     }
 
     .cover-title {
-      font-size: 2.8rem;
+      font-size: 2.2rem;
       font-weight: 800;
       line-height: 1.2;
-      margin-bottom: 6mm;
+      margin-bottom: 4mm;
     }
 
     .cover-subtitle {
-      font-size: 1.1rem;
+      font-size: 0.95rem;
       opacity: 0.85;
-      margin-bottom: 8mm;
+      margin-bottom: 5mm;
+      line-height: 1.5;
     }
 
     .cover-ar {
-      font-size: 1.4rem;
-      margin-bottom: 10mm;
+      font-size: 1.2rem;
+      margin-bottom: 7mm;
       opacity: 0.9;
+      text-align: right;
     }
 
     .cover-levels {
       display: flex;
-      gap: 8mm;
-      justify-content: center;
+      gap: 3mm;
       flex-wrap: wrap;
-      margin-bottom: 10mm;
+      margin-bottom: 7mm;
     }
 
     .cover-level-badge {
       background: rgba(255,255,255,0.2);
       border: 2px solid rgba(255,255,255,0.5);
-      border-radius: 8px;
-      padding: 3mm 6mm;
-      font-size: 1.1rem;
+      border-radius: 6px;
+      padding: 2mm 5mm;
+      font-size: 1rem;
       font-weight: 700;
     }
 
     .cover-stats {
-      opacity: 0.75;
-      font-size: 0.9rem;
+      opacity: 0.7;
+      font-size: 0.82rem;
+      margin-bottom: 8mm;
+      line-height: 1.6;
+    }
+
+    .cover-divider {
+      width: 30mm;
+      height: 2px;
+      background: rgba(255,255,255,0.35);
       margin-bottom: 6mm;
     }
 
     .cover-author {
-      opacity: 0.8;
       font-size: 0.9rem;
+      font-weight: 600;
+      opacity: 0.9;
+      margin-bottom: 2mm;
+    }
+
+    .cover-copyright {
+      font-size: 0.78rem;
+      opacity: 0.6;
+      line-height: 1.5;
     }
 
     /* ── Table of Contents ── */
@@ -337,19 +382,37 @@
 
   <!-- Cover Page -->
   <div class="cover-page">
-    <div class="cover-logo">4ielts.com</div>
-    <h1 class="cover-title">IELTS Vocabulary Series<br>Bilingual EN · AR</h1>
-    <p class="cover-subtitle">3,000 Academic Words · 5 CEFR Levels · English + Arabic</p>
-    <p class="cover-ar" lang="ar" dir="rtl">قاموس المفردات ثنائي اللغة · الإنجليزية والعربية</p>
-    <div class="cover-levels">
-      <span class="cover-level-badge">A1</span>
-      <span class="cover-level-badge">A2</span>
-      <span class="cover-level-badge">B1</span>
-      <span class="cover-level-badge">B2</span>
-      <span class="cover-level-badge">C1</span>
+
+    <!-- Left: Photo -->
+    <div class="cover-photo-panel">
+      <img src="abu-omar-cover.png" alt="Abu Omar – IELTS Trainer" />
     </div>
-    <p class="cover-stats">3000 words &nbsp;·&nbsp; 3000 Example Sentences &nbsp;·&nbsp; 3000 Arabic Translations</p>
-    <p class="cover-author">Abu Omar · IELTS Trainer &amp; Educator<br>Supervised by 4ielts Platform · www.4ielts.com</p>
+
+    <!-- Right: Text -->
+    <div class="cover-text-panel">
+      <div class="cover-logo">4ielts.com</div>
+      <h1 class="cover-title">IELTS Vocabulary<br>Series — Bilingual<br>EN · AR</h1>
+      <p class="cover-subtitle">3,000 Academic Words · 5 CEFR Levels<br>English + Arabic with Example Sentences</p>
+      <p class="cover-ar" lang="ar" dir="rtl">قاموس المفردات ثنائي اللغة · الإنجليزية والعربية</p>
+      <div class="cover-levels">
+        <span class="cover-level-badge">A1</span>
+        <span class="cover-level-badge">A2</span>
+        <span class="cover-level-badge">B1</span>
+        <span class="cover-level-badge">B2</span>
+        <span class="cover-level-badge">C1</span>
+      </div>
+      <p class="cover-stats">
+        3,000 Words &nbsp;·&nbsp; 3,000 Example Sentences<br>
+        3,000 Arabic Translations
+      </p>
+      <div class="cover-divider"></div>
+      <p class="cover-author">Abu Omar · IELTS Trainer &amp; Educator</p>
+      <p class="cover-copyright">
+        © 4ielts.com — All Rights Reserved<br>
+        جميع الحقوق محفوظة لـ 4ielts.com · www.4ielts.com
+      </p>
+    </div>
+
   </div>
 
   <!-- Table of Contents -->
