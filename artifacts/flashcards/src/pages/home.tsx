@@ -24,10 +24,10 @@ function VocabDownloadSection() {
             Bilingual Vocabulary Reference
           </h2>
           <p className="text-muted-foreground leading-relaxed mb-1">
-            Browse the full bilingual vocabulary list — 2,384 unique IELTS words across 4 CEFR levels (A2–C1), with Arabic translations for every word and example sentence.
+            Browse the full bilingual vocabulary list — 3,000 unique IELTS words across 4 CEFR levels (A2–C1), with Arabic translations for every word and example sentence.
           </p>
           <p className="text-sm text-teal-700 dark:text-teal-400 font-medium" dir="rtl" lang="ar">
-            قائمة المفردات الكاملة ثنائية اللغة · 2384 كلمة · 4 مستويات · ترجمة عربية لكل كلمة وجملة
+            قائمة المفردات الكاملة ثنائية اللغة · 3000 كلمة · 4 مستويات · ترجمة عربية لكل كلمة وجملة
           </p>
         </div>
         <div className="flex flex-col gap-2 shrink-0">
@@ -38,7 +38,7 @@ function VocabDownloadSection() {
             className="inline-flex items-center justify-center gap-2 px-6 py-2 rounded-full border border-teal-600 text-teal-700 dark:text-teal-400 hover:bg-teal-50 dark:hover:bg-teal-900/20 font-medium transition-colors text-sm"
           >
             <FileText className="w-4 h-4" />
-            Click for 2,384 words
+            Click for 3,000 words
           </a>
         </div>
       </div>
@@ -67,8 +67,8 @@ const features = [
   },
   {
     icon: Award,
-    title: "2,384 Flashcards",
-    desc: "2,384 carefully curated IELTS words with bilingual example sentences in every card.",
+    title: "3,000 Flashcards",
+    desc: "3,000 carefully curated IELTS words with bilingual example sentences in every card.",
     color: "bg-amber-50 dark:bg-amber-900/20 text-amber-600",
   },
 ];
@@ -101,7 +101,7 @@ export default function Home() {
               Master English Vocabulary<br/>the Smart Way
             </h1>
             <p className="text-primary-foreground/80 text-lg mb-8 leading-relaxed">
-              2,384 flashcards across A2–C1 levels, with Arabic translations, audio
+              3,000 flashcards across A2–C1 levels, with Arabic translations, audio
               pronunciation and smart quizzes — built for Arabic-speaking IELTS students.
             </p>
             <div className="flex flex-wrap gap-3">

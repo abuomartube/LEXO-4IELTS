@@ -19070,5 +19070,4933 @@
     "category": "adj.",
     "example_sentence": "The overarching goal of the study is to improve education.",
     "example_sentence_arabic": "الهدف الشامل للدراسة هو تحسين التعليم."
+  },
+  {
+    "english": "administer",
+    "arabic": "يُدير",
+    "level": "B1",
+    "category": "verb",
+    "example_sentence": "A nurse will administer the medication.",
+    "example_sentence_arabic": "ستُعطي الممرضة الدواء."
+  },
+  {
+    "english": "automate",
+    "arabic": "يُؤتمت",
+    "level": "B1",
+    "category": "verb",
+    "example_sentence": "Companies automate repetitive tasks to save time.",
+    "example_sentence_arabic": "تؤتمت الشركات المهام المتكررة لتوفير الوقت."
+  },
+  {
+    "english": "consult",
+    "arabic": "يستشير",
+    "level": "B1",
+    "category": "verb",
+    "example_sentence": "You should consult a doctor before taking that medication.",
+    "example_sentence_arabic": "يجب عليك استشارة طبيب قبل تناول هذا الدواء."
+  },
+  {
+    "english": "delegate",
+    "arabic": "يُفوّض",
+    "level": "B1",
+    "category": "verb",
+    "example_sentence": "A good leader knows how to delegate tasks.",
+    "example_sentence_arabic": "يعرف القائد الجيد كيف يفوّض المهام."
+  },
+  {
+    "english": "persuade",
+    "arabic": "يُقنع",
+    "level": "B1",
+    "category": "verb",
+    "example_sentence": "She tried to persuade her friend to join the club.",
+    "example_sentence_arabic": "حاولت إقناع صديقتها بالانضمام إلى النادي."
+  },
+  {
+    "english": "retrieve",
+    "arabic": "يسترجع",
+    "level": "B1",
+    "category": "verb",
+    "example_sentence": "She retrieved the file from the cloud storage.",
+    "example_sentence_arabic": "استرجعت الملف من التخزين السحابي."
+  },
+  {
+    "english": "simplify",
+    "arabic": "يُبسّط",
+    "level": "B1",
+    "category": "verb",
+    "example_sentence": "The teacher simplified the explanation for younger students.",
+    "example_sentence_arabic": "بسّط المعلم الشرح للطلاب الأصغر سنًا."
+  },
+  {
+    "english": "collaboration",
+    "arabic": "تعاون",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The project was a result of collaboration between two universities.",
+    "example_sentence_arabic": "كان المشروع نتيجة تعاون بين جامعتين."
+  },
+  {
+    "english": "creativity",
+    "arabic": "إبداع",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Creativity is an essential skill in the modern workplace.",
+    "example_sentence_arabic": "الإبداع مهارة أساسية في بيئة العمل الحديثة."
+  },
+  {
+    "english": "efficiency",
+    "arabic": "كفاءة",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The new system improved efficiency in the office.",
+    "example_sentence_arabic": "حسّن النظام الجديد الكفاءة في المكتب."
+  },
+  {
+    "english": "evolution",
+    "arabic": "تطور",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The evolution of technology has changed how we work.",
+    "example_sentence_arabic": "غيّر تطور التكنولوجيا طريقة عملنا."
+  },
+  {
+    "english": "flexibility",
+    "arabic": "مرونة",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Flexibility in working hours helps employees balance their lives.",
+    "example_sentence_arabic": "تساعد المرونة في ساعات العمل الموظفين على تحقيق التوازن في حياتهم."
+  },
+  {
+    "english": "habit",
+    "arabic": "عادة",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Reading every day is a good habit.",
+    "example_sentence_arabic": "القراءة كل يوم عادة جيدة."
+  },
+  {
+    "english": "identity",
+    "arabic": "هوية",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Language is an important part of cultural identity.",
+    "example_sentence_arabic": "اللغة جزء مهم من الهوية الثقافية."
+  },
+  {
+    "english": "independence",
+    "arabic": "استقلالية",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Children need independence to grow and learn.",
+    "example_sentence_arabic": "يحتاج الأطفال إلى الاستقلالية للنمو والتعلم."
+  },
+  {
+    "english": "intelligence",
+    "arabic": "ذكاء",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Emotional intelligence is as important as academic intelligence.",
+    "example_sentence_arabic": "الذكاء العاطفي بنفس أهمية الذكاء الأكاديمي."
+  },
+  {
+    "english": "nationality",
+    "arabic": "جنسية",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Her nationality is listed on the official document.",
+    "example_sentence_arabic": "جنسيتها مذكورة في الوثيقة الرسمية."
+  },
+  {
+    "english": "procedure",
+    "arabic": "إجراء",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Follow the correct procedure when applying for a visa.",
+    "example_sentence_arabic": "اتبع الإجراء الصحيح عند التقدم للحصول على تأشيرة."
+  },
+  {
+    "english": "regulation",
+    "arabic": "لائحة",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "All businesses must follow government regulations.",
+    "example_sentence_arabic": "يجب على جميع الشركات اتباع اللوائح الحكومية."
+  },
+  {
+    "english": "rejection",
+    "arabic": "رفض",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Dealing with rejection is part of learning.",
+    "example_sentence_arabic": "التعامل مع الرفض جزء من التعلم."
+  },
+  {
+    "english": "resolution",
+    "arabic": "قرار",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The committee passed a resolution to improve services.",
+    "example_sentence_arabic": "أصدرت اللجنة قرارًا لتحسين الخدمات."
+  },
+  {
+    "english": "revision",
+    "arabic": "مراجعة",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Regular revision helps you remember information.",
+    "example_sentence_arabic": "تساعدك المراجعة المنتظمة على تذكر المعلومات."
+  },
+  {
+    "english": "submission",
+    "arabic": "تقديم",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The submission date for the essay is Friday.",
+    "example_sentence_arabic": "موعد تقديم المقال هو الجمعة."
+  },
+  {
+    "english": "symbol",
+    "arabic": "رمز",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The dove is a symbol of peace.",
+    "example_sentence_arabic": "الحمامة رمز للسلام."
+  },
+  {
+    "english": "variation",
+    "arabic": "تباين",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "There is a wide variation in prices between shops.",
+    "example_sentence_arabic": "هناك تباين كبير في الأسعار بين المحلات."
+  },
+  {
+    "english": "vacancy",
+    "arabic": "وظيفة شاغرة",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "There is a vacancy for a math teacher at the school.",
+    "example_sentence_arabic": "هناك وظيفة شاغرة لمعلم رياضيات في المدرسة."
+  },
+  {
+    "english": "calculation",
+    "arabic": "حساب",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The calculation showed that costs exceeded the budget.",
+    "example_sentence_arabic": "أظهر الحساب أن التكاليف تجاوزت الميزانية."
+  },
+  {
+    "english": "equation",
+    "arabic": "معادلة",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Solve the equation and find the value of x.",
+    "example_sentence_arabic": "حل المعادلة وأوجد قيمة x."
+  },
+  {
+    "english": "specimen",
+    "arabic": "عينة",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The scientist examined the specimen under a microscope.",
+    "example_sentence_arabic": "فحص العالِم العينة تحت المجهر."
+  },
+  {
+    "english": "appetite",
+    "arabic": "شهية",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "A good walk in fresh air improves your appetite.",
+    "example_sentence_arabic": "تُحسّن نزهة جيدة في الهواء الطلق شهيتك."
+  },
+  {
+    "english": "diagnosis",
+    "arabic": "تشخيص",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "An early diagnosis can save lives.",
+    "example_sentence_arabic": "يمكن للتشخيص المبكر أن ينقذ الأرواح."
+  },
+  {
+    "english": "infection",
+    "arabic": "عدوى",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Washing your hands prevents the spread of infection.",
+    "example_sentence_arabic": "غسل اليدين يمنع انتشار العدوى."
+  },
+  {
+    "english": "nutrition",
+    "arabic": "تغذية",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Good nutrition is key to a healthy life.",
+    "example_sentence_arabic": "التغذية الجيدة مفتاح حياة صحية."
+  },
+  {
+    "english": "obesity",
+    "arabic": "سمنة",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Obesity is a growing health problem worldwide.",
+    "example_sentence_arabic": "السمنة مشكلة صحية متنامية في جميع أنحاء العالم."
+  },
+  {
+    "english": "prevention",
+    "arabic": "وقاية",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Prevention is better than cure.",
+    "example_sentence_arabic": "الوقاية خير من العلاج."
+  },
+  {
+    "english": "recovery",
+    "arabic": "تعافٍ",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Full recovery after surgery may take weeks.",
+    "example_sentence_arabic": "قد يستغرق التعافي الكامل بعد الجراحة أسابيع."
+  },
+  {
+    "english": "symptom",
+    "arabic": "أعراض",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "A sore throat is a common symptom of a cold.",
+    "example_sentence_arabic": "التهاب الحلق من الأعراض الشائعة للزكام."
+  },
+  {
+    "english": "therapy",
+    "arabic": "علاج نفسي",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "She attends therapy every week to manage her stress.",
+    "example_sentence_arabic": "تحضر جلسات العلاج كل أسبوع للتعامل مع ضغوطها."
+  },
+  {
+    "english": "treatment",
+    "arabic": "علاج",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The doctor prescribed a new treatment for the condition.",
+    "example_sentence_arabic": "وصف الطبيب علاجًا جديدًا للحالة."
+  },
+  {
+    "english": "vaccine",
+    "arabic": "لقاح",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The vaccine helped control the spread of the disease.",
+    "example_sentence_arabic": "ساعد اللقاح في السيطرة على انتشار المرض."
+  },
+  {
+    "english": "currency",
+    "arabic": "عملة",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The euro is the currency used in many European countries.",
+    "example_sentence_arabic": "اليورو هو العملة المستخدمة في كثير من الدول الأوروبية."
+  },
+  {
+    "english": "debt",
+    "arabic": "دين",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "She worked hard to pay off her debt.",
+    "example_sentence_arabic": "عملت بجد لسداد ديونها."
+  },
+  {
+    "english": "deficit",
+    "arabic": "عجز",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The government is trying to reduce the budget deficit.",
+    "example_sentence_arabic": "تحاول الحكومة تقليص عجز الميزانية."
+  },
+  {
+    "english": "expenditure",
+    "arabic": "إنفاق",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The company reviewed its annual expenditure.",
+    "example_sentence_arabic": "راجعت الشركة إنفاقها السنوي."
+  },
+  {
+    "english": "inflation",
+    "arabic": "تضخم",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "High inflation makes everyday goods more expensive.",
+    "example_sentence_arabic": "يجعل التضخم المرتفع السلع اليومية أغلى ثمنًا."
+  },
+  {
+    "english": "investment",
+    "arabic": "استثمار",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Investing in education is the best investment for the future.",
+    "example_sentence_arabic": "الاستثمار في التعليم هو أفضل استثمار للمستقبل."
+  },
+  {
+    "english": "pension",
+    "arabic": "معاش تقاعدي",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "He retired and started collecting his pension.",
+    "example_sentence_arabic": "تقاعد وبدأ في تلقي معاشه التقاعدي."
+  },
+  {
+    "english": "subsidy",
+    "arabic": "دعم مالي",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The government provides subsidies to farmers.",
+    "example_sentence_arabic": "تقدم الحكومة دعمًا ماليًا للمزارعين."
+  },
+  {
+    "english": "unemployment",
+    "arabic": "بطالة",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Unemployment rose sharply during the economic crisis.",
+    "example_sentence_arabic": "ارتفعت البطالة بشكل حاد خلال الأزمة الاقتصادية."
+  },
+  {
+    "english": "wage",
+    "arabic": "أجر",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The minimum wage was increased this year.",
+    "example_sentence_arabic": "رُفع الحد الأدنى للأجور هذا العام."
+  },
+  {
+    "english": "corruption",
+    "arabic": "فساد",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Corruption undermines public trust in government.",
+    "example_sentence_arabic": "يُضعف الفساد ثقة الجمهور في الحكومة."
+  },
+  {
+    "english": "discrimination",
+    "arabic": "تمييز",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Discrimination in the workplace is illegal.",
+    "example_sentence_arabic": "التمييز في مكان العمل غير قانوني."
+  },
+  {
+    "english": "inclusion",
+    "arabic": "شمول",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The school promotes inclusion for students of all abilities.",
+    "example_sentence_arabic": "تُعزّز المدرسة الشمول لطلاب من جميع القدرات."
+  },
+  {
+    "english": "parliament",
+    "arabic": "برلمان",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The bill was debated in parliament last week.",
+    "example_sentence_arabic": "نوقش مشروع القانون في البرلمان الأسبوع الماضي."
+  },
+  {
+    "english": "prejudice",
+    "arabic": "تحيز",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Prejudice is often based on ignorance.",
+    "example_sentence_arabic": "كثيرًا ما يستند التحيز إلى الجهل."
+  },
+  {
+    "english": "privilege",
+    "arabic": "امتياز",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Access to education should not be a privilege.",
+    "example_sentence_arabic": "لا ينبغي أن يكون الوصول إلى التعليم امتيازًا."
+  },
+  {
+    "english": "protest",
+    "arabic": "احتجاج",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Thousands joined the peaceful protest in the city centre.",
+    "example_sentence_arabic": "انضم آلاف الأشخاص إلى الاحتجاج السلمي في وسط المدينة."
+  },
+  {
+    "english": "vote",
+    "arabic": "تصويت",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Every citizen has the right to vote.",
+    "example_sentence_arabic": "لكل مواطن الحق في التصويت."
+  },
+  {
+    "english": "cooperative",
+    "arabic": "متعاون",
+    "level": "B1",
+    "category": "adjective",
+    "example_sentence": "A cooperative attitude helps the whole team.",
+    "example_sentence_arabic": "يساعد الموقف المتعاون الفريق بأكمله."
+  },
+  {
+    "english": "determined",
+    "arabic": "مصمم",
+    "level": "B1",
+    "category": "adjective",
+    "example_sentence": "She was determined to pass the exam.",
+    "example_sentence_arabic": "كانت مصممة على اجتياز الامتحان."
+  },
+  {
+    "english": "eligible",
+    "arabic": "مؤهل",
+    "level": "B1",
+    "category": "adjective",
+    "example_sentence": "You must be 18 to be eligible to vote.",
+    "example_sentence_arabic": "يجب أن تبلغ 18 عامًا لتكون مؤهلًا للتصويت."
+  },
+  {
+    "english": "emotional",
+    "arabic": "عاطفي",
+    "level": "B1",
+    "category": "adjective",
+    "example_sentence": "She gave an emotional speech about her journey.",
+    "example_sentence_arabic": "ألقت خطابًا عاطفيًا حول مسيرتها."
+  },
+  {
+    "english": "inclusive",
+    "arabic": "شامل للجميع",
+    "level": "B1",
+    "category": "adjective",
+    "example_sentence": "The school aims to be inclusive for all students.",
+    "example_sentence_arabic": "تسعى المدرسة إلى أن تكون شاملة لجميع الطلاب."
+  },
+  {
+    "english": "intellectual",
+    "arabic": "فكري",
+    "level": "B1",
+    "category": "adjective",
+    "example_sentence": "Reading is an important intellectual activity.",
+    "example_sentence_arabic": "القراءة نشاط فكري مهم."
+  },
+  {
+    "english": "intense",
+    "arabic": "مكثف",
+    "level": "B1",
+    "category": "adjective",
+    "example_sentence": "The training program is very intense.",
+    "example_sentence_arabic": "برنامج التدريب مكثف جدًا."
+  },
+  {
+    "english": "progressive",
+    "arabic": "تقدمي",
+    "level": "B1",
+    "category": "adjective",
+    "example_sentence": "The school has a progressive approach to teaching.",
+    "example_sentence_arabic": "للمدرسة نهج تقدمي في التدريس."
+  },
+  {
+    "english": "accordingly",
+    "arabic": "وفقًا لذلك",
+    "level": "B1",
+    "category": "adverb",
+    "example_sentence": "Please read the instructions and act accordingly.",
+    "example_sentence_arabic": "يرجى قراءة التعليمات والتصرف وفقًا لذلك."
+  },
+  {
+    "english": "automatically",
+    "arabic": "تلقائيًا",
+    "level": "B1",
+    "category": "adverb",
+    "example_sentence": "The lights turn off automatically after 10 minutes.",
+    "example_sentence_arabic": "تنطفئ الأضواء تلقائيًا بعد 10 دقائق."
+  },
+  {
+    "english": "continuously",
+    "arabic": "بشكل مستمر",
+    "level": "B1",
+    "category": "adverb",
+    "example_sentence": "The machine runs continuously day and night.",
+    "example_sentence_arabic": "تعمل الآلة بشكل مستمر ليلًا ونهارًا."
+  },
+  {
+    "english": "deliberately",
+    "arabic": "عمدًا",
+    "level": "B1",
+    "category": "adverb",
+    "example_sentence": "He deliberately chose the hardest course.",
+    "example_sentence_arabic": "اختار عمدًا المقرر الأصعب."
+  },
+  {
+    "english": "efficiently",
+    "arabic": "بكفاءة",
+    "level": "B1",
+    "category": "adverb",
+    "example_sentence": "She manages her time efficiently.",
+    "example_sentence_arabic": "تُدير وقتها بكفاءة."
+  },
+  {
+    "english": "formally",
+    "arabic": "رسميًا",
+    "level": "B1",
+    "category": "adverb",
+    "example_sentence": "The contract was formally signed by both parties.",
+    "example_sentence_arabic": "وُقّع العقد رسميًا من قِبَل الطرفين."
+  },
+  {
+    "english": "frequently",
+    "arabic": "بشكل متكرر",
+    "level": "B1",
+    "category": "adverb",
+    "example_sentence": "She frequently visits the library.",
+    "example_sentence_arabic": "تزور المكتبة بشكل متكرر."
+  },
+  {
+    "english": "increasingly",
+    "arabic": "بشكل متزايد",
+    "level": "B1",
+    "category": "adverb",
+    "example_sentence": "Technology is becoming increasingly important in education.",
+    "example_sentence_arabic": "تصبح التكنولوجيا بشكل متزايد أكثر أهمية في التعليم."
+  },
+  {
+    "english": "initially",
+    "arabic": "في البداية",
+    "level": "B1",
+    "category": "adverb",
+    "example_sentence": "I was initially nervous about the presentation.",
+    "example_sentence_arabic": "كنت في البداية متوترًا بشأن العرض التقديمي."
+  },
+  {
+    "english": "necessarily",
+    "arabic": "بالضرورة",
+    "level": "B1",
+    "category": "adverb",
+    "example_sentence": "More money does not necessarily mean more happiness.",
+    "example_sentence_arabic": "المزيد من المال لا يعني بالضرورة المزيد من السعادة."
+  },
+  {
+    "english": "normally",
+    "arabic": "عادةً",
+    "level": "B1",
+    "category": "adverb",
+    "example_sentence": "I normally wake up at 6 am.",
+    "example_sentence_arabic": "عادةً ما أستيقظ الساعة السادسة صباحًا."
+  },
+  {
+    "english": "occasionally",
+    "arabic": "أحيانًا",
+    "level": "B1",
+    "category": "adverb",
+    "example_sentence": "We occasionally go out for dinner.",
+    "example_sentence_arabic": "نخرج أحيانًا لتناول العشاء."
+  },
+  {
+    "english": "particularly",
+    "arabic": "بشكل خاص",
+    "level": "B1",
+    "category": "adverb",
+    "example_sentence": "She was particularly interested in science.",
+    "example_sentence_arabic": "كانت مهتمة بشكل خاص بالعلوم."
+  },
+  {
+    "english": "relatively",
+    "arabic": "نسبيًا",
+    "level": "B1",
+    "category": "adverb",
+    "example_sentence": "The exam was relatively easy this year.",
+    "example_sentence_arabic": "كان الامتحان سهلًا نسبيًا هذا العام."
+  },
+  {
+    "english": "repeatedly",
+    "arabic": "مرارًا وتكرارًا",
+    "level": "B1",
+    "category": "adverb",
+    "example_sentence": "He tried repeatedly to solve the problem.",
+    "example_sentence_arabic": "حاول مرارًا وتكرارًا حل المشكلة."
+  },
+  {
+    "english": "specifically",
+    "arabic": "تحديدًا",
+    "level": "B1",
+    "category": "adverb",
+    "example_sentence": "She was looking for a job specifically in marketing.",
+    "example_sentence_arabic": "كانت تبحث عن وظيفة تحديدًا في مجال التسويق."
+  },
+  {
+    "english": "strongly",
+    "arabic": "بشدة",
+    "level": "B1",
+    "category": "adverb",
+    "example_sentence": "I strongly recommend this book to all students.",
+    "example_sentence_arabic": "أوصي بشدة بهذا الكتاب لجميع الطلاب."
+  },
+  {
+    "english": "successfully",
+    "arabic": "بنجاح",
+    "level": "B1",
+    "category": "adverb",
+    "example_sentence": "She successfully completed her training.",
+    "example_sentence_arabic": "أتمّت تدريبها بنجاح."
+  },
+  {
+    "english": "typically",
+    "arabic": "عادةً",
+    "level": "B1",
+    "category": "adverb",
+    "example_sentence": "Students typically spend four years at university.",
+    "example_sentence_arabic": "يمضي الطلاب عادةً أربع سنوات في الجامعة."
+  },
+  {
+    "english": "widely",
+    "arabic": "على نطاق واسع",
+    "level": "B1",
+    "category": "adverb",
+    "example_sentence": "The book is widely read in schools.",
+    "example_sentence_arabic": "يُقرأ الكتاب على نطاق واسع في المدارس."
+  },
+  {
+    "english": "applicant",
+    "arabic": "مقدّم طلب",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "More than 500 applicants applied for the job.",
+    "example_sentence_arabic": "تقدّم أكثر من 500 مقدّم طلب للوظيفة."
+  },
+  {
+    "english": "employer",
+    "arabic": "صاحب عمل",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "A good employer values the well-being of their staff.",
+    "example_sentence_arabic": "يُقدّر صاحب العمل الجيد رفاهية موظفيه."
+  },
+  {
+    "english": "graduate",
+    "arabic": "خريج",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "She was among the top graduates of her year.",
+    "example_sentence_arabic": "كانت من بين أفضل خريجي دفعتها."
+  },
+  {
+    "english": "internship",
+    "arabic": "تدريب مهني",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "He completed an internship at a law firm.",
+    "example_sentence_arabic": "أكمل تدريبًا مهنيًا في مكتب محاماة."
+  },
+  {
+    "english": "profession",
+    "arabic": "مهنة",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Teaching is a respected profession worldwide.",
+    "example_sentence_arabic": "التدريس مهنة محترمة على مستوى العالم."
+  },
+  {
+    "english": "promotion",
+    "arabic": "ترقية",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "She worked hard and received a promotion last month.",
+    "example_sentence_arabic": "عملت بجد وحصلت على ترقية الشهر الماضي."
+  },
+  {
+    "english": "resignation",
+    "arabic": "استقالة",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "He handed in his resignation after disagreeing with the manager.",
+    "example_sentence_arabic": "قدّم استقالته بعد خلاف مع المدير."
+  },
+  {
+    "english": "salary",
+    "arabic": "راتب",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The salary for this position starts at £25,000.",
+    "example_sentence_arabic": "يبدأ راتب هذا المنصب من 25,000 جنيه إسترليني."
+  },
+  {
+    "english": "entrepreneur",
+    "arabic": "رائد أعمال",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "She became a successful entrepreneur at the age of 25.",
+    "example_sentence_arabic": "أصبحت رائدة أعمال ناجحة في سن 25."
+  },
+  {
+    "english": "productivity",
+    "arabic": "إنتاجية",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "A comfortable workspace improves productivity.",
+    "example_sentence_arabic": "يُحسّن مكان العمل المريح الإنتاجية."
+  },
+  {
+    "english": "sustainability",
+    "arabic": "استدامة",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Sustainability is a major topic in modern business.",
+    "example_sentence_arabic": "الاستدامة موضوع رئيسي في الأعمال الحديثة."
+  },
+  {
+    "english": "mentorship",
+    "arabic": "إرشاد",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Mentorship can help young professionals develop faster.",
+    "example_sentence_arabic": "يمكن للإرشاد أن يساعد المهنيين الشباب على التطور بشكل أسرع."
+  },
+  {
+    "english": "draft",
+    "arabic": "مسودة",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Please review the draft before the final submission.",
+    "example_sentence_arabic": "يرجى مراجعة المسودة قبل التسليم النهائي."
+  },
+  {
+    "english": "reference",
+    "arabic": "مرجع",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "She used several academic references in her essay.",
+    "example_sentence_arabic": "استخدمت عدة مراجع أكاديمية في مقالها."
+  },
+  {
+    "english": "presentation",
+    "arabic": "عرض تقديمي",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "His presentation was clear and well-organised.",
+    "example_sentence_arabic": "كان عرضه التقديمي واضحًا ومنظمًا جيدًا."
+  },
+  {
+    "english": "bibliography",
+    "arabic": "قائمة المراجع",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Always include a bibliography at the end of your essay.",
+    "example_sentence_arabic": "دائمًا أدرج قائمة المراجع في نهاية مقالك."
+  },
+  {
+    "english": "plagiarism",
+    "arabic": "انتحال",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Plagiarism is taken very seriously at university.",
+    "example_sentence_arabic": "يؤخذ الانتحال على محمل الجد في الجامعة."
+  },
+  {
+    "english": "paraphrase",
+    "arabic": "إعادة صياغة",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Instead of copying, try to paraphrase the author's ideas.",
+    "example_sentence_arabic": "بدلًا من النسخ، حاول إعادة صياغة أفكار المؤلف."
+  },
+  {
+    "english": "quotation",
+    "arabic": "اقتباس",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "He used a quotation from Shakespeare in his essay.",
+    "example_sentence_arabic": "استخدم اقتباسًا من شكسبير في مقاله."
+  },
+  {
+    "english": "thesis",
+    "arabic": "أطروحة",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "She is writing her thesis on climate change.",
+    "example_sentence_arabic": "تكتب أطروحتها حول تغير المناخ."
+  },
+  {
+    "english": "syllabus",
+    "arabic": "خطة المقرر",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The teacher handed out the syllabus on the first day.",
+    "example_sentence_arabic": "وزّع المعلم خطة المقرر في اليوم الأول."
+  },
+  {
+    "english": "contamination",
+    "arabic": "تلوث",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Water contamination is a serious health risk.",
+    "example_sentence_arabic": "تلوث المياه خطر صحي خطير."
+  },
+  {
+    "english": "ecosystem",
+    "arabic": "نظام بيئي",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "A balanced ecosystem supports all forms of life.",
+    "example_sentence_arabic": "يدعم النظام البيئي المتوازن جميع أشكال الحياة."
+  },
+  {
+    "english": "exhaust",
+    "arabic": "عادم",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Car exhaust contributes to air pollution.",
+    "example_sentence_arabic": "يُسهم عادم السيارات في تلوث الهواء."
+  },
+  {
+    "english": "fossil fuel",
+    "arabic": "وقود أحفوري",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Burning fossil fuels releases carbon dioxide.",
+    "example_sentence_arabic": "يُطلق حرق الوقود الأحفوري ثاني أكسيد الكربون."
+  },
+  {
+    "english": "greenhouse gas",
+    "arabic": "غاز الاحتباس الحراري",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Methane is a powerful greenhouse gas.",
+    "example_sentence_arabic": "الميثان من أقوى غازات الاحتباس الحراري."
+  },
+  {
+    "english": "landfill",
+    "arabic": "مكب نفايات",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Plastic waste ends up in landfills or the ocean.",
+    "example_sentence_arabic": "ينتهي النفايات البلاستيكية في مكبات النفايات أو المحيط."
+  },
+  {
+    "english": "toxic",
+    "arabic": "سام",
+    "level": "B1",
+    "category": "adjective",
+    "example_sentence": "Some industrial chemicals are highly toxic.",
+    "example_sentence_arabic": "بعض المواد الكيميائية الصناعية سامة للغاية."
+  },
+  {
+    "english": "wilderness",
+    "arabic": "برية",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The vast wilderness stretches across thousands of miles.",
+    "example_sentence_arabic": "تمتد البرية الشاسعة عبر آلاف الأميال."
+  },
+  {
+    "english": "algorithm",
+    "arabic": "خوارزمية",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Search engines use algorithms to rank websites.",
+    "example_sentence_arabic": "تستخدم محركات البحث خوارزميات لترتيب المواقع."
+  },
+  {
+    "english": "application",
+    "arabic": "تطبيق",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "There are thousands of applications available to download.",
+    "example_sentence_arabic": "يوجد آلاف التطبيقات المتاحة للتنزيل."
+  },
+  {
+    "english": "artificial intelligence",
+    "arabic": "ذكاء اصطناعي",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Artificial intelligence is transforming many industries.",
+    "example_sentence_arabic": "يُغيّر الذكاء الاصطناعي كثيرًا من الصناعات."
+  },
+  {
+    "english": "bandwidth",
+    "arabic": "عرض النطاق الترددي",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Video streaming requires a high bandwidth connection.",
+    "example_sentence_arabic": "يتطلب بث الفيديو اتصالًا بعرض نطاق ترددي عالٍ."
+  },
+  {
+    "english": "browser",
+    "arabic": "متصفح",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Use a secure browser to protect your data online.",
+    "example_sentence_arabic": "استخدم متصفحًا آمنًا لحماية بياناتك على الإنترنت."
+  },
+  {
+    "english": "cloud computing",
+    "arabic": "الحوسبة السحابية",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Cloud computing allows you to store data online.",
+    "example_sentence_arabic": "تتيح لك الحوسبة السحابية تخزين البيانات عبر الإنترنت."
+  },
+  {
+    "english": "database",
+    "arabic": "قاعدة بيانات",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The company stores customer information in a secure database.",
+    "example_sentence_arabic": "تحتفظ الشركة بمعلومات العملاء في قاعدة بيانات آمنة."
+  },
+  {
+    "english": "encryption",
+    "arabic": "تشفير",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Encryption protects your personal data from hackers.",
+    "example_sentence_arabic": "يحمي التشفير بياناتك الشخصية من القراصنة."
+  },
+  {
+    "english": "hardware",
+    "arabic": "أجهزة",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The computer hardware was damaged by the power surge.",
+    "example_sentence_arabic": "تضررت أجهزة الحاسوب بسبب ارتفاع الطاقة المفاجئ."
+  },
+  {
+    "english": "interface",
+    "arabic": "واجهة",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The app has a user-friendly interface.",
+    "example_sentence_arabic": "يمتلك التطبيق واجهة سهلة الاستخدام."
+  },
+  {
+    "english": "platform",
+    "arabic": "منصة",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The company launched a new online learning platform.",
+    "example_sentence_arabic": "أطلقت الشركة منصة تعلم عبر الإنترنت جديدة."
+  },
+  {
+    "english": "password",
+    "arabic": "كلمة مرور",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Choose a strong password that includes numbers and symbols.",
+    "example_sentence_arabic": "اختر كلمة مرور قوية تتضمن أرقامًا ورموزًا."
+  },
+  {
+    "english": "software",
+    "arabic": "برنامج",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Please install the latest version of the software.",
+    "example_sentence_arabic": "يرجى تثبيت أحدث إصدار من البرنامج."
+  },
+  {
+    "english": "upload",
+    "arabic": "رفع",
+    "level": "B1",
+    "category": "verb",
+    "example_sentence": "You can upload your files to the cloud.",
+    "example_sentence_arabic": "يمكنك رفع ملفاتك إلى السحابة."
+  },
+  {
+    "english": "download",
+    "arabic": "تنزيل",
+    "level": "B1",
+    "category": "verb",
+    "example_sentence": "Download the app from the official website.",
+    "example_sentence_arabic": "نزّل التطبيق من الموقع الرسمي."
+  },
+  {
+    "english": "cybersecurity",
+    "arabic": "أمن إلكتروني",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Cybersecurity is one of the fastest growing fields.",
+    "example_sentence_arabic": "الأمن الإلكتروني من أسرع المجالات نموًا."
+  },
+  {
+    "english": "prototype",
+    "arabic": "نموذج أولي",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Engineers built a prototype before mass production.",
+    "example_sentence_arabic": "بنى المهندسون نموذجًا أوليًا قبل الإنتاج الضخم."
+  },
+  {
+    "english": "abuse",
+    "arabic": "إساءة",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Any form of abuse at school is unacceptable.",
+    "example_sentence_arabic": "أي شكل من أشكال الإساءة في المدرسة غير مقبول."
+  },
+  {
+    "english": "addiction",
+    "arabic": "إدمان",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Addiction to social media affects many young people.",
+    "example_sentence_arabic": "يؤثر الإدمان على وسائل التواصل الاجتماعي على كثير من الشباب."
+  },
+  {
+    "english": "community service",
+    "arabic": "خدمة مجتمعية",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Students are encouraged to do community service.",
+    "example_sentence_arabic": "يُشجَّع الطلاب على أداء الخدمة المجتمعية."
+  },
+  {
+    "english": "counselor",
+    "arabic": "مستشار",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The school counselor helped students plan their careers.",
+    "example_sentence_arabic": "ساعد المستشار المدرسي الطلاب في التخطيط لمسيرتهم المهنية."
+  },
+  {
+    "english": "crisis",
+    "arabic": "أزمة",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The country faced a serious economic crisis.",
+    "example_sentence_arabic": "واجهت البلاد أزمة اقتصادية حادة."
+  },
+  {
+    "english": "domestic violence",
+    "arabic": "عنف أسري",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Domestic violence affects millions of families worldwide.",
+    "example_sentence_arabic": "يؤثر العنف الأسري على ملايين العائلات في جميع أنحاء العالم."
+  },
+  {
+    "english": "empathy",
+    "arabic": "تعاطف",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Empathy is the ability to understand how others feel.",
+    "example_sentence_arabic": "التعاطف هو القدرة على فهم مشاعر الآخرين."
+  },
+  {
+    "english": "epidemic",
+    "arabic": "وباء",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The flu epidemic spread rapidly through the city.",
+    "example_sentence_arabic": "انتشر وباء الإنفلونزا بسرعة في المدينة."
+  },
+  {
+    "english": "humanitarian",
+    "arabic": "إنساني",
+    "level": "B1",
+    "category": "adjective",
+    "example_sentence": "The charity provides humanitarian aid to refugees.",
+    "example_sentence_arabic": "تقدم الجمعية الخيرية المساعدات الإنسانية للاجئين."
+  },
+  {
+    "english": "mental health",
+    "arabic": "صحة نفسية",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Mental health is as important as physical health.",
+    "example_sentence_arabic": "الصحة النفسية بنفس أهمية الصحة الجسدية."
+  },
+  {
+    "english": "poverty line",
+    "arabic": "خط الفقر",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Millions of people live below the poverty line.",
+    "example_sentence_arabic": "يعيش ملايين الأشخاص تحت خط الفقر."
+  },
+  {
+    "english": "refugee",
+    "arabic": "لاجئ",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The charity helps refugees find homes and jobs.",
+    "example_sentence_arabic": "تساعد الجمعية الخيرية اللاجئين على إيجاد المنازل والوظائف."
+  },
+  {
+    "english": "assessment",
+    "arabic": "تقييم",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The teacher completed the assessment at the end of the unit.",
+    "example_sentence_arabic": "أكمل المعلم التقييم في نهاية الوحدة."
+  },
+  {
+    "english": "enroll",
+    "arabic": "يسجّل",
+    "level": "B1",
+    "category": "verb",
+    "example_sentence": "She enrolled in an online English course.",
+    "example_sentence_arabic": "سجّلت في دورة إنجليزية عبر الإنترنت."
+  },
+  {
+    "english": "examination",
+    "arabic": "امتحان",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The final examination is next Wednesday.",
+    "example_sentence_arabic": "الامتحان النهائي يوم الأربعاء القادم."
+  },
+  {
+    "english": "lecture",
+    "arabic": "محاضرة",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The lecture on climate change was very informative.",
+    "example_sentence_arabic": "كانت المحاضرة حول تغير المناخ مفيدة جدًا."
+  },
+  {
+    "english": "module",
+    "arabic": "وحدة دراسية",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "This module covers the basics of grammar.",
+    "example_sentence_arabic": "تغطي هذه الوحدة الدراسية أساسيات القواعد."
+  },
+  {
+    "english": "scholarship",
+    "arabic": "منحة دراسية",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "She received a scholarship to study abroad.",
+    "example_sentence_arabic": "حصلت على منحة دراسية للدراسة في الخارج."
+  },
+  {
+    "english": "semester",
+    "arabic": "فصل دراسي",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The new semester starts in September.",
+    "example_sentence_arabic": "يبدأ الفصل الدراسي الجديد في سبتمبر."
+  },
+  {
+    "english": "tutor",
+    "arabic": "مدرس خاص",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "She hired a tutor to help her prepare for the exam.",
+    "example_sentence_arabic": "استأجرت مدرسًا خاصًا لمساعدتها على الاستعداد للامتحان."
+  },
+  {
+    "english": "tutorial",
+    "arabic": "درس إرشادي",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The tutorial explains how to use the software step by step.",
+    "example_sentence_arabic": "يشرح الدرس الإرشادي كيفية استخدام البرنامج خطوة بخطوة."
+  },
+  {
+    "english": "workshop",
+    "arabic": "ورشة عمل",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "She attended a writing workshop last month.",
+    "example_sentence_arabic": "حضرت ورشة كتابة الشهر الماضي."
+  },
+  {
+    "english": "undergraduate",
+    "arabic": "طالب جامعي",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The library is open to all undergraduate students.",
+    "example_sentence_arabic": "المكتبة مفتوحة لجميع الطلاب الجامعيين."
+  },
+  {
+    "english": "postgraduate",
+    "arabic": "طالب دراسات عليا",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Postgraduate students must submit a research proposal.",
+    "example_sentence_arabic": "يجب على طلاب الدراسات العليا تقديم مقترح بحثي."
+  },
+  {
+    "english": "immune system",
+    "arabic": "جهاز مناعي",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Regular exercise strengthens the immune system.",
+    "example_sentence_arabic": "تقوّي التمارين المنتظمة الجهاز المناعي."
+  },
+  {
+    "english": "prescription",
+    "arabic": "وصفة طبية",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The doctor gave me a prescription for antibiotics.",
+    "example_sentence_arabic": "أعطاني الطبيب وصفة طبية بالمضادات الحيوية."
+  },
+  {
+    "english": "rehabilitation",
+    "arabic": "إعادة تأهيل",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Physical rehabilitation helps patients recover from injury.",
+    "example_sentence_arabic": "تساعد إعادة التأهيل الجسدي المرضى على التعافي من الإصابات."
+  },
+  {
+    "english": "surgery",
+    "arabic": "عملية جراحية",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "He had surgery to repair his knee.",
+    "example_sentence_arabic": "خضع لعملية جراحية لإصلاح ركبته."
+  },
+  {
+    "english": "specialist",
+    "arabic": "أخصائي",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "She was referred to a specialist for further tests.",
+    "example_sentence_arabic": "تمت إحالتها إلى أخصائي لإجراء مزيد من الفحوصات."
+  },
+  {
+    "english": "side effect",
+    "arabic": "عرض جانبي",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Every medication can have side effects.",
+    "example_sentence_arabic": "يمكن أن تكون لكل دواء آثار جانبية."
+  },
+  {
+    "english": "wellbeing",
+    "arabic": "رفاهية",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Schools focus on the wellbeing of all students.",
+    "example_sentence_arabic": "تركز المدارس على رفاهية جميع الطلاب."
+  },
+  {
+    "english": "accommodation",
+    "arabic": "إقامة",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The university provides accommodation for first-year students.",
+    "example_sentence_arabic": "توفر الجامعة إقامة لطلاب السنة الأولى."
+  },
+  {
+    "english": "departure",
+    "arabic": "مغادرة",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The departure time is listed on the ticket.",
+    "example_sentence_arabic": "وقت المغادرة مدرج على التذكرة."
+  },
+  {
+    "english": "itinerary",
+    "arabic": "جدول رحلة",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The tour guide handed out the itinerary for the trip.",
+    "example_sentence_arabic": "وزّع المرشد السياحي جدول الرحلة."
+  },
+  {
+    "english": "tourism",
+    "arabic": "سياحة",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Tourism is an important source of income for many countries.",
+    "example_sentence_arabic": "السياحة مصدر دخل مهم لكثير من الدول."
+  },
+  {
+    "english": "transit",
+    "arabic": "عبور",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The passengers were stuck in transit for six hours.",
+    "example_sentence_arabic": "كان الركاب عالقين في العبور لست ساعات."
+  },
+  {
+    "english": "visa",
+    "arabic": "تأشيرة",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "You need a visa to enter some countries.",
+    "example_sentence_arabic": "تحتاج إلى تأشيرة لدخول بعض الدول."
+  },
+  {
+    "english": "accountability",
+    "arabic": "مساءلة",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "There must be accountability for decisions that affect the public.",
+    "example_sentence_arabic": "يجب أن تكون هناك مساءلة عن القرارات التي تؤثر على الجمهور."
+  },
+  {
+    "english": "affiliation",
+    "arabic": "انتماء",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "His political affiliation is well known.",
+    "example_sentence_arabic": "انتماؤه السياسي معروف للجميع."
+  },
+  {
+    "english": "alleviate",
+    "arabic": "يخفف",
+    "level": "B2",
+    "category": "verb",
+    "example_sentence": "Medication can alleviate the symptoms of the illness.",
+    "example_sentence_arabic": "يمكن للأدوية أن تخفف أعراض المرض."
+  },
+  {
+    "english": "anticipation",
+    "arabic": "توقع",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "There was great anticipation before the announcement.",
+    "example_sentence_arabic": "كان هناك توقع كبير قبل الإعلان."
+  },
+  {
+    "english": "aspiration",
+    "arabic": "طموح",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "Her greatest aspiration is to become a doctor.",
+    "example_sentence_arabic": "أكبر طموحاتها هو أن تصبح طبيبة."
+  },
+  {
+    "english": "autonomy",
+    "arabic": "استقلالية",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "Students need a degree of autonomy in their learning.",
+    "example_sentence_arabic": "يحتاج الطلاب إلى قدر من الاستقلالية في تعلمهم."
+  },
+  {
+    "english": "brevity",
+    "arabic": "إيجاز",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "The report is valued for its clarity and brevity.",
+    "example_sentence_arabic": "يُقدَّر التقرير بوضوحه وإيجازه."
+  },
+  {
+    "english": "bureaucracy",
+    "arabic": "بيروقراطية",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "The bureaucracy slowed down the approval process.",
+    "example_sentence_arabic": "أبطأت البيروقراطية عملية الموافقة."
+  },
+  {
+    "english": "caution",
+    "arabic": "حذر",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "Exercise caution when making important financial decisions.",
+    "example_sentence_arabic": "مارس الحذر عند اتخاذ قرارات مالية مهمة."
+  },
+  {
+    "english": "complication",
+    "arabic": "تعقيد",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "The surgery went well despite some complications.",
+    "example_sentence_arabic": "سارت العملية الجراحية على ما يرام على الرغم من بعض التعقيدات."
+  },
+  {
+    "english": "constraint",
+    "arabic": "قيد",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "Budget constraints limited what we could achieve.",
+    "example_sentence_arabic": "حدّت قيود الميزانية مما يمكننا تحقيقه."
+  },
+  {
+    "english": "contemplate",
+    "arabic": "يتأمل",
+    "level": "B2",
+    "category": "verb",
+    "example_sentence": "She contemplated her future career options.",
+    "example_sentence_arabic": "تأملت خياراتها المهنية المستقبلية."
+  },
+  {
+    "english": "conviction",
+    "arabic": "اقتناع",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "She spoke with great conviction about the cause.",
+    "example_sentence_arabic": "تحدثت باقتناع كبير بشأن القضية."
+  },
+  {
+    "english": "decisive",
+    "arabic": "حاسم",
+    "level": "B2",
+    "category": "adjective",
+    "example_sentence": "The president made a decisive move to end the crisis.",
+    "example_sentence_arabic": "اتخذ الرئيس خطوة حاسمة لإنهاء الأزمة."
+  },
+  {
+    "english": "deficiency",
+    "arabic": "نقص",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "A vitamin D deficiency can affect bone health.",
+    "example_sentence_arabic": "يمكن أن يؤثر نقص فيتامين د على صحة العظام."
+  },
+  {
+    "english": "degrade",
+    "arabic": "يُدهور",
+    "level": "B2",
+    "category": "verb",
+    "example_sentence": "Plastic waste degrades slowly and pollutes the environment.",
+    "example_sentence_arabic": "تتدهور النفايات البلاستيكية ببطء وتلوث البيئة."
+  },
+  {
+    "english": "detrimental",
+    "arabic": "ضار",
+    "level": "B2",
+    "category": "adjective",
+    "example_sentence": "Smoking is detrimental to your health.",
+    "example_sentence_arabic": "التدخين ضار بصحتك."
+  },
+  {
+    "english": "disrupt",
+    "arabic": "يُعطّل",
+    "level": "B2",
+    "category": "verb",
+    "example_sentence": "The storm disrupted transport across the region.",
+    "example_sentence_arabic": "عطّل العاصفة النقل في جميع أنحاء المنطقة."
+  },
+  {
+    "english": "drawback",
+    "arabic": "عيب",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "One drawback of living in the city is the high cost.",
+    "example_sentence_arabic": "أحد عيوب العيش في المدينة هو ارتفاع التكلفة."
+  },
+  {
+    "english": "fragment",
+    "arabic": "يُجزئ",
+    "level": "B2",
+    "category": "verb",
+    "example_sentence": "The argument fragmented the group into two camps.",
+    "example_sentence_arabic": "جزّأ النزاع المجموعة إلى فريقين."
+  },
+  {
+    "english": "friction",
+    "arabic": "احتكاك",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "Friction between colleagues can reduce productivity.",
+    "example_sentence_arabic": "يمكن أن يُقلّل الاحتكاك بين الزملاء الإنتاجية."
+  },
+  {
+    "english": "hybrid",
+    "arabic": "هجين",
+    "level": "B2",
+    "category": "adjective",
+    "example_sentence": "She drives a hybrid car to save fuel.",
+    "example_sentence_arabic": "تقود سيارة هجينة لتوفير الوقود."
+  },
+  {
+    "english": "implicitly",
+    "arabic": "ضمنيًا",
+    "level": "B2",
+    "category": "adverb",
+    "example_sentence": "The rule was implicitly understood by everyone.",
+    "example_sentence_arabic": "القاعدة كانت مفهومة ضمنيًا لدى الجميع."
+  },
+  {
+    "english": "inconsistency",
+    "arabic": "عدم الاتساق",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "The inconsistency in the data raised concerns.",
+    "example_sentence_arabic": "أثار عدم الاتساق في البيانات مخاوف."
+  },
+  {
+    "english": "integrity",
+    "arabic": "نزاهة",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "A leader must demonstrate integrity in all decisions.",
+    "example_sentence_arabic": "يجب على القائد أن يُظهر النزاهة في جميع القرارات."
+  },
+  {
+    "english": "intersection",
+    "arabic": "تقاطع",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "The car accident happened at the main intersection.",
+    "example_sentence_arabic": "وقع حادث السيارة عند التقاطع الرئيسي."
+  },
+  {
+    "english": "irony",
+    "arabic": "سخرية",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "The irony is that the most expensive option was the worst.",
+    "example_sentence_arabic": "السخرية أن الخيار الأغلى كان الأسوأ."
+  },
+  {
+    "english": "justification",
+    "arabic": "مسوّغ",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "There is no justification for treating people unfairly.",
+    "example_sentence_arabic": "لا يوجد مسوّغ لمعاملة الناس بشكل غير عادل."
+  },
+  {
+    "english": "magnitude",
+    "arabic": "حجم",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "The magnitude of the problem was not fully understood.",
+    "example_sentence_arabic": "لم يُدرَك حجم المشكلة بشكل كامل."
+  },
+  {
+    "english": "marginalize",
+    "arabic": "يُهمّش",
+    "level": "B2",
+    "category": "verb",
+    "example_sentence": "Poverty can marginalize entire communities.",
+    "example_sentence_arabic": "يمكن أن يُهمّش الفقر مجتمعات بأكملها."
+  },
+  {
+    "english": "mitigation",
+    "arabic": "تخفيف",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "Mitigation strategies are needed to reduce flood damage.",
+    "example_sentence_arabic": "تُحتاج استراتيجيات التخفيف لتقليل أضرار الفيضانات."
+  },
+  {
+    "english": "neutralize",
+    "arabic": "يُحيّد",
+    "level": "B2",
+    "category": "verb",
+    "example_sentence": "The medicine neutralizes the effect of the toxin.",
+    "example_sentence_arabic": "يُحيّد الدواء تأثير السم."
+  },
+  {
+    "english": "obsolete",
+    "arabic": "قديم",
+    "level": "B2",
+    "category": "adjective",
+    "example_sentence": "Many jobs will become obsolete because of automation.",
+    "example_sentence_arabic": "كثير من الوظائف ستصبح قديمة بسبب الأتمتة."
+  },
+  {
+    "english": "optimistic",
+    "arabic": "متفائل",
+    "level": "B2",
+    "category": "adjective",
+    "example_sentence": "She remains optimistic about finding a solution.",
+    "example_sentence_arabic": "تبقى متفائلة بشأن إيجاد حل."
+  },
+  {
+    "english": "prioritize",
+    "arabic": "يُعطي الأولوية",
+    "level": "B2",
+    "category": "verb",
+    "example_sentence": "We need to prioritize the most urgent tasks first.",
+    "example_sentence_arabic": "نحتاج إلى إعطاء الأولوية للمهام الأكثر إلحاحًا أولًا."
+  },
+  {
+    "english": "prone",
+    "arabic": "عرضة لـ",
+    "level": "B2",
+    "category": "adjective",
+    "example_sentence": "Children are more prone to infection in winter.",
+    "example_sentence_arabic": "الأطفال أكثر عرضة للعدوى في فصل الشتاء."
+  },
+  {
+    "english": "rationalize",
+    "arabic": "يُبرر",
+    "level": "B2",
+    "category": "verb",
+    "example_sentence": "People often rationalize poor decisions.",
+    "example_sentence_arabic": "كثيرًا ما يُبرر الناس القرارات السيئة."
+  },
+  {
+    "english": "reciprocal",
+    "arabic": "متبادل",
+    "level": "B2",
+    "category": "adjective",
+    "example_sentence": "The two countries have a reciprocal trade agreement.",
+    "example_sentence_arabic": "تمتلك البلدتان اتفاقية تجارية متبادلة."
+  },
+  {
+    "english": "reinstate",
+    "arabic": "يُعيد",
+    "level": "B2",
+    "category": "verb",
+    "example_sentence": "The manager was reinstated after the investigation.",
+    "example_sentence_arabic": "أُعيد المدير إلى منصبه بعد التحقيق."
+  },
+  {
+    "english": "reluctant",
+    "arabic": "متردد",
+    "level": "B2",
+    "category": "adjective",
+    "example_sentence": "She was reluctant to accept the offer.",
+    "example_sentence_arabic": "كانت مترددة في قبول العرض."
+  },
+  {
+    "english": "resemble",
+    "arabic": "يُشبه",
+    "level": "B2",
+    "category": "verb",
+    "example_sentence": "The twins resemble each other closely.",
+    "example_sentence_arabic": "يتشابه التوأم مع بعضهما البعض كثيرًا."
+  },
+  {
+    "english": "restricted",
+    "arabic": "مقيّد",
+    "level": "B2",
+    "category": "adjective",
+    "example_sentence": "Access to the building is restricted to staff only.",
+    "example_sentence_arabic": "الدخول إلى المبنى مقيّد للموظفين فقط."
+  },
+  {
+    "english": "rigid",
+    "arabic": "صارم",
+    "level": "B2",
+    "category": "adjective",
+    "example_sentence": "The rules are too rigid and need to be updated.",
+    "example_sentence_arabic": "القواعد صارمة جدًا وتحتاج إلى تحديث."
+  },
+  {
+    "english": "sphere",
+    "arabic": "مجال",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "Her work is in the sphere of international relations.",
+    "example_sentence_arabic": "عملها في مجال العلاقات الدولية."
+  },
+  {
+    "english": "stimulus",
+    "arabic": "محفز",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "The government provided a stimulus package for the economy.",
+    "example_sentence_arabic": "قدّمت الحكومة حزمة تحفيز للاقتصاد."
+  },
+  {
+    "english": "susceptible",
+    "arabic": "عرضة",
+    "level": "B2",
+    "category": "adjective",
+    "example_sentence": "Older people are more susceptible to serious illness.",
+    "example_sentence_arabic": "كبار السن أكثر عرضة للأمراض الخطيرة."
+  },
+  {
+    "english": "tangible",
+    "arabic": "ملموس",
+    "level": "B2",
+    "category": "adjective",
+    "example_sentence": "There are tangible benefits to regular exercise.",
+    "example_sentence_arabic": "هناك فوائد ملموسة للتمارين المنتظمة."
+  },
+  {
+    "english": "trajectory",
+    "arabic": "مسار",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "The trajectory of the company's growth has been impressive.",
+    "example_sentence_arabic": "كان مسار نمو الشركة مثيرًا للإعجاب."
+  },
+  {
+    "english": "virtue",
+    "arabic": "فضيلة",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "Patience is a virtue, especially in difficult times.",
+    "example_sentence_arabic": "الصبر فضيلة، خاصة في الأوقات الصعبة."
+  },
+  {
+    "english": "volatile",
+    "arabic": "متقلب",
+    "level": "B2",
+    "category": "adjective",
+    "example_sentence": "Prices in the stock market can be very volatile.",
+    "example_sentence_arabic": "يمكن أن تكون الأسعار في سوق الأوراق المالية متقلبة جدًا."
+  },
+  {
+    "english": "worthwhile",
+    "arabic": "يستحق العناء",
+    "level": "B2",
+    "category": "adjective",
+    "example_sentence": "Learning a new language is a worthwhile challenge.",
+    "example_sentence_arabic": "تعلّم لغة جديدة تحدٍّ يستحق العناء."
+  },
+  {
+    "english": "allowance",
+    "arabic": "بدل",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "She receives a monthly allowance from her parents.",
+    "example_sentence_arabic": "تحصل على بدل شهري من والديها."
+  },
+  {
+    "english": "anniversary",
+    "arabic": "ذكرى سنوية",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "They celebrated their wedding anniversary at a restaurant.",
+    "example_sentence_arabic": "احتفلوا بذكراهم السنوية للزواج في مطعم."
+  },
+  {
+    "english": "bakery",
+    "arabic": "مخبزة",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "We buy fresh bread from the bakery every morning.",
+    "example_sentence_arabic": "نشتري الخبز الطازج من المخبزة كل صباح."
+  },
+  {
+    "english": "brake",
+    "arabic": "فرامل",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "Check the brakes before a long journey.",
+    "example_sentence_arabic": "تحقق من الفرامل قبل رحلة طويلة."
+  },
+  {
+    "english": "carpet",
+    "arabic": "سجادة",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "The living room has a soft carpet.",
+    "example_sentence_arabic": "غرفة الجلوس بها سجادة ناعمة."
+  },
+  {
+    "english": "cashier",
+    "arabic": "أمين صندوق",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "The cashier gave me the wrong change.",
+    "example_sentence_arabic": "أعطاني أمين الصندوق فكة خاطئة."
+  },
+  {
+    "english": "chimney",
+    "arabic": "مدخنة",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "Smoke rose from the chimney of the old house.",
+    "example_sentence_arabic": "تصاعد الدخان من مدخنة البيت القديم."
+  },
+  {
+    "english": "closet",
+    "arabic": "خزانة ملابس",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "All his clothes are in the closet.",
+    "example_sentence_arabic": "جميع ملابسه في خزانة الملابس."
+  },
+  {
+    "english": "compliment",
+    "arabic": "إطراء",
+    "level": "B2",
+    "category": "verb",
+    "example_sentence": "He complimented her on her excellent presentation.",
+    "example_sentence_arabic": "أطراها على عرضها التقديمي الممتاز."
+  },
+  {
+    "english": "crossing",
+    "arabic": "معبر",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "Use the pedestrian crossing to cross the road.",
+    "example_sentence_arabic": "استخدم المعبر المشاة لعبور الطريق."
+  },
+  {
+    "english": "dairy",
+    "arabic": "منتجات الألبان",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "She avoids dairy products because of an allergy.",
+    "example_sentence_arabic": "تتجنب منتجات الألبان بسبب حساسية لديها."
+  },
+  {
+    "english": "directions",
+    "arabic": "تعليمات الطريق",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "Can you give me directions to the station?",
+    "example_sentence_arabic": "هل يمكنك إعطائي تعليمات الطريق إلى المحطة؟"
+  },
+  {
+    "english": "drawer",
+    "arabic": "درج",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "The keys are in the top drawer.",
+    "example_sentence_arabic": "المفاتيح في الدرج العلوي."
+  },
+  {
+    "english": "entrance",
+    "arabic": "مدخل",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "The entrance to the museum is free on Sundays.",
+    "example_sentence_arabic": "الدخول إلى المتحف مجاني أيام الأحد."
+  },
+  {
+    "english": "exit",
+    "arabic": "مخرج",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "Please use the emergency exit in case of fire.",
+    "example_sentence_arabic": "يرجى استخدام مخرج الطوارئ في حالة الحريق."
+  },
+  {
+    "english": "fault",
+    "arabic": "خطأ",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "It was not my fault; I did not know about it.",
+    "example_sentence_arabic": "لم يكن خطئي؛ لم أكن أعرف عنه."
+  },
+  {
+    "english": "flavour",
+    "arabic": "نكهة",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "This ice cream has a lovely vanilla flavour.",
+    "example_sentence_arabic": "يتميز هذا الآيس كريم بنكهة الفانيليا اللذيذة."
+  },
+  {
+    "english": "fluent",
+    "arabic": "طليق",
+    "level": "B2",
+    "category": "adjective",
+    "example_sentence": "She is fluent in both Arabic and English.",
+    "example_sentence_arabic": "إنها طليقة في اللغتين العربية والإنجليزية."
+  },
+  {
+    "english": "fog",
+    "arabic": "ضباب",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "The fog made it difficult to see the road.",
+    "example_sentence_arabic": "جعل الضباب رؤية الطريق أمرًا صعبًا."
+  },
+  {
+    "english": "groceries",
+    "arabic": "مشتريات",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "I need to buy groceries for the week.",
+    "example_sentence_arabic": "أحتاج إلى شراء مشتريات للأسبوع."
+  },
+  {
+    "english": "guest",
+    "arabic": "ضيف",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "We are expecting three guests for dinner.",
+    "example_sentence_arabic": "نتوقع ثلاثة ضيوف على العشاء."
+  },
+  {
+    "english": "hug",
+    "arabic": "عناق",
+    "level": "B2",
+    "category": "verb",
+    "example_sentence": "She hugged her friend when they met.",
+    "example_sentence_arabic": "عانقت صديقتها عندما التقيا."
+  },
+  {
+    "english": "instruction",
+    "arabic": "تعليمات",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "Read the instructions carefully before you begin.",
+    "example_sentence_arabic": "اقرأ التعليمات بعناية قبل البدء."
+  },
+  {
+    "english": "jar",
+    "arabic": "برطمان",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "There is a jar of honey in the cupboard.",
+    "example_sentence_arabic": "يوجد برطمان عسل في الخزانة."
+  },
+  {
+    "english": "label",
+    "arabic": "ملصق",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "Check the label for the expiry date.",
+    "example_sentence_arabic": "تحقق من الملصق لمعرفة تاريخ الانتهاء."
+  },
+  {
+    "english": "landlord",
+    "arabic": "صاحب العقار",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "The landlord increased the rent this year.",
+    "example_sentence_arabic": "رفع صاحب العقار الإيجار هذا العام."
+  },
+  {
+    "english": "laundry",
+    "arabic": "غسيل",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "I need to do the laundry today.",
+    "example_sentence_arabic": "أحتاج إلى القيام بالغسيل اليوم."
+  },
+  {
+    "english": "lawn",
+    "arabic": "عشب",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "He mows the lawn every weekend.",
+    "example_sentence_arabic": "يقص العشب كل عطلة نهاية أسبوع."
+  },
+  {
+    "english": "lend",
+    "arabic": "يُعير",
+    "level": "B2",
+    "category": "verb",
+    "example_sentence": "Can you lend me some money until next week?",
+    "example_sentence_arabic": "هل يمكنك إعارتي بعض المال حتى الأسبوع القادم؟"
+  },
+  {
+    "english": "licence",
+    "arabic": "رخصة",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "He has a driving licence.",
+    "example_sentence_arabic": "لديه رخصة قيادة."
+  },
+  {
+    "english": "luggage",
+    "arabic": "أمتعة",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "Don't forget to collect your luggage from the carousel.",
+    "example_sentence_arabic": "لا تنسَ جمع أمتعتك من السير."
+  },
+  {
+    "english": "makeup",
+    "arabic": "مستحضرات تجميل",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "She does not wear makeup every day.",
+    "example_sentence_arabic": "هي لا ترتدي مستحضرات التجميل كل يوم."
+  },
+  {
+    "english": "mask",
+    "arabic": "قناع",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "Everyone wore a mask in the hospital.",
+    "example_sentence_arabic": "ارتدى الجميع قناعًا في المستشفى."
+  },
+  {
+    "english": "memory",
+    "arabic": "ذاكرة",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "She has a very good memory for faces.",
+    "example_sentence_arabic": "لديها ذاكرة جيدة جدًا للوجوه."
+  },
+  {
+    "english": "mixture",
+    "arabic": "خليط",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "Add a mixture of herbs to the sauce.",
+    "example_sentence_arabic": "أضف خليطًا من الأعشاب إلى الصلصة."
+  },
+  {
+    "english": "neighbour",
+    "arabic": "جار",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "My neighbour is very friendly.",
+    "example_sentence_arabic": "جاري ودود جدًا."
+  },
+  {
+    "english": "noisy",
+    "arabic": "صاخب",
+    "level": "B2",
+    "category": "adjective",
+    "example_sentence": "The classroom was noisy and difficult to concentrate in.",
+    "example_sentence_arabic": "كان الفصل الدراسي صاخبًا ومن الصعب التركيز فيه."
+  },
+  {
+    "english": "noodle",
+    "arabic": "نودلز",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "She cooked a bowl of noodle soup.",
+    "example_sentence_arabic": "طهت وعاءً من حساء النودلز."
+  },
+  {
+    "english": "petrol",
+    "arabic": "بنزين",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "I need to fill up with petrol before the trip.",
+    "example_sentence_arabic": "أحتاج إلى تعبئة البنزين قبل الرحلة."
+  },
+  {
+    "english": "pharmacy",
+    "arabic": "صيدلية",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "You can buy cough medicine at the pharmacy.",
+    "example_sentence_arabic": "يمكنك شراء دواء السعال في الصيدلية."
+  },
+  {
+    "english": "pillow",
+    "arabic": "وسادة",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "She prefers a soft pillow when she sleeps.",
+    "example_sentence_arabic": "تفضّل وسادة ناعمة عند النوم."
+  },
+  {
+    "english": "postbox",
+    "arabic": "صندوق البريد",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "I put the letter in the postbox.",
+    "example_sentence_arabic": "وضعت الرسالة في صندوق البريد."
+  },
+  {
+    "english": "refund",
+    "arabic": "استرداد",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "She asked for a refund because the product was broken.",
+    "example_sentence_arabic": "طلبت استردادًا لأن المنتج كان مكسورًا."
+  },
+  {
+    "english": "scared",
+    "arabic": "خائف",
+    "level": "B2",
+    "category": "adjective",
+    "example_sentence": "She was scared of the dark when she was young.",
+    "example_sentence_arabic": "كانت تخشى الظلام عندما كانت صغيرة."
+  },
+  {
+    "english": "shade",
+    "arabic": "ظل",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "We sat in the shade of a large tree.",
+    "example_sentence_arabic": "جلسنا في ظل شجرة كبيرة."
+  },
+  {
+    "english": "shine",
+    "arabic": "يُضيء",
+    "level": "B2",
+    "category": "verb",
+    "example_sentence": "The sun shines brightly in summer.",
+    "example_sentence_arabic": "تُضيء الشمس بشدة في الصيف."
+  },
+  {
+    "english": "shopping centre",
+    "arabic": "مركز تسوق",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "The new shopping centre opened last month.",
+    "example_sentence_arabic": "افتُتح مركز التسوق الجديد الشهر الماضي."
+  },
+  {
+    "english": "sight",
+    "arabic": "منظر",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "The sunset was a beautiful sight.",
+    "example_sentence_arabic": "كان الغروب منظرًا جميلًا."
+  },
+  {
+    "english": "skateboard",
+    "arabic": "لوح التزلج",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "He can do tricks on his skateboard.",
+    "example_sentence_arabic": "يمكنه القيام بحركات على لوح التزلج."
+  },
+  {
+    "english": "stir",
+    "arabic": "يُحرّك",
+    "level": "B2",
+    "category": "verb",
+    "example_sentence": "Stir the soup gently to avoid burning it.",
+    "example_sentence_arabic": "حرّك الحساء برفق لتجنب احتراقه."
+  },
+  {
+    "english": "stove",
+    "arabic": "موقد",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "Be careful when using the stove.",
+    "example_sentence_arabic": "احذر عند استخدام الموقد."
+  },
+  {
+    "english": "sweep",
+    "arabic": "يكنس",
+    "level": "B2",
+    "category": "verb",
+    "example_sentence": "She swept the floor every morning.",
+    "example_sentence_arabic": "كانت تكنس الأرضية كل صباح."
+  },
+  {
+    "english": "swimming pool",
+    "arabic": "حمام سباحة",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "The hotel has an outdoor swimming pool.",
+    "example_sentence_arabic": "يمتلك الفندق حمام سباحة في الخارج."
+  },
+  {
+    "english": "tag",
+    "arabic": "وسم",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "The price tag fell off the shirt.",
+    "example_sentence_arabic": "سقط وسم السعر من القميص."
+  },
+  {
+    "english": "taste",
+    "arabic": "ذوق",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "This soup has a lovely taste.",
+    "example_sentence_arabic": "لهذا الحساء طعم رائع."
+  },
+  {
+    "english": "teenager",
+    "arabic": "مراهق",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "Many teenagers spend a lot of time online.",
+    "example_sentence_arabic": "يقضي كثير من المراهقين وقتًا طويلًا على الإنترنت."
+  },
+  {
+    "english": "throw",
+    "arabic": "يرمي",
+    "level": "B2",
+    "category": "verb",
+    "example_sentence": "She threw the ball to her friend.",
+    "example_sentence_arabic": "رمت الكرة إلى صديقتها."
+  },
+  {
+    "english": "tip",
+    "arabic": "نصيحة",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "Here are some tips to improve your writing.",
+    "example_sentence_arabic": "إليك بعض النصائح لتحسين كتابتك."
+  },
+  {
+    "english": "tiny",
+    "arabic": "صغير جدًا",
+    "level": "B2",
+    "category": "adjective",
+    "example_sentence": "The baby's hands were tiny and soft.",
+    "example_sentence_arabic": "كانت يدا الطفل صغيرتين جدًا وناعمتين."
+  },
+  {
+    "english": "turn off",
+    "arabic": "يُطفئ",
+    "level": "B2",
+    "category": "verb",
+    "example_sentence": "Turn off the lights before you leave.",
+    "example_sentence_arabic": "أطفئ الأضواء قبل أن تغادر."
+  },
+  {
+    "english": "vegetarian",
+    "arabic": "نباتي",
+    "level": "B2",
+    "category": "adjective",
+    "example_sentence": "She is a vegetarian and does not eat meat.",
+    "example_sentence_arabic": "هي نباتية ولا تأكل اللحوم."
+  },
+  {
+    "english": "visitor",
+    "arabic": "زائر",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "The museum had over 10,000 visitors last month.",
+    "example_sentence_arabic": "استقبل المتحف أكثر من 10,000 زائر الشهر الماضي."
+  },
+  {
+    "english": "wardrobe",
+    "arabic": "خزانة ملابس",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "She organised her wardrobe by colour.",
+    "example_sentence_arabic": "رتّبت خزانة ملابسها حسب اللون."
+  },
+  {
+    "english": "wave",
+    "arabic": "موجة",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "She waved goodbye as the train left.",
+    "example_sentence_arabic": "ودّعته بالتلويح ليده حين غادر القطار."
+  },
+  {
+    "english": "weak",
+    "arabic": "ضعيف",
+    "level": "B2",
+    "category": "adjective",
+    "example_sentence": "He felt weak after being ill for a week.",
+    "example_sentence_arabic": "شعر بالضعف بعد مرضه لمدة أسبوع."
+  },
+  {
+    "english": "yell",
+    "arabic": "يصرخ",
+    "level": "B2",
+    "category": "verb",
+    "example_sentence": "Please do not yell in the library.",
+    "example_sentence_arabic": "يرجى عدم الصراخ في المكتبة."
+  },
+  {
+    "english": "yard",
+    "arabic": "فناء",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "The children played in the yard after school.",
+    "example_sentence_arabic": "لعب الأطفال في الفناء بعد المدرسة."
+  },
+  {
+    "english": "zip",
+    "arabic": "يُغلق بالسحاب",
+    "level": "B2",
+    "category": "verb",
+    "example_sentence": "Zip up your jacket; it's cold outside.",
+    "example_sentence_arabic": "أغلق سترتك بالسحاب؛ الجو بارد في الخارج."
+  },
+  {
+    "english": "aerobics",
+    "arabic": "تمارين الهوائية",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "She does aerobics three times a week to stay fit.",
+    "example_sentence_arabic": "تمارس تمارين الهوائية ثلاث مرات في الأسبوع للبقاء بصحة جيدة."
+  },
+  {
+    "english": "athlete",
+    "arabic": "رياضي",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The athlete trained for months before the championship.",
+    "example_sentence_arabic": "تدرّب الرياضي لأشهر قبل البطولة."
+  },
+  {
+    "english": "coach",
+    "arabic": "مدرب",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The coach motivated the team before the game.",
+    "example_sentence_arabic": "حفّز المدرب الفريق قبل المباراة."
+  },
+  {
+    "english": "cycling",
+    "arabic": "ركوب الدراجة",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Cycling is a great way to stay healthy and reduce pollution.",
+    "example_sentence_arabic": "ركوب الدراجة طريقة رائعة للحفاظ على الصحة والحد من التلوث."
+  },
+  {
+    "english": "gymnasium",
+    "arabic": "صالة رياضية",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "He goes to the gymnasium every evening after work.",
+    "example_sentence_arabic": "يذهب إلى الصالة الرياضية كل مساء بعد العمل."
+  },
+  {
+    "english": "marathon",
+    "arabic": "ماراثون",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "She completed the marathon in under four hours.",
+    "example_sentence_arabic": "أكملت الماراثون في أقل من أربع ساعات."
+  },
+  {
+    "english": "opponent",
+    "arabic": "خصم",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The team showed respect for their opponent after the match.",
+    "example_sentence_arabic": "أظهر الفريق الاحترام لخصمه بعد المباراة."
+  },
+  {
+    "english": "referee",
+    "arabic": "حكم",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The referee stopped the game due to a dangerous foul.",
+    "example_sentence_arabic": "أوقف الحكم اللعبة بسبب خطأ خطير."
+  },
+  {
+    "english": "rowing",
+    "arabic": "التجديف",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Rowing is a popular sport in many European universities.",
+    "example_sentence_arabic": "التجديف رياضة شعبية في كثير من الجامعات الأوروبية."
+  },
+  {
+    "english": "sprint",
+    "arabic": "عدو سريع",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "He won the 100-metre sprint by a small margin.",
+    "example_sentence_arabic": "فاز بسباق العدو السريع 100 متر بفارق ضئيل."
+  },
+  {
+    "english": "stadium",
+    "arabic": "ملعب",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The new stadium holds 60,000 spectators.",
+    "example_sentence_arabic": "يتسع الملعب الجديد لـ 60,000 متفرج."
+  },
+  {
+    "english": "tournament",
+    "arabic": "دوري",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The tennis tournament takes place every summer.",
+    "example_sentence_arabic": "يُقام دوري التنس كل صيف."
+  },
+  {
+    "english": "trophy",
+    "arabic": "كأس",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The team proudly displayed the championship trophy.",
+    "example_sentence_arabic": "عرض الفريق بفخر كأس البطولة."
+  },
+  {
+    "english": "workout",
+    "arabic": "تمرين",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "A 30-minute workout in the morning improves focus.",
+    "example_sentence_arabic": "تمرين 30 دقيقة في الصباح يُحسّن التركيز."
+  },
+  {
+    "english": "architecture",
+    "arabic": "هندسة معمارية",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The architecture of the old city is breathtaking.",
+    "example_sentence_arabic": "الهندسة المعمارية للمدينة القديمة رائعة."
+  },
+  {
+    "english": "ballet",
+    "arabic": "باليه",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "She has been learning ballet since she was five.",
+    "example_sentence_arabic": "تتعلم الباليه منذ كانت في الخامسة من عمرها."
+  },
+  {
+    "english": "biography",
+    "arabic": "سيرة ذاتية",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "He read a biography of Albert Einstein last month.",
+    "example_sentence_arabic": "قرأ سيرة ذاتية لألبرت أينشتاين الشهر الماضي."
+  },
+  {
+    "english": "canvas",
+    "arabic": "قماش رسم",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The artist prepared a large canvas for her new painting.",
+    "example_sentence_arabic": "أعدّت الفنانة قماش رسم كبيرًا للوحتها الجديدة."
+  },
+  {
+    "english": "cartoon",
+    "arabic": "كاريكاتير",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The children laughed at the funny cartoon characters.",
+    "example_sentence_arabic": "ضحك الأطفال على شخصيات الكاريكاتير المضحكة."
+  },
+  {
+    "english": "classical",
+    "arabic": "كلاسيكي",
+    "level": "B1",
+    "category": "adjective",
+    "example_sentence": "She enjoys listening to classical music in the evenings.",
+    "example_sentence_arabic": "تستمتع بالاستماع إلى الموسيقى الكلاسيكية في المساء."
+  },
+  {
+    "english": "comedy",
+    "arabic": "كوميديا",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "His favourite type of film is a romantic comedy.",
+    "example_sentence_arabic": "نوعه المفضل من الأفلام هو الكوميديا الرومانسية."
+  },
+  {
+    "english": "concert",
+    "arabic": "حفلة موسيقية",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "She attended a live concert at the national theatre.",
+    "example_sentence_arabic": "حضرت حفلة موسيقية حية في المسرح الوطني."
+  },
+  {
+    "english": "debut",
+    "arabic": "أول ظهور",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The young singer made her debut at the music festival.",
+    "example_sentence_arabic": "قدّمت المغنية الشابة أول ظهور لها في مهرجان الموسيقى."
+  },
+  {
+    "english": "documentary",
+    "arabic": "فيلم وثائقي",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The documentary about ocean pollution was very moving.",
+    "example_sentence_arabic": "كان الفيلم الوثائقي حول تلوث المحيطات مؤثرًا جدًا."
+  },
+  {
+    "english": "drama",
+    "arabic": "دراما",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "She studied drama at university and now acts on stage.",
+    "example_sentence_arabic": "درست الدراما في الجامعة وتمثّل الآن على المسرح."
+  },
+  {
+    "english": "gallery",
+    "arabic": "معرض فني",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The art gallery displays works from local artists.",
+    "example_sentence_arabic": "يعرض المعرض الفني أعمال الفنانين المحليين."
+  },
+  {
+    "english": "genre",
+    "arabic": "نوع أدبي",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Science fiction is her favourite reading genre.",
+    "example_sentence_arabic": "الخيال العلمي هو النوع الأدبي المفضل لديها."
+  },
+  {
+    "english": "illustration",
+    "arabic": "رسم توضيحي",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The children's book has beautiful illustrations on every page.",
+    "example_sentence_arabic": "كتاب الأطفال يحتوي على رسوم توضيحية جميلة في كل صفحة."
+  },
+  {
+    "english": "masterpiece",
+    "arabic": "تحفة فنية",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The Mona Lisa is considered a masterpiece of art.",
+    "example_sentence_arabic": "تُعتبر الموناليزا تحفة فنية."
+  },
+  {
+    "english": "melody",
+    "arabic": "لحن",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The melody of the song stayed in her head all day.",
+    "example_sentence_arabic": "بقي لحن الأغنية في رأسها طوال اليوم."
+  },
+  {
+    "english": "orchestra",
+    "arabic": "أوركسترا",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "She plays violin in the school orchestra.",
+    "example_sentence_arabic": "تعزف على الكمان في أوركسترا المدرسة."
+  },
+  {
+    "english": "portrait",
+    "arabic": "صورة شخصية",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The artist painted a portrait of the queen.",
+    "example_sentence_arabic": "رسم الفنان صورة شخصية للملكة."
+  },
+  {
+    "english": "sculpture",
+    "arabic": "نحت",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The ancient sculpture was discovered during construction.",
+    "example_sentence_arabic": "اكتُشف النحت القديم خلال أعمال البناء."
+  },
+  {
+    "english": "sketch",
+    "arabic": "رسم سريع",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "She drew a quick sketch of the building.",
+    "example_sentence_arabic": "رسمت خطوطًا سريعة للمبنى."
+  },
+  {
+    "english": "symphony",
+    "arabic": "سيمفونية",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Beethoven's fifth symphony is one of the most famous in history.",
+    "example_sentence_arabic": "سيمفونية بيتهوفن الخامسة من أشهر السيمفونيات في التاريخ."
+  },
+  {
+    "english": "watercolour",
+    "arabic": "ألوان مائية",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "She painted a landscape using watercolours.",
+    "example_sentence_arabic": "رسمت منظرًا طبيعيًا باستخدام الألوان المائية."
+  },
+  {
+    "english": "bankruptcy",
+    "arabic": "إفلاس",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "The company declared bankruptcy after years of losses.",
+    "example_sentence_arabic": "أعلنت الشركة إفلاسها بعد سنوات من الخسائر."
+  },
+  {
+    "english": "broker",
+    "arabic": "سمسار",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "A real estate broker helped them find their new home.",
+    "example_sentence_arabic": "ساعدهم سمسار عقارات في إيجاد منزلهم الجديد."
+  },
+  {
+    "english": "commerce",
+    "arabic": "تجارة",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "E-commerce has changed how people shop around the world.",
+    "example_sentence_arabic": "غيّرت التجارة الإلكترونية طريقة تسوق الناس حول العالم."
+  },
+  {
+    "english": "competitor",
+    "arabic": "منافس",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The new product outperformed all its competitors.",
+    "example_sentence_arabic": "تفوق المنتج الجديد على جميع منافسيه."
+  },
+  {
+    "english": "consumer",
+    "arabic": "مستهلك",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Consumers are becoming more aware of environmental issues.",
+    "example_sentence_arabic": "أصبح المستهلكون أكثر وعيًا بالقضايا البيئية."
+  },
+  {
+    "english": "corporation",
+    "arabic": "شركة كبرى",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "She works for a multinational corporation.",
+    "example_sentence_arabic": "تعمل في شركة متعددة الجنسيات."
+  },
+  {
+    "english": "dividend",
+    "arabic": "أرباح الأسهم",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "Shareholders received their annual dividend payment.",
+    "example_sentence_arabic": "حصل المساهمون على دفعة أرباح أسهمهم السنوية."
+  },
+  {
+    "english": "franchise",
+    "arabic": "امتياز تجاري",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "He bought a fast food franchise to start his business.",
+    "example_sentence_arabic": "اشترى امتيازًا تجاريًا لوجبات سريعة لبدء عمله."
+  },
+  {
+    "english": "manufacture",
+    "arabic": "يُصنّع",
+    "level": "B1",
+    "category": "verb",
+    "example_sentence": "The factory manufactures electronic components.",
+    "example_sentence_arabic": "يُصنّع المصنع مكونات إلكترونية."
+  },
+  {
+    "english": "merger",
+    "arabic": "اندماج",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "The merger created one of the largest banks in the country.",
+    "example_sentence_arabic": "أوجد الاندماج أحد أكبر البنوك في البلاد."
+  },
+  {
+    "english": "monopoly",
+    "arabic": "احتكار",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "The government broke up the company's monopoly on the market.",
+    "example_sentence_arabic": "كسرت الحكومة احتكار الشركة على السوق."
+  },
+  {
+    "english": "overhead",
+    "arabic": "تكاليف عامة",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "Reducing overheads helped the business increase profits.",
+    "example_sentence_arabic": "ساعد تقليص التكاليف العامة الشركة على زيادة أرباحها."
+  },
+  {
+    "english": "partnership",
+    "arabic": "شراكة",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The two firms entered into a business partnership.",
+    "example_sentence_arabic": "دخلت الشركتان في شراكة تجارية."
+  },
+  {
+    "english": "shareholder",
+    "arabic": "مساهم",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "Shareholders voted to approve the new CEO.",
+    "example_sentence_arabic": "صوّت المساهمون على الموافقة على الرئيس التنفيذي الجديد."
+  },
+  {
+    "english": "subsidiary",
+    "arabic": "شركة تابعة",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "The firm opened a subsidiary in Dubai.",
+    "example_sentence_arabic": "فتحت الشركة فرعًا تابعًا لها في دبي."
+  },
+  {
+    "english": "surplus",
+    "arabic": "فائض",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "The country has a trade surplus this year.",
+    "example_sentence_arabic": "تمتلك البلاد فائضًا تجاريًا هذا العام."
+  },
+  {
+    "english": "tariff",
+    "arabic": "تعرفة",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "The government imposed tariffs on imported goods.",
+    "example_sentence_arabic": "فرضت الحكومة تعرفات على البضائع المستوردة."
+  },
+  {
+    "english": "turnover",
+    "arabic": "إجمالي مبيعات",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "The company's annual turnover exceeded five million pounds.",
+    "example_sentence_arabic": "تجاوز إجمالي مبيعات الشركة السنوية خمسة ملايين جنيه."
+  },
+  {
+    "english": "venture",
+    "arabic": "مغامرة تجارية",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "The new business venture attracted significant investment.",
+    "example_sentence_arabic": "جذبت المغامرة التجارية الجديدة استثمارات كبيرة."
+  },
+  {
+    "english": "allegation",
+    "arabic": "ادعاء",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "The allegations against him were proven false.",
+    "example_sentence_arabic": "ثبت كذب الادعاءات الموجهة إليه."
+  },
+  {
+    "english": "attorney",
+    "arabic": "محامٍ",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "She hired an attorney to represent her in court.",
+    "example_sentence_arabic": "استأجرت محاميًا لتمثيلها في المحكمة."
+  },
+  {
+    "english": "clause",
+    "arabic": "بند",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "There is a clause in the contract about late payment.",
+    "example_sentence_arabic": "يوجد بند في العقد يتعلق بالدفع المتأخر."
+  },
+  {
+    "english": "custody",
+    "arabic": "حضانة",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "The court awarded custody of the children to their mother.",
+    "example_sentence_arabic": "منحت المحكمة حضانة الأطفال لأمهم."
+  },
+  {
+    "english": "defendant",
+    "arabic": "متهم",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "The defendant pleaded not guilty to all charges.",
+    "example_sentence_arabic": "أنكر المتهم جميع التهم الموجهة إليه."
+  },
+  {
+    "english": "fine",
+    "arabic": "غرامة",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "He was given a fine for parking illegally.",
+    "example_sentence_arabic": "صدر بحقه غرامة لأنه ركن سيارته بشكل غير قانوني."
+  },
+  {
+    "english": "jury",
+    "arabic": "هيئة المحلفين",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "The jury reached a verdict after three days.",
+    "example_sentence_arabic": "توصلت هيئة المحلفين إلى حكم بعد ثلاثة أيام."
+  },
+  {
+    "english": "lawsuit",
+    "arabic": "دعوى قضائية",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "She filed a lawsuit against the company for unfair dismissal.",
+    "example_sentence_arabic": "رفعت دعوى قضائية ضد الشركة بسبب الفصل غير العادل."
+  },
+  {
+    "english": "liability",
+    "arabic": "مسؤولية قانونية",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "The company admitted liability for the accident.",
+    "example_sentence_arabic": "اعترفت الشركة بمسؤوليتها القانونية عن الحادث."
+  },
+  {
+    "english": "offence",
+    "arabic": "جريمة",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "Speeding is a serious driving offence.",
+    "example_sentence_arabic": "السرعة الزائدة جريمة قيادة خطيرة."
+  },
+  {
+    "english": "penalty",
+    "arabic": "عقوبة",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The penalty for late submission is a reduction in marks.",
+    "example_sentence_arabic": "العقوبة على التأخر في التسليم هي خفض في الدرجات."
+  },
+  {
+    "english": "prosecution",
+    "arabic": "ملاحقة قضائية",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "The prosecution presented strong evidence in court.",
+    "example_sentence_arabic": "قدّمت جهة الادعاء أدلة قوية في المحكمة."
+  },
+  {
+    "english": "settlement",
+    "arabic": "تسوية",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "The two companies reached a legal settlement.",
+    "example_sentence_arabic": "توصلت الشركتان إلى تسوية قانونية."
+  },
+  {
+    "english": "solicitor",
+    "arabic": "محامٍ استشاري",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "She consulted a solicitor before signing the contract.",
+    "example_sentence_arabic": "استشارت محاميًا قبل توقيع العقد."
+  },
+  {
+    "english": "testimony",
+    "arabic": "شهادة",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "His testimony was crucial in solving the case.",
+    "example_sentence_arabic": "كانت شهادته حاسمة في حل القضية."
+  },
+  {
+    "english": "verdict",
+    "arabic": "حكم",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "The jury returned a verdict of not guilty.",
+    "example_sentence_arabic": "أصدرت هيئة المحلفين حكمًا ببراءة المتهم."
+  },
+  {
+    "english": "violation",
+    "arabic": "انتهاك",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "The company was fined for a health and safety violation.",
+    "example_sentence_arabic": "غُرّمت الشركة بسبب انتهاك قواعد الصحة والسلامة."
+  },
+  {
+    "english": "caption",
+    "arabic": "تعليق توضيحي",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "She added a caption to her photo on social media.",
+    "example_sentence_arabic": "أضافت تعليقًا توضيحيًا لصورتها على وسائل التواصل الاجتماعي."
+  },
+  {
+    "english": "columnist",
+    "arabic": "كاتب عمود",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "He is a respected columnist for a national newspaper.",
+    "example_sentence_arabic": "هو كاتب عمود محترم في صحيفة وطنية."
+  },
+  {
+    "english": "commentary",
+    "arabic": "تعليق",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The sports commentary was entertaining and informative.",
+    "example_sentence_arabic": "كان التعليق الرياضي ممتعًا ومفيدًا."
+  },
+  {
+    "english": "correspondent",
+    "arabic": "مراسل",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "She works as a foreign correspondent in the Middle East.",
+    "example_sentence_arabic": "تعمل مراسلة أجنبية في الشرق الأوسط."
+  },
+  {
+    "english": "coverage",
+    "arabic": "تغطية",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The news coverage of the event was extensive.",
+    "example_sentence_arabic": "كانت التغطية الإخبارية للحدث شاملة."
+  },
+  {
+    "english": "headline",
+    "arabic": "عنوان رئيسي",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The headline of the article grabbed everyone's attention.",
+    "example_sentence_arabic": "جذب عنوان المقال الرئيسي انتباه الجميع."
+  },
+  {
+    "english": "newsletter",
+    "arabic": "نشرة إخبارية",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The school sends a weekly newsletter to all parents.",
+    "example_sentence_arabic": "ترسل المدرسة نشرة إخبارية أسبوعية لجميع الأولياء."
+  },
+  {
+    "english": "podcast",
+    "arabic": "بودكاست",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "She listens to an English learning podcast every morning.",
+    "example_sentence_arabic": "تستمع إلى بودكاست لتعلم الإنجليزية كل صباح."
+  },
+  {
+    "english": "propaganda",
+    "arabic": "دعاية",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "The government used propaganda to influence public opinion.",
+    "example_sentence_arabic": "استخدمت الحكومة الدعاية للتأثير على الرأي العام."
+  },
+  {
+    "english": "subscription",
+    "arabic": "اشتراك",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "She has a monthly subscription to an online streaming service.",
+    "example_sentence_arabic": "لديها اشتراك شهري في خدمة بث عبر الإنترنت."
+  },
+  {
+    "english": "tabloid",
+    "arabic": "صحيفة مثيرة",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "Tabloid newspapers often focus on celebrity stories.",
+    "example_sentence_arabic": "كثيرًا ما تركّز الصحف المثيرة على قصص المشاهير."
+  },
+  {
+    "english": "atom",
+    "arabic": "ذرة",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "An atom is the smallest unit of a chemical element.",
+    "example_sentence_arabic": "الذرة هي أصغر وحدة في العنصر الكيميائي."
+  },
+  {
+    "english": "compound",
+    "arabic": "مركّب",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "Water is a compound of hydrogen and oxygen.",
+    "example_sentence_arabic": "الماء مركّب من الهيدروجين والأكسجين."
+  },
+  {
+    "english": "gene",
+    "arabic": "جين",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "Scientists discovered a gene linked to heart disease.",
+    "example_sentence_arabic": "اكتشف العلماء جينًا مرتبطًا بأمراض القلب."
+  },
+  {
+    "english": "genetics",
+    "arabic": "علم الوراثة",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "Genetics explains why some traits are inherited.",
+    "example_sentence_arabic": "يشرح علم الوراثة سبب توارث بعض الصفات."
+  },
+  {
+    "english": "molecule",
+    "arabic": "جزيء",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "A molecule of water contains two hydrogen atoms.",
+    "example_sentence_arabic": "يحتوي جزيء الماء على ذرتي هيدروجين."
+  },
+  {
+    "english": "particle",
+    "arabic": "جسيم",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "Subatomic particles are smaller than atoms.",
+    "example_sentence_arabic": "الجسيمات دون الذرية أصغر من الذرات."
+  },
+  {
+    "english": "quantum",
+    "arabic": "كمي",
+    "level": "B2",
+    "category": "adjective",
+    "example_sentence": "Quantum physics deals with very small particles.",
+    "example_sentence_arabic": "تتعامل الفيزياء الكمية مع الجسيمات الصغيرة جدًا."
+  },
+  {
+    "english": "radiation",
+    "arabic": "إشعاع",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "Nuclear power plants must control radiation levels carefully.",
+    "example_sentence_arabic": "يجب على محطات الطاقة النووية التحكم في مستويات الإشعاع بعناية."
+  },
+  {
+    "english": "aquifer",
+    "arabic": "طبقة مائية",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "The drought depleted the underground aquifer.",
+    "example_sentence_arabic": "أنضب الجفاف الطبقة المائية الجوفية."
+  },
+  {
+    "english": "carbon footprint",
+    "arabic": "بصمة كربونية",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "Planting trees can help reduce your carbon footprint.",
+    "example_sentence_arabic": "يمكن أن تساعد زراعة الأشجار في تقليص بصمتك الكربونية."
+  },
+  {
+    "english": "ecological",
+    "arabic": "بيئي",
+    "level": "B2",
+    "category": "adjective",
+    "example_sentence": "The ecological impact of oil spills is devastating.",
+    "example_sentence_arabic": "التأثير البيئي لانسكابات النفط مدمّر."
+  },
+  {
+    "english": "erosion",
+    "arabic": "تآكل",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "Soil erosion is a major problem in many farming regions.",
+    "example_sentence_arabic": "تآكل التربة مشكلة كبرى في كثير من المناطق الزراعية."
+  },
+  {
+    "english": "floodplain",
+    "arabic": "سهل فيضي",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "Building on the floodplain is dangerous during heavy rain.",
+    "example_sentence_arabic": "البناء على السهل الفيضي خطير أثناء الأمطار الغزيرة."
+  },
+  {
+    "english": "geothermal",
+    "arabic": "حراري أرضي",
+    "level": "B2",
+    "category": "adjective",
+    "example_sentence": "Iceland uses geothermal energy to heat most of its buildings.",
+    "example_sentence_arabic": "تستخدم آيسلندا الطاقة الحرارية الأرضية لتدفئة معظم مبانيها."
+  },
+  {
+    "english": "overexploitation",
+    "arabic": "استغلال مفرط",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "Overexploitation of fish stocks threatens the marine ecosystem.",
+    "example_sentence_arabic": "يهدد الاستغلال المفرط لمخزون الأسماك النظام البيئي البحري."
+  },
+  {
+    "english": "reforestation",
+    "arabic": "إعادة تشجير",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "Reforestation programmes are helping to restore damaged land.",
+    "example_sentence_arabic": "برامج إعادة التشجير تساعد في استصلاح الأراضي التالفة."
+  },
+  {
+    "english": "saline",
+    "arabic": "ملحي",
+    "level": "B2",
+    "category": "adjective",
+    "example_sentence": "The soil became too saline for crops to grow.",
+    "example_sentence_arabic": "أصبحت التربة ملحية جدًا لكي تنمو المحاصيل."
+  },
+  {
+    "english": "sewage",
+    "arabic": "مياه صرف",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "The city invested in upgrading its sewage treatment plant.",
+    "example_sentence_arabic": "استثمرت المدينة في ترقية محطة معالجة مياه الصرف."
+  },
+  {
+    "english": "solar panel",
+    "arabic": "لوح طاقة شمسية",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Solar panels on the roof provide electricity for the house.",
+    "example_sentence_arabic": "توفر الألواح الشمسية على السطح كهرباء للمنزل."
+  },
+  {
+    "english": "turbine",
+    "arabic": "توربين",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "Wind turbines generate electricity without pollution.",
+    "example_sentence_arabic": "توليد الكهرباء بتوربينات الرياح لا ينتج عنه تلوث."
+  },
+  {
+    "english": "allergy",
+    "arabic": "حساسية",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "She has an allergy to peanuts and must avoid them.",
+    "example_sentence_arabic": "لديها حساسية من الفول السوداني ويجب عليها تجنبه."
+  },
+  {
+    "english": "antibiotic",
+    "arabic": "مضاد حيوي",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The doctor prescribed antibiotics for the infection.",
+    "example_sentence_arabic": "وصف الطبيب مضادات حيوية للعدوى."
+  },
+  {
+    "english": "caffeine",
+    "arabic": "كافيين",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Too much caffeine can disrupt your sleep.",
+    "example_sentence_arabic": "يمكن أن يُخلّ الكافيين الزائد بنومك."
+  },
+  {
+    "english": "cardiovascular",
+    "arabic": "قلبي وعائي",
+    "level": "B2",
+    "category": "adjective",
+    "example_sentence": "Running is excellent for cardiovascular health.",
+    "example_sentence_arabic": "الركض ممتاز لصحة القلب والأوعية الدموية."
+  },
+  {
+    "english": "dehydration",
+    "arabic": "جفاف",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Dehydration can cause headaches and dizziness.",
+    "example_sentence_arabic": "يمكن أن يسبب الجفاف الصداع والدوخة."
+  },
+  {
+    "english": "dosage",
+    "arabic": "جرعة",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "Follow the recommended dosage on the medicine label.",
+    "example_sentence_arabic": "اتبع الجرعة الموصى بها على ملصق الدواء."
+  },
+  {
+    "english": "hereditary",
+    "arabic": "وراثي",
+    "level": "B2",
+    "category": "adjective",
+    "example_sentence": "Some diseases are hereditary and run in families.",
+    "example_sentence_arabic": "بعض الأمراض وراثية وتنتشر في العائلات."
+  },
+  {
+    "english": "hormone",
+    "arabic": "هرمون",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "Hormones play a key role in regulating body functions.",
+    "example_sentence_arabic": "تلعب الهرمونات دورًا رئيسيًا في تنظيم وظائف الجسم."
+  },
+  {
+    "english": "immune",
+    "arabic": "مناعي",
+    "level": "B2",
+    "category": "adjective",
+    "example_sentence": "A healthy diet keeps your immune system strong.",
+    "example_sentence_arabic": "يُبقي النظام الغذائي الصحي جهازك المناعي قويًا."
+  },
+  {
+    "english": "inflammation",
+    "arabic": "التهاب",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "Exercise can reduce chronic inflammation in the body.",
+    "example_sentence_arabic": "يمكن أن يقلل التمرين من الالتهاب المزمن في الجسم."
+  },
+  {
+    "english": "physiotherapy",
+    "arabic": "علاج طبيعي",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "After his knee surgery, he needed several weeks of physiotherapy.",
+    "example_sentence_arabic": "بعد عملية ركبته، احتاج إلى أسابيع عديدة من العلاج الطبيعي."
+  },
+  {
+    "english": "sedentary",
+    "arabic": "خامل",
+    "level": "B2",
+    "category": "adjective",
+    "example_sentence": "A sedentary lifestyle increases the risk of heart disease.",
+    "example_sentence_arabic": "أسلوب الحياة الخامل يزيد من خطر الإصابة بأمراض القلب."
+  },
+  {
+    "english": "accomplishment",
+    "arabic": "إنجاز",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Finishing a marathon was a great personal accomplishment.",
+    "example_sentence_arabic": "إتمام الماراثون كان إنجازًا شخصيًا رائعًا."
+  },
+  {
+    "english": "affection",
+    "arabic": "محبة",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Children need affection and care to develop well.",
+    "example_sentence_arabic": "يحتاج الأطفال إلى المحبة والرعاية للنمو بشكل جيد."
+  },
+  {
+    "english": "aggression",
+    "arabic": "عدوانية",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "Aggression in the classroom disrupts learning for everyone.",
+    "example_sentence_arabic": "العدوانية في الفصل تعطّل التعلم للجميع."
+  },
+  {
+    "english": "compliance",
+    "arabic": "امتثال",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "All staff must ensure compliance with safety procedures.",
+    "example_sentence_arabic": "يجب على جميع الموظفين ضمان الامتثال لإجراءات السلامة."
+  },
+  {
+    "english": "concession",
+    "arabic": "تنازل",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "Both sides made concessions to reach an agreement.",
+    "example_sentence_arabic": "قدّم كلا الطرفين تنازلات للوصول إلى اتفاق."
+  },
+  {
+    "english": "confrontation",
+    "arabic": "مواجهة",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "She wanted to avoid a direct confrontation with her manager.",
+    "example_sentence_arabic": "أرادت تجنب المواجهة المباشرة مع مديرها."
+  },
+  {
+    "english": "credential",
+    "arabic": "وثيقة اعتماد",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "She presented her credentials before the job interview.",
+    "example_sentence_arabic": "قدّمت وثائق اعتمادها قبل مقابلة العمل."
+  },
+  {
+    "english": "cynical",
+    "arabic": "متشائم",
+    "level": "B2",
+    "category": "adjective",
+    "example_sentence": "He became cynical about politics after years of disappointment.",
+    "example_sentence_arabic": "أصبح متشائمًا بشأن السياسة بعد سنوات من خيبات الأمل."
+  },
+  {
+    "english": "deterioration",
+    "arabic": "تدهور",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "The deterioration in air quality is a serious health concern.",
+    "example_sentence_arabic": "تدهور جودة الهواء مصدر قلق صحي خطير."
+  },
+  {
+    "english": "discontent",
+    "arabic": "استياء",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "Public discontent grew as living costs rose sharply.",
+    "example_sentence_arabic": "ازداد الاستياء العام مع الارتفاع الحاد في تكاليف المعيشة."
+  },
+  {
+    "english": "discretion",
+    "arabic": "تقدير شخصي",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "Use your own discretion when making this decision.",
+    "example_sentence_arabic": "استخدم تقديرك الشخصي عند اتخاذ هذا القرار."
+  },
+  {
+    "english": "distinction",
+    "arabic": "تمييز",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "She graduated with distinction from her university.",
+    "example_sentence_arabic": "تخرجت بامتياز من جامعتها."
+  },
+  {
+    "english": "dominate",
+    "arabic": "يهيمن",
+    "level": "B1",
+    "category": "verb",
+    "example_sentence": "One company tends to dominate the market in this sector.",
+    "example_sentence_arabic": "تميل إحدى الشركات إلى الهيمنة على السوق في هذا القطاع."
+  },
+  {
+    "english": "endurance",
+    "arabic": "تحمّل",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "Long-distance running builds both physical and mental endurance.",
+    "example_sentence_arabic": "يبني الجري لمسافات طويلة القدرة على التحمل جسديًا ونفسيًا."
+  },
+  {
+    "english": "enforced",
+    "arabic": "مفروض",
+    "level": "B2",
+    "category": "adjective",
+    "example_sentence": "The new regulations are strictly enforced by the authorities.",
+    "example_sentence_arabic": "تُطبّق السلطات اللوائح الجديدة بصرامة."
+  },
+  {
+    "english": "exploitation",
+    "arabic": "استغلال",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "The exploitation of natural resources must be controlled.",
+    "example_sentence_arabic": "يجب التحكم في استغلال الموارد الطبيعية."
+  },
+  {
+    "english": "gratitude",
+    "arabic": "امتنان",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "She expressed her gratitude for all the support she received.",
+    "example_sentence_arabic": "عبّرت عن امتنانها لكل الدعم الذي تلقّته."
+  },
+  {
+    "english": "indifference",
+    "arabic": "لامبالاة",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "Public indifference to the issue allowed it to grow.",
+    "example_sentence_arabic": "سمحت اللامبالاة العامة بالقضية لها بالنمو."
+  },
+  {
+    "english": "inference",
+    "arabic": "استنتاج",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "Drawing a valid inference from data requires careful analysis.",
+    "example_sentence_arabic": "استخلاص استنتاج صالح من البيانات يتطلب تحليلًا دقيقًا."
+  },
+  {
+    "english": "isolation",
+    "arabic": "عزلة",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Social isolation can have a negative impact on mental health.",
+    "example_sentence_arabic": "يمكن أن يكون للعزلة الاجتماعية تأثير سلبي على الصحة النفسية."
+  },
+  {
+    "english": "legitimacy",
+    "arabic": "شرعية",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "The government questioned the legitimacy of the protest.",
+    "example_sentence_arabic": "شككت الحكومة في شرعية الاحتجاج."
+  },
+  {
+    "english": "longevity",
+    "arabic": "طول العمر",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "Regular exercise is linked to longevity.",
+    "example_sentence_arabic": "ارتبطت التمارين المنتظمة بطول العمر."
+  },
+  {
+    "english": "manipulation",
+    "arabic": "تلاعب",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "The manipulation of data is a form of academic dishonesty.",
+    "example_sentence_arabic": "التلاعب بالبيانات شكل من أشكال الغش الأكاديمي."
+  },
+  {
+    "english": "misconception",
+    "arabic": "سوء فهم",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "There are many misconceptions about learning a second language.",
+    "example_sentence_arabic": "هناك العديد من سوء الفهم حول تعلم لغة ثانية."
+  },
+  {
+    "english": "optimism",
+    "arabic": "تفاؤل",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Optimism can help you overcome difficult situations.",
+    "example_sentence_arabic": "يمكن أن يساعدك التفاؤل على تجاوز المواقف الصعبة."
+  },
+  {
+    "english": "perseverance",
+    "arabic": "مثابرة",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Perseverance is the key to success in language learning.",
+    "example_sentence_arabic": "المثابرة مفتاح النجاح في تعلم اللغة."
+  },
+  {
+    "english": "pessimism",
+    "arabic": "تشاؤم",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "Pessimism can prevent people from reaching their potential.",
+    "example_sentence_arabic": "يمكن أن يمنع التشاؤم الناس من تحقيق إمكاناتهم."
+  },
+  {
+    "english": "precedent",
+    "arabic": "سابقة",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "The court ruling set a legal precedent for future cases.",
+    "example_sentence_arabic": "أرسى حكم المحكمة سابقة قانونية للقضايا المستقبلية."
+  },
+  {
+    "english": "predictable",
+    "arabic": "متوقع",
+    "level": "B1",
+    "category": "adjective",
+    "example_sentence": "The ending of the film was entirely predictable.",
+    "example_sentence_arabic": "كانت نهاية الفيلم متوقعة تمامًا."
+  },
+  {
+    "english": "proactive",
+    "arabic": "استباقي",
+    "level": "B2",
+    "category": "adjective",
+    "example_sentence": "Being proactive means addressing problems before they arise.",
+    "example_sentence_arabic": "الاستباقية تعني معالجة المشكلات قبل أن تظهر."
+  },
+  {
+    "english": "reluctance",
+    "arabic": "تردد",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "Her reluctance to speak in public was holding her back.",
+    "example_sentence_arabic": "ترددها في التحدث في الأماكن العامة كان يُعيقها."
+  },
+  {
+    "english": "repercussion",
+    "arabic": "تداعية",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "The decision had serious repercussions for the whole team.",
+    "example_sentence_arabic": "كان للقرار تداعيات خطيرة على الفريق بأكمله."
+  },
+  {
+    "english": "resilience",
+    "arabic": "صمود",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "Communities show remarkable resilience after natural disasters.",
+    "example_sentence_arabic": "تُظهر المجتمعات صمودًا رائعًا بعد الكوارث الطبيعية."
+  },
+  {
+    "english": "restraint",
+    "arabic": "ضبط النفس",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "He showed great restraint in not responding to the criticism.",
+    "example_sentence_arabic": "أظهر ضبطًا كبيرًا للنفس في عدم الرد على الانتقاد."
+  },
+  {
+    "english": "skepticism",
+    "arabic": "تشككية",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "There was widespread skepticism about the new findings.",
+    "example_sentence_arabic": "كان هناك تشككية واسعة النطاق بشأن النتائج الجديدة."
+  },
+  {
+    "english": "sovereignty",
+    "arabic": "سيادة",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "National sovereignty is a fundamental principle of international law.",
+    "example_sentence_arabic": "السيادة الوطنية مبدأ أساسي من مبادئ القانون الدولي."
+  },
+  {
+    "english": "spontaneous",
+    "arabic": "عفوي",
+    "level": "B2",
+    "category": "adjective",
+    "example_sentence": "The celebration was spontaneous and full of joy.",
+    "example_sentence_arabic": "كان الاحتفال عفويًا ومليئًا بالفرح."
+  },
+  {
+    "english": "subordinate",
+    "arabic": "مرؤوس",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "A good manager treats their subordinates with respect.",
+    "example_sentence_arabic": "يتعامل المدير الجيد مع مرؤوسيه باحترام."
+  },
+  {
+    "english": "tenacity",
+    "arabic": "مثابرة وإصرار",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "She achieved her goals through sheer tenacity.",
+    "example_sentence_arabic": "حققت أهدافها من خلال المثابرة والإصرار المطلق."
+  },
+  {
+    "english": "validation",
+    "arabic": "تحقق",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "Students need validation from their teachers to build confidence.",
+    "example_sentence_arabic": "يحتاج الطلاب إلى التحقق من معلميهم لبناء الثقة."
+  },
+  {
+    "english": "vulnerability",
+    "arabic": "هشاشة",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "Children are in a state of vulnerability and need protection.",
+    "example_sentence_arabic": "الأطفال في حالة من الهشاشة ويحتاجون إلى الحماية."
+  },
+  {
+    "english": "allergic",
+    "arabic": "يعاني من حساسية",
+    "level": "A2",
+    "category": "adjective",
+    "example_sentence": "She is allergic to cats and cannot keep one as a pet.",
+    "example_sentence_arabic": "تعاني من حساسية تجاه القطط ولا يمكنها تربية واحدة."
+  },
+  {
+    "english": "bin",
+    "arabic": "صندوق مهملات",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "Please put your rubbish in the bin.",
+    "example_sentence_arabic": "يرجى وضع نفاياتك في صندوق المهملات."
+  },
+  {
+    "english": "breeze",
+    "arabic": "نسيم",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "A cool breeze made the summer day pleasant.",
+    "example_sentence_arabic": "جعل النسيم البارد يوم الصيف لطيفًا."
+  },
+  {
+    "english": "cafeteria",
+    "arabic": "كافيتيريا",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "We ate lunch in the school cafeteria.",
+    "example_sentence_arabic": "تناولنا الغداء في كافيتيريا المدرسة."
+  },
+  {
+    "english": "chalk",
+    "arabic": "طباشير",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "The teacher wrote the lesson on the board with chalk.",
+    "example_sentence_arabic": "كتب المعلم الدرس على السبورة بالطباشير."
+  },
+  {
+    "english": "chores",
+    "arabic": "أعمال منزلية",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "She does her chores before watching television.",
+    "example_sentence_arabic": "تُنجز أعمالها المنزلية قبل مشاهدة التلفزيون."
+  },
+  {
+    "english": "clap",
+    "arabic": "يصفق",
+    "level": "A2",
+    "category": "verb",
+    "example_sentence": "The audience clapped loudly at the end of the show.",
+    "example_sentence_arabic": "صفّق الجمهور بحماس في نهاية العرض."
+  },
+  {
+    "english": "cliff",
+    "arabic": "جرف صخري",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "They stood at the edge of the cliff and admired the sea.",
+    "example_sentence_arabic": "وقفوا على حافة الجرف الصخري وأعجبوا بالبحر."
+  },
+  {
+    "english": "cloudy",
+    "arabic": "غائم",
+    "level": "A2",
+    "category": "adjective",
+    "example_sentence": "It was a cloudy day but it did not rain.",
+    "example_sentence_arabic": "كان يومًا غائمًا لكنه لم يمطر."
+  },
+  {
+    "english": "cobweb",
+    "arabic": "خيط عنكبوت",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "There was a cobweb in the corner of the old room.",
+    "example_sentence_arabic": "كان هناك خيط عنكبوت في زاوية الغرفة القديمة."
+  },
+  {
+    "english": "compass",
+    "arabic": "بوصلة",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "Hikers use a compass to find the right direction.",
+    "example_sentence_arabic": "يستخدم المشاة البوصلة لمعرفة الاتجاه الصحيح."
+  },
+  {
+    "english": "congratulate",
+    "arabic": "يهنئ",
+    "level": "A2",
+    "category": "verb",
+    "example_sentence": "Everyone congratulated him on passing his exam.",
+    "example_sentence_arabic": "هنّأه الجميع على نجاحه في الامتحان."
+  },
+  {
+    "english": "crispy",
+    "arabic": "مقرمش",
+    "level": "A2",
+    "category": "adjective",
+    "example_sentence": "She likes her toast crispy and golden.",
+    "example_sentence_arabic": "تُحب خبزها المحمص مقرمشًا وذهبيًا."
+  },
+  {
+    "english": "crossword",
+    "arabic": "كلمات متقاطعة",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "She does the crossword in the newspaper every morning.",
+    "example_sentence_arabic": "تحل الكلمات المتقاطعة في الجريدة كل صباح."
+  },
+  {
+    "english": "damp",
+    "arabic": "رطب",
+    "level": "A2",
+    "category": "adjective",
+    "example_sentence": "The clothes were still damp when she took them out of the machine.",
+    "example_sentence_arabic": "كانت الملابس لا تزال رطبة حين أخرجتها من الآلة."
+  },
+  {
+    "english": "dizzy",
+    "arabic": "دائخ",
+    "level": "A2",
+    "category": "adjective",
+    "example_sentence": "She felt dizzy after spinning around quickly.",
+    "example_sentence_arabic": "شعرت بالدوخة بعد الدوران بسرعة."
+  },
+  {
+    "english": "drizzle",
+    "arabic": "رذاذ",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "A light drizzle fell throughout the morning.",
+    "example_sentence_arabic": "سقط رذاذ خفيف طوال الصباح."
+  },
+  {
+    "english": "eraser",
+    "arabic": "ممحاة",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "I need an eraser to fix my mistake.",
+    "example_sentence_arabic": "أحتاج إلى ممحاة لتصحيح خطئي."
+  },
+  {
+    "english": "fizzy",
+    "arabic": "فوّار",
+    "level": "A2",
+    "category": "adjective",
+    "example_sentence": "She prefers fizzy drinks to plain water.",
+    "example_sentence_arabic": "تفضّل المشروبات الفوّارة على الماء العادي."
+  },
+  {
+    "english": "flavourful",
+    "arabic": "غني بالنكهة",
+    "level": "A2",
+    "category": "adjective",
+    "example_sentence": "The soup was warm and flavourful.",
+    "example_sentence_arabic": "كان الحساء دافئًا وغنيًا بالنكهة."
+  },
+  {
+    "english": "flip-flops",
+    "arabic": "شبشب",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "He wore flip-flops on the beach.",
+    "example_sentence_arabic": "ارتدى الشبشب على الشاطئ."
+  },
+  {
+    "english": "footpath",
+    "arabic": "مسار المشاة",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "We followed the footpath through the park.",
+    "example_sentence_arabic": "اتبعنا مسار المشاة عبر الحديقة."
+  },
+  {
+    "english": "handkerchief",
+    "arabic": "منديل قماش",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "He kept a handkerchief in his jacket pocket.",
+    "example_sentence_arabic": "احتفظ بمنديل في جيب سترته."
+  },
+  {
+    "english": "hopeful",
+    "arabic": "متفائل",
+    "level": "A2",
+    "category": "adjective",
+    "example_sentence": "She was hopeful that she would receive good news.",
+    "example_sentence_arabic": "كانت متفائلة بأنها ستتلقى أخبارًا جيدة."
+  },
+  {
+    "english": "housework",
+    "arabic": "أعمال المنزل",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "They share the housework equally between them.",
+    "example_sentence_arabic": "يتقاسمان أعمال المنزل بالتساوي."
+  },
+  {
+    "english": "humid",
+    "arabic": "رطب",
+    "level": "A2",
+    "category": "adjective",
+    "example_sentence": "The weather was hot and humid in August.",
+    "example_sentence_arabic": "كان الطقس حارًا ورطبًا في أغسطس."
+  },
+  {
+    "english": "iceberg",
+    "arabic": "جبل جليدي",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "Only a small part of an iceberg is visible above water.",
+    "example_sentence_arabic": "جزء صغير فقط من الجبل الجليدي يظهر فوق الماء."
+  },
+  {
+    "english": "ironing",
+    "arabic": "كي الملابس",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "She does the ironing while watching television.",
+    "example_sentence_arabic": "تقوم بكي الملابس أثناء مشاهدة التلفزيون."
+  },
+  {
+    "english": "jellyfish",
+    "arabic": "قنديل بحر",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "He saw a jellyfish floating near the shore.",
+    "example_sentence_arabic": "رأى قنديل بحر يطفو قرب الشاطئ."
+  },
+  {
+    "english": "jogger",
+    "arabic": "متمرن بالركض",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "The park was full of joggers early in the morning.",
+    "example_sentence_arabic": "كانت الحديقة مليئة بالمتمرنين بالركض في الصباح الباكر."
+  },
+  {
+    "english": "jog",
+    "arabic": "يركض ببطء",
+    "level": "A2",
+    "category": "verb",
+    "example_sentence": "She jogs for 30 minutes every morning.",
+    "example_sentence_arabic": "تركض ببطء لمدة 30 دقيقة كل صباح."
+  },
+  {
+    "english": "jumper",
+    "arabic": "كنزة",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "He wore a thick jumper because it was cold.",
+    "example_sentence_arabic": "ارتدى كنزة سميكة لأن الجو كان باردًا."
+  },
+  {
+    "english": "kettle",
+    "arabic": "غلاية",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "She boiled the kettle to make a cup of tea.",
+    "example_sentence_arabic": "أغلت الغلاية لصنع كوب من الشاي."
+  },
+  {
+    "english": "knit",
+    "arabic": "يحيك",
+    "level": "A2",
+    "category": "verb",
+    "example_sentence": "She knits scarves for her grandchildren in winter.",
+    "example_sentence_arabic": "تحيك الأوشحة لأحفادها في الشتاء."
+  },
+  {
+    "english": "lantern",
+    "arabic": "فانوس",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "They hung lanterns in the garden for the party.",
+    "example_sentence_arabic": "علّقوا فوانيس في الحديقة للحفلة."
+  },
+  {
+    "english": "lavender",
+    "arabic": "خزامى",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "She planted lavender in her garden for its fragrance.",
+    "example_sentence_arabic": "زرعت الخزامى في حديقتها لعطرها."
+  },
+  {
+    "english": "lettuce",
+    "arabic": "خس",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "She added lettuce and tomatoes to the salad.",
+    "example_sentence_arabic": "أضافت خسًا وطماطم إلى السلطة."
+  },
+  {
+    "english": "meadow",
+    "arabic": "مرج",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "They picnicked in a meadow full of wildflowers.",
+    "example_sentence_arabic": "قاموا بنزهة في مرج مليء بالزهور البرية."
+  },
+  {
+    "english": "melt",
+    "arabic": "يذوب",
+    "level": "A2",
+    "category": "verb",
+    "example_sentence": "The ice cream began to melt in the hot sun.",
+    "example_sentence_arabic": "بدأ الآيس كريم يذوب في الشمس الحارة."
+  },
+  {
+    "english": "mint",
+    "arabic": "نعناع",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "She added fresh mint to her tea.",
+    "example_sentence_arabic": "أضافت نعناعًا طازجًا إلى شايها."
+  },
+  {
+    "english": "miserable",
+    "arabic": "بائس",
+    "level": "A2",
+    "category": "adjective",
+    "example_sentence": "The cold wet weather made everyone feel miserable.",
+    "example_sentence_arabic": "جعل الطقس البارد الرطب الجميع يشعرون بالبؤس."
+  },
+  {
+    "english": "napkin",
+    "arabic": "مناديل ورقية",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "She placed a napkin on her lap before eating.",
+    "example_sentence_arabic": "وضعت مناديل ورقية على حجرها قبل الأكل."
+  },
+  {
+    "english": "nightmare",
+    "arabic": "كابوس",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "She had a terrible nightmare and woke up scared.",
+    "example_sentence_arabic": "أصابها كابوس مرعب وأفاقت خائفة."
+  },
+  {
+    "english": "nod",
+    "arabic": "يومئ",
+    "level": "A2",
+    "category": "verb",
+    "example_sentence": "She nodded to show she understood.",
+    "example_sentence_arabic": "أومأت لتُظهر أنها فهمت."
+  },
+  {
+    "english": "nursery",
+    "arabic": "حضانة",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "The children attend the local nursery every morning.",
+    "example_sentence_arabic": "يحضر الأطفال الحضانة المحلية كل صباح."
+  },
+  {
+    "english": "ouch",
+    "arabic": "آخ",
+    "level": "A2",
+    "category": "exclamation",
+    "example_sentence": "Ouch! I burned my hand on the oven.",
+    "example_sentence_arabic": "آخ! أحرقت يدي على الفرن."
+  },
+  {
+    "english": "overcast",
+    "arabic": "ملبّد بالغيوم",
+    "level": "A2",
+    "category": "adjective",
+    "example_sentence": "The sky was overcast and it looked like rain.",
+    "example_sentence_arabic": "كانت السماء ملبّدة بالغيوم وبدا أنه سيمطر."
+  },
+  {
+    "english": "oyster",
+    "arabic": "محار",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "He ordered a plate of fresh oysters at the restaurant.",
+    "example_sentence_arabic": "طلب طبقًا من المحار الطازج في المطعم."
+  },
+  {
+    "english": "pancake",
+    "arabic": "فطيرة مسطحة",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "She made pancakes for breakfast on Sunday.",
+    "example_sentence_arabic": "صنعت فطائر مسطحة للإفطار يوم الأحد."
+  },
+  {
+    "english": "parcel",
+    "arabic": "طرد بريدي",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "A parcel arrived for her in the post this morning.",
+    "example_sentence_arabic": "وصل لها طرد بريدي هذا الصباح."
+  },
+  {
+    "english": "pavement",
+    "arabic": "رصيف",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "Please walk on the pavement, not the road.",
+    "example_sentence_arabic": "يرجى المشي على الرصيف لا على الطريق."
+  },
+  {
+    "english": "pleasant",
+    "arabic": "ممتع",
+    "level": "A2",
+    "category": "adjective",
+    "example_sentence": "We had a pleasant evening with our neighbours.",
+    "example_sentence_arabic": "قضينا أمسية ممتعة مع جيراننا."
+  },
+  {
+    "english": "pond",
+    "arabic": "بركة",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "There are ducks swimming on the pond in the park.",
+    "example_sentence_arabic": "هناك بطات تسبح في البركة في الحديقة."
+  },
+  {
+    "english": "porch",
+    "arabic": "شرفة أمامية",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "She sat on the porch and read her book.",
+    "example_sentence_arabic": "جلست على الشرفة الأمامية وقرأت كتابها."
+  },
+  {
+    "english": "puddle",
+    "arabic": "بركة مطر",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "The children jumped in the puddles after the rain.",
+    "example_sentence_arabic": "قفز الأطفال في برك المطر بعد الأمطار."
+  },
+  {
+    "english": "rucksack",
+    "arabic": "حقيبة ظهر",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "She carried all her books in her rucksack.",
+    "example_sentence_arabic": "حملت جميع كتبها في حقيبة الظهر."
+  },
+  {
+    "english": "rush",
+    "arabic": "يتسرع",
+    "level": "A2",
+    "category": "verb",
+    "example_sentence": "Don't rush; we have plenty of time.",
+    "example_sentence_arabic": "لا تتسرع؛ لدينا وقت كافٍ."
+  },
+  {
+    "english": "scarf",
+    "arabic": "وشاح",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "She wrapped a woollen scarf around her neck.",
+    "example_sentence_arabic": "لفّت وشاحًا صوفيًا حول رقبتها."
+  },
+  {
+    "english": "scissors",
+    "arabic": "مقص",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "She used scissors to cut the wrapping paper.",
+    "example_sentence_arabic": "استخدمت المقص لقطع ورق التغليف."
+  },
+  {
+    "english": "scout",
+    "arabic": "كشاف",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "He was a scout as a child and loved camping.",
+    "example_sentence_arabic": "كان كشافًا في طفولته وأحب التخييم."
+  },
+  {
+    "english": "seagull",
+    "arabic": "نورس",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "A seagull landed on the pier and stole her chips.",
+    "example_sentence_arabic": "هبط نورس على الرصيف وسرق رقائقها المقلية."
+  },
+  {
+    "english": "shed",
+    "arabic": "سقيفة",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "He keeps his tools in the shed at the back of the garden.",
+    "example_sentence_arabic": "يحتفظ بأدواته في السقيفة في الجزء الخلفي من الحديقة."
+  },
+  {
+    "english": "sleepy",
+    "arabic": "نعسان",
+    "level": "A2",
+    "category": "adjective",
+    "example_sentence": "He was so sleepy that he fell asleep on the sofa.",
+    "example_sentence_arabic": "كان نعسانًا جدًا لدرجة أنه نام على الأريكة."
+  },
+  {
+    "english": "slippery",
+    "arabic": "زلق",
+    "level": "A2",
+    "category": "adjective",
+    "example_sentence": "The floor was slippery after mopping.",
+    "example_sentence_arabic": "كانت الأرضية زلقة بعد المسح."
+  },
+  {
+    "english": "smoothie",
+    "arabic": "عصير كثيف",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "She made a banana and mango smoothie for breakfast.",
+    "example_sentence_arabic": "صنعت عصيرًا كثيفًا من الموز والمانجو للإفطار."
+  },
+  {
+    "english": "snack",
+    "arabic": "وجبة خفيفة",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "She had a snack between lunch and dinner.",
+    "example_sentence_arabic": "تناولت وجبة خفيفة بين الغداء والعشاء."
+  },
+  {
+    "english": "sneeze",
+    "arabic": "يعطس",
+    "level": "A2",
+    "category": "verb",
+    "example_sentence": "She sneezed several times because of the dust.",
+    "example_sentence_arabic": "عطست عدة مرات بسبب الغبار."
+  },
+  {
+    "english": "souvenir",
+    "arabic": "تذكار",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "She bought a souvenir for each member of her family.",
+    "example_sentence_arabic": "اشترت تذكارًا لكل فرد من أفراد عائلتها."
+  },
+  {
+    "english": "sponge",
+    "arabic": "إسفنجة",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "She used a sponge to clean the kitchen counter.",
+    "example_sentence_arabic": "استخدمت إسفنجة لتنظيف منضدة المطبخ."
+  },
+  {
+    "english": "stain",
+    "arabic": "بقعة",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "She tried to remove the coffee stain from her shirt.",
+    "example_sentence_arabic": "حاولت إزالة بقعة القهوة من قميصها."
+  },
+  {
+    "english": "statue",
+    "arabic": "تمثال",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "There is a large statue in the middle of the square.",
+    "example_sentence_arabic": "يوجد تمثال كبير في وسط الميدان."
+  },
+  {
+    "english": "sticky",
+    "arabic": "لزج",
+    "level": "A2",
+    "category": "adjective",
+    "example_sentence": "The honey made her fingers sticky.",
+    "example_sentence_arabic": "جعل العسل أصابعها لزجة."
+  },
+  {
+    "english": "sting",
+    "arabic": "يلسع",
+    "level": "A2",
+    "category": "verb",
+    "example_sentence": "She was stung by a bee in the garden.",
+    "example_sentence_arabic": "لسعها نحل في الحديقة."
+  },
+  {
+    "english": "sunburn",
+    "arabic": "حرق شمسي",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "She got a bad sunburn because she forgot her sunscreen.",
+    "example_sentence_arabic": "أصيبت بحرق شمسي شديد لأنها نسيت واقي الشمس."
+  },
+  {
+    "english": "sunscreen",
+    "arabic": "واقي شمسي",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "Always apply sunscreen before going to the beach.",
+    "example_sentence_arabic": "ضع دائمًا واقي الشمس قبل الذهاب إلى الشاطئ."
+  },
+  {
+    "english": "sweat",
+    "arabic": "يتعرق",
+    "level": "A2",
+    "category": "verb",
+    "example_sentence": "He was sweating after running in the heat.",
+    "example_sentence_arabic": "كان يتعرق بعد الركض في الحر."
+  },
+  {
+    "english": "swing",
+    "arabic": "أرجوحة",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "The children played on the swings in the park.",
+    "example_sentence_arabic": "لعب الأطفال على الأراجيح في الحديقة."
+  },
+  {
+    "english": "teddy bear",
+    "arabic": "دب محشو",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "She slept with her teddy bear as a child.",
+    "example_sentence_arabic": "كانت تنام مع دبها المحشو في طفولتها."
+  },
+  {
+    "english": "thunder",
+    "arabic": "رعد",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "The children were scared by the loud thunder.",
+    "example_sentence_arabic": "خاف الأطفال من صوت الرعد العالي."
+  },
+  {
+    "english": "toast",
+    "arabic": "خبز محمص",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "She ate toast with jam for breakfast.",
+    "example_sentence_arabic": "تناولت خبزًا محمصًا مع المربى للإفطار."
+  },
+  {
+    "english": "tray",
+    "arabic": "صينية",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "She carried the cups to the table on a tray.",
+    "example_sentence_arabic": "حملت الأكواب إلى الطاولة على صينية."
+  },
+  {
+    "english": "tribe",
+    "arabic": "قبيلة",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "The documentary showed the life of an Amazon tribe.",
+    "example_sentence_arabic": "أظهر الفيلم الوثائقي حياة قبيلة أمازون."
+  },
+  {
+    "english": "trustworthy",
+    "arabic": "جدير بالثقة",
+    "level": "A2",
+    "category": "adjective",
+    "example_sentence": "She is a trustworthy person who always keeps her promises.",
+    "example_sentence_arabic": "إنها شخصية جديرة بالثقة وتفي دائمًا بوعودها."
+  },
+  {
+    "english": "tunnel",
+    "arabic": "نفق",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "The train went through a long tunnel under the mountain.",
+    "example_sentence_arabic": "مرّ القطار عبر نفق طويل تحت الجبل."
+  },
+  {
+    "english": "twins",
+    "arabic": "توأم",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "She has twins who are both interested in science.",
+    "example_sentence_arabic": "لديها توأم مهتمان بالعلوم."
+  },
+  {
+    "english": "upset",
+    "arabic": "منزعج",
+    "level": "A2",
+    "category": "adjective",
+    "example_sentence": "She was upset when she heard the bad news.",
+    "example_sentence_arabic": "كانت منزعجة عندما سمعت الأخبار السيئة."
+  },
+  {
+    "english": "vending machine",
+    "arabic": "آلة بيع",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "She bought a bottle of water from the vending machine.",
+    "example_sentence_arabic": "اشترت زجاجة ماء من آلة البيع."
+  },
+  {
+    "english": "vest",
+    "arabic": "سترة داخلية",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "He wore a vest under his shirt to stay warm.",
+    "example_sentence_arabic": "ارتدى سترة داخلية تحت قميصه للبقاء دافئًا."
+  },
+  {
+    "english": "volleyball",
+    "arabic": "كرة الطائرة",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "She plays volleyball on the school team.",
+    "example_sentence_arabic": "تلعب كرة الطائرة في فريق المدرسة."
+  },
+  {
+    "english": "waterfall",
+    "arabic": "شلال",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "They hiked to see the famous waterfall.",
+    "example_sentence_arabic": "ساروا في رحلة لرؤية الشلال الشهير."
+  },
+  {
+    "english": "webcam",
+    "arabic": "كاميرا ويب",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "She used her webcam to join the online class.",
+    "example_sentence_arabic": "استخدمت كاميرا الويب للانضمام إلى الفصل الإلكتروني."
+  },
+  {
+    "english": "weigh",
+    "arabic": "يزن",
+    "level": "A2",
+    "category": "verb",
+    "example_sentence": "He weighed himself on the bathroom scales.",
+    "example_sentence_arabic": "وزن نفسه على ميزان الحمام."
+  },
+  {
+    "english": "wheelchair",
+    "arabic": "كرسي متحرك",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "The hospital corridor is wide enough for a wheelchair.",
+    "example_sentence_arabic": "الممر في المستشفى واسع بما يكفي للكرسي المتحرك."
+  },
+  {
+    "english": "windy",
+    "arabic": "عاصف",
+    "level": "A2",
+    "category": "adjective",
+    "example_sentence": "It was a very windy day so she wore a hat.",
+    "example_sentence_arabic": "كان يومًا عاصفًا جدًا لذا ارتدت قبعة."
+  },
+  {
+    "english": "yoghurt",
+    "arabic": "زبادي",
+    "level": "A2",
+    "category": "noun",
+    "example_sentence": "She eats yoghurt with honey every morning.",
+    "example_sentence_arabic": "تتناول الزبادي مع العسل كل صباح."
+  },
+  {
+    "english": "agile",
+    "arabic": "رشيق",
+    "level": "B1",
+    "category": "adjective",
+    "example_sentence": "Agile employees adapt quickly to change.",
+    "example_sentence_arabic": "يتكيف الموظفون الرشيقون بسرعة مع التغيير."
+  },
+  {
+    "english": "blend",
+    "arabic": "يمزج",
+    "level": "B1",
+    "category": "verb",
+    "example_sentence": "She blended the fruits together to make a smoothie.",
+    "example_sentence_arabic": "مزجت الفاكهة معًا لصنع عصير كثيف."
+  },
+  {
+    "english": "cautious",
+    "arabic": "حذر",
+    "level": "B1",
+    "category": "adjective",
+    "example_sentence": "She was cautious about making any hasty decisions.",
+    "example_sentence_arabic": "كانت حذرة من اتخاذ أي قرارات متسرعة."
+  },
+  {
+    "english": "clutter",
+    "arabic": "فوضى",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "She cleared the clutter from her desk to focus better.",
+    "example_sentence_arabic": "أزالت الفوضى من مكتبها للتركيز بشكل أفضل."
+  },
+  {
+    "english": "compensation",
+    "arabic": "تعويض",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "She received financial compensation for the delay.",
+    "example_sentence_arabic": "حصلت على تعويض مالي بسبب التأخير."
+  },
+  {
+    "english": "confirmation",
+    "arabic": "تأكيد",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "We are still waiting for confirmation of the booking.",
+    "example_sentence_arabic": "لا نزال ننتظر تأكيد الحجز."
+  },
+  {
+    "english": "contributor",
+    "arabic": "مساهم",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "She is a major contributor to the team's success.",
+    "example_sentence_arabic": "إنها مساهمة رئيسية في نجاح الفريق."
+  },
+  {
+    "english": "decade",
+    "arabic": "عقد",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Technology has changed dramatically over the past decade.",
+    "example_sentence_arabic": "تغيّرت التكنولوجيا بشكل كبير خلال العقد الماضي."
+  },
+  {
+    "english": "delight",
+    "arabic": "بهجة",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The children's laughter was a delight to hear.",
+    "example_sentence_arabic": "كان سماع ضحكات الأطفال بهجة."
+  },
+  {
+    "english": "disappoint",
+    "arabic": "يُخيّب الأمل",
+    "level": "B1",
+    "category": "verb",
+    "example_sentence": "She did not want to disappoint her parents.",
+    "example_sentence_arabic": "لم تكن تريد أن تُخيّب أمل والديها."
+  },
+  {
+    "english": "eligibility",
+    "arabic": "أهلية",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Your eligibility for the grant depends on your income.",
+    "example_sentence_arabic": "تعتمد أهليتك للمنحة على دخلك."
+  },
+  {
+    "english": "exhausted",
+    "arabic": "منهك",
+    "level": "B1",
+    "category": "adjective",
+    "example_sentence": "He was exhausted after the long journey.",
+    "example_sentence_arabic": "كان منهكًا بعد الرحلة الطويلة."
+  },
+  {
+    "english": "expectation",
+    "arabic": "توقع",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Students must meet the expectations set by their teachers.",
+    "example_sentence_arabic": "يجب على الطلاب تلبية التوقعات التي يضعها معلموهم."
+  },
+  {
+    "english": "fascination",
+    "arabic": "افتتان",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "She has always had a fascination with astronomy.",
+    "example_sentence_arabic": "دائمًا ما كانت مفتونة بعلم الفلك."
+  },
+  {
+    "english": "frustration",
+    "arabic": "إحباط",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "She felt frustration when she could not solve the problem.",
+    "example_sentence_arabic": "شعرت بالإحباط عندما لم تستطع حل المشكلة."
+  },
+  {
+    "english": "hesitate",
+    "arabic": "يتردد",
+    "level": "B1",
+    "category": "verb",
+    "example_sentence": "Do not hesitate to ask if you have questions.",
+    "example_sentence_arabic": "لا تتردد في السؤال إذا كان لديك أسئلة."
+  },
+  {
+    "english": "incentivize",
+    "arabic": "يُحفّز",
+    "level": "B2",
+    "category": "verb",
+    "example_sentence": "The company incentivized workers with bonuses.",
+    "example_sentence_arabic": "حفّزت الشركة العمال بالمكافآت."
+  },
+  {
+    "english": "indulge",
+    "arabic": "يُطيع هواه",
+    "level": "B2",
+    "category": "verb",
+    "example_sentence": "She occasionally indulges in chocolate as a treat.",
+    "example_sentence_arabic": "تُطيع هواها أحيانًا وتتناول الشوكولاتة كمكافأة."
+  },
+  {
+    "english": "instinct",
+    "arabic": "غريزة",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "She trusted her instinct and made the right decision.",
+    "example_sentence_arabic": "وثقت بغريزتها واتخذت القرار الصحيح."
+  },
+  {
+    "english": "landmark",
+    "arabic": "معلم بارز",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The Eiffel Tower is the most famous landmark in Paris.",
+    "example_sentence_arabic": "برج إيفل هو أشهر معلم بارز في باريس."
+  },
+  {
+    "english": "mediator",
+    "arabic": "وسيط",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "A mediator helped resolve the dispute peacefully.",
+    "example_sentence_arabic": "ساعد وسيط في حل النزاع بسلام."
+  },
+  {
+    "english": "nourish",
+    "arabic": "يغذّي",
+    "level": "B1",
+    "category": "verb",
+    "example_sentence": "A good diet nourishes both body and mind.",
+    "example_sentence_arabic": "يُغذّي النظام الغذائي الجيد الجسم والعقل معًا."
+  },
+  {
+    "english": "oversee",
+    "arabic": "يُشرف على",
+    "level": "B2",
+    "category": "verb",
+    "example_sentence": "She was appointed to oversee the new project.",
+    "example_sentence_arabic": "عُيّنت للإشراف على المشروع الجديد."
+  },
+  {
+    "english": "outbreak",
+    "arabic": "تفشٍّ",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "An outbreak of food poisoning closed the restaurant.",
+    "example_sentence_arabic": "أدى تفشٍّ التسمم الغذائي إلى إغلاق المطعم."
+  },
+  {
+    "english": "outlook",
+    "arabic": "توقعات",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "The economic outlook for next year is uncertain.",
+    "example_sentence_arabic": "التوقعات الاقتصادية للعام القادم غير مؤكدة."
+  },
+  {
+    "english": "pathway",
+    "arabic": "مسار",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Education is the best pathway to a successful career.",
+    "example_sentence_arabic": "التعليم هو أفضل مسار للحصول على مهنة ناجحة."
+  },
+  {
+    "english": "precedence",
+    "arabic": "أسبقية",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "Safety should always take precedence over speed.",
+    "example_sentence_arabic": "يجب أن تأخذ السلامة دائمًا الأسبقية على السرعة."
+  },
+  {
+    "english": "proficiency",
+    "arabic": "إجادة",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "She demonstrated proficiency in four languages.",
+    "example_sentence_arabic": "أثبتت إجادتها لأربع لغات."
+  },
+  {
+    "english": "recall",
+    "arabic": "يتذكر",
+    "level": "B1",
+    "category": "verb",
+    "example_sentence": "She could not recall where she had put her keys.",
+    "example_sentence_arabic": "لم تستطع تذكّر أين وضعت مفاتيحها."
+  },
+  {
+    "english": "reinterpret",
+    "arabic": "يُعيد التفسير",
+    "level": "B2",
+    "category": "verb",
+    "example_sentence": "New evidence caused scientists to reinterpret the data.",
+    "example_sentence_arabic": "دفعت الأدلة الجديدة العلماء إلى إعادة تفسير البيانات."
+  },
+  {
+    "english": "remedy",
+    "arabic": "علاج",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "There is no simple remedy for this complex problem.",
+    "example_sentence_arabic": "لا يوجد علاج بسيط لهذه المشكلة المعقدة."
+  },
+  {
+    "english": "reputation",
+    "arabic": "سمعة",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The school has an excellent reputation in the community.",
+    "example_sentence_arabic": "تتمتع المدرسة بسمعة ممتازة في المجتمع."
+  },
+  {
+    "english": "risky",
+    "arabic": "محفوف بالمخاطر",
+    "level": "B1",
+    "category": "adjective",
+    "example_sentence": "Investing all your money in one company is risky.",
+    "example_sentence_arabic": "استثمار جميع أموالك في شركة واحدة أمر محفوف بالمخاطر."
+  },
+  {
+    "english": "satisfactory",
+    "arabic": "مرضٍ",
+    "level": "B1",
+    "category": "adjective",
+    "example_sentence": "The results were satisfactory but could be improved.",
+    "example_sentence_arabic": "كانت النتائج مرضية لكن يمكن تحسينها."
+  },
+  {
+    "english": "strive",
+    "arabic": "يسعى بجد",
+    "level": "B1",
+    "category": "verb",
+    "example_sentence": "Students should strive to improve every day.",
+    "example_sentence_arabic": "ينبغي على الطلاب السعي بجد للتحسن كل يوم."
+  },
+  {
+    "english": "tackle",
+    "arabic": "يتصدى لـ",
+    "level": "B1",
+    "category": "verb",
+    "example_sentence": "We need to tackle the problem of air pollution seriously.",
+    "example_sentence_arabic": "نحتاج إلى التصدي بجدية لمشكلة تلوث الهواء."
+  },
+  {
+    "english": "undertake",
+    "arabic": "يُقدم على",
+    "level": "B2",
+    "category": "verb",
+    "example_sentence": "She decided to undertake a postgraduate degree.",
+    "example_sentence_arabic": "قررت الإقدام على درجة الدراسات العليا."
+  },
+  {
+    "english": "upskill",
+    "arabic": "يطور مهاراته",
+    "level": "B2",
+    "category": "verb",
+    "example_sentence": "Many workers upskill through online courses.",
+    "example_sentence_arabic": "يطوّر كثير من العمال مهاراتهم عبر الدورات الإلكترونية."
+  },
+  {
+    "english": "welcoming",
+    "arabic": "مُرحِّب",
+    "level": "B1",
+    "category": "adjective",
+    "example_sentence": "The school has a welcoming atmosphere for new students.",
+    "example_sentence_arabic": "المدرسة لديها جو مُرحِّب للطلاب الجدد."
+  },
+  {
+    "english": "adjustment",
+    "arabic": "تعديل",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "A small adjustment to the plan improved the outcome.",
+    "example_sentence_arabic": "أدى تعديل صغير في الخطة إلى تحسين النتيجة."
+  },
+  {
+    "english": "alignment",
+    "arabic": "توافق",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "There must be alignment between the team's goals.",
+    "example_sentence_arabic": "يجب أن يكون هناك توافق بين أهداف الفريق."
+  },
+  {
+    "english": "appreciation",
+    "arabic": "تقدير",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "She expressed her appreciation for all the support.",
+    "example_sentence_arabic": "عبّرت عن تقديرها لكل الدعم الذي تلقّته."
+  },
+  {
+    "english": "attachment",
+    "arabic": "مرفق",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Please open the attachment in the email.",
+    "example_sentence_arabic": "يرجى فتح المرفق في البريد الإلكتروني."
+  },
+  {
+    "english": "blueprint",
+    "arabic": "مخطط تفصيلي",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "The architect showed the blueprint for the new building.",
+    "example_sentence_arabic": "أظهر المهندس المعماري المخطط التفصيلي للمبنى الجديد."
+  },
+  {
+    "english": "breakthrough",
+    "arabic": "إنجاز كبير",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "Scientists made a major breakthrough in cancer research.",
+    "example_sentence_arabic": "حقق العلماء إنجازًا كبيرًا في أبحاث السرطان."
+  },
+  {
+    "english": "consecutive",
+    "arabic": "متتالٍ",
+    "level": "B2",
+    "category": "adjective",
+    "example_sentence": "She won the championship for three consecutive years.",
+    "example_sentence_arabic": "فازت بالبطولة لثلاث سنوات متتالية."
+  },
+  {
+    "english": "contentment",
+    "arabic": "رضا",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "Simple pleasures often bring the greatest contentment.",
+    "example_sentence_arabic": "كثيرًا ما تُعطي الملذات البسيطة أكبر قدر من الرضا."
+  },
+  {
+    "english": "cultivation",
+    "arabic": "زراعة",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "The cultivation of new habits takes time and effort.",
+    "example_sentence_arabic": "تنمية عادات جديدة يستغرق وقتًا وجهدًا."
+  },
+  {
+    "english": "declaration",
+    "arabic": "إعلان",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "The government made a formal declaration of emergency.",
+    "example_sentence_arabic": "أصدرت الحكومة إعلانًا رسميًا لحالة الطوارئ."
+  },
+  {
+    "english": "disclosure",
+    "arabic": "إفصاح",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "Full disclosure of financial information is required by law.",
+    "example_sentence_arabic": "يُلزم القانون بالإفصاح الكامل عن المعلومات المالية."
+  },
+  {
+    "english": "exploration",
+    "arabic": "استكشاف",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The exploration of space has advanced our knowledge greatly.",
+    "example_sentence_arabic": "أثرى استكشاف الفضاء معرفتنا بشكل كبير."
+  },
+  {
+    "english": "fulfillment",
+    "arabic": "إشباع",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "She found great fulfillment in teaching children.",
+    "example_sentence_arabic": "وجدت إشباعًا كبيرًا في تعليم الأطفال."
+  },
+  {
+    "english": "generosity",
+    "arabic": "كرم",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Her generosity towards those in need was admirable.",
+    "example_sentence_arabic": "كان كرمها تجاه المحتاجين مثيرًا للإعجاب."
+  },
+  {
+    "english": "likelihood",
+    "arabic": "احتمال",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "The likelihood of rain tomorrow is high.",
+    "example_sentence_arabic": "احتمال سقوط المطر غدًا مرتفع."
+  },
+  {
+    "english": "occurrence",
+    "arabic": "حدوث",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "The occurrence of such events is becoming more frequent.",
+    "example_sentence_arabic": "أصبح حدوث مثل هذه الأحداث أكثر تكرارًا."
+  },
+  {
+    "english": "orientation",
+    "arabic": "توجيه",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "New students attend an orientation on the first day.",
+    "example_sentence_arabic": "يحضر الطلاب الجدد جلسة توجيه في اليوم الأول."
+  },
+  {
+    "english": "ownership",
+    "arabic": "ملكية",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "Home ownership is a goal for many young people.",
+    "example_sentence_arabic": "امتلاك منزل هدف لكثير من الشباب."
+  },
+  {
+    "english": "popularity",
+    "arabic": "شعبية",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The popularity of online courses has grown rapidly.",
+    "example_sentence_arabic": "نمت شعبية الدورات الإلكترونية بسرعة."
+  },
+  {
+    "english": "precision",
+    "arabic": "دقة",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "The surgeon performed the operation with great precision.",
+    "example_sentence_arabic": "أجرى الجراح العملية بدقة عالية."
+  },
+  {
+    "english": "reasoning",
+    "arabic": "استدلال",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "Clear reasoning is important in academic writing.",
+    "example_sentence_arabic": "الاستدلال الواضح مهم في الكتابة الأكاديمية."
+  },
+  {
+    "english": "recognition",
+    "arabic": "اعتراف",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "She received recognition for her contributions to the field.",
+    "example_sentence_arabic": "حظيت باعتراف بمساهماتها في هذا المجال."
+  },
+  {
+    "english": "reliance",
+    "arabic": "اعتماد",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "Over-reliance on technology can reduce critical thinking.",
+    "example_sentence_arabic": "يمكن أن يُقلّص الاعتماد المفرط على التكنولوجيا التفكير النقدي."
+  },
+  {
+    "english": "sensitivity",
+    "arabic": "حساسية",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "Cultural sensitivity is important when working internationally.",
+    "example_sentence_arabic": "الحساسية الثقافية مهمة عند العمل على المستوى الدولي."
+  },
+  {
+    "english": "stance",
+    "arabic": "موقف",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "The government took a firm stance on the issue.",
+    "example_sentence_arabic": "اتخذت الحكومة موقفًا حازمًا بشأن المسألة."
+  },
+  {
+    "english": "versatility",
+    "arabic": "تعدد المواهب",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "His versatility as an actor is impressive.",
+    "example_sentence_arabic": "تعدد مواهبه كممثل أمر مثير للإعجاب."
+  },
+  {
+    "english": "vigilance",
+    "arabic": "يقظة",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "Constant vigilance is needed to prevent cybercrime.",
+    "example_sentence_arabic": "مطلوب يقظة مستمرة لمنع الجرائم الإلكترونية."
+  },
+  {
+    "english": "willpower",
+    "arabic": "إرادة",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Giving up sugar requires a lot of willpower.",
+    "example_sentence_arabic": "التوقف عن السكر يتطلب قدرًا كبيرًا من الإرادة."
+  },
+  {
+    "english": "workload",
+    "arabic": "عبء عمل",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "The heavy workload left her with little free time.",
+    "example_sentence_arabic": "تركها عبء العمل الثقيل بوقت فراغ ضئيل."
+  },
+  {
+    "english": "worldview",
+    "arabic": "رؤية للعالم",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "Travel can broaden your worldview significantly.",
+    "example_sentence_arabic": "يمكن للسفر أن يُوسّع رؤيتك للعالم بشكل ملحوظ."
+  },
+  {
+    "english": "yielding",
+    "arabic": "مُنتج",
+    "level": "B2",
+    "category": "adjective",
+    "example_sentence": "The new approach was more yielding in results.",
+    "example_sentence_arabic": "كان النهج الجديد أكثر إنتاجًا من حيث النتائج."
+  },
+  {
+    "english": "zenith",
+    "arabic": "ذروة",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "She reached the zenith of her career at age 40.",
+    "example_sentence_arabic": "بلغت ذروة مسيرتها المهنية في سن 40."
+  },
+  {
+    "english": "zealous",
+    "arabic": "متحمس",
+    "level": "B2",
+    "category": "adjective",
+    "example_sentence": "She was a zealous advocate for environmental protection.",
+    "example_sentence_arabic": "كانت مدافعة متحمسة عن حماية البيئة."
+  },
+  {
+    "english": "spectator",
+    "arabic": "متفرج",
+    "level": "B1",
+    "category": "noun",
+    "example_sentence": "Thousands of spectators attended the final match.",
+    "example_sentence_arabic": "حضر آلاف المتفرجين المباراة النهائية."
+  },
+  {
+    "english": "mosaic",
+    "arabic": "فسيفساء",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "The floor was decorated with a beautiful ancient mosaic.",
+    "example_sentence_arabic": "كانت الأرضية مزينة بفسيفساء قديمة جميلة."
+  },
+  {
+    "english": "rhetoric",
+    "arabic": "خطابة",
+    "level": "B2",
+    "category": "noun",
+    "example_sentence": "His speech was full of rhetoric but lacked concrete proposals.",
+    "example_sentence_arabic": "كان خطابه مليئًا بالخطابة لكنه افتقر إلى مقترحات ملموسة."
+  },
+  {
+    "english": "eloquent",
+    "arabic": "بليغ",
+    "level": "B2",
+    "category": "adjective",
+    "example_sentence": "She gave an eloquent speech that moved the whole audience.",
+    "example_sentence_arabic": "ألقت خطابًا بليغًا أثّر في كل الجمهور."
+  },
+  {
+    "english": "perpetual",
+    "arabic": "دائم",
+    "level": "B2",
+    "category": "adjective",
+    "example_sentence": "The region is in a state of perpetual conflict.",
+    "example_sentence_arabic": "تعيش المنطقة في حالة صراع دائم."
   }
 ]
