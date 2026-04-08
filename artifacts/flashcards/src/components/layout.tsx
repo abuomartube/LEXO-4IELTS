@@ -24,7 +24,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <img
               src="/4ielts-logo.png"
               alt="4IELTS"
-              className="h-14 w-auto object-contain"
+              className="h-24 w-auto object-contain"
             />
           </Link>
           <Button
