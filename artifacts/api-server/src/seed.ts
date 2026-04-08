@@ -98,6 +98,14 @@ export async function runSeed() {
     } else {
       logger.info({ count }, "Flashcards already seeded, skipping");
     }
+
+    // Remove A1 level — migrate any A1 words up to A2
+    const a1Result = await db.execute(sql`SELECT COUNT(*)::int AS cnt FROM flashcards WHERE level = 'A1'`);
+    const a1Count = (a1Result.rows[0] as { cnt: number }).cnt;
+    if (a1Count > 0) {
+      await db.execute(sql`UPDATE flashcards SET level = 'A2' WHERE level = 'A1'`);
+      logger.info({ updated: a1Count }, "Migrated A1 words to A2");
+    }
   } catch (err) {
     logger.error({ err }, "Seed error");
     throw err;
