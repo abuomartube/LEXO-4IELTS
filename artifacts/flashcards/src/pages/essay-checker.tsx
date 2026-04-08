@@ -286,7 +286,7 @@ export default function EssayChecker() {
 
   const minWords = taskType === "Task 1" ? 150 : 250;
   const wordCount = essay.trim().split(/\s+/).filter(Boolean).length;
-  const canSubmit = wordCount >= minWords && !loading;
+  const canSubmit = essay.trim().length >= 10 && !loading;
 
   const handleSubmit = useCallback(async () => {
     if (!canSubmit) return;
@@ -427,9 +427,9 @@ export default function EssayChecker() {
               )}
             </Button>
 
-            {!canSubmit && !loading && wordCount > 0 && (
-              <p className="text-center text-sm text-muted-foreground">
-                {minWords - wordCount} more word{minWords - wordCount !== 1 ? "s" : ""} needed
+            {wordCount > 0 && wordCount < minWords && !loading && (
+              <p className="text-center text-xs text-muted-foreground">
+                IELTS {taskType} recommends at least {minWords} words — you have {wordCount}
               </p>
             )}
 

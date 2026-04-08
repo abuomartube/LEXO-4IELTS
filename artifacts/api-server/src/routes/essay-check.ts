@@ -57,12 +57,12 @@ IMPORTANT: For grammarErrors, vocabularyUpgrades, and coherenceIssues,
 the original field must contain the exact phrase as it appears in the
 essay so it can be located and highlighted in the text.`;
 
-router.post("/api/essay-check", async (req, res) => {
+router.post("/essay-check", async (req, res) => {
   try {
     const { essay, taskType } = req.body as { essay: string; taskType: string };
 
-    if (!essay || typeof essay !== "string" || essay.trim().length < 50) {
-      res.status(400).json({ error: "Essay is too short." });
+    if (!essay || typeof essay !== "string" || essay.trim().length < 10) {
+      res.status(400).json({ error: "Please enter some text to analyse." });
       return;
     }
 
