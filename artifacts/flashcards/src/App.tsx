@@ -11,6 +11,7 @@ import Browse from "@/pages/browse";
 import ProgressPage from "@/pages/progress";
 import Quiz from "@/pages/quiz";
 import AdminPage from "@/pages/admin";
+import Synonyms from "@/pages/synonyms";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -35,6 +36,7 @@ function Router() {
             <Route path="/quiz" component={Quiz} />
             <Route path="/browse" component={Browse} />
             <Route path="/progress" component={ProgressPage} />
+            <Route path="/synonyms" component={Synonyms} />
             <Route component={NotFound} />
           </Switch>
         </PasswordGate>
