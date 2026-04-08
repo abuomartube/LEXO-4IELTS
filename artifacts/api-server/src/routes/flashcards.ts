@@ -33,7 +33,7 @@ router.get("/flashcards", async (req, res): Promise<void> => {
 });
 
 router.get("/flashcards/levels", async (_req, res): Promise<void> => {
-  const levels = ["A1", "A2", "B1", "B2"];
+  const levels = ["A1", "A2", "B1", "B2", "C1"];
   const stats = await Promise.all(levels.map(async (level) => {
     const [totalResult] = await db.select({ count: sql<number>`count(*)::int` }).from(flashcardsTable).where(eq(flashcardsTable.level, level));
     const knownCardIds = await db.selectDistinctOn([progressTable.flashcardId], { flashcardId: progressTable.flashcardId, known: progressTable.known }).from(progressTable).orderBy(progressTable.flashcardId, sql`${progressTable.reviewedAt} desc`);
@@ -76,7 +76,7 @@ router.post("/progress", async (req, res): Promise<void> => {
 });
 
 router.get("/progress/summary", async (_req, res): Promise<void> => {
-  const levels = ["A1", "A2", "B1", "B2"];
+  const levels = ["A1", "A2", "B1", "B2", "C1"];
   const [totalResult] = await db.select({ count: sql<number>`count(*)::int` }).from(flashcardsTable);
   const latestProgress = await db.selectDistinctOn([progressTable.flashcardId], { flashcardId: progressTable.flashcardId, known: progressTable.known }).from(progressTable).orderBy(progressTable.flashcardId, sql`${progressTable.reviewedAt} desc`);
   const knownIds = new Set(latestProgress.filter((p) => p.known).map((p) => p.flashcardId));

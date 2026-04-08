@@ -80,13 +80,19 @@ function escStr(val: string | null | undefined): string {
   return `'${val.replace(/'/g, "''")}'`;
 }
 
+const EXPECTED_COUNT = 3000;
+
 export async function runSeed() {
   try {
     await ensureTables();
     const result = await db.execute(sql`SELECT COUNT(*)::int AS cnt FROM flashcards`);
     const count = (result.rows[0] as { cnt: number }).cnt;
-    if (count === 0) {
-      logger.info("Seeding flashcards database...");
+    if (count < EXPECTED_COUNT) {
+      logger.info({ existing: count, expected: EXPECTED_COUNT }, "Seeding flashcards database...");
+      if (count > 0) {
+        await db.execute(sql`TRUNCATE flashcards RESTART IDENTITY CASCADE`);
+        logger.info("Cleared old flashcard data for re-seed");
+      }
       await seedFlashcards();
       logger.info({ count: (seedData as SeedRow[]).length }, "Flashcards seeded successfully");
     } else {

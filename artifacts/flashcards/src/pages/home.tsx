@@ -128,8 +128,8 @@ function VocabDownloadSection() {
 const features = [
   {
     icon: Layers,
-    title: "4 CEFR Levels",
-    desc: "A1 · A2 · B1 · B2 — structured vocabulary from beginner to upper-intermediate.",
+    title: "5 CEFR Levels",
+    desc: "A1 · A2 · B1 · B2 · C1 — structured vocabulary from beginner to advanced.",
     color: "bg-teal-50 dark:bg-teal-900/20 text-teal-600",
   },
   {
@@ -146,8 +146,8 @@ const features = [
   },
   {
     icon: Award,
-    title: "1000 Flashcards",
-    desc: "1000 carefully selected words with bilingual example sentences in every card.",
+    title: "3000 Flashcards",
+    desc: "3000 carefully selected IELTS words with bilingual example sentences in every card.",
     color: "bg-amber-50 dark:bg-amber-900/20 text-amber-600",
   },
 ];
@@ -180,7 +180,7 @@ export default function Home() {
               Master English Vocabulary<br/>the Smart Way
             </h1>
             <p className="text-primary-foreground/80 text-lg mb-8 leading-relaxed">
-              1000 flashcards across A1–B2 levels, with Arabic translations, audio
+              3000 flashcards across A1–C1 levels, with Arabic translations, audio
               pronunciation and smart quizzes — built for Arabic-speaking IELTS students.
             </p>
             <div className="flex flex-wrap gap-3">
