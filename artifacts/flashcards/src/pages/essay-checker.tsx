@@ -49,6 +49,8 @@ interface EssayResult {
   strengths: string[];
   improvements: string[];
   revisedIntroduction: string;
+  exampleEssayBand6?: string;
+  exampleEssayBand8?: string;
 }
 
 // ─── Popup component ──────────────────────────────────────────────────────────
@@ -269,6 +271,53 @@ function BandCard({ label, band, feedback }: { label: string; band: number; feed
         {open ? "Hide" : "Show"} feedback
       </button>
       {open && <p className="text-xs text-muted-foreground mt-2 leading-relaxed">{feedback}</p>}
+    </div>
+  );
+}
+
+// ─── Essay Example Box ────────────────────────────────────────────────────────
+
+function EssayExampleBox({
+  label,
+  band,
+  text,
+  accentClass,
+  badgeClass,
+}: {
+  label: string;
+  band: string;
+  text: string;
+  accentClass: string;
+  badgeClass: string;
+}) {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(text).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  };
+
+  return (
+    <div className={`rounded-2xl border p-5 flex flex-col gap-3 ${accentClass}`}>
+      <div className="flex items-center justify-between gap-2 flex-wrap">
+        <div className="flex items-center gap-2">
+          <span className={`text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-full ${badgeClass}`}>
+            {label}
+          </span>
+          <span className="text-xs text-muted-foreground font-medium">Band {band}</span>
+        </div>
+        <button
+          onClick={handleCopy}
+          className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full border border-border bg-background hover:bg-muted transition-colors shrink-0"
+        >
+          {copied
+            ? <><CheckCircle2 className="w-3.5 h-3.5 text-green-500" /> Copied!</>
+            : <><Copy className="w-3.5 h-3.5" /> Copy</>}
+        </button>
+      </div>
+      <p className="text-sm leading-relaxed text-foreground whitespace-pre-wrap">{text}</p>
     </div>
   );
 }
@@ -580,6 +629,46 @@ export default function EssayChecker() {
                     <p className="text-[10px] font-bold uppercase tracking-wider text-primary mb-2">Improved</p>
                     <p className="text-sm text-foreground leading-relaxed">{result.revisedIntroduction}</p>
                   </div>
+                </div>
+              </div>
+            )}
+
+            {/* Example Essays for Improvement */}
+            {(result.exampleEssayBand6 || result.exampleEssayBand8) && (
+              <div>
+                <h2 className="text-base font-bold mb-1 flex items-center gap-2">
+                  <Sparkles className="w-4 h-4 text-primary" />
+                  Example Essays for Improvement
+                </h2>
+                <p className="text-xs text-muted-foreground mb-4">
+                  See how your essay can be rewritten at two different levels. Use these as a study guide — not to copy, but to understand the difference in style, vocabulary, and structure.
+                </p>
+                <div className="space-y-4">
+                  <EssayExampleBox
+                    label="Your Original Essay"
+                    band="—"
+                    text={essay}
+                    accentClass="bg-card border-border"
+                    badgeClass="bg-muted text-muted-foreground"
+                  />
+                  {result.exampleEssayBand6 && (
+                    <EssayExampleBox
+                      label="Improved — Intermediate"
+                      band="5.5 – 6"
+                      text={result.exampleEssayBand6}
+                      accentClass="bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800"
+                      badgeClass="bg-amber-100 text-amber-700 dark:bg-amber-900/60 dark:text-amber-300"
+                    />
+                  )}
+                  {result.exampleEssayBand8 && (
+                    <EssayExampleBox
+                      label="Improved — Advanced"
+                      band="7 – 8"
+                      text={result.exampleEssayBand8}
+                      accentClass="bg-teal-50 dark:bg-teal-900/20 border-teal-200 dark:border-teal-800"
+                      badgeClass="bg-teal-100 text-teal-700 dark:bg-teal-900/60 dark:text-teal-300"
+                    />
+                  )}
                 </div>
               </div>
             )}

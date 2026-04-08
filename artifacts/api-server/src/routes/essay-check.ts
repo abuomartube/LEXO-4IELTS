@@ -50,12 +50,14 @@ Return ONLY a valid JSON object, no markdown, no extra text.
   ],
   "strengths": ["strength 1", "strength 2"],
   "improvements": ["improvement 1", "improvement 2"],
-  "revisedIntroduction": "rewritten version of the introduction only"
+  "revisedIntroduction": "rewritten version of the introduction only",
+  "exampleEssayBand6": "A complete rewritten version of the student's essay at Band 5.5-6 level. Fix the most critical grammar and structure errors, improve basic vocabulary slightly, but keep the writing style relatively simple and accessible. The essay should feel like a real student wrote it after some improvement — not perfect, but clearly better than the original.",
+  "exampleEssayBand8": "A complete rewritten version of the student's essay at Band 7-8 level. Use sophisticated vocabulary, complex grammatical structures, strong cohesive devices, well-developed arguments with specific examples, and a clear academic tone. This should demonstrate what an advanced IELTS candidate writes."
 }
 
-IMPORTANT: For grammarErrors, vocabularyUpgrades, and coherenceIssues,
-the original field must contain the exact phrase as it appears in the
-essay so it can be located and highlighted in the text.`;
+IMPORTANT:
+- For grammarErrors, vocabularyUpgrades, and coherenceIssues, the original field must contain the exact phrase as it appears in the essay so it can be located and highlighted in the text.
+- exampleEssayBand6 and exampleEssayBand8 must be COMPLETE full essays (all paragraphs), not just introductions. They must address the same topic as the student's essay.`;
 
 router.post("/essay-check", async (req, res) => {
   try {
