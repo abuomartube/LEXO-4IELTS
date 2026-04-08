@@ -73,7 +73,6 @@ export default function Browse() {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="ALL">All Levels</SelectItem>
-              <SelectItem value="A1">A1</SelectItem>
               <SelectItem value="A2">A2</SelectItem>
               <SelectItem value="B1">B1</SelectItem>
               <SelectItem value="B2">B2</SelectItem>

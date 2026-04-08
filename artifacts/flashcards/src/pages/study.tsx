@@ -183,7 +183,6 @@ export default function Study() {
                 <SelectTrigger className="w-[110px]"><SelectValue placeholder="Level" /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="ALL">All Levels</SelectItem>
-                  <SelectItem value="A1">A1</SelectItem>
                   <SelectItem value="A2">A2</SelectItem>
                   <SelectItem value="B1">B1</SelectItem>
                   <SelectItem value="B2">B2</SelectItem>

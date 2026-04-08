@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
 type QuizMode = "multiple-choice" | "fill-blank";
-type Level = "ALL" | "A1" | "A2" | "B1" | "B2" | "C1";
+type Level = "ALL" | "A2" | "B1" | "B2" | "C1";
 
 interface SessionResult { total: number; correct: number; wrong: number }
 
@@ -149,7 +149,6 @@ export default function Quiz() {
                 <SelectTrigger className="w-full bg-background"><SelectValue /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="ALL">All Levels</SelectItem>
-                  <SelectItem value="A1">A1 – Beginner</SelectItem>
                   <SelectItem value="A2">A2 – Elementary</SelectItem>
                   <SelectItem value="B1">B1 – Intermediate</SelectItem>
                   <SelectItem value="B2">B2 – Upper-Intermediate</SelectItem>

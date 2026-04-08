@@ -80,7 +80,7 @@ function escStr(val: string | null | undefined): string {
   return `'${val.replace(/'/g, "''")}'`;
 }
 
-const EXPECTED_COUNT = 2198;
+const EXPECTED_COUNT = 2384;
 
 export async function runSeed() {
   try {
