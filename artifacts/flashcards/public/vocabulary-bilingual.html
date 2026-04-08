@@ -26,14 +26,51 @@ thead{background:#f1f5f9}
 th{padding:12px;text-align:left;font-weight:600;font-size:12px;text-transform:uppercase;color:#475569;border-bottom:1px solid #e2e8f0}
 td{border-bottom:1px solid #f1f5f9;vertical-align:top}
 tr:hover td{background:#f8fafc}
+
+.cover{background:linear-gradient(160deg,hsl(177,83%,28%) 0%,hsl(177,83%,18%) 100%);color:white;padding:64px 32px 52px;text-align:center;position:relative;overflow:hidden}
+.cover::before{content:'';position:absolute;top:-80px;right:-80px;width:320px;height:320px;border-radius:50%;background:rgba(255,255,255,.05);pointer-events:none}
+.cover::after{content:'';position:absolute;bottom:-60px;left:-60px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.04);pointer-events:none}
+.cover-platform{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);border-radius:24px;padding:6px 18px 6px 12px;font-size:13px;font-weight:700;letter-spacing:.4px;margin-bottom:28px;backdrop-filter:blur(4px)}
+.cover-platform img{width:28px;height:28px;border-radius:7px;object-fit:cover;border:2px solid rgba(255,255,255,.3)}
+.cover-photo-wrap{position:relative;display:inline-block;margin-bottom:28px}
+.cover-photo{width:148px;height:148px;border-radius:50%;object-fit:cover;border:5px solid rgba(255,255,255,.35);box-shadow:0 8px 40px rgba(0,0,0,.4);display:block;margin:0 auto}
+.cover-badge{position:absolute;bottom:8px;right:4px;background:hsl(177,83%,35%);border:3px solid white;border-radius:50%;width:38px;height:38px;display:flex;align-items:center;justify-content:center;font-size:19px;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.cover h1{font-size:2.7rem;font-weight:900;line-height:1.15;margin-bottom:12px;letter-spacing:-.5px;text-shadow:0 2px 12px rgba(0,0,0,.2)}
+.cover h1 em{font-style:normal;color:hsl(165,80%,72%)}
+.cover-sub{font-size:1.05rem;opacity:.88;margin-bottom:8px;font-weight:500}
+.cover-sub-ar{font-family:'Cairo',sans-serif;font-size:1.1rem;opacity:.82;margin-bottom:30px;direction:rtl}
+.cover-divider{width:64px;height:3px;background:rgba(255,255,255,.28);border-radius:2px;margin:0 auto 28px}
+.cover-meta{display:flex;justify-content:center;gap:32px;flex-wrap:wrap;margin-bottom:32px}
+.cover-meta-item{text-align:center}
+.cover-meta-num{font-size:2rem;font-weight:800;display:block;line-height:1}
+.cover-meta-label{font-size:11px;opacity:.68;font-weight:500;text-transform:uppercase;letter-spacing:.8px;margin-top:5px;display:block}
+.cover-copy{font-size:12.5px;opacity:.5;margin-top:8px;font-weight:400;letter-spacing:.3px}
 </style>
 </head>
 <body>
-<div class="header">
-<h1>4IELTS Vocabulary Reference</h1>
-<p>3,000 IELTS Words · A2–C1 · Full Arabic Translations</p>
-<p style="font-family:Cairo,sans-serif;font-size:1.1rem;margin-top:8px;opacity:.9" dir="rtl">قائمة المفردات الكاملة · 3000 كلمة إيلتس · A2 إلى C1 · ترجمة عربية شاملة</p>
+<div class="cover">
+  <div class="cover-platform">
+    <img src="4ielts-logo.png" alt="4IELTS" onerror="this.style.display='none'">
+    <span>4ielts.com</span>
+  </div>
+  <div class="cover-photo-wrap">
+    <img class="cover-photo" src="owner.png" alt="Author">
+    <div class="cover-badge">&#128218;</div>
+  </div>
+  <h1>4IELTS Vocabulary<br><em>Dictionary</em></h1>
+  <p class="cover-sub">3,000 Essential IELTS Words &middot; A2&ndash;C1 &middot; Full Arabic Translations</p>
+  <p class="cover-sub-ar">&#1602;&#1575;&#1605;&#1608;&#1587; &#1605;&#1601;&#1585;&#1583;&#1575;&#1578; &#1575;&#1604;&#1570;&#1610;&#1604;&#1578;&#1587; &middot; 3000 &#1603;&#1604;&#1605;&#1577; &#1571;&#1587;&#1575;&#1587;&#1610;&#1577; &middot; &#1605;&#1606; A2 &#1573;&#1604;&#1609; C1 &middot; &#1605;&#1593; &#1575;&#1604;&#1578;&#1585;&#1580;&#1605;&#1577; &#1575;&#1604;&#1593;&#1585;&#1576;&#1610;&#1577;</p>
+  <div class="cover-divider"></div>
+  <div class="cover-meta">
+    <div class="cover-meta-item"><span class="cover-meta-num" style="color:#6ee7da">1,010</span><span class="cover-meta-label">A2 Words</span></div>
+    <div class="cover-meta-item"><span class="cover-meta-num" style="color:#fbbf24">882</span><span class="cover-meta-label">B1 Words</span></div>
+    <div class="cover-meta-item"><span class="cover-meta-num" style="color:#c084fc">608</span><span class="cover-meta-label">B2 Words</span></div>
+    <div class="cover-meta-item"><span class="cover-meta-num" style="color:#fb7185">500</span><span class="cover-meta-label">C1 Words</span></div>
+  </div>
+  <p class="cover-copy">&copy; 2025 4IELTS.com &nbsp;&bull;&nbsp; All Rights Reserved &nbsp;&bull;&nbsp; &#1580;&#1605;&#1610;&#1593; &#1575;&#1604;&#1581;&#1602;&#1608;&#1602; &#1605;&#1581;&#1601;&#1608;&#1592;&#1577;</p>
 </div>
+
+
 <div class="stats">
 <div class="stat"><span class="stat-num" style="color:#3b82f6">1010</span><span class="stat-label">A2 Words</span></div>
 <div class="stat"><span class="stat-num" style="color:#f97316">882</span><span class="stat-label">B1 Words</span></div>
