@@ -1,0 +1,89 @@
+Build a full-stack IELTS Essay Checker web app:
+
+## TECH STACK
+- Frontend: React
+- Backend: Node.js + Express
+- AI: Anthropic Claude API (claude-sonnet-4-20250514)
+
+## FEATURES
+
+### 1. Task Selection
+- Toggle button: "Task 1" or "Task 2"
+- Task 1: minimum 150 words
+- Task 2: minimum 250 words
+
+### 2. Essay Input
+- Large textarea for essay submission
+- Live word counter
+- Submit button disabled until minimum word count met
+
+### 3. Claude API System Prompt
+"""
+You are an expert IELTS examiner with 20 years of experience.
+Analyze the essay strictly based on the four official IELTS
+scoring criteria. Return ONLY a valid JSON object, no markdown,
+no extra text.
+
+Return this exact structure:
+{
+  "taskType": "Task 1 or Task 2",
+  "overallBand": 6.5,
+  "scores": {
+    "taskResponse": { "band": 6, "feedback": "..." },
+    "coherenceCohesion": { "band": 7, "feedback": "..." },
+    "lexicalResource": { "band": 6, "feedback": "..." },
+    "grammaticalRange": { "band": 6, "feedback": "..." }
+  },
+  "grammarErrors": [
+    {
+      "original": "exact wrong phrase from essay",
+      "correction": "corrected version",
+      "explanation": "why it is wrong",
+      "type": "Subject-Verb Agreement / Tense / Article / Preposition / etc"
+    }
+  ],
+  "vocabularyUpgrades": [
+    {
+      "original": "basic word used",
+      "better": "advanced alternative",
+      "example": "example sentence using the better word",
+      "reason": "why this upgrade improves the score"
+    }
+  ],
+  "strengths": ["strength 1", "strength 2"],
+  "improvements": ["improvement 1", "improvement 2"],
+  "revisedIntroduction": "rewritten version of the introduction only"
+}
+"""
+
+### 4. Results Display
+
+#### A. Score Dashboard
+- Overall band score
+- 4 score indicators for each criterion
+
+#### B. Grammar Errors
+- Each error as a card:
+  - Original (wrong)
+  - Correction
+  - Error type
+  - Explanation
+
+#### C. Vocabulary Upgrades
+- Original word → Better word
+- Example sentence
+- Why it helps the band score
+
+#### D. Strengths & Improvements
+- Two columns: Strengths list / Improvements list
+
+#### E. Revised Introduction
+- Side by side: Original vs Improved
+
+### 5. Environment
+- Store Claude API key in .env as ANTHROPIC_API_KEY
+- All Claude calls go through Express backend only
+- Parse JSON response and handle parsing errors
+- Show error message if essay is too short
+- Add reset button after results appear
+- Add Copy Feedback button that exports full report as text

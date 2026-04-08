@@ -272,6 +272,9 @@ export default function Home() {
                   <Button asChild variant="outline" className="rounded-full border-orange-300 text-orange-700 dark:text-orange-400 hover:bg-orange-50 dark:hover:bg-orange-900/20">
                     <Link href="/antonyms"><ArrowLeftRight className="w-4 h-4 mr-2" />IELTS Antonyms</Link>
                   </Button>
+                  <Button asChild variant="outline" className="rounded-full border-violet-300 text-violet-700 dark:text-violet-400 hover:bg-violet-50 dark:hover:bg-violet-900/20">
+                    <Link href="/essay-checker"><FileText className="w-4 h-4 mr-2" />Essay Checker</Link>
+                  </Button>
                 </div>
               </div>
             </div>

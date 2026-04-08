@@ -13,6 +13,7 @@ import Quiz from "@/pages/quiz";
 import AdminPage from "@/pages/admin";
 import Synonyms from "@/pages/synonyms";
 import Antonyms from "@/pages/antonyms";
+import EssayChecker from "@/pages/essay-checker";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -39,6 +40,7 @@ function Router() {
             <Route path="/progress" component={ProgressPage} />
             <Route path="/synonyms" component={Synonyms} />
             <Route path="/antonyms" component={Antonyms} />
+            <Route path="/essay-checker" component={EssayChecker} />
             <Route component={NotFound} />
           </Switch>
         </PasswordGate>

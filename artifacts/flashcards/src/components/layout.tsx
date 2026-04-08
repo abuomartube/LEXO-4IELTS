@@ -1,5 +1,5 @@
 import { Link, useLocation } from "wouter";
-import { BookOpen, Home, Layers, PieChart, ExternalLink, Sun, Moon, HelpCircle, Sparkles, Shuffle } from "lucide-react";
+import { BookOpen, Home, Layers, PieChart, ExternalLink, Sun, Moon, HelpCircle, Sparkles, Shuffle, FileText } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTheme } from "@/context/theme-context";
 import { Button } from "@/components/ui/button";
@@ -14,6 +14,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
     { href: "/quiz", label: "Quiz Mode", icon: HelpCircle },
     { href: "/synonyms", label: "Synonyms", icon: Sparkles },
     { href: "/antonyms", label: "Antonyms", icon: Shuffle },
+    { href: "/essay-checker", label: "Essay Checker", icon: FileText },
     { href: "/browse", label: "Browse Cards", icon: Layers },
     { href: "/progress", label: "Progress", icon: PieChart },
   ];
