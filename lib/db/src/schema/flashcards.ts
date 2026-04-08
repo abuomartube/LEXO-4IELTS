@@ -1,4 +1,4 @@
-import { pgTable, text, serial, timestamp, boolean, integer, real, unique } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, timestamp, boolean, integer, real, unique, primaryKey } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod/v4";
 
@@ -47,3 +47,8 @@ export const cardSrsTable = pgTable("card_srs", {
 });
 
 export type CardSrs = typeof cardSrsTable.$inferSelect;
+
+export const settingsTable = pgTable("settings", {
+  key: text("key").primaryKey(),
+  value: text("value").notNull(),
+});

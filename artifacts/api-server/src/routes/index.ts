@@ -2,10 +2,12 @@ import { Router, type IRouter } from "express";
 import healthRouter from "./health";
 import flashcardsRouter from "./flashcards";
 import vocabPdfRouter from "./vocab-pdf";
+import authRouter from "./auth";
 
 const router: IRouter = Router();
 
 router.use(healthRouter);
+router.use(authRouter);
 router.use(flashcardsRouter);
 router.use(vocabPdfRouter);
 
