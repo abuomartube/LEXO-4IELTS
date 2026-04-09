@@ -9,33 +9,190 @@ import {
 // ─── Constants ───────────────────────────────────────────────────────────────
 
 const TOPICS = [
-  "Hometown", "Daily routine", "Food & cooking", "Sports", "Music",
-  "Reading", "Weather", "Shopping", "Travel", "Technology",
-  "Friends", "Family", "Work/Study", "Mornings", "Free time",
+  // Nature & Environment (10)
+  "Weather", "Seasons", "Nature", "Animals", "Environment",
+  "Plants", "Oceans", "Mountains", "Forests", "Climate change",
+  // Lifestyle (15)
+  "Daily routine", "Food & cooking", "Sports", "Music", "Reading",
+  "Shopping", "Fashion", "Sleep habits", "Morning routines", "Cooking",
+  "Eating out", "Street food", "Diets", "Exercise habits", "Weekend activities",
+  // Social (12)
+  "Friends", "Family", "Neighbors", "Childhood", "Relationships",
+  "Social media", "Festivals", "Celebrations", "Weddings", "Traditions",
+  "Community", "Volunteering",
+  // Places (12)
+  "Hometown", "Travel", "Cities", "Villages", "Parks",
+  "Museums", "Restaurants", "Airports", "Hotels", "Beaches", "Markets", "Landmarks",
+  // Education (10)
+  "School", "University", "Teachers", "Studying", "Online learning",
+  "Libraries", "Exams", "Scholarships", "Subjects", "Homework",
+  // Work & Future (12)
+  "Work", "Career goals", "Money", "Success", "Ambition",
+  "Retirement", "Future plans", "Business", "Job interviews", "Salaries",
+  "Working from home", "Entrepreneurship",
+  // Technology (12)
+  "Internet", "Phones", "AI", "Games", "Transportation",
+  "Space", "Innovation", "Social apps", "Online shopping", "Robots",
+  "Electric cars", "Smart homes",
+  // Health & Wellbeing (12)
+  "Health", "Exercise", "Mental health", "Hobbies", "Relaxation",
+  "Happiness", "Stress", "Sleep", "Hospitals", "Medicine",
+  "Healthy eating", "Work-life balance",
+  // Arts & Culture (12)
+  "Movies", "Art", "Photography", "Languages", "Cultural heritage",
+  "History", "Books", "Music genres", "Theater", "Dance", "Crafts", "Architecture",
+  // Personality & Values (13)
+  "Kindness", "Leadership", "Patience", "Honesty", "Personal ambition",
+  "Creativity", "Decision making", "Risk taking", "Role models", "Heroes",
+  "Memories", "Dreams", "Personal goals",
 ];
 
 const CUE_CARDS: Record<string, string> = {
-  "Hometown": "a place you grew up in or know very well",
+  // Nature & Environment
+  "Weather": "a time when the weather had a strong effect on your plans or mood",
+  "Seasons": "a season of the year that is special or meaningful to you",
+  "Nature": "a place in nature that you find beautiful or peaceful",
+  "Animals": "an animal that you find interesting or that has been important to you",
+  "Environment": "something you or others do to help protect the environment",
+  "Plants": "a plant, flower, or garden that you find meaningful",
+  "Oceans": "a memorable experience you had near the sea or ocean",
+  "Mountains": "a mountain or outdoor landscape you have visited or would like to visit",
+  "Forests": "a forest, park, or green area that you enjoy or find interesting",
+  "Climate change": "something you have noticed about climate change or its effects",
+  // Lifestyle
   "Daily routine": "a typical day in your life",
   "Food & cooking": "a meal or dish that is special to you",
   "Sports": "a sport or physical activity you enjoy or have tried",
   "Music": "a song, artist, or type of music that is meaningful to you",
   "Reading": "a book, article, or story that impressed or influenced you",
-  "Weather": "a time when the weather had a strong effect on your plans or mood",
   "Shopping": "a purchase or shopping experience you remember well",
-  "Travel": "a journey or trip that was particularly memorable",
-  "Technology": "a piece of technology that has changed your daily life",
+  "Fashion": "an item of clothing or style that is meaningful to you",
+  "Sleep habits": "a sleep habit or bedtime routine that you follow",
+  "Morning routines": "your morning routine or a morning that stands out in your memory",
+  "Cooking": "a dish you enjoy cooking or a cooking experience you remember",
+  "Eating out": "a restaurant or café that you have enjoyed visiting",
+  "Street food": "a type of street food or local snack that you enjoy",
+  "Diets": "a change in eating habits or diet that has affected your life",
+  "Exercise habits": "a form of exercise or physical activity you do regularly",
+  "Weekend activities": "something you enjoy doing at the weekend",
+  // Social
   "Friends": "a close friend and your friendship with them",
   "Family": "a family member who has been important to you",
-  "Work/Study": "a job, task, or subject you have studied or worked on",
-  "Mornings": "your morning routine or a morning that stands out in your memory",
-  "Free time": "a hobby or activity you enjoy doing in your free time",
+  "Neighbors": "a neighbour or someone who lives near you that you find interesting",
+  "Childhood": "a memory or experience from your childhood that stands out",
+  "Relationships": "an important relationship in your life and what makes it special",
+  "Social media": "a social media platform or online community you use",
+  "Festivals": "a festival or cultural event you have attended or celebrated",
+  "Celebrations": "a celebration or special occasion that you remember well",
+  "Weddings": "a wedding or marriage ceremony you have attended or know about",
+  "Traditions": "a tradition in your family or culture that is meaningful to you",
+  "Community": "a community group, club, or organisation you are part of or know about",
+  "Volunteering": "a time when you or someone you know volunteered to help others",
+  // Places
+  "Hometown": "a place you grew up in or know very well",
+  "Travel": "a journey or trip that was particularly memorable",
+  "Cities": "a city you have visited or would like to visit",
+  "Villages": "a village or small town you have visited or heard about",
+  "Parks": "a park or outdoor public space you enjoy",
+  "Museums": "a museum, gallery, or cultural site you have visited",
+  "Restaurants": "a restaurant or place to eat that you have enjoyed",
+  "Airports": "an experience you had at an airport or while travelling",
+  "Hotels": "a hotel or place you have stayed that was memorable",
+  "Beaches": "a beach or coastal area you have visited or would like to visit",
+  "Markets": "a market or street bazaar you have visited",
+  "Landmarks": "a famous landmark or historical site you have seen",
+  // Education
+  "School": "a school, teacher, or learning experience from your past",
+  "University": "a university or higher education experience",
+  "Teachers": "a teacher or mentor who has had a positive impact on you",
+  "Studying": "a subject or topic you have studied and found interesting",
+  "Online learning": "an online course, video, or learning platform you have used",
+  "Libraries": "a library or place where you like to study or read",
+  "Exams": "an important exam or test you have taken",
+  "Scholarships": "a scholarship, award, or academic achievement you know about",
+  "Subjects": "a school subject you found interesting or challenging",
+  "Homework": "a homework task or assignment you remember from school",
+  // Work & Future
+  "Work": "a job or work experience that has been important to you",
+  "Career goals": "a career goal or professional ambition you have",
+  "Money": "something money-related that has taught you an important lesson",
+  "Success": "a success or achievement you are proud of",
+  "Ambition": "an ambition or dream you have for the future",
+  "Retirement": "an older person you know and their life after retirement",
+  "Future plans": "a plan or goal you have for the near or distant future",
+  "Business": "a business idea you have or an entrepreneur you admire",
+  "Job interviews": "a job interview or application process you have experienced",
+  "Salaries": "a job or career that you think should be better paid",
+  "Working from home": "an experience of working or studying from home",
+  "Entrepreneurship": "an entrepreneur or small business that you admire",
+  // Technology
+  "Internet": "a website, app, or online service that has changed your daily life",
+  "Phones": "a mobile phone or device that has been important to you",
+  "AI": "a use of artificial intelligence that you find interesting or useful",
+  "Games": "a video game, board game, or online game you enjoy",
+  "Transportation": "a form of transport or journey that stands out in your memory",
+  "Space": "something related to space exploration that fascinates you",
+  "Innovation": "a recent invention or technological innovation you find impressive",
+  "Social apps": "a social media app or online platform you use regularly",
+  "Online shopping": "an experience you have had with online shopping",
+  "Robots": "a robot or automated machine that you have seen or read about",
+  "Electric cars": "an electric vehicle or new type of transport you find interesting",
+  "Smart homes": "a smart device or home technology you use or find interesting",
+  // Health & Wellbeing
+  "Health": "a health habit or practice that has been important in your life",
+  "Exercise": "a form of exercise or physical activity that you enjoy",
+  "Mental health": "something that helps you relax or maintain your mental wellbeing",
+  "Hobbies": "a hobby or free-time activity that you enjoy",
+  "Relaxation": "a way you like to relax and unwind after a busy day",
+  "Happiness": "something or someone that makes you feel genuinely happy",
+  "Stress": "a stressful situation and how you dealt with it",
+  "Sleep": "a sleep routine or experience related to sleep that you remember",
+  "Hospitals": "an experience you or someone close to you had in a hospital",
+  "Medicine": "a medical advance or treatment that you find impressive",
+  "Healthy eating": "a healthy food or eating habit that you practice or admire",
+  "Work-life balance": "something you do to maintain a healthy balance between work and personal life",
+  // Arts & Culture
+  "Movies": "a film or movie that has had an impact on you",
+  "Art": "a painting, sculpture, or work of art that you find meaningful",
+  "Photography": "a photograph or photographer that has impressed you",
+  "Languages": "a language you have learned or would like to learn",
+  "Cultural heritage": "a cultural tradition or heritage that you find fascinating",
+  "History": "a historical event or period that you find fascinating",
+  "Books": "a book that has made a strong impression on you",
+  "Music genres": "a style of music or genre that you enjoy",
+  "Theater": "a live performance or theatre show you have seen",
+  "Dance": "a type of dance or dancing experience you enjoy or admire",
+  "Crafts": "a craft, art project, or creative activity you enjoy",
+  "Architecture": "a building or architectural style that you find impressive",
+  // Personality & Values
+  "Kindness": "an act of kindness that you have witnessed or experienced",
+  "Leadership": "a leader or person in authority you admire",
+  "Patience": "a time when patience helped you or someone else succeed",
+  "Honesty": "a time when honesty made an important difference in a situation",
+  "Personal ambition": "a personal ambition or aspiration that drives you forward",
+  "Creativity": "a creative person or creative project that you admire",
+  "Decision making": "an important decision you have made that changed your life",
+  "Risk taking": "a risk you or someone you know took and what happened as a result",
+  "Role models": "a person who has been a role model or inspiration to you",
+  "Heroes": "a hero or admirable person from real life or history",
+  "Memories": "a childhood or family memory that is special to you",
+  "Dreams": "a dream or aspiration you have had since you were young",
+  "Personal goals": "a personal goal you are working towards right now",
 };
+
+const TOTAL_TOPICS = TOPICS.length;
 
 const PART_LIMITS = { 1: 5, 2: 1, 3: 4 };
 const PREP_TIME = 60;
 
 const USED_TOPICS_KEY = "ielts_speaking_used_topics";
+const TTS_SPEED_KEY = "ielts_tts_speed";
+
+const SPEED_OPTIONS = [
+  { value: 0.75, label: "🐢 Slow", arabic: "بطيء (للمبتدئين)" },
+  { value: 1.0,  label: "▶️ Normal", arabic: "طبيعي" },
+  { value: 1.25, label: "🐇 Fast", arabic: "سريع (كالاختبار)" },
+] as const;
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -76,18 +233,26 @@ interface SessionState {
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
-function pickTopic(): string {
+function pickTopic(): { topic: string; sessionNumber: number } {
   const raw = localStorage.getItem(USED_TOPICS_KEY);
   let used: string[] = [];
   try { used = JSON.parse(raw ?? "[]"); } catch { used = []; }
   const available = TOPICS.filter((t) => !used.includes(t));
-  const pool = available.length > 0 ? available : TOPICS;
+  const cycleComplete = available.length === 0;
+  const pool = cycleComplete ? [...TOPICS] : available;
   const chosen = pool[Math.floor(Math.random() * pool.length)];
-  const newUsed = available.length > 0
-    ? [...used, chosen]
-    : [chosen];
+  const newUsed = cycleComplete ? [chosen] : [...used, chosen];
   localStorage.setItem(USED_TOPICS_KEY, JSON.stringify(newUsed));
-  return chosen;
+  const sessionNumber = cycleComplete ? 1 : newUsed.length;
+  return { topic: chosen, sessionNumber };
+}
+
+function loadTtsSpeed(): number {
+  try {
+    const v = parseFloat(localStorage.getItem(TTS_SPEED_KEY) ?? "");
+    if ([0.75, 1.0, 1.25].includes(v)) return v;
+  } catch { /* ignore */ }
+  return 1.0;
 }
 
 function parseFeedback(text: string): {
@@ -502,6 +667,8 @@ export default function SpeakingPage() {
   const [streamingContent, setStreamingContent] = useState<string | null>(null);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [lastTtsText, setLastTtsText] = useState<string | null>(null);
+  const [ttsSpeed, setTtsSpeedState] = useState<number>(loadTtsSpeed);
+  const [sessionNumber, setSessionNumber] = useState<number>(0);
 
   const chatEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -522,6 +689,17 @@ export default function SpeakingPage() {
 
   // Keep refs in sync
   useEffect(() => { sessionRef.current = session; }, [session]);
+
+  // ── TTS speed ────────────────────────────────────────────────────────────────
+
+  const setTtsSpeed = useCallback((speed: number) => {
+    setTtsSpeedState(speed);
+    localStorage.setItem(TTS_SPEED_KEY, String(speed));
+  }, []);
+
+  // Keep a ref so playTts always uses the latest speed value
+  const ttsSpeedRef = useRef(ttsSpeed);
+  useEffect(() => { ttsSpeedRef.current = ttsSpeed; }, [ttsSpeed]);
 
   // ── TTS ──────────────────────────────────────────────────────────────────────
 
@@ -545,7 +723,7 @@ export default function SpeakingPage() {
       const res = await fetch("/api/speaking/tts", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text: clean }),
+        body: JSON.stringify({ text: clean, speed: ttsSpeedRef.current }),
       });
       if (!res.ok) return;
 
@@ -583,7 +761,8 @@ export default function SpeakingPage() {
   // ── Start a new session ──
   const startSession = useCallback(async () => {
     stopTts();
-    const topic = pickTopic();
+    const { topic, sessionNumber: sNum } = pickTopic();
+    setSessionNumber(sNum);
     setError(null);
     setIsLoading(true);
     setStreamingContent("");
@@ -770,6 +949,7 @@ export default function SpeakingPage() {
     setInput("");
     setError(null);
     setLastTtsText(null);
+    setSessionNumber(0);
   }, [stopTts, stopRecording]);
 
   const startRecording = useCallback(async () => {
@@ -909,9 +1089,16 @@ export default function SpeakingPage() {
               <div>
                 <h1 className="text-xl font-extrabold text-foreground">IELTS Speaking Practice</h1>
                 {session.topic ? (
-                  <span className="text-xs font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded-full">
-                    Topic: {session.topic}
-                  </span>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="text-xs font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded-full">
+                      Topic: {session.topic}
+                    </span>
+                    {sessionNumber > 0 && (
+                      <span className="text-xs font-semibold text-muted-foreground bg-muted px-2 py-0.5 rounded-full">
+                        Session {sessionNumber}/{TOTAL_TOPICS}
+                      </span>
+                    )}
+                  </div>
                 ) : (
                   <p className="text-xs text-muted-foreground">AI-powered mock speaking test</p>
                 )}
@@ -989,6 +1176,27 @@ export default function SpeakingPage() {
         {/* ── ACTIVE SESSION ── */}
         {(session.phase === "part1" || session.phase === "part2-prep" || session.phase === "part2-answer" || session.phase === "part3") && (
           <>
+            {/* Speed selector */}
+            <div className="shrink-0 flex items-center gap-2 mb-2 flex-wrap">
+              <span className="text-xs text-muted-foreground font-medium">Examiner speed:</span>
+              <div className="flex gap-1">
+                {SPEED_OPTIONS.map((opt) => (
+                  <button
+                    key={opt.value}
+                    onClick={() => setTtsSpeed(opt.value)}
+                    title={opt.arabic}
+                    className={`px-3 py-1 rounded-xl text-xs font-semibold border transition-all ${
+                      ttsSpeed === opt.value
+                        ? "bg-primary text-primary-foreground border-primary"
+                        : "border-border text-muted-foreground hover:bg-accent hover:text-foreground"
+                    }`}
+                  >
+                    {opt.label}
+                    <span className="block text-[9px] font-normal opacity-70 leading-tight">{opt.arabic}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
             {/* Chat area */}
             <div className="flex-1 overflow-y-auto space-y-4 py-2 pr-1">
               {session.messages.map((msg, i) =>

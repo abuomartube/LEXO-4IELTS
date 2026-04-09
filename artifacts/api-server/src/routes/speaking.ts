@@ -265,11 +265,16 @@ router.post("/speaking/tts", async (req, res) => {
 
     const openai = new OpenAI({ apiKey });
 
+    const rawSpeed = typeof (req.body as { speed?: unknown }).speed === "number"
+      ? (req.body as { speed: number }).speed
+      : 1.0;
+    const speed = Math.max(0.25, Math.min(4.0, rawSpeed));
+
     const speech = await openai.audio.speech.create({
       model: "tts-1-hd",
       voice: "onyx",
       input: text.slice(0, 4096),
-      speed: 0.95,
+      speed,
     });
 
     res.setHeader("Content-Type", "audio/mpeg");

@@ -1,0 +1,109 @@
+Add these features to IELTS Speaking Practice:
+
+──────────────────────
+FEATURE 1: Voice Speed Control
+──────────────────────
+Add speed selector above chat:
+
+🐢 Slow  |  Normal  |  Fast 🐇
+0.75x      1.0x      1.25x
+
+- Default = Normal (1.0x)
+- Selected speed = highlighted in teal
+- Save preference in localStorage
+
+Labels under buttons:
+- 🐢 بطيء (للمبتدئين)
+- ▶️ طبيعي
+- 🐇 سريع (كالاختبار)
+
+OpenAI TTS speed values:
+- Slow = speed: 0.75
+- Normal = speed: 1.0
+- Fast = speed: 1.25
+
+──────────────────────
+FEATURE 2: 120 Topic Bank
+──────────────────────
+Never repeat a topic until all 120 are used.
+Track in localStorage.
+Generate fresh questions every session.
+
+NATURE & ENVIRONMENT (10):
+Weather, Seasons, Nature, Animals,
+Environment, Plants, Oceans, Mountains,
+Forests, Climate change
+
+LIFESTYLE (15):
+Daily routine, Food & cooking, Sports,
+Music, Reading, Shopping, Fashion,
+Sleep habits, Morning routines, Cooking,
+Eating out, Street food, Diets,
+Exercise habits, Weekend activities
+
+SOCIAL (12):
+Friends, Family, Neighbors, Childhood,
+Relationships, Social media, Festivals,
+Celebrations, Weddings, Traditions,
+Community, Volunteering
+
+PLACES (12):
+Hometown, Travel, Cities, Villages,
+Parks, Museums, Restaurants, Airports,
+Hotels, Beaches, Markets, Landmarks
+
+EDUCATION (10):
+School, University, Teachers, Studying,
+Online learning, Libraries, Exams,
+Scholarships, Subjects, Homework
+
+WORK & FUTURE (12):
+Work, Career goals, Money, Success,
+Ambition, Retirement, Future plans,
+Business, Job interviews, Salaries,
+Working from home, Entrepreneurship
+
+TECHNOLOGY (12):
+Internet, Phones, AI, Games,
+Transportation, Space, Innovation,
+Social apps, Online shopping, Robots,
+Electric cars, Smart homes
+
+HEALTH & WELLBEING (12):
+Health, Exercise, Mental health,
+Hobbies, Relaxation, Happiness,
+Stress, Sleep, Hospitals, Medicine,
+Healthy eating, Work-life balance
+
+ARTS & CULTURE (12):
+Movies, Art, Photography, Languages,
+Traditions, History, Books, Music genres,
+Theater, Dance, Crafts, Architecture
+
+PERSONALITY & VALUES (13):
+Kindness, Leadership, Patience,
+Honesty, Ambition, Creativity,
+Decision making, Risk taking,
+Role models, Heroes, Memories,
+Dreams, Personal goals
+
+──────────────────────
+EACH SESSION RULES:
+──────────────────────
+- Pick 1 random unused topic
+- Generate 5 fresh Part 1 questions
+- Generate 1 new Part 2 cue card:
+  "Describe a [topic thing]
+   You should say:
+   • What it is
+   • When/Where
+   • Why important to you
+   • How it affected your life"
+- Generate 4 Part 3 abstract questions
+- All questions different every time
+- Never use exact same question twice
+- Show topic name as badge at top
+- Show session number: "Session 5/120"
+
+
+أرسله لـ Replit! 🚀​​​​​​​​​​​​​​​​
