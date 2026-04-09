@@ -5,6 +5,7 @@ import vocabPdfRouter from "./vocab-pdf";
 import authRouter from "./auth";
 import essayCheckRouter from "./essay-check";
 import storiesRouter from "./stories";
+import speakingRouter from "./speaking";
 
 const router: IRouter = Router();
 
@@ -14,5 +15,6 @@ router.use(flashcardsRouter);
 router.use(vocabPdfRouter);
 router.use(essayCheckRouter);
 router.use(storiesRouter);
+router.use(speakingRouter);
 
 export default router;

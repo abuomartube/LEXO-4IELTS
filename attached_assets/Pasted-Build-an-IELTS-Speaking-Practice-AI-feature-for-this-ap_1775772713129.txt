@@ -1,0 +1,121 @@
+Build an IELTS Speaking Practice AI feature for this app.
+
+=====================
+FEATURE NAME: "IELTS Speaking Practice"
+GOAL: Simulate a real IELTS Speaking test (Part 1 → 2 → 3)
+with a different topic every session.
+=====================
+
+──────────────────────
+UI LAYOUT
+──────────────────────
+- Header: "IELTS Speaking Practice" 
+- Topic badge at top (shows current topic name)
+- Part indicator: [Part 1] [Part 2] [Part 3] 
+  with progress bar
+- Chat area: 
+  user bubbles = right (blue)
+  AI examiner bubbles = left (gray)
+- Input box at bottom + Send button
+- "Next Part" button (appears after part is complete)
+- "New Session" button (starts fresh with new topic)
+- Countdown timer (appears in Part 2 preparation)
+
+──────────────────────
+TOPIC ROTATION SYSTEM
+──────────────────────
+Every new session = randomly pick 1 topic.
+Never repeat until all topics are used.
+Track used topics in localStorage.
+
+Topic bank (15 topics):
+Hometown, Daily routine, Food & cooking,
+Sports, Music, Reading, Weather, Shopping,
+Travel, Technology, Friends, Family,
+Work/Study, Mornings, Free time
+
+──────────────────────
+PART 1 - Introduction
+──────────────────────
+- AI asks 5 personal questions about the topic
+- One question at a time
+- Expected answer: 2-4 sentences
+- Example (topic: Music):
+  "Do you like listening to music?"
+  "What kind of music do you enjoy most?"
+  "Did you learn any instrument as a child?"
+
+──────────────────────
+PART 2 - Long Turn
+──────────────────────
+- AI shows a cue card:
+  "Describe a [topic-related thing]
+   You should say:
+   • What it is
+   • When/Where you experienced it
+   • Why it is important to you
+   • How it has affected your life"
+- 60-second countdown timer for preparation
+- Student types their response (1-2 minutes worth)
+- AI responds briefly as examiner
+
+──────────────────────
+PART 3 - Discussion
+──────────────────────
+- AI asks 4 abstract/societal questions
+  linked to the Part 2 topic
+- One question at a time
+- Expected: longer analytical answers
+- Example (topic: Music):
+  "How has technology changed the music industry?"
+  "Should music education be compulsory in schools?"
+
+──────────────────────
+AFTER EACH ANSWER
+──────────────────────
+AI gives instant feedback:
+❌ Grammar mistake → ✅ Correction
+📝 2 better vocabulary suggestions
+⭐ Band estimate for that answer (1-9)
+
+──────────────────────
+FINAL REPORT (after Part 3)
+──────────────────────
+Show full Speaking Report card:
+- Overall Band Score (estimate)
+- Fluency & Coherence: X/9
+- Lexical Resource: X/9
+- Grammatical Range & Accuracy: X/9
+- Pronunciation tips (based on written errors)
+- Top 5 vocabulary improvements for next time
+- "Try Again" button with new topic
+
+──────────────────────
+AI SYSTEM PROMPT
+──────────────────────
+"You are a certified IELTS examiner and speaking coach.
+Conduct a structured IELTS Speaking test in 3 parts.
+Ask ONE question at a time. Wait for the student reply.
+
+After each student answer, respond like this:
+1. One sentence examiner acknowledgment
+2. Feedback section:
+   ❌ [grammar mistake] → ✅ [correction]
+   📝 Better words: [word1], [word2]
+   ⭐ Band estimate: [score]/9
+3. Then ask the next question.
+
+Use professional but encouraging tone.
+Target vocabulary level: B2-C1.
+All questions must match real IELTS Speaking format."
+
+──────────────────────
+TECHNICAL NOTES
+──────────────────────
+- Use Claude API (already in app)
+- Store session state in localStorage:
+  current topic, part number, 
+  used topics list, answer history
+- Match existing app design (teal + white theme)
+- Mobile responsive
+- Works without page reload between parts
