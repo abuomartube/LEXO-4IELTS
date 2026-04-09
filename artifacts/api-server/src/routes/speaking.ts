@@ -249,4 +249,42 @@ router.post("/speaking/transcribe", upload.single("audio"), async (req, res) => 
   }
 });
 
+router.post("/speaking/tts", async (req, res) => {
+  try {
+    const { text } = req.body as { text: string };
+    if (!text?.trim()) {
+      res.status(400).json({ error: "No text provided" });
+      return;
+    }
+
+    const apiKey = process.env.OPENAI_API_KEY;
+    if (!apiKey) {
+      res.status(500).json({ error: "OpenAI API key not configured" });
+      return;
+    }
+
+    const openai = new OpenAI({ apiKey });
+
+    const speech = await openai.audio.speech.create({
+      model: "tts-1-hd",
+      voice: "onyx",
+      input: text.slice(0, 4096),
+      speed: 0.95,
+    });
+
+    res.setHeader("Content-Type", "audio/mpeg");
+    res.setHeader("Cache-Control", "no-cache");
+    const buffer = Buffer.from(await speech.arrayBuffer());
+    res.send(buffer);
+  } catch (err: unknown) {
+    console.error("TTS error:", err);
+    const status = (err as { status?: number })?.status;
+    if (status === 429) {
+      res.status(402).json({ error: "quota_exceeded" });
+    } else {
+      res.status(500).json({ error: "tts_failed" });
+    }
+  }
+});
+
 export default router;

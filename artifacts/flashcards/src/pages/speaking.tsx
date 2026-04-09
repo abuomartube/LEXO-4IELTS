@@ -2,7 +2,8 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { Layout } from "@/components/layout";
 import {
   Mic, MicOff, Send, ChevronRight, RotateCcw, Timer, Trophy,
-  MessageSquare, Loader2, CheckCircle, AlertCircle, BookOpen, Sparkles
+  MessageSquare, Loader2, CheckCircle, AlertCircle, BookOpen, Sparkles,
+  Volume2, VolumeX
 } from "lucide-react";
 
 // ─── Constants ───────────────────────────────────────────────────────────────
@@ -119,6 +120,17 @@ function parseFeedback(text: string): {
     .trim();
 
   return { examinerText, correction, vocab, band };
+}
+
+function stripForTts(text: string): string {
+  return text
+    .replace(/\*\*\[PART[123]_DONE\]\*\*/g, "")
+    .replace(/\*\*(.*?)\*\*/g, "$1")
+    .replace(/\*(.*?)\*/g, "$1")
+    .replace(/^---+$/gm, "")
+    .replace(/^#{1,6}\s/gm, "")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
 }
 
 async function callSpeakingAPIStream(
@@ -488,6 +500,8 @@ export default function SpeakingPage() {
   const [isRecording, setIsRecording] = useState(false);
   const [isTranscribing, setIsTranscribing] = useState(false);
   const [streamingContent, setStreamingContent] = useState<string | null>(null);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const [lastTtsText, setLastTtsText] = useState<string | null>(null);
 
   const chatEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -497,11 +511,77 @@ export default function SpeakingPage() {
   const silenceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const rafRef = useRef<number | null>(null);
   const sendTextRef = useRef<((text: string) => Promise<void>) | null>(null);
+  const ttsAudioRef = useRef<HTMLAudioElement | null>(null);
+  const sessionRef = useRef(session);
+  const startRecordingRef = useRef<(() => Promise<void>) | null>(null);
 
   // Auto-scroll chat
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [session.messages, isLoading]);
+  }, [session.messages, isLoading, streamingContent]);
+
+  // Keep refs in sync
+  useEffect(() => { sessionRef.current = session; }, [session]);
+
+  // ── TTS ──────────────────────────────────────────────────────────────────────
+
+  const stopTts = useCallback(() => {
+    if (ttsAudioRef.current) {
+      ttsAudioRef.current.pause();
+      ttsAudioRef.current.src = "";
+      ttsAudioRef.current = null;
+    }
+    setIsSpeaking(false);
+  }, []);
+
+  const playTts = useCallback(async (text: string) => {
+    if (!text.trim()) return;
+    stopTts();
+    const clean = stripForTts(text);
+    if (!clean) return;
+    setLastTtsText(clean);
+
+    try {
+      const res = await fetch("/api/speaking/tts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: clean }),
+      });
+      if (!res.ok) return;
+
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const audio = new Audio(url);
+      ttsAudioRef.current = audio;
+      setIsSpeaking(true);
+
+      audio.onended = () => {
+        URL.revokeObjectURL(url);
+        ttsAudioRef.current = null;
+        setIsSpeaking(false);
+        // Auto-activate mic if test is still active and part is not done
+        const s = sessionRef.current;
+        if (
+          !s.partDone &&
+          (s.phase === "part1" || s.phase === "part2-answer" || s.phase === "part3")
+        ) {
+          startRecordingRef.current?.();
+        }
+      };
+      audio.onerror = () => {
+        URL.revokeObjectURL(url);
+        ttsAudioRef.current = null;
+        setIsSpeaking(false);
+      };
+      await audio.play();
+    } catch {
+      setIsSpeaking(false);
+    }
+  }, [stopTts]);
+
+  const replayTts = useCallback(() => {
+    if (lastTtsText) playTts(lastTtsText);
+  }, [lastTtsText, playTts]);
 
   const addMessage = useCallback((msg: Message) => {
     setSession((s) => ({ ...s, messages: [...s.messages, msg] }));
@@ -509,10 +589,12 @@ export default function SpeakingPage() {
 
   // ── Start a new session ──
   const startSession = useCallback(async () => {
+    stopTts();
     const topic = pickTopic();
     setError(null);
     setIsLoading(true);
     setStreamingContent("");
+    setLastTtsText(null);
     setSession({
       topic,
       part: 1,
@@ -530,20 +612,22 @@ export default function SpeakingPage() {
         ...s,
         messages: [{ role: "assistant", content: reply }],
       }));
+      const { examinerText } = parseFeedback(reply);
+      playTts(examinerText || reply);
     } catch {
       setStreamingContent(null);
       setError("Could not connect to the AI examiner. Please try again.");
       setSession((s) => ({ ...s, phase: "idle" }));
     } finally {
       setIsLoading(false);
-      setTimeout(() => inputRef.current?.focus(), 100);
     }
-  }, []);
+  }, [stopTts, playTts]);
 
   // ── Core send logic (shared by manual send + auto-send after voice) ──
   const processAnswer = useCallback(async (text: string) => {
     if (!text.trim() || isLoading) return;
 
+    stopTts();
     setInput("");
     setError(null);
 
@@ -576,19 +660,18 @@ export default function SpeakingPage() {
         messages: [...newMessages, { role: "assistant", content: reply }],
         partDone: partDoneNow,
       }));
+      const { examinerText } = parseFeedback(reply);
+      playTts(examinerText || reply);
     } catch {
       setStreamingContent(null);
       setError("Failed to get AI response. Please try again.");
     } finally {
       setIsLoading(false);
-      setTimeout(() => inputRef.current?.focus(), 100);
     }
-  }, [isLoading, session]);
+  }, [isLoading, session, stopTts, playTts]);
 
-  // Keep a ref to processAnswer so recording closure can always call the latest version
-  useEffect(() => {
-    sendTextRef.current = processAnswer;
-  }, [processAnswer]);
+  // Keep refs in sync for use inside closures
+  useEffect(() => { sendTextRef.current = processAnswer; }, [processAnswer]);
 
   // ── Send a user message (from the text box) ──
   const sendMessage = useCallback(async () => {
@@ -633,15 +716,16 @@ export default function SpeakingPage() {
           ...s,
           messages: [...s.messages, { role: "assistant", content: reply }],
         }));
+        const { examinerText } = parseFeedback(reply);
+        playTts(examinerText || reply);
       } catch {
         setStreamingContent(null);
         setError("Failed to start Part 3. Please try again.");
       } finally {
         setIsLoading(false);
-        setTimeout(() => inputRef.current?.focus(), 100);
       }
     }
-  }, [session]);
+  }, [session, playTts]);
 
   // ── Timer ends for Part 2 prep ──
   const handleTimerEnd = useCallback(() => {
@@ -666,8 +750,20 @@ export default function SpeakingPage() {
     }
   }, [session.messages, session.topic]);
 
+  // ── Voice recording with silence detection + auto-send ──
+  const stopRecording = useCallback(() => {
+    if (rafRef.current) { cancelAnimationFrame(rafRef.current); rafRef.current = null; }
+    if (silenceTimerRef.current) { clearTimeout(silenceTimerRef.current); silenceTimerRef.current = null; }
+    if (audioCtxRef.current) { audioCtxRef.current.close(); audioCtxRef.current = null; }
+    mediaRecorderRef.current?.stop();
+    mediaRecorderRef.current = null;
+    setIsRecording(false);
+  }, []);
+
   // ── New session ──
   const newSession = useCallback(() => {
+    stopTts();
+    stopRecording();
     setSession({
       topic: "",
       part: 1,
@@ -679,17 +775,8 @@ export default function SpeakingPage() {
     });
     setInput("");
     setError(null);
-  }, []);
-
-  // ── Voice recording with silence detection + auto-send ──
-  const stopRecording = useCallback(() => {
-    if (rafRef.current) { cancelAnimationFrame(rafRef.current); rafRef.current = null; }
-    if (silenceTimerRef.current) { clearTimeout(silenceTimerRef.current); silenceTimerRef.current = null; }
-    if (audioCtxRef.current) { audioCtxRef.current.close(); audioCtxRef.current = null; }
-    mediaRecorderRef.current?.stop();
-    mediaRecorderRef.current = null;
-    setIsRecording(false);
-  }, []);
+    setLastTtsText(null);
+  }, [stopTts, stopRecording]);
 
   const startRecording = useCallback(async () => {
     try {
@@ -768,10 +855,17 @@ export default function SpeakingPage() {
     }
   }, [stopRecording]);
 
+  // Sync ref so TTS.onended can start a new recording
+  useEffect(() => { startRecordingRef.current = startRecording; }, [startRecording]);
+
   const toggleRecording = useCallback(() => {
-    if (isRecording) stopRecording();
-    else startRecording();
-  }, [isRecording, startRecording, stopRecording]);
+    if (isRecording) {
+      stopRecording();
+    } else {
+      stopTts(); // user taps mic = interrupt examiner
+      startRecording();
+    }
+  }, [isRecording, startRecording, stopRecording, stopTts]);
 
   // ── Keyboard submit ──
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -783,6 +877,7 @@ export default function SpeakingPage() {
 
   const inputDisabled =
     isLoading ||
+    isSpeaking ||
     session.phase === "idle" ||
     session.phase === "part2-prep" ||
     session.phase === "report-loading" ||
@@ -953,8 +1048,15 @@ export default function SpeakingPage() {
             {/* Input area */}
             {!showNextPartBtn && !showViewReportBtn && (
               <div className="shrink-0 mt-3 space-y-2">
+                {/* TTS speaking indicator */}
+                {isSpeaking && (
+                  <div className="flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium bg-primary/10 border border-primary/30 text-primary">
+                    <Volume2 className="w-4 h-4 shrink-0 animate-pulse" />
+                    Examiner is speaking… tap the speaker icon to interrupt and respond
+                  </div>
+                )}
                 {/* Recording indicator */}
-                {(isRecording || isTranscribing) && (
+                {!isSpeaking && (isRecording || isTranscribing) && (
                   <div className={`flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium ${
                     isTranscribing
                       ? "bg-sky-50 dark:bg-sky-950/20 border border-sky-200 dark:border-sky-800 text-sky-700 dark:text-sky-300"
@@ -978,6 +1080,8 @@ export default function SpeakingPage() {
                       placeholder={
                         session.phase === "part2-prep"
                           ? "Waiting for preparation time to end…"
+                          : isSpeaking
+                          ? "Examiner is speaking… tap speaker to interrupt"
                           : isRecording
                           ? "Recording your voice…"
                           : "Type your answer or tap 🎤 to speak…"
@@ -986,19 +1090,43 @@ export default function SpeakingPage() {
                       className="w-full px-4 py-3 text-sm bg-transparent text-foreground placeholder:text-muted-foreground resize-none focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
                     />
                   </div>
-                  {/* Mic button */}
+                  {/* Mic button — tap to interrupt examiner */}
                   <button
-                    onClick={toggleRecording}
-                    disabled={inputDisabled || isTranscribing}
-                    title={isRecording ? "Stop recording" : "Record voice answer"}
+                    onClick={isSpeaking ? stopTts : toggleRecording}
+                    disabled={isLoading && !isSpeaking || isTranscribing || (inputDisabled && !isSpeaking)}
+                    title={
+                      isSpeaking
+                        ? "Tap to interrupt examiner"
+                        : isRecording
+                        ? "Stop recording"
+                        : "Record voice answer"
+                    }
                     className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all shrink-0 shadow-sm disabled:opacity-40 disabled:cursor-not-allowed ${
-                      isRecording
+                      isSpeaking
+                        ? "bg-primary/20 text-primary border border-primary/40 animate-pulse"
+                        : isRecording
                         ? "bg-red-500 text-white hover:bg-red-600 animate-pulse"
                         : "bg-muted text-muted-foreground hover:bg-accent hover:text-foreground border border-border"
                     }`}
                   >
-                    {isRecording ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
+                    {isSpeaking ? (
+                      <VolumeX className="w-5 h-5" />
+                    ) : isRecording ? (
+                      <MicOff className="w-5 h-5" />
+                    ) : (
+                      <Mic className="w-5 h-5" />
+                    )}
                   </button>
+                  {/* Replay TTS button */}
+                  {lastTtsText && !isRecording && !isSpeaking && !isLoading && (
+                    <button
+                      onClick={replayTts}
+                      title="Replay examiner's last message"
+                      className="w-12 h-12 rounded-2xl bg-muted text-muted-foreground hover:bg-accent hover:text-foreground border border-border flex items-center justify-center transition-all shrink-0 shadow-sm"
+                    >
+                      <Volume2 className="w-5 h-5" />
+                    </button>
+                  )}
                   {/* Send button */}
                   <button
                     onClick={sendMessage}
