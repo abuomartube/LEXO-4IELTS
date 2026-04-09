@@ -8,7 +8,7 @@ import {
   BookOpen, Trophy, Zap, Target,
   Volume2, Globe, Layers, Award, ExternalLink,
   Flame, Star, HelpCircle, Sparkles, MessageCircle,
-  FileText, ArrowLeftRight
+  FileText, ArrowLeftRight, BookMarked
 } from "lucide-react";
 import { Layout } from "@/components/layout";
 
@@ -274,6 +274,9 @@ export default function Home() {
                   </Button>
                   <Button asChild variant="outline" className="rounded-full border-violet-300 text-violet-700 dark:text-violet-400 hover:bg-violet-50 dark:hover:bg-violet-900/20">
                     <Link href="/essay-checker"><FileText className="w-4 h-4 mr-2" />Essay Checker</Link>
+                  </Button>
+                  <Button asChild variant="outline" className="rounded-full border-teal-300 text-teal-700 dark:text-teal-400 hover:bg-teal-50 dark:hover:bg-teal-900/20">
+                    <Link href="/stories"><BookMarked className="w-4 h-4 mr-2" />Short Stories</Link>
                   </Button>
                 </div>
               </div>

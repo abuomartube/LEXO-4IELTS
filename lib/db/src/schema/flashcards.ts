@@ -61,3 +61,16 @@ export const accessRequestsTable = pgTable("access_requests", {
   reviewedAt: timestamp("reviewed_at", { withTimezone: true }),
   expiresAt: timestamp("expires_at", { withTimezone: true }),
 });
+
+export const storiesTable = pgTable("stories", {
+  id: serial("id").primaryKey(),
+  title: text("title").notNull(),
+  titleArabic: text("title_arabic").notNull(),
+  content: text("content").notNull(),
+  contentArabic: text("content_arabic").notNull(),
+  level: text("level").notNull(),
+  orderIndex: integer("order_index").notNull().default(0),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export type Story = typeof storiesTable.$inferSelect;
