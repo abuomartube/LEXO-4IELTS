@@ -236,9 +236,16 @@ router.post("/speaking/transcribe", upload.single("audio"), async (req, res) => 
     });
 
     res.json({ text: transcription.text });
-  } catch (err) {
+  } catch (err: unknown) {
     console.error("Transcription error:", err);
-    res.status(500).json({ error: "Failed to transcribe audio" });
+    const status = (err as { status?: number })?.status;
+    if (status === 429) {
+      res.status(402).json({ error: "quota_exceeded", message: "OpenAI account has no billing credits. Please add a payment method at platform.openai.com." });
+    } else if (status === 401) {
+      res.status(401).json({ error: "invalid_key", message: "OpenAI API key is invalid." });
+    } else {
+      res.status(500).json({ error: "transcription_failed", message: "Failed to transcribe audio" });
+    }
   }
 });
 

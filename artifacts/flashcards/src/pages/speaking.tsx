@@ -741,8 +741,15 @@ export default function SpeakingPage() {
           const formData = new FormData();
           formData.append("audio", blob, "recording.webm");
           const res = await fetch("/api/speaking/transcribe", { method: "POST", body: formData });
-          if (!res.ok) throw new Error("Transcription failed");
           const data = await res.json();
+          if (!res.ok) {
+            if (data.error === "quota_exceeded") {
+              setError("⚠️ OpenAI account has no credits. Please add billing at platform.openai.com to use voice input.");
+            } else {
+              setError(data.message || "Voice transcription failed. Please type your answer instead.");
+            }
+            return;
+          }
           if (data.text?.trim()) {
             // Auto-send immediately — no typing needed
             sendTextRef.current?.(data.text.trim());
