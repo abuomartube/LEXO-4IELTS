@@ -1,0 +1,86 @@
+ممتاز! 🎉
+الحين أرسل هذا الـ Prompt كامل لـ Replit Agent:
+
+Now add the IELTS Speaking Practice feature 
+to this app using the OPENAI_API_KEY secret.
+
+──────────────────────
+FEATURE: IELTS Speaking Practice
+──────────────────────
+
+VOICE INPUT:
+- Add a microphone button 🎤
+- Use Whisper API (OpenAI) to convert 
+  student voice to text
+- Endpoint: /v1/audio/transcriptions
+- Model: whisper-1
+- Auto-send after transcription
+- No manual typing needed
+
+SPEED (CRITICAL):
+- Stream Claude API response word by word
+- First word must appear within 1 second
+- Show "..." while processing
+- Never show loading spinner
+
+──────────────────────
+IELTS TEST STRUCTURE
+──────────────────────
+
+PART 1 - 5 personal questions
+PART 2 - Cue card + 60 sec timer
+PART 3 - 4 abstract questions
+
+TOPIC ROTATION:
+- Random topic every session
+- Track used topics in localStorage
+- 15 topics: Hometown, Daily routine, 
+  Food, Sports, Music, Reading, Weather, 
+  Shopping, Travel, Technology, Friends, 
+  Family, Work/Study, Mornings, Free time
+
+──────────────────────
+AFTER EACH ANSWER
+──────────────────────
+❌ Grammar mistake → ✅ Correction
+📝 2 better vocabulary words
+⭐ Band score estimate (1-9)
+
+──────────────────────
+FINAL REPORT
+──────────────────────
+- Overall Band Score
+- Fluency & Coherence: X/9
+- Lexical Resource: X/9
+- Grammatical Range: X/9
+- Top 5 vocabulary improvements
+
+──────────────────────
+AI SYSTEM PROMPT
+──────────────────────
+"You are a certified IELTS examiner. 
+Conduct a real IELTS Speaking test.
+Ask ONE question at a time.
+After each answer:
+1. Brief examiner acknowledgment
+2. ❌ mistake → ✅ correction
+3. 📝 Better words: word1, word2
+4. ⭐ Band estimate: X/9
+Then ask the next question.
+Tone: professional but encouraging.
+Target level: B2-C1."
+
+──────────────────────
+UI
+──────────────────────
+- Match existing teal/white theme
+- Large 🎤 button (mobile friendly)
+- Red pulse animation while recording
+- Auto-stop after 3 seconds silence
+- Part indicator with progress bar
+- Topic badge at top
+- Chat bubbles (user=right, AI=left)
+- New Session button
+
+
+أرسله وانتظر! 🚀​​​​​​​​​​​​​​​​

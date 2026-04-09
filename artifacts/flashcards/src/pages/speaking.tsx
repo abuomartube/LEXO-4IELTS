@@ -121,12 +121,13 @@ function parseFeedback(text: string): {
   return { examinerText, correction, vocab, band };
 }
 
-async function callSpeakingAPI(
+async function callSpeakingAPIStream(
   messages: Message[],
   topic: string,
   part: number,
   questionNum: number,
   isStart: boolean,
+  onChunk: (text: string) => void,
 ): Promise<string> {
   const res = await fetch("/api/speaking/message", {
     method: "POST",
@@ -134,8 +135,30 @@ async function callSpeakingAPI(
     body: JSON.stringify({ messages, topic, part, questionNum, isStart }),
   });
   if (!res.ok) throw new Error("API error");
-  const data = await res.json();
-  return data.reply as string;
+
+  const reader = res.body!.getReader();
+  const decoder = new TextDecoder();
+  let fullText = "";
+  let buffer = "";
+
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    buffer += decoder.decode(value, { stream: true });
+    const lines = buffer.split("\n");
+    buffer = lines.pop() ?? "";
+    for (const line of lines) {
+      if (!line.startsWith("data: ")) continue;
+      const payload = line.slice(6).trim();
+      if (payload === "[DONE]" || payload === "[ERROR]") continue;
+      try {
+        const { delta } = JSON.parse(payload) as { delta: string };
+        fullText += delta;
+        onChunk(fullText);
+      } catch { /* ignore malformed chunks */ }
+    }
+  }
+  return fullText;
 }
 
 async function callReportAPI(messages: Message[], topic: string): Promise<ReportData> {
@@ -464,11 +487,16 @@ export default function SpeakingPage() {
   const [error, setError] = useState<string | null>(null);
   const [isRecording, setIsRecording] = useState(false);
   const [isTranscribing, setIsTranscribing] = useState(false);
+  const [streamingContent, setStreamingContent] = useState<string | null>(null);
 
   const chatEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
+  const audioCtxRef = useRef<AudioContext | null>(null);
+  const silenceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const rafRef = useRef<number | null>(null);
+  const sendTextRef = useRef<((text: string) => Promise<void>) | null>(null);
 
   // Auto-scroll chat
   useEffect(() => {
@@ -484,6 +512,7 @@ export default function SpeakingPage() {
     const topic = pickTopic();
     setError(null);
     setIsLoading(true);
+    setStreamingContent("");
     setSession({
       topic,
       part: 1,
@@ -495,12 +524,14 @@ export default function SpeakingPage() {
     });
 
     try {
-      const reply = await callSpeakingAPI([], topic, 1, 1, true);
+      const reply = await callSpeakingAPIStream([], topic, 1, 1, true, setStreamingContent);
+      setStreamingContent(null);
       setSession((s) => ({
         ...s,
         messages: [{ role: "assistant", content: reply }],
       }));
     } catch {
+      setStreamingContent(null);
       setError("Could not connect to the AI examiner. Please try again.");
       setSession((s) => ({ ...s, phase: "idle" }));
     } finally {
@@ -509,11 +540,10 @@ export default function SpeakingPage() {
     }
   }, []);
 
-  // ── Send a user message ──
-  const sendMessage = useCallback(async () => {
-    if (!input.trim() || isLoading) return;
+  // ── Core send logic (shared by manual send + auto-send after voice) ──
+  const processAnswer = useCallback(async (text: string) => {
+    if (!text.trim() || isLoading) return;
 
-    const text = input.trim();
     setInput("");
     setError(null);
 
@@ -529,28 +559,42 @@ export default function SpeakingPage() {
       answeredCount: newAnsweredCount,
     }));
     setIsLoading(true);
+    setStreamingContent("");
 
     try {
-      const reply = await callSpeakingAPI(
+      const reply = await callSpeakingAPIStream(
         newMessages,
         session.topic,
         session.part,
         newAnsweredCount + 1,
         false,
+        setStreamingContent,
       );
-
+      setStreamingContent(null);
       setSession((s) => ({
         ...s,
         messages: [...newMessages, { role: "assistant", content: reply }],
         partDone: partDoneNow,
       }));
     } catch {
+      setStreamingContent(null);
       setError("Failed to get AI response. Please try again.");
     } finally {
       setIsLoading(false);
       setTimeout(() => inputRef.current?.focus(), 100);
     }
-  }, [input, isLoading, session]);
+  }, [isLoading, session]);
+
+  // Keep a ref to processAnswer so recording closure can always call the latest version
+  useEffect(() => {
+    sendTextRef.current = processAnswer;
+  }, [processAnswer]);
+
+  // ── Send a user message (from the text box) ──
+  const sendMessage = useCallback(async () => {
+    if (!input.trim() || isLoading) return;
+    await processAnswer(input.trim());
+  }, [input, isLoading, processAnswer]);
 
   // ── Move to next part ──
   const nextPart = useCallback(async () => {
@@ -573,6 +617,7 @@ export default function SpeakingPage() {
       // → Part 3: call API for opening + Q1
       setError(null);
       setIsLoading(true);
+      setStreamingContent("");
       setSession((s) => ({
         ...s,
         part: 3,
@@ -582,12 +627,14 @@ export default function SpeakingPage() {
       }));
 
       try {
-        const reply = await callSpeakingAPI(session.messages, session.topic, 3, 1, true);
+        const reply = await callSpeakingAPIStream(session.messages, session.topic, 3, 1, true, setStreamingContent);
+        setStreamingContent(null);
         setSession((s) => ({
           ...s,
           messages: [...s.messages, { role: "assistant", content: reply }],
         }));
       } catch {
+        setStreamingContent(null);
         setError("Failed to start Part 3. Please try again.");
       } finally {
         setIsLoading(false);
@@ -634,11 +681,53 @@ export default function SpeakingPage() {
     setError(null);
   }, []);
 
-  // ── Voice recording ──
+  // ── Voice recording with silence detection + auto-send ──
+  const stopRecording = useCallback(() => {
+    if (rafRef.current) { cancelAnimationFrame(rafRef.current); rafRef.current = null; }
+    if (silenceTimerRef.current) { clearTimeout(silenceTimerRef.current); silenceTimerRef.current = null; }
+    if (audioCtxRef.current) { audioCtxRef.current.close(); audioCtxRef.current = null; }
+    mediaRecorderRef.current?.stop();
+    mediaRecorderRef.current = null;
+    setIsRecording(false);
+  }, []);
+
   const startRecording = useCallback(async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       audioChunksRef.current = [];
+
+      // ── Silence detection via Web Audio API ──
+      const audioCtx = new AudioContext();
+      audioCtxRef.current = audioCtx;
+      const analyser = audioCtx.createAnalyser();
+      analyser.fftSize = 2048;
+      const source = audioCtx.createMediaStreamSource(stream);
+      source.connect(analyser);
+
+      const dataBuffer = new Float32Array(analyser.fftSize);
+      let speechStarted = false;
+      let silenceStart: number | null = null;
+      const SILENCE_THRESHOLD = 0.012;
+      const SILENCE_DURATION = 3000;
+
+      const checkSilence = () => {
+        analyser.getFloatTimeDomainData(dataBuffer);
+        const rms = Math.sqrt(dataBuffer.reduce((sum, v) => sum + v * v, 0) / dataBuffer.length);
+
+        if (rms >= SILENCE_THRESHOLD) {
+          speechStarted = true;
+          silenceStart = null;
+        } else if (speechStarted) {
+          if (!silenceStart) silenceStart = Date.now();
+          else if (Date.now() - silenceStart >= SILENCE_DURATION) {
+            stopRecording();
+            return;
+          }
+        }
+        rafRef.current = requestAnimationFrame(checkSilence);
+      };
+      rafRef.current = requestAnimationFrame(checkSilence);
+
       const recorder = new MediaRecorder(stream);
       recorder.ondataavailable = (e) => {
         if (e.data.size > 0) audioChunksRef.current.push(e.data);
@@ -646,6 +735,7 @@ export default function SpeakingPage() {
       recorder.onstop = async () => {
         stream.getTracks().forEach((t) => t.stop());
         const blob = new Blob(audioChunksRef.current, { type: recorder.mimeType || "audio/webm" });
+        if (blob.size < 1000) return; // too short — ignore
         setIsTranscribing(true);
         try {
           const formData = new FormData();
@@ -653,14 +743,14 @@ export default function SpeakingPage() {
           const res = await fetch("/api/speaking/transcribe", { method: "POST", body: formData });
           if (!res.ok) throw new Error("Transcription failed");
           const data = await res.json();
-          if (data.text) {
-            setInput((prev) => prev ? prev + " " + data.text : data.text);
+          if (data.text?.trim()) {
+            // Auto-send immediately — no typing needed
+            sendTextRef.current?.(data.text.trim());
           }
         } catch {
           setError("Voice transcription failed. Please type your answer instead.");
         } finally {
           setIsTranscribing(false);
-          setTimeout(() => inputRef.current?.focus(), 100);
         }
       };
       mediaRecorderRef.current = recorder;
@@ -669,13 +759,7 @@ export default function SpeakingPage() {
     } catch {
       setError("Microphone access denied. Please allow microphone access and try again.");
     }
-  }, [inputDisabled]);
-
-  const stopRecording = useCallback(() => {
-    mediaRecorderRef.current?.stop();
-    mediaRecorderRef.current = null;
-    setIsRecording(false);
-  }, []);
+  }, [stopRecording]);
 
   const toggleRecording = useCallback(() => {
     if (isRecording) stopRecording();
@@ -811,21 +895,8 @@ export default function SpeakingPage() {
                 )
               )}
 
-              {isLoading && (
-                <div className="flex gap-3">
-                  <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0">
-                    <Mic className="w-4 h-4 text-primary-foreground" />
-                  </div>
-                  <div className="bg-card border border-border rounded-2xl rounded-tl-sm px-4 py-3 flex items-center gap-1.5">
-                    {[0, 1, 2].map((i) => (
-                      <span
-                        key={i}
-                        className="w-2 h-2 bg-muted-foreground/40 rounded-full animate-bounce"
-                        style={{ animationDelay: `${i * 150}ms` }}
-                      />
-                    ))}
-                  </div>
-                </div>
+              {streamingContent !== null && (
+                <AIChatBubble content={streamingContent || "…"} />
               )}
               <div ref={chatEndRef} />
             </div>
@@ -883,9 +954,9 @@ export default function SpeakingPage() {
                       : "bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400"
                   }`}>
                     {isTranscribing ? (
-                      <><Loader2 className="w-4 h-4 animate-spin shrink-0" /> Converting voice to text…</>
+                      <><Loader2 className="w-4 h-4 animate-spin shrink-0" /> Converting voice to text — sending automatically…</>
                     ) : (
-                      <><span className="w-2 h-2 rounded-full bg-red-500 animate-pulse shrink-0" /> Recording… Tap the mic to stop</>
+                      <><span className="w-2 h-2 rounded-full bg-red-500 animate-pulse shrink-0" /> Recording… auto-stops after 3 seconds of silence</>
                     )}
                   </div>
                 )}
@@ -941,13 +1012,15 @@ export default function SpeakingPage() {
             )}
 
             {/* Hint */}
-            {session.phase !== "part2-prep" && !session.partDone && !isLoading && session.messages.length > 0 && (
+            {session.phase !== "part2-prep" && !session.partDone && !isLoading && streamingContent === null && session.messages.length > 0 && (
               <div className="shrink-0 flex items-center justify-between text-xs text-muted-foreground mt-1 px-1">
                 <span className="flex items-center gap-1">
                   <MessageSquare className="w-3 h-3" />
                   Part {session.part} · {session.answeredCount}/{PART_LIMITS[session.part]} answered
                 </span>
-                <span>Shift+Enter for new line</span>
+                <span className="flex items-center gap-1">
+                  <Mic className="w-3 h-3" /> tap to speak · or type + Enter
+                </span>
               </div>
             )}
           </>

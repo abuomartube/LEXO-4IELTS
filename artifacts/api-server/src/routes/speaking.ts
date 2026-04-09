@@ -116,26 +116,42 @@ router.post("/speaking/message", async (req, res) => {
     const systemPrompt = buildSystemPrompt(topic, part, questionNum, isStart ?? false);
     const anthropic = getAnthropicClient();
 
-    // Use last 20 messages max to stay within token limits
     let contextMessages = messages.slice(-20);
-
-    // Anthropic requires at least one message
     if (contextMessages.length === 0) {
       contextMessages = [{ role: "user", content: "Please begin." }];
     }
 
-    const message = await anthropic.messages.create({
+    res.setHeader("Content-Type", "text/event-stream");
+    res.setHeader("Cache-Control", "no-cache");
+    res.setHeader("Connection", "keep-alive");
+    res.flushHeaders();
+
+    const stream = anthropic.messages.stream({
       model: "claude-sonnet-4-6",
       max_tokens: 700,
       system: systemPrompt,
       messages: contextMessages,
     });
 
-    const reply = message.content[0].type === "text" ? message.content[0].text : "";
-    res.json({ reply });
+    for await (const event of stream) {
+      if (
+        event.type === "content_block_delta" &&
+        event.delta.type === "text_delta"
+      ) {
+        res.write(`data: ${JSON.stringify({ delta: event.delta.text })}\n\n`);
+      }
+    }
+
+    res.write("data: [DONE]\n\n");
+    res.end();
   } catch (err) {
     console.error("Speaking message error:", err);
-    res.status(500).json({ error: "Failed to get AI response" });
+    if (!res.headersSent) {
+      res.status(500).json({ error: "Failed to get AI response" });
+    } else {
+      res.write("data: [ERROR]\n\n");
+      res.end();
+    }
   }
 });
 
