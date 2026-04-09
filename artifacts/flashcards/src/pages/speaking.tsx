@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Layout } from "@/components/layout";
 import {
-  Mic, Send, ChevronRight, RotateCcw, Timer, Trophy,
+  Mic, MicOff, Send, ChevronRight, RotateCcw, Timer, Trophy,
   MessageSquare, Loader2, CheckCircle, AlertCircle, BookOpen, Sparkles
 } from "lucide-react";
 
@@ -462,9 +462,13 @@ export default function SpeakingPage() {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isRecording, setIsRecording] = useState(false);
+  const [isTranscribing, setIsTranscribing] = useState(false);
 
   const chatEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const audioChunksRef = useRef<Blob[]>([]);
 
   // Auto-scroll chat
   useEffect(() => {
@@ -629,6 +633,54 @@ export default function SpeakingPage() {
     setInput("");
     setError(null);
   }, []);
+
+  // ── Voice recording ──
+  const startRecording = useCallback(async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      audioChunksRef.current = [];
+      const recorder = new MediaRecorder(stream);
+      recorder.ondataavailable = (e) => {
+        if (e.data.size > 0) audioChunksRef.current.push(e.data);
+      };
+      recorder.onstop = async () => {
+        stream.getTracks().forEach((t) => t.stop());
+        const blob = new Blob(audioChunksRef.current, { type: recorder.mimeType || "audio/webm" });
+        setIsTranscribing(true);
+        try {
+          const formData = new FormData();
+          formData.append("audio", blob, "recording.webm");
+          const res = await fetch("/api/speaking/transcribe", { method: "POST", body: formData });
+          if (!res.ok) throw new Error("Transcription failed");
+          const data = await res.json();
+          if (data.text) {
+            setInput((prev) => prev ? prev + " " + data.text : data.text);
+          }
+        } catch {
+          setError("Voice transcription failed. Please type your answer instead.");
+        } finally {
+          setIsTranscribing(false);
+          setTimeout(() => inputRef.current?.focus(), 100);
+        }
+      };
+      mediaRecorderRef.current = recorder;
+      recorder.start();
+      setIsRecording(true);
+    } catch {
+      setError("Microphone access denied. Please allow microphone access and try again.");
+    }
+  }, [inputDisabled]);
+
+  const stopRecording = useCallback(() => {
+    mediaRecorderRef.current?.stop();
+    mediaRecorderRef.current = null;
+    setIsRecording(false);
+  }, []);
+
+  const toggleRecording = useCallback(() => {
+    if (isRecording) stopRecording();
+    else startRecording();
+  }, [isRecording, startRecording, stopRecording]);
 
   // ── Keyboard submit ──
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -822,30 +874,62 @@ export default function SpeakingPage() {
 
             {/* Input area */}
             {!showNextPartBtn && !showViewReportBtn && (
-              <div className="shrink-0 mt-3 flex gap-2 items-end">
-                <div className="flex-1 bg-card border border-border rounded-2xl overflow-hidden focus-within:border-primary transition-colors">
-                  <textarea
-                    ref={inputRef}
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    onKeyDown={handleKeyDown}
-                    disabled={inputDisabled}
-                    placeholder={
-                      session.phase === "part2-prep"
-                        ? "Waiting for preparation time to end…"
-                        : "Type your answer here… (Enter to send)"
-                    }
-                    rows={3}
-                    className="w-full px-4 py-3 text-sm bg-transparent text-foreground placeholder:text-muted-foreground resize-none focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
-                  />
+              <div className="shrink-0 mt-3 space-y-2">
+                {/* Recording indicator */}
+                {(isRecording || isTranscribing) && (
+                  <div className={`flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium ${
+                    isTranscribing
+                      ? "bg-sky-50 dark:bg-sky-950/20 border border-sky-200 dark:border-sky-800 text-sky-700 dark:text-sky-300"
+                      : "bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400"
+                  }`}>
+                    {isTranscribing ? (
+                      <><Loader2 className="w-4 h-4 animate-spin shrink-0" /> Converting voice to text…</>
+                    ) : (
+                      <><span className="w-2 h-2 rounded-full bg-red-500 animate-pulse shrink-0" /> Recording… Tap the mic to stop</>
+                    )}
+                  </div>
+                )}
+                <div className="flex gap-2 items-end">
+                  <div className="flex-1 bg-card border border-border rounded-2xl overflow-hidden focus-within:border-primary transition-colors">
+                    <textarea
+                      ref={inputRef}
+                      value={input}
+                      onChange={(e) => setInput(e.target.value)}
+                      onKeyDown={handleKeyDown}
+                      disabled={inputDisabled || isTranscribing}
+                      placeholder={
+                        session.phase === "part2-prep"
+                          ? "Waiting for preparation time to end…"
+                          : isRecording
+                          ? "Recording your voice…"
+                          : "Type your answer or tap 🎤 to speak…"
+                      }
+                      rows={3}
+                      className="w-full px-4 py-3 text-sm bg-transparent text-foreground placeholder:text-muted-foreground resize-none focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
+                    />
+                  </div>
+                  {/* Mic button */}
+                  <button
+                    onClick={toggleRecording}
+                    disabled={inputDisabled || isTranscribing}
+                    title={isRecording ? "Stop recording" : "Record voice answer"}
+                    className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all shrink-0 shadow-sm disabled:opacity-40 disabled:cursor-not-allowed ${
+                      isRecording
+                        ? "bg-red-500 text-white hover:bg-red-600 animate-pulse"
+                        : "bg-muted text-muted-foreground hover:bg-accent hover:text-foreground border border-border"
+                    }`}
+                  >
+                    {isRecording ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
+                  </button>
+                  {/* Send button */}
+                  <button
+                    onClick={sendMessage}
+                    disabled={inputDisabled || !input.trim() || isTranscribing}
+                    className="w-12 h-12 rounded-2xl bg-primary text-primary-foreground flex items-center justify-center hover:bg-primary/90 transition-colors disabled:opacity-40 disabled:cursor-not-allowed shrink-0 shadow-sm"
+                  >
+                    {isLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Send className="w-5 h-5" />}
+                  </button>
                 </div>
-                <button
-                  onClick={sendMessage}
-                  disabled={inputDisabled || !input.trim()}
-                  className="w-12 h-12 rounded-2xl bg-primary text-primary-foreground flex items-center justify-center hover:bg-primary/90 transition-colors disabled:opacity-40 disabled:cursor-not-allowed shrink-0 shadow-sm"
-                >
-                  {isLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Send className="w-5 h-5" />}
-                </button>
               </div>
             )}
 

@@ -1,7 +1,14 @@
 import { Router } from "express";
 import Anthropic from "@anthropic-ai/sdk";
+import OpenAI, { toFile } from "openai";
+import multer from "multer";
 
 const router = Router();
+
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 25 * 1024 * 1024 },
+});
 
 function getAnthropicClient() {
   const apiKey = process.env.AI_INTEGRATIONS_ANTHROPIC_API_KEY;
@@ -180,6 +187,42 @@ Return ONLY a valid JSON object, no markdown, no extra text:
   } catch (err) {
     console.error("Speaking report error:", err);
     res.status(500).json({ error: "Failed to generate report" });
+  }
+});
+
+router.post("/speaking/transcribe", upload.single("audio"), async (req, res) => {
+  try {
+    if (!req.file) {
+      res.status(400).json({ error: "No audio file provided" });
+      return;
+    }
+
+    const apiKey = process.env.OPENAI_API_KEY;
+    if (!apiKey) {
+      res.status(500).json({ error: "OpenAI API key not configured" });
+      return;
+    }
+
+    const openai = new OpenAI({ apiKey });
+
+    const ext = req.file.mimetype.includes("webm") ? "webm"
+      : req.file.mimetype.includes("ogg") ? "ogg"
+      : req.file.mimetype.includes("mp4") ? "mp4"
+      : req.file.mimetype.includes("wav") ? "wav"
+      : "webm";
+
+    const audioFile = await toFile(req.file.buffer, `recording.${ext}`, { type: req.file.mimetype });
+
+    const transcription = await openai.audio.transcriptions.create({
+      file: audioFile,
+      model: "whisper-1",
+      language: "en",
+    });
+
+    res.json({ text: transcription.text });
+  } catch (err) {
+    console.error("Transcription error:", err);
+    res.status(500).json({ error: "Failed to transcribe audio" });
   }
 });
 
