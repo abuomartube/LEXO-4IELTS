@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Layout } from "@/components/layout";
-import { BookOpen, ChevronLeft, Globe, Languages, Loader2, BookMarked } from "lucide-react";
+import { BookOpen, ChevronLeft, EyeOff, Eye, Loader2, BookMarked } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 
 interface Story {
@@ -39,7 +39,7 @@ function LevelBadge({ level }: { level: string }) {
 }
 
 function StoryReader({ story, onBack }: { story: Story; onBack: () => void }) {
-  const [lang, setLang] = useState<"en" | "ar">("en");
+  const [showArabic, setShowArabic] = useState(true);
 
   return (
     <div className="animate-in fade-in duration-300">
@@ -51,70 +51,73 @@ function StoryReader({ story, onBack }: { story: Story; onBack: () => void }) {
         Back to Stories
       </button>
 
-      <div className={`bg-card border-2 rounded-3xl p-6 md:p-8 ${levelBorder[story.level]}`}>
-        <div className="flex items-start justify-between gap-4 mb-6 flex-wrap">
-          <div>
-            <div className="flex items-center gap-2 mb-2">
-              <LevelBadge level={story.level} />
+      <div className={`bg-card border-2 rounded-3xl overflow-hidden ${levelBorder[story.level]}`}>
+        {/* Header */}
+        <div className="p-6 md:p-8 border-b border-border">
+          <div className="flex items-start justify-between gap-4 flex-wrap">
+            <div>
+              <div className="flex items-center gap-2 mb-2">
+                <LevelBadge level={story.level} />
+              </div>
+              <h1 className="text-2xl md:text-3xl font-extrabold text-foreground leading-tight">
+                {story.title}
+              </h1>
+              <p className="text-lg text-muted-foreground mt-1 font-medium" dir="rtl" lang="ar">
+                {story.titleArabic}
+              </p>
             </div>
-            <h1 className="text-2xl md:text-3xl font-extrabold text-foreground leading-tight">
-              {story.title}
-            </h1>
-            <p className="text-lg text-muted-foreground mt-1 font-medium" dir="rtl" lang="ar">
-              {story.titleArabic}
-            </p>
-          </div>
 
-          <div className="flex gap-2 shrink-0">
             <button
-              onClick={() => setLang("en")}
-              className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold transition-colors border ${
-                lang === "en"
-                  ? "bg-primary text-primary-foreground border-primary"
-                  : "border-border text-muted-foreground hover:bg-accent"
+              onClick={() => setShowArabic(!showArabic)}
+              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold border transition-colors shrink-0 ${
+                showArabic
+                  ? "bg-primary/10 border-primary/30 text-primary hover:bg-primary/15"
+                  : "border-border text-muted-foreground hover:bg-accent hover:text-foreground"
               }`}
             >
-              <Globe className="w-3.5 h-3.5" />
-              English
-            </button>
-            <button
-              onClick={() => setLang("ar")}
-              className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold transition-colors border ${
-                lang === "ar"
-                  ? "bg-primary text-primary-foreground border-primary"
-                  : "border-border text-muted-foreground hover:bg-accent"
-              }`}
-            >
-              <Languages className="w-3.5 h-3.5" />
-              العربية
+              {showArabic ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              {showArabic ? "إخفاء العربية" : "إظهار العربية"}
             </button>
           </div>
         </div>
 
-        <div
-          className={`text-base leading-[2] text-foreground whitespace-pre-wrap ${lang === "ar" ? "font-cairo text-right" : ""}`}
-          dir={lang === "ar" ? "rtl" : "ltr"}
-          lang={lang === "ar" ? "ar" : "en"}
-        >
-          {lang === "en" ? story.content : story.contentArabic}
-        </div>
-
-        <div className="mt-8 pt-6 border-t border-border flex justify-center">
-          <button
-            onClick={() => setLang(lang === "en" ? "ar" : "en")}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-full border border-border text-sm font-medium text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
+        {/* English Content */}
+        <div className="p-6 md:p-8">
+          <div className="flex items-center gap-2 mb-4">
+            <div className="w-1 h-5 rounded-full bg-primary" />
+            <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground">English</span>
+          </div>
+          <div
+            className="text-base leading-[2] text-foreground whitespace-pre-wrap"
+            lang="en"
           >
-            <Languages className="w-4 h-4" />
-            {lang === "en" ? "اقرأ بالعربية" : "Read in English"}
-          </button>
+            {story.content}
+          </div>
         </div>
+
+        {/* Arabic Translation */}
+        {showArabic && (
+          <div className="border-t-2 border-dashed border-border bg-muted/30 p-6 md:p-8 animate-in fade-in slide-in-from-top-2 duration-300">
+            <div className="flex items-center justify-end gap-2 mb-4">
+              <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground">الترجمة العربية</span>
+              <div className="w-1 h-5 rounded-full bg-amber-500" />
+            </div>
+            <div
+              className="text-base leading-[2.2] text-foreground whitespace-pre-wrap font-cairo text-right"
+              dir="rtl"
+              lang="ar"
+            >
+              {story.contentArabic}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
 }
 
 function StoryCard({ story, onClick }: { story: Story; onClick: () => void }) {
-  const preview = story.content.slice(0, 120).trim() + "…";
+  const preview = story.content.slice(0, 110).trim() + "…";
 
   return (
     <button
@@ -126,7 +129,7 @@ function StoryCard({ story, onClick }: { story: Story; onClick: () => void }) {
         <BookOpen className="w-4 h-4 text-muted-foreground" />
       </div>
       <h3 className="font-bold text-foreground text-base leading-snug mb-1">{story.title}</h3>
-      <p className="text-xs text-muted-foreground font-medium mb-3" dir="rtl" lang="ar">
+      <p className="text-xs text-muted-foreground font-medium mb-3 font-cairo" dir="rtl" lang="ar">
         {story.titleArabic}
       </p>
       <p className="text-xs text-muted-foreground leading-relaxed">{preview}</p>
@@ -160,10 +163,10 @@ export default function StoriesPage() {
     );
   }
 
-  const levelCounts = stories.reduce<Record<string, number>>((acc, s) => {
-    acc[s.level] = (acc[s.level] ?? 0) + 1;
-    return acc;
-  }, {});
+  const levelCounts: Record<string, number> = {};
+  for (const s of stories) {
+    levelCounts[s.level] = (levelCounts[s.level] ?? 0) + 1;
+  }
 
   return (
     <Layout>
@@ -177,7 +180,7 @@ export default function StoriesPage() {
           <div>
             <h1 className="text-2xl font-extrabold text-foreground">IELTS Short Stories</h1>
             <p className="text-sm text-muted-foreground">
-              Read and practise with stories built from your 3,000-word IELTS vocabulary
+              Read and practise with stories built from your 3,000-word IELTS vocabulary — with Arabic translation
             </p>
           </div>
         </div>
@@ -185,7 +188,9 @@ export default function StoriesPage() {
         {/* Level filter */}
         <div className="flex flex-wrap gap-2 mb-6">
           {LEVELS.map((lvl) => {
-            const count = lvl === "All" ? stories.length : (levelCounts[lvl] ?? 0);
+            const count = lvl === "All"
+              ? stories.length
+              : (levelCounts[lvl] ?? 0);
             const isActive = levelFilter === lvl;
             return (
               <button
