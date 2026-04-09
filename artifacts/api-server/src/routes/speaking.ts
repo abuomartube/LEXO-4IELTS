@@ -102,7 +102,8 @@ router.post("/speaking/message", async (req, res) => {
     };
 
     if (!topic || !part) {
-      return res.status(400).json({ error: "Missing required fields" });
+      res.status(400).json({ error: "Missing required fields" });
+      return;
     }
 
     const systemPrompt = buildSystemPrompt(topic, part, questionNum, isStart ?? false);
@@ -169,7 +170,10 @@ Return ONLY a valid JSON object, no markdown, no extra text:
 
     const text = message.content[0].type === "text" ? message.content[0].text : "{}";
     const jsonMatch = text.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) return res.status(500).json({ error: "Invalid report format" });
+    if (!jsonMatch) {
+      res.status(500).json({ error: "Invalid report format" });
+      return;
+    }
 
     const report = JSON.parse(jsonMatch[0]);
     res.json({ report });
