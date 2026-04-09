@@ -559,14 +559,7 @@ export default function SpeakingPage() {
         URL.revokeObjectURL(url);
         ttsAudioRef.current = null;
         setIsSpeaking(false);
-        // Auto-activate mic if test is still active and part is not done
-        const s = sessionRef.current;
-        if (
-          !s.partDone &&
-          (s.phase === "part1" || s.phase === "part2-answer" || s.phase === "part3")
-        ) {
-          startRecordingRef.current?.();
-        }
+        // No auto-mic — student types or taps mic when ready
       };
       audio.onerror = () => {
         URL.revokeObjectURL(url);
@@ -667,6 +660,7 @@ export default function SpeakingPage() {
       setError("Failed to get AI response. Please try again.");
     } finally {
       setIsLoading(false);
+      setTimeout(() => inputRef.current?.focus(), 100);
     }
   }, [isLoading, session, stopTts, playTts]);
 
@@ -838,8 +832,14 @@ export default function SpeakingPage() {
             return;
           }
           if (data.text?.trim()) {
-            // Auto-send immediately — no typing needed
-            sendTextRef.current?.(data.text.trim());
+            // Put transcribed text in the input box — student edits & sends manually
+            setInput((prev) => prev ? prev + " " + data.text.trim() : data.text.trim());
+            setTimeout(() => {
+              inputRef.current?.focus();
+              // Move cursor to end
+              const el = inputRef.current;
+              if (el) el.setSelectionRange(el.value.length, el.value.length);
+            }, 50);
           }
         } catch {
           setError("Voice transcription failed. Please type your answer instead.");
@@ -877,7 +877,6 @@ export default function SpeakingPage() {
 
   const inputDisabled =
     isLoading ||
-    isSpeaking ||
     session.phase === "idle" ||
     session.phase === "part2-prep" ||
     session.phase === "report-loading" ||
@@ -964,8 +963,11 @@ export default function SpeakingPage() {
               className="flex items-center gap-2 bg-primary text-primary-foreground px-8 py-3.5 rounded-2xl font-bold text-base hover:bg-primary/90 transition-colors shadow-md"
             >
               <Mic className="w-5 h-5" />
-              Start Speaking Test
+              Start Practice
             </button>
+            <p className="text-xs text-muted-foreground max-w-xs">
+              Type your answers or tap the 🎤 mic to speak. You choose when to send each answer.
+            </p>
           </div>
         )}
 
@@ -1052,20 +1054,20 @@ export default function SpeakingPage() {
                 {isSpeaking && (
                   <div className="flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium bg-primary/10 border border-primary/30 text-primary">
                     <Volume2 className="w-4 h-4 shrink-0 animate-pulse" />
-                    Examiner is speaking… tap the speaker icon to interrupt and respond
+                    Examiner is speaking — you can type your answer or tap 🎤 to interrupt and speak
                   </div>
                 )}
-                {/* Recording indicator */}
-                {!isSpeaking && (isRecording || isTranscribing) && (
+                {/* Recording / transcribing indicator */}
+                {(isRecording || isTranscribing) && (
                   <div className={`flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium ${
                     isTranscribing
                       ? "bg-sky-50 dark:bg-sky-950/20 border border-sky-200 dark:border-sky-800 text-sky-700 dark:text-sky-300"
                       : "bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400"
                   }`}>
                     {isTranscribing ? (
-                      <><Loader2 className="w-4 h-4 animate-spin shrink-0" /> Converting voice to text — sending automatically…</>
+                      <><Loader2 className="w-4 h-4 animate-spin shrink-0" /> Converting voice to text — it will appear in the box below for you to edit…</>
                     ) : (
-                      <><span className="w-2 h-2 rounded-full bg-red-500 animate-pulse shrink-0" /> Recording… auto-stops after 3 seconds of silence</>
+                      <><span className="w-2 h-2 rounded-full bg-red-500 animate-pulse shrink-0" /> Recording… tap 🎤 again to stop. Auto-stops after 3 s of silence.</>
                     )}
                   </div>
                 )}
@@ -1080,26 +1082,26 @@ export default function SpeakingPage() {
                       placeholder={
                         session.phase === "part2-prep"
                           ? "Waiting for preparation time to end…"
-                          : isSpeaking
-                          ? "Examiner is speaking… tap speaker to interrupt"
                           : isRecording
-                          ? "Recording your voice…"
-                          : "Type your answer or tap 🎤 to speak…"
+                          ? "Recording… your words will appear here when done"
+                          : isTranscribing
+                          ? "Processing your voice…"
+                          : "Type your answer here, then press Send ↗"
                       }
                       rows={3}
                       className="w-full px-4 py-3 text-sm bg-transparent text-foreground placeholder:text-muted-foreground resize-none focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
                     />
                   </div>
-                  {/* Mic button — tap to interrupt examiner */}
+                  {/* Mic button — tap to interrupt examiner or toggle recording */}
                   <button
                     onClick={isSpeaking ? stopTts : toggleRecording}
-                    disabled={isLoading && !isSpeaking || isTranscribing || (inputDisabled && !isSpeaking)}
+                    disabled={!isSpeaking && (inputDisabled || isTranscribing)}
                     title={
                       isSpeaking
-                        ? "Tap to interrupt examiner"
+                        ? "Tap to stop examiner and respond"
                         : isRecording
-                        ? "Stop recording"
-                        : "Record voice answer"
+                        ? "Tap to stop recording"
+                        : "Tap to record your answer"
                     }
                     className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all shrink-0 shadow-sm disabled:opacity-40 disabled:cursor-not-allowed ${
                       isSpeaking
