@@ -60,8 +60,12 @@ function VoiceReader({ content }: { content: string }) {
 
   const cleanupAudio = useCallback(() => {
     if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current.src = "";
+      const audio = audioRef.current;
+      // Null out handlers BEFORE setting src="" to prevent spurious onerror/onended
+      audio.onended = null;
+      audio.onerror = null;
+      audio.pause();
+      audio.src = "";
       audioRef.current = null;
     }
     if (blobUrlRef.current) {
@@ -78,7 +82,11 @@ function VoiceReader({ content }: { content: string }) {
     setError(null);
 
     if (playerState === "paused" && audioRef.current) {
-      await audioRef.current.play();
+      audioRef.current.play().catch(() => {
+        setPlayerState("idle");
+        setError("Could not resume. Please tap Read Aloud again.");
+        cleanupAudio();
+      });
       setPlayerState("playing");
       return;
     }
@@ -94,7 +102,8 @@ function VoiceReader({ content }: { content: string }) {
       });
 
       if (!res.ok) {
-        throw new Error("Failed to generate audio");
+        const errData = await res.json().catch(() => ({}));
+        throw new Error((errData as { error?: string }).error ?? "tts_failed");
       }
 
       const blob = await res.blob();
@@ -105,21 +114,48 @@ function VoiceReader({ content }: { content: string }) {
       audioRef.current = audio;
 
       audio.onended = () => {
+        // null out handlers so cleanupAudio doesn't double-fire
+        audio.onended = null;
+        audio.onerror = null;
+        if (audioRef.current === audio) {
+          audioRef.current = null;
+        }
+        URL.revokeObjectURL(url);
+        if (blobUrlRef.current === url) blobUrlRef.current = null;
         setPlayerState("idle");
-        cleanupAudio();
       };
 
       audio.onerror = () => {
+        // null out handlers before cleanup
+        audio.onended = null;
+        audio.onerror = null;
+        if (audioRef.current === audio) {
+          audioRef.current = null;
+        }
+        URL.revokeObjectURL(url);
+        if (blobUrlRef.current === url) blobUrlRef.current = null;
         setPlayerState("idle");
         setError("Playback error. Please try again.");
-        cleanupAudio();
       };
 
-      await audio.play();
+      // play() can reject (e.g. browser autoplay policy) — handle separately
+      audio.play().catch(() => {
+        if (audioRef.current === audio) {
+          cleanupAudio();
+        }
+        setPlayerState("idle");
+        setError("Could not start playback. Please try again.");
+      });
+
       setPlayerState("playing");
-    } catch {
+    } catch (err: unknown) {
       setPlayerState("idle");
-      setError("Could not load audio. Please try again.");
+      const msg = err instanceof Error ? err.message : "tts_failed";
+      if (msg === "quota_exceeded") {
+        setError("Audio quota reached. Please try again later.");
+      } else {
+        setError("Could not load audio. Please try again.");
+      }
       cleanupAudio();
     }
   };
