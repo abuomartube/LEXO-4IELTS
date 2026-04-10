@@ -887,6 +887,9 @@ export default function SpeakingPage() {
   const sessionModeRef = useRef<SessionMode | null>(null);
   const isSpeakingRef = useRef(false);
   const lastTtsTextRef = useRef<string | null>(null);
+  const ttsRequestIdRef = useRef(0);
+  const ttsEndResolveRef = useRef<(() => void) | null>(null);
+  const playTtsRef = useRef<((text: string) => Promise<void>) | null>(null);
 
   // Auto-scroll chat
   useEffect(() => {
@@ -919,53 +922,11 @@ export default function SpeakingPage() {
   const setTtsSpeed = useCallback((speed: number) => {
     setTtsSpeedState(speed);
     localStorage.setItem(TTS_SPEED_KEY, String(speed));
-    // FIX 6: If AI is currently speaking, stop and re-play with new speed instantly
+    // If AI is currently speaking, stop and re-play with the new speed via playTts
     if (isSpeakingRef.current && lastTtsTextRef.current) {
       const textToReplay = lastTtsTextRef.current;
-      if (ttsAudioRef.current) {
-        ttsAudioRef.current.pause();
-        ttsAudioRef.current.src = "";
-        ttsAudioRef.current = null;
-      }
-      isSpeakingRef.current = false;
-      // Short delay so state settles, then re-play with new speed
-      setTimeout(async () => {
-        const clean = stripForTts(textToReplay);
-        if (!clean) return;
-        try {
-          const res = await fetch("/api/speaking/tts", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ text: clean, speed }),
-          });
-          if (!res.ok) return;
-          const blob = await res.blob();
-          const url = URL.createObjectURL(blob);
-          const audio = new Audio(url);
-          ttsAudioRef.current = audio;
-          isSpeakingRef.current = true;
-          setIsSpeaking(true);
-          audio.onended = () => {
-            URL.revokeObjectURL(url);
-            ttsAudioRef.current = null;
-            isSpeakingRef.current = false;
-            setIsSpeaking(false);
-            if (sessionModeRef.current === "voice") {
-              const s = sessionRef.current;
-              if (!s.partDone && (s.phase === "part1" || s.phase === "part2-answer" || s.phase === "part3")) {
-                startRecordingRef.current?.();
-              }
-            }
-          };
-          audio.onerror = () => {
-            URL.revokeObjectURL(url);
-            ttsAudioRef.current = null;
-            isSpeakingRef.current = false;
-            setIsSpeaking(false);
-          };
-          await audio.play();
-        } catch { isSpeakingRef.current = false; setIsSpeaking(false); }
-      }, 80);
+      // Small delay so ttsSpeedRef picks up the new value before playTts reads it
+      setTimeout(() => { playTtsRef.current?.(textToReplay); }, 80);
     }
   }, []);
 
@@ -976,6 +937,8 @@ export default function SpeakingPage() {
   // ── TTS ──────────────────────────────────────────────────────────────────────
 
   const stopTts = useCallback(() => {
+    // Invalidate any in-flight TTS fetch so its result is discarded
+    ttsRequestIdRef.current += 1;
     if (ttsAudioRef.current) {
       ttsAudioRef.current.pause();
       ttsAudioRef.current.src = "";
@@ -983,15 +946,25 @@ export default function SpeakingPage() {
     }
     isSpeakingRef.current = false;
     setIsSpeaking(false);
+    // Unblock any caller that is awaiting playTts to finish
+    if (ttsEndResolveRef.current) {
+      ttsEndResolveRef.current();
+      ttsEndResolveRef.current = null;
+    }
   }, []);
 
   const playTts = useCallback(async (text: string) => {
     if (!text.trim()) return;
+    // stopTts() increments ttsRequestIdRef, cancelling any previous in-flight fetch
     stopTts();
     const clean = stripForTts(text);
     if (!clean) return;
     setLastTtsText(clean);
     lastTtsTextRef.current = clean;
+
+    // Capture this call's ID — if a newer call (or stopTts) runs before we
+    // finish fetching, our ID will no longer match and we discard the result.
+    const myId = ++ttsRequestIdRef.current;
 
     try {
       const res = await fetch("/api/speaking/tts", {
@@ -999,35 +972,60 @@ export default function SpeakingPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text: clean, speed: ttsSpeedRef.current }),
       });
+
+      // Bail out if a newer TTS request superseded this one while we were fetching
+      if (myId !== ttsRequestIdRef.current) return;
       if (!res.ok) return;
 
       const blob = await res.blob();
       const url = URL.createObjectURL(blob);
+
+      // Check again after the blob conversion
+      if (myId !== ttsRequestIdRef.current) { URL.revokeObjectURL(url); return; }
+
       const audio = new Audio(url);
       ttsAudioRef.current = audio;
       isSpeakingRef.current = true;
       setIsSpeaking(true);
 
-      audio.onended = () => {
-        URL.revokeObjectURL(url);
-        ttsAudioRef.current = null;
-        isSpeakingRef.current = false;
-        setIsSpeaking(false);
-        // Voice mode: auto-activate mic after examiner finishes speaking
-        if (sessionModeRef.current === "voice") {
-          const s = sessionRef.current;
-          if (!s.partDone && (s.phase === "part1" || s.phase === "part2-answer" || s.phase === "part3")) {
-            startRecordingRef.current?.();
+      // Await until audio actually ENDS (or is stopped/errored).
+      // ttsEndResolveRef lets stopTts() unblock this await cleanly.
+      await new Promise<void>((resolve) => {
+        ttsEndResolveRef.current = resolve;
+
+        audio.onended = () => {
+          URL.revokeObjectURL(url);
+          if (ttsAudioRef.current === audio) ttsAudioRef.current = null;
+          isSpeakingRef.current = false;
+          setIsSpeaking(false);
+          ttsEndResolveRef.current = null;
+          // Voice mode: auto-activate mic only after examiner finishes speaking
+          if (sessionModeRef.current === "voice") {
+            const s = sessionRef.current;
+            if (!s.partDone && (s.phase === "part1" || s.phase === "part2-answer" || s.phase === "part3")) {
+              startRecordingRef.current?.();
+            }
           }
-        }
-      };
-      audio.onerror = () => {
-        URL.revokeObjectURL(url);
-        ttsAudioRef.current = null;
-        isSpeakingRef.current = false;
-        setIsSpeaking(false);
-      };
-      await audio.play();
+          resolve();
+        };
+
+        audio.onerror = () => {
+          URL.revokeObjectURL(url);
+          if (ttsAudioRef.current === audio) ttsAudioRef.current = null;
+          isSpeakingRef.current = false;
+          setIsSpeaking(false);
+          ttsEndResolveRef.current = null;
+          resolve();
+        };
+
+        audio.play().catch(() => {
+          if (ttsAudioRef.current === audio) ttsAudioRef.current = null;
+          isSpeakingRef.current = false;
+          setIsSpeaking(false);
+          ttsEndResolveRef.current = null;
+          resolve();
+        });
+      });
     } catch {
       isSpeakingRef.current = false;
       setIsSpeaking(false);
@@ -1359,6 +1357,8 @@ export default function SpeakingPage() {
 
   // Sync ref so TTS.onended can start a new recording
   useEffect(() => { startRecordingRef.current = startRecording; }, [startRecording]);
+  // Sync ref so setTtsSpeed can call playTts without a circular dependency
+  useEffect(() => { playTtsRef.current = playTts; }, [playTts]);
 
   const toggleRecording = useCallback(() => {
     if (isRecording) {
