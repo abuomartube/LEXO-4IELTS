@@ -635,7 +635,7 @@ export default function EssayChecker() {
         {screen === "intro" && (
           <div
             className="rounded-3xl overflow-hidden"
-            style={{ background: "linear-gradient(160deg, #0D1B3E 0%, #0a2240 60%, #0D1B3E 100%)" }}
+            style={{ background: "linear-gradient(160deg, hsl(177,83%,28%) 0%, hsl(177,83%,32%) 60%, hsl(177,83%,28%) 100%)" }}
           >
             <div className="flex flex-col items-center text-center px-6 pt-10 pb-8 gap-6">
               {/* Logo text */}
