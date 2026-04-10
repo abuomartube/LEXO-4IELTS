@@ -1,6 +1,9 @@
-import { useState } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { Layout } from "@/components/layout";
-import { BookOpen, ChevronLeft, EyeOff, Eye, Loader2, BookMarked } from "lucide-react";
+import {
+  BookOpen, ChevronLeft, EyeOff, Eye, Loader2, BookMarked,
+  Play, Pause, Square, Volume2, Mic,
+} from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 
 interface Story {
@@ -30,11 +33,245 @@ const levelBorder: Record<string, string> = {
   C1: "border-rose-200 dark:border-rose-800",
 };
 
+const SPEEDS = [
+  { label: "Slow", value: 0.75 },
+  { label: "Normal", value: 1.0 },
+  { label: "Fast", value: 1.5 },
+] as const;
+
+type SpeedValue = 0.75 | 1.0 | 1.5;
+
 function LevelBadge({ level }: { level: string }) {
   return (
     <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${levelColors[level] ?? "bg-muted text-muted-foreground"}`}>
       {level}
     </span>
+  );
+}
+
+type PlayerState = "idle" | "loading" | "playing" | "paused";
+
+function VoiceReader({ content }: { content: string }) {
+  const [speed, setSpeed] = useState<SpeedValue>(1.0);
+  const [playerState, setPlayerState] = useState<PlayerState>("idle");
+  const [error, setError] = useState<string | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const blobUrlRef = useRef<string | null>(null);
+
+  const cleanupAudio = useCallback(() => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.src = "";
+      audioRef.current = null;
+    }
+    if (blobUrlRef.current) {
+      URL.revokeObjectURL(blobUrlRef.current);
+      blobUrlRef.current = null;
+    }
+  }, []);
+
+  useEffect(() => {
+    return () => cleanupAudio();
+  }, [cleanupAudio]);
+
+  const handlePlay = async () => {
+    setError(null);
+
+    if (playerState === "paused" && audioRef.current) {
+      await audioRef.current.play();
+      setPlayerState("playing");
+      return;
+    }
+
+    cleanupAudio();
+    setPlayerState("loading");
+
+    try {
+      const res = await fetch("/api/speaking/tts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: content, speed }),
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to generate audio");
+      }
+
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      blobUrlRef.current = url;
+
+      const audio = new Audio(url);
+      audioRef.current = audio;
+
+      audio.onended = () => {
+        setPlayerState("idle");
+        cleanupAudio();
+      };
+
+      audio.onerror = () => {
+        setPlayerState("idle");
+        setError("Playback error. Please try again.");
+        cleanupAudio();
+      };
+
+      await audio.play();
+      setPlayerState("playing");
+    } catch {
+      setPlayerState("idle");
+      setError("Could not load audio. Please try again.");
+      cleanupAudio();
+    }
+  };
+
+  const handlePause = () => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      setPlayerState("paused");
+    }
+  };
+
+  const handleStop = () => {
+    cleanupAudio();
+    setPlayerState("idle");
+    setError(null);
+  };
+
+  const handleSpeedChange = (newSpeed: SpeedValue) => {
+    setSpeed(newSpeed);
+    if (playerState === "playing" || playerState === "paused") {
+      handleStop();
+    }
+  };
+
+  const isActive = playerState === "playing" || playerState === "paused" || playerState === "loading";
+
+  return (
+    <div className={`rounded-2xl border transition-all duration-200 ${
+      isActive
+        ? "bg-primary/5 border-primary/30 shadow-sm"
+        : "bg-muted/40 border-border"
+    } p-4`}>
+
+      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+
+        {/* Churchill label */}
+        <div className="flex items-center gap-2 shrink-0">
+          <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${
+            playerState === "playing"
+              ? "bg-primary animate-pulse"
+              : "bg-primary/15"
+          }`}>
+            <Mic className={`w-4 h-4 ${playerState === "playing" ? "text-primary-foreground" : "text-primary"}`} />
+          </div>
+          <div>
+            <p className="text-xs font-bold text-foreground leading-none">Churchill AI</p>
+            <p className="text-[10px] text-muted-foreground leading-none mt-0.5">British · {speed}x</p>
+          </div>
+        </div>
+
+        {/* Divider */}
+        <div className="hidden sm:block w-px h-8 bg-border shrink-0" />
+
+        {/* Speed selector */}
+        <div className="flex items-center gap-1">
+          <Volume2 className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
+          <div className="flex gap-1">
+            {SPEEDS.map((s) => (
+              <button
+                key={s.label}
+                onClick={() => handleSpeedChange(s.value as SpeedValue)}
+                disabled={playerState === "loading"}
+                className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-colors disabled:opacity-50 ${
+                  speed === s.value
+                    ? "bg-primary text-primary-foreground shadow-sm"
+                    : "bg-background border border-border text-muted-foreground hover:text-foreground hover:border-primary/50"
+                }`}
+              >
+                {s.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Divider */}
+        <div className="hidden sm:block w-px h-8 bg-border shrink-0" />
+
+        {/* Controls */}
+        <div className="flex items-center gap-2 ml-auto">
+          {playerState === "loading" ? (
+            <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-primary/10 text-primary text-sm font-semibold">
+              <Loader2 className="w-4 h-4 animate-spin" />
+              <span>Loading…</span>
+            </div>
+          ) : playerState === "playing" ? (
+            <>
+              <button
+                onClick={handlePause}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-colors shadow-sm"
+              >
+                <Pause className="w-4 h-4" />
+                Pause
+              </button>
+              <button
+                onClick={handleStop}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-xl border border-border text-muted-foreground text-sm font-semibold hover:bg-accent hover:text-foreground transition-colors"
+              >
+                <Square className="w-4 h-4" />
+                Stop
+              </button>
+            </>
+          ) : playerState === "paused" ? (
+            <>
+              <button
+                onClick={handlePlay}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-colors shadow-sm"
+              >
+                <Play className="w-4 h-4" />
+                Resume
+              </button>
+              <button
+                onClick={handleStop}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-xl border border-border text-muted-foreground text-sm font-semibold hover:bg-accent hover:text-foreground transition-colors"
+              >
+                <Square className="w-4 h-4" />
+                Stop
+              </button>
+            </>
+          ) : (
+            <button
+              onClick={handlePlay}
+              className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-colors shadow-sm"
+            >
+              <Play className="w-4 h-4" />
+              Read Aloud
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* Playing animation bar */}
+      {playerState === "playing" && (
+        <div className="mt-3 flex items-end gap-0.5 h-5">
+          {[0.4,0.7,1.0,0.6,0.9,0.5,0.8,1.0,0.7,0.4,0.9,0.6,1.0,0.8,0.5,0.7,1.0,0.6,0.9,0.4,0.8,1.0,0.7,0.5,0.9,0.6,0.8,0.4].map((maxH, i) => (
+            <div
+              key={i}
+              className="bg-primary/70 rounded-full"
+              style={{
+                width: 2,
+                height: `${maxH * 20}px`,
+                animation: `wave-bar ${0.6 + (i % 5) * 0.12}s ease-in-out ${(i % 7) * 0.08}s infinite`,
+                transformOrigin: "bottom",
+              }}
+            />
+          ))}
+        </div>
+      )}
+
+      {error && (
+        <p className="mt-2 text-xs text-destructive font-medium">{error}</p>
+      )}
+    </div>
   );
 }
 
@@ -78,6 +315,11 @@ function StoryReader({ story, onBack }: { story: Story; onBack: () => void }) {
               {showArabic ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
               {showArabic ? "إخفاء العربية" : "إظهار العربية"}
             </button>
+          </div>
+
+          {/* Voice Reader */}
+          <div className="mt-5">
+            <VoiceReader content={story.content} />
           </div>
         </div>
 
