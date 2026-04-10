@@ -15,8 +15,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
     { href: "/synonyms", label: "Synonyms", icon: Sparkles },
     { href: "/antonyms", label: "Antonyms", icon: Shuffle },
     { href: "/speaking", label: "Churchill AI", icon: Mic },
-    { href: "/stories", label: "Short Stories", icon: BookMarked },
     { href: "/essay-checker", label: "Orwell AI", icon: FileText },
+    { href: "/stories", label: "Short Stories", icon: BookMarked },
     { href: "/browse", label: "Browse Cards", icon: Layers },
     { href: "/progress", label: "Progress", icon: PieChart },
   ];
