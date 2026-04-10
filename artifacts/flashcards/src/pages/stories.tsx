@@ -55,43 +55,72 @@ function VoiceReader({ content }: { content: string }) {
   const [speed, setSpeed] = useState<SpeedValue>(1.0);
   const [playerState, setPlayerState] = useState<PlayerState>("idle");
   const [error, setError] = useState<string | null>(null);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-  const blobUrlRef = useRef<string | null>(null);
 
-  const cleanupAudio = useCallback(() => {
-    if (audioRef.current) {
-      const audio = audioRef.current;
-      // Null out handlers BEFORE setting src="" to prevent spurious onerror/onended
-      audio.onended = null;
-      audio.onerror = null;
-      audio.pause();
-      audio.src = "";
-      audioRef.current = null;
+  // Web Audio API refs — AudioContext is created immediately on user click
+  // to preserve the browser's user-gesture activation before the long TTS fetch
+  const audioCtxRef = useRef<AudioContext | null>(null);
+  const sourceRef = useRef<AudioBufferSourceNode | null>(null);
+  const audioBufferRef = useRef<AudioBuffer | null>(null);
+  // Generation counter to discard stale responses
+  const genRef = useRef(0);
+
+  const stopPlayback = useCallback(() => {
+    if (sourceRef.current) {
+      try { sourceRef.current.stop(); } catch { /* already stopped */ }
+      sourceRef.current.disconnect();
+      sourceRef.current = null;
     }
-    if (blobUrlRef.current) {
-      URL.revokeObjectURL(blobUrlRef.current);
-      blobUrlRef.current = null;
+    if (audioCtxRef.current) {
+      audioCtxRef.current.close().catch(() => {});
+      audioCtxRef.current = null;
     }
+    audioBufferRef.current = null;
   }, []);
 
   useEffect(() => {
-    return () => cleanupAudio();
-  }, [cleanupAudio]);
+    return () => stopPlayback();
+  }, [stopPlayback]);
+
+  const startSource = useCallback((buffer: AudioBuffer, ctx: AudioContext) => {
+    if (sourceRef.current) {
+      try { sourceRef.current.stop(); } catch { /* ok */ }
+      sourceRef.current.disconnect();
+      sourceRef.current = null;
+    }
+    const source = ctx.createBufferSource();
+    source.buffer = buffer;
+    source.connect(ctx.destination);
+    source.onended = () => {
+      if (sourceRef.current === source) {
+        sourceRef.current = null;
+        setPlayerState("idle");
+      }
+    };
+    source.start(0);
+    sourceRef.current = source;
+  }, []);
 
   const handlePlay = async () => {
     setError(null);
 
-    if (playerState === "paused" && audioRef.current) {
-      audioRef.current.play().catch(() => {
-        setPlayerState("idle");
-        setError("Could not resume. Please tap Read Aloud again.");
-        cleanupAudio();
-      });
+    // Resume from pause — AudioContext.resume() is safe (no gesture required)
+    if (playerState === "paused" && audioCtxRef.current && audioBufferRef.current) {
+      await audioCtxRef.current.resume();
       setPlayerState("playing");
       return;
     }
 
-    cleanupAudio();
+    stopPlayback();
+
+    // ── KEY FIX ──────────────────────────────────────────────────────────────
+    // Create the AudioContext RIGHT HERE, while the user-gesture is still live.
+    // The browser grants audio permission for this context regardless of how
+    // long the subsequent fetch takes (no expiry on AudioContext, unlike play()).
+    // ─────────────────────────────────────────────────────────────────────────
+    const ctx = new AudioContext();
+    audioCtxRef.current = ctx;
+    const myGen = ++genRef.current;
+
     setPlayerState("loading");
 
     try {
@@ -101,74 +130,48 @@ function VoiceReader({ content }: { content: string }) {
         body: JSON.stringify({ text: content, speed }),
       });
 
+      if (genRef.current !== myGen) return; // user stopped/changed speed
+
       if (!res.ok) {
         const errData = await res.json().catch(() => ({}));
         throw new Error((errData as { error?: string }).error ?? "tts_failed");
       }
 
-      const blob = await res.blob();
-      const url = URL.createObjectURL(blob);
-      blobUrlRef.current = url;
+      const arrayBuffer = await res.arrayBuffer();
 
-      const audio = new Audio(url);
-      audioRef.current = audio;
+      if (genRef.current !== myGen) return;
 
-      audio.onended = () => {
-        // null out handlers so cleanupAudio doesn't double-fire
-        audio.onended = null;
-        audio.onerror = null;
-        if (audioRef.current === audio) {
-          audioRef.current = null;
-        }
-        URL.revokeObjectURL(url);
-        if (blobUrlRef.current === url) blobUrlRef.current = null;
-        setPlayerState("idle");
-      };
+      const audioBuffer = await ctx.decodeAudioData(arrayBuffer);
 
-      audio.onerror = () => {
-        // null out handlers before cleanup
-        audio.onended = null;
-        audio.onerror = null;
-        if (audioRef.current === audio) {
-          audioRef.current = null;
-        }
-        URL.revokeObjectURL(url);
-        if (blobUrlRef.current === url) blobUrlRef.current = null;
-        setPlayerState("idle");
-        setError("Playback error. Please try again.");
-      };
+      if (genRef.current !== myGen) return;
 
-      // play() can reject (e.g. browser autoplay policy) — handle separately
-      audio.play().catch(() => {
-        if (audioRef.current === audio) {
-          cleanupAudio();
-        }
-        setPlayerState("idle");
-        setError("Could not start playback. Please try again.");
-      });
-
+      audioBufferRef.current = audioBuffer;
+      startSource(audioBuffer, ctx);
       setPlayerState("playing");
+
     } catch (err: unknown) {
+      if (genRef.current !== myGen) return;
+      stopPlayback();
       setPlayerState("idle");
-      const msg = err instanceof Error ? err.message : "tts_failed";
+      const msg = err instanceof Error ? err.message : "";
       if (msg === "quota_exceeded") {
         setError("Audio quota reached. Please try again later.");
       } else {
         setError("Could not load audio. Please try again.");
       }
-      cleanupAudio();
     }
   };
 
-  const handlePause = () => {
-    if (audioRef.current) {
-      audioRef.current.pause();
+  const handlePause = async () => {
+    if (audioCtxRef.current && playerState === "playing") {
+      await audioCtxRef.current.suspend();
       setPlayerState("paused");
     }
   };
 
   const handleStop = () => {
-    cleanupAudio();
+    genRef.current++; // invalidate any in-flight fetch
+    stopPlayback();
     setPlayerState("idle");
     setError(null);
   };
