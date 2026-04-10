@@ -39,6 +39,7 @@ export function PasswordGate({ children }: PasswordGateProps) {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const pollTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const expiredEmailRef = useRef<string>("");
 
   const stopPolling = () => { if (pollTimer.current) clearTimeout(pollTimer.current); };
 
@@ -51,7 +52,9 @@ export function PasswordGate({ children }: PasswordGateProps) {
         setPhase("unlocked");
       } else if (result.status === "expired") {
         localStorage.removeItem(STORAGE_KEY);
+        expiredEmailRef.current = em;
         setPhase("expired");
+        startExpiredPolling(em);
       } else if (result.status === "rejected") {
         setError("Your access request was not approved. Please contact your instructor.");
         localStorage.removeItem(STORAGE_KEY);
@@ -61,7 +64,21 @@ export function PasswordGate({ children }: PasswordGateProps) {
       }
     };
     pollTimer.current = setTimeout(poll, 8000);
-  }, []);
+  }, []); // eslint-disable-line
+
+  const startExpiredPolling = useCallback((em: string) => {
+    stopPolling();
+    const poll = async () => {
+      const result = await checkStatus(em);
+      if (result.status === "approved" && result.token) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({ email: em, token: result.token }));
+        setPhase("unlocked");
+      } else {
+        pollTimer.current = setTimeout(poll, 10000);
+      }
+    };
+    pollTimer.current = setTimeout(poll, 10000);
+  }, []); // eslint-disable-line
 
   useEffect(() => {
     const raw = localStorage.getItem(STORAGE_KEY);
@@ -73,7 +90,9 @@ export function PasswordGate({ children }: PasswordGateProps) {
           setPhase("unlocked");
         } else if (result.status === "expired") {
           localStorage.removeItem(STORAGE_KEY);
+          expiredEmailRef.current = storedEmail;
           setPhase("expired");
+          startExpiredPolling(storedEmail);
         } else if (result.status === "pending") {
           setEmail(storedEmail);
           setPhase("pending");
@@ -85,7 +104,7 @@ export function PasswordGate({ children }: PasswordGateProps) {
       });
     } catch { localStorage.removeItem(STORAGE_KEY); setPhase("form"); }
     return stopPolling;
-  }, [startPolling]);
+  }, [startPolling, startExpiredPolling]);
 
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
@@ -100,7 +119,9 @@ export function PasswordGate({ children }: PasswordGateProps) {
       setPhase("unlocked");
     } else if (result.status === "expired") {
       localStorage.removeItem(STORAGE_KEY);
+      expiredEmailRef.current = normalizedEmail;
       setPhase("expired");
+      startExpiredPolling(normalizedEmail);
     } else if (result.status === "pending") {
       localStorage.setItem(STORAGE_KEY, JSON.stringify({ email: normalizedEmail, token: "" }));
       setPhase("pending");
@@ -110,7 +131,7 @@ export function PasswordGate({ children }: PasswordGateProps) {
     } else {
       setError(result.error ?? "Something went wrong. Please try again.");
     }
-  }, [email, accessCode, startPolling]);
+  }, [email, accessCode, startPolling, startExpiredPolling]);
 
   const resetForm = () => {
     stopPolling();
@@ -132,6 +153,14 @@ export function PasswordGate({ children }: PasswordGateProps) {
   if (phase === "unlocked") return <>{children}</>;
 
   if (phase === "expired") {
+    const tryAgain = () => {
+      stopPolling();
+      setEmail(expiredEmailRef.current);
+      setAccessCode("");
+      setError("");
+      setPhase("form");
+    };
+
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-teal-900 via-teal-800 to-sky-900 p-4">
         <div className="w-full max-w-sm">
@@ -144,9 +173,16 @@ export function PasswordGate({ children }: PasswordGateProps) {
             <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
               Your access to 4IELTS has expired. Please contact Abu Omar to renew your subscription.
             </p>
-            <p className="text-xs text-gray-400 dark:text-gray-500 mb-6" dir="rtl" lang="ar">
+            <p className="text-xs text-gray-400 dark:text-gray-500 mb-4" dir="rtl" lang="ar">
               انتهت صلاحية اشتراكك. تواصل مع أبو عمر لتجديد الاشتراك.
             </p>
+
+            {/* Auto-unlock indicator */}
+            <div className="flex items-center justify-center gap-2 text-xs text-teal-600 dark:text-teal-400 mb-5 bg-teal-50 dark:bg-teal-900/20 rounded-xl py-2.5 px-3">
+              <Loader2 className="w-3 h-3 animate-spin shrink-0" />
+              Checking for renewal every 10 seconds — this will unlock automatically once renewed.
+            </div>
+
             <div className="space-y-3">
               <a
                 href={WHATSAPP_URL}
@@ -164,8 +200,14 @@ export function PasswordGate({ children }: PasswordGateProps) {
                 <Mail className="w-4 h-4" />
                 {CONTACT_EMAIL}
               </a>
+              <button
+                onClick={tryAgain}
+                className="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-semibold transition-colors text-sm"
+              >
+                Already renewed? Try logging in
+              </button>
             </div>
-            <button onClick={resetForm} className="mt-6 text-xs text-gray-400 hover:text-gray-600 underline">
+            <button onClick={resetForm} className="mt-5 text-xs text-gray-400 hover:text-gray-600 underline">
               Use a different email
             </button>
           </div>
