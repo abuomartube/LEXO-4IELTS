@@ -1,0 +1,8 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "FokJmO1aM_LnshaZCYgnK"
+uri = "file://churchill-ai-export.tar.gz"
+type = "unspecified"
+title = "Churchill AI — Standalone Export (tar.gz)"
