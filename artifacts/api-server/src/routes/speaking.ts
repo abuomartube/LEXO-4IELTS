@@ -291,9 +291,15 @@ router.post("/speaking/tts", async (req, res) => {
     const model: "tts-1" | "tts-1-hd" =
       rawModel === "tts-1" ? "tts-1" : "tts-1-hd";
 
+    // Allow callers to choose voice. Default: onyx (Churchill). Pronunciation buttons use fable (British).
+    const ALLOWED_VOICES = ["alloy", "echo", "fable", "nova", "onyx", "shimmer"] as const;
+    type Voice = typeof ALLOWED_VOICES[number];
+    const rawVoice = (req.body as { voice?: unknown }).voice;
+    const voice: Voice = ALLOWED_VOICES.includes(rawVoice as Voice) ? (rawVoice as Voice) : "onyx";
+
     const speech = await openai.audio.speech.create({
       model,
-      voice: "onyx",
+      voice,
       input: text.slice(0, 4096),
       speed,
     });

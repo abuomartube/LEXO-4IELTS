@@ -2,8 +2,47 @@ import { useState, useRef, useEffect } from "react";
 import { Volume2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-// Module-level cache — one AudioBuffer per word, persists for the whole session
-const ttsCache = new Map<string, AudioBuffer>();
+// ── Module-level caches — survive card navigation ────────────────────────────
+
+// Raw MP3 bytes fetched eagerly in the background (no user gesture needed)
+const rawCache = new Map<string, ArrayBuffer>();
+// Track in-flight fetches so multiple buttons for the same word share one request
+const inflight = new Map<string, Promise<ArrayBuffer>>();
+
+// Oxford/Longman-style settings: British voice (fable), slow deliberate speed
+const TTS_VOICE = "fable";
+const TTS_SPEED = 0.75;
+const TTS_MODEL = "tts-1-hd";
+
+async function fetchRaw(word: string): Promise<ArrayBuffer> {
+  const key = word.toLowerCase().trim();
+  if (rawCache.has(key)) return rawCache.get(key)!;
+  if (inflight.has(key)) return inflight.get(key)!;
+
+  const p = fetch("/api/speaking/tts", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ text: word, speed: TTS_SPEED, model: TTS_MODEL, voice: TTS_VOICE }),
+  })
+    .then(r => {
+      if (!r.ok) throw new Error("tts_failed");
+      return r.arrayBuffer();
+    })
+    .then(ab => {
+      rawCache.set(key, ab);
+      inflight.delete(key);
+      return ab;
+    })
+    .catch(err => {
+      inflight.delete(key);
+      throw err;
+    });
+
+  inflight.set(key, p);
+  return p;
+}
+
+// ── Component ────────────────────────────────────────────────────────────────
 
 interface PronounceButtonProps {
   word: string;
@@ -16,67 +55,92 @@ export function PronounceButton({ word, className, variant = "default" }: Pronou
   const ctxRef = useRef<AudioContext | null>(null);
   const srcRef = useRef<AudioBufferSourceNode | null>(null);
 
-  const cleanup = () => {
-    try { srcRef.current?.stop(); } catch { /* ok */ }
-    ctxRef.current?.close().catch(() => {});
-    ctxRef.current = null;
-    srcRef.current = null;
-  };
+  // Pre-fetch audio the moment this button appears — so click is instant
+  useEffect(() => {
+    fetchRaw(word).catch(() => { /* silently ignore pre-fetch errors */ });
+  }, [word]);
 
-  useEffect(() => () => cleanup(), []);
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      try { srcRef.current?.stop(); } catch { /* ok */ }
+      // Small delay before close so any residual audio tail can finish
+      const ctx = ctxRef.current;
+      if (ctx) setTimeout(() => ctx.close().catch(() => {}), 300);
+      ctxRef.current = null;
+      srcRef.current = null;
+    };
+  }, []);
 
   const handleClick = async (e: React.MouseEvent) => {
     e.stopPropagation();
 
+    // If already playing, stop it
     if (state !== "idle") {
-      cleanup();
+      try { srcRef.current?.stop(); } catch { /* ok */ }
+      const ctx = ctxRef.current;
+      if (ctx) setTimeout(() => ctx.close().catch(() => {}), 300);
+      ctxRef.current = null;
+      srcRef.current = null;
       setState("idle");
       return;
     }
 
-    // Create AudioContext during user gesture — no expiry risk
+    // Create AudioContext on user gesture
     const ctx = new AudioContext();
     ctxRef.current = ctx;
-    setState("loading");
 
     try {
-      const key = word.toLowerCase().trim();
-      let buffer = ttsCache.get(key) ?? null;
+      // fetchRaw hits cache if pre-fetch already finished → effectively instant
+      const ab = await fetchRaw(word);
 
-      if (!buffer) {
-        const res = await fetch("/api/speaking/tts", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          // tts-1-hd = highest quality native speaker voice; single word is very fast (~1s)
-          body: JSON.stringify({ text: word, speed: 0.9, model: "tts-1-hd" }),
-        });
-        if (!res.ok) throw new Error("tts_failed");
-        const ab = await res.arrayBuffer();
-        if (ctx.state === "closed") return;
-        buffer = await ctx.decodeAudioData(ab);
-        ttsCache.set(key, buffer);
-      }
+      // Guard: user might have stopped or navigated away during fetch
+      if (ctxRef.current !== ctx) return;
 
       if (ctx.state === "suspended") await ctx.resume();
 
+      // Clone the ArrayBuffer — decodeAudioData consumes (detaches) it
+      const buffer = await ctx.decodeAudioData(ab.slice(0));
+
+      if (ctxRef.current !== ctx) return;
+
       const src = ctx.createBufferSource();
       src.buffer = buffer;
-      src.connect(ctx.destination);
+
+      // Use a GainNode so we can fade out the last ~120 ms — eliminates the
+      // abrupt breath-cut that happens when the buffer ends suddenly
+      const gain = ctx.createGain();
+      src.connect(gain);
+      gain.connect(ctx.destination);
+
+      const duration = buffer.duration;
+      const fadeStart = Math.max(0, ctx.currentTime + duration - 0.12);
+      gain.gain.setValueAtTime(1, fadeStart);
+      gain.gain.linearRampToValueAtTime(0, ctx.currentTime + duration);
+
       src.onended = () => {
         setState("idle");
-        ctx.close().catch(() => {});
-        ctxRef.current = null;
         srcRef.current = null;
+        // Delay close so the fade tail is audible and the browser doesn't clip it
+        setTimeout(() => {
+          ctx.close().catch(() => {});
+          if (ctxRef.current === ctx) ctxRef.current = null;
+        }, 350);
       };
+
       src.start(0);
       srcRef.current = src;
+
+      // Only show "loading" if the pre-fetch wasn't ready; skip straight to playing
       setState("playing");
     } catch {
       setState("idle");
-      ctx.close().catch(() => {});
-      ctxRef.current = null;
+      setTimeout(() => ctx.close().catch(() => {}), 100);
+      if (ctxRef.current === ctx) ctxRef.current = null;
     }
   };
+
+  // ── Render variants ──────────────────────────────────────────────────────
 
   if (variant === "ghost") {
     return (
@@ -87,8 +151,6 @@ export function PronounceButton({ word, className, variant = "default" }: Pronou
           "inline-flex items-center justify-center w-7 h-7 rounded-full transition-all duration-200",
           state === "playing"
             ? "bg-primary text-primary-foreground"
-            : state === "loading"
-            ? "bg-muted text-muted-foreground"
             : "bg-background/60 text-muted-foreground border border-border hover:text-primary hover:border-primary hover:bg-primary/5",
           className
         )}
@@ -107,8 +169,6 @@ export function PronounceButton({ word, className, variant = "default" }: Pronou
           "inline-flex items-center justify-center w-8 h-8 rounded-full transition-all duration-200",
           state === "playing"
             ? "bg-white/30 text-white"
-            : state === "loading"
-            ? "bg-white/10 text-white/50"
             : "bg-white/15 hover:bg-white/25 text-white",
           className
         )}
@@ -126,14 +186,12 @@ export function PronounceButton({ word, className, variant = "default" }: Pronou
         "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium border transition-all duration-200",
         state === "playing"
           ? "bg-primary text-primary-foreground border-primary scale-95"
-          : state === "loading"
-          ? "bg-muted border-muted text-muted-foreground"
           : "bg-background text-muted-foreground border-border hover:border-primary hover:text-primary hover:bg-primary/5",
         className
       )}
     >
       <Volume2 className={cn("w-4 h-4", state === "playing" && "animate-pulse")} />
-      {state === "loading" ? "Loading..." : state === "playing" ? "Playing..." : "Listen"}
+      {state === "playing" ? "Playing..." : "Listen"}
     </button>
   );
 }
