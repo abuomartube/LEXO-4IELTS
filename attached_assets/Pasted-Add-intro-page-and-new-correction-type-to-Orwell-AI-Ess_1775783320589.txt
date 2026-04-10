@@ -1,0 +1,124 @@
+Add intro page and new correction type 
+to Orwell AI Essay Checker.
+
+──────────────────────
+PAGE 1: ORWELL AI INTRO PAGE
+──────────────────────
+Design:
+- Full page, dark navy background (#0D1B3E)
+- Gold accents (#C9A84C)
+
+Content:
+- Top: "Orwell AI" title in gold
+- Subtitle: "Your Personal Writing Corrector"
+  "Powered by 4IELTS.com"
+- Center: Profile image placeholder
+  (circular frame, labeled "Orwell AI")
+  Size: 180x180px
+  Add image path: /images/orwell.png
+- Description text:
+  "Meet Orwell AI — your expert writing 
+  corrector. Whether you're writing an 
+  IELTS Task 1, Task 2, or an everyday 
+  paragraph, Orwell AI gives you 
+  professional feedback, corrections, 
+  and better versions of your writing."
+
+- Start button:
+  [✍️ ابدأ التصحيح]
+  Gold button, centered, large
+
+──────────────────────
+PAGE 2: TASK SELECTION
+──────────────────────
+Title: "What would you like to correct?"
+
+Three options as cards:
+
+[📊 Task 1]
+Academic/General report or letter
+
+[📝 Task 2]
+Academic essay or argument
+
+[💬 Paragraph]
+Message, email, or any paragraph
+
+──────────────────────
+PARAGRAPH CORRECTION CRITERIA
+(Different from Task 1 & 2)
+──────────────────────
+When student selects "Paragraph":
+
+System prompt for Orwell AI:
+"You are an expert English writing coach.
+The student has written a paragraph, 
+message, or email (NOT an IELTS task).
+Do NOT apply IELTS band score criteria.
+Instead, evaluate based on:
+
+1. GRAMMAR - Check all grammar errors
+2. PUNCTUATION - Check all punctuation
+3. VOCABULARY - Word choice and variety
+4. COHERENCE - Flow and clarity of ideas
+
+After analysis, provide feedback in 
+this exact format:
+
+──────────────────────
+✅ STRENGTHS
+──────────────────────
+[List what the student did well]
+
+──────────────────────
+⚠️ AREAS FOR IMPROVEMENT
+──────────────────────
+[List specific issues found]
+
+──────────────────────
+🔍 ANNOTATED VERSION
+──────────────────────
+[Original text with corrections marked:
+❌ mistake → ✅ correction
+highlighted inline]
+
+──────────────────────
+📄 CORRECTED VERSION
+──────────────────────
+[The original paragraph fully corrected
+keeping student's original voice and style]
+
+──────────────────────
+⭐ BETTER VERSION
+──────────────────────
+[Improved version with better vocabulary
+and sentence structures, same meaning]
+
+──────────────────────
+🎩 FORMAL VERSION
+──────────────────────
+[Professional/formal version of the 
+same paragraph, suitable for work 
+or academic use]"
+
+──────────────────────
+UI FOR RESULTS
+──────────────────────
+Show each section in separate card:
+
+Card 1: ✅ Strengths
+Card 2: ⚠️ Areas for Improvement  
+Card 3: 🔍 Annotated Version
+Card 4: 📄 Corrected Version
+Card 5: ⭐ Better Version
+Card 6: 🎩 Formal Version
+
+Each card has:
+[📋 نسخ] copy button top right
+
+Bottom of page:
+[📋 نسخ الكل] = copies all sections
+[🔄 تصحيح جديد] = start over
+
+
+أرسله لـ Replit! 🚀​​​​​​​​​​​​​​​​
