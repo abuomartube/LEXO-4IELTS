@@ -14,7 +14,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
     { href: "/quiz", label: "Quiz Mode", icon: HelpCircle },
     { href: "/synonyms", label: "Synonyms", icon: Sparkles },
     { href: "/antonyms", label: "Antonyms", icon: Shuffle },
-    { href: "/essay-checker", label: "Essay Checker", icon: FileText },
+    { href: "/essay-checker", label: "Orwell AI", icon: FileText },
     { href: "/stories", label: "Short Stories", icon: BookMarked },
     { href: "/speaking", label: "Churchill AI", icon: Mic },
     { href: "/browse", label: "Browse Cards", icon: Layers },

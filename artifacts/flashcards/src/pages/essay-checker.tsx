@@ -414,7 +414,7 @@ export default function EssayChecker() {
             <FileText className="w-5 h-5 text-primary-foreground" />
           </div>
           <div>
-            <h1 className="text-2xl font-extrabold text-foreground">IELTS Essay Checker</h1>
+            <h1 className="text-2xl font-extrabold text-foreground">Orwell AI</h1>
             <p className="text-sm text-muted-foreground">AI-powered feedback from an expert IELTS examiner</p>
           </div>
         </div>
