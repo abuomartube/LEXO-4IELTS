@@ -890,6 +890,7 @@ export default function SpeakingPage() {
   const ttsRequestIdRef = useRef(0);
   const ttsEndResolveRef = useRef<(() => void) | null>(null);
   const playTtsRef = useRef<((text: string) => Promise<void>) | null>(null);
+  const ttsGeneratedSpeedRef = useRef(1.0); // speed the current audio was generated at
 
   // Auto-scroll chat
   useEffect(() => {
@@ -922,11 +923,11 @@ export default function SpeakingPage() {
   const setTtsSpeed = useCallback((speed: number) => {
     setTtsSpeedState(speed);
     localStorage.setItem(TTS_SPEED_KEY, String(speed));
-    // If AI is currently speaking, stop and re-play with the new speed via playTts
-    if (isSpeakingRef.current && lastTtsTextRef.current) {
-      const textToReplay = lastTtsTextRef.current;
-      // Small delay so ttsSpeedRef picks up the new value before playTts reads it
-      setTimeout(() => { playTtsRef.current?.(textToReplay); }, 80);
+    ttsSpeedRef.current = speed; // Update immediately so next playTts fetch uses new speed
+    // If audio is already playing, change playbackRate instantly — no re-fetch needed
+    if (ttsAudioRef.current && isSpeakingRef.current) {
+      const ratio = speed / ttsGeneratedSpeedRef.current;
+      ttsAudioRef.current.playbackRate = Math.max(0.25, Math.min(4.0, ratio));
     }
   }, []);
 
@@ -985,6 +986,7 @@ export default function SpeakingPage() {
 
       const audio = new Audio(url);
       ttsAudioRef.current = audio;
+      ttsGeneratedSpeedRef.current = ttsSpeedRef.current; // record what speed this was generated at
       isSpeakingRef.current = true;
       setIsSpeaking(true);
 
