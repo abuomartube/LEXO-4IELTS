@@ -55,7 +55,7 @@ After each student answer, respond with:
    ⭐ Band estimate: X/9
 3. Then ask the NEXT question (or if this is the FINAL answer, end your response with "— **[PART1_DONE]**" and do NOT ask another question)
 
-Keep each response under 150 words. Use an encouraging, professional tone.`;
+Keep each response under 80 words. Be concise and direct.`;
   }
 
   if (part === 2) {
@@ -78,7 +78,7 @@ Now respond with:
    ⭐ Band estimate: X/9
 3. End with: "Thank you. — **[PART2_DONE]**"
 
-Keep response under 130 words.`;
+Keep response under 80 words.`;
   }
 
   // Part 3
@@ -101,7 +101,7 @@ After each student answer, respond with:
    ⭐ Band estimate: X/9
 3. Then ask the NEXT discussion question (or if this is the FINAL answer, end with "Excellent. — **[PART3_DONE]**" and do NOT ask another question)
 
-Keep responses under 150 words. Target B2–C1 vocabulary.`;
+Keep responses under 80 words. Target B2–C1 vocabulary.`;
 }
 
 router.post("/speaking/message", async (req, res) => {
@@ -122,7 +122,7 @@ router.post("/speaking/message", async (req, res) => {
     const systemPrompt = buildSystemPrompt(topic, part, questionNum, isStart ?? false);
     const anthropic = getAnthropicClient();
 
-    let contextMessages = messages.slice(-20);
+    let contextMessages = messages.slice(-10);
     if (contextMessages.length === 0) {
       contextMessages = [{ role: "user", content: "Please begin." }];
     }
@@ -133,8 +133,8 @@ router.post("/speaking/message", async (req, res) => {
     res.flushHeaders();
 
     const stream = anthropic.messages.stream({
-      model: "claude-sonnet-4-6",
-      max_tokens: 700,
+      model: "claude-haiku-4-5",
+      max_tokens: 300,
       system: systemPrompt,
       messages: contextMessages,
     });
