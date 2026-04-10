@@ -161,6 +161,28 @@ function VoiceReader({ content }: { content: string }) {
     setPlayerState("playing");
   }, [content, startSource]);
 
+  // After the main audio starts playing, silently pre-fetch the other two speeds
+  // so any speed switch is an instant cache hit with no loading state.
+  const prefetchOtherSpeeds = useCallback((playingSpeed: SpeedValue, ctx: AudioContext) => {
+    const others = (SPEEDS.map(s => s.value) as SpeedValue[]).filter(s => s !== playingSpeed);
+    others.forEach(async (s) => {
+      if (audioCacheRef.current.has(s)) return;
+      try {
+        const res = await fetch("/api/speaking/tts", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ text: content, speed: s, model: "tts-1" }),
+        });
+        if (!res.ok) return;
+        const ab = await res.arrayBuffer();
+        // Don't decode if the AudioContext is already closed
+        if (ctx.state === "closed") return;
+        const buf = await ctx.decodeAudioData(ab);
+        audioCacheRef.current.set(s, buf);
+      } catch { /* silent — this is background pre-fetching */ }
+    });
+  }, [content]);
+
   const handlePlay = async () => {
     setError(null);
 
@@ -183,6 +205,8 @@ function VoiceReader({ content }: { content: string }) {
 
     try {
       await fetchAndPlay(speed, 0, ctx, myGen);
+      // Pre-fetch the other two speeds in background so speed switches are instant
+      prefetchOtherSpeeds(speed, ctx);
     } catch (err: unknown) {
       if (genRef.current !== myGen) return;
       stopPlayback();
@@ -220,12 +244,10 @@ function VoiceReader({ content }: { content: string }) {
     // ── Compute where we are in the story content ──────────────────────────
     // ctx.currentTime stops advancing while suspended, so this is safe for
     // both "playing" and "paused" states.
-    // currentBufferPos: seconds into the buffer that is currently playing
     const currentBufferPos =
       sourceStartOffsetRef.current + (ctx.currentTime - sourceStartCtxTimeRef.current);
-    // Convert to content position using the formula:
-    //   newOffset = bufferPos × fetchedSpeed / newSpeed
-    // (Because buffer duration scales as 1/speed for the same spoken content.)
+    // newOffset = bufferPos × fetchedSpeed / newSpeed
+    // (buffer duration scales as 1/speed for the same spoken content)
     const newOffset = currentBufferPos * fetchedSpeedRef.current / newSpeed;
     // ───────────────────────────────────────────────────────────────────────
 
@@ -234,6 +256,18 @@ function VoiceReader({ content }: { content: string }) {
       await ctx.resume();
     }
 
+    // ── Cache hit → instant switch, no loading spinner ───────────────────
+    const cached = audioCacheRef.current.get(newSpeed);
+    if (cached) {
+      const safeOffset = Math.max(0, Math.min(newOffset, cached.duration - 0.1));
+      fetchedSpeedRef.current = newSpeed;
+      startSource(cached, ctx, safeOffset);
+      setPlayerState("playing");
+      return;
+    }
+    // ───────────────────────────────────────────────────────────────────────
+
+    // Cache miss — need to fetch (this only happens if pre-fetch hasn't finished yet)
     const myGen = ++genRef.current;
     setPlayerState("loading");
 
