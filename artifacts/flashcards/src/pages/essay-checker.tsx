@@ -56,10 +56,17 @@ interface EssayResult {
   exampleEssayBand8?: string;
 }
 
+interface ParagraphCorrection {
+  original: string;
+  correction: string;
+  explanation: string;
+  type: string;
+}
+
 interface ParagraphResult {
   strengths: string;
   improvements: string;
-  annotated: string;
+  corrections: ParagraphCorrection[];
   corrected: string;
   better: string;
   formal: string;
@@ -365,6 +372,130 @@ function ParagraphCard({
   );
 }
 
+// ─── Annotated Paragraph (interactive highlights) ────────────────────────────
+
+interface ParaPopupData {
+  original: string;
+  correction: string;
+  explanation: string;
+  type: string;
+  x: number;
+  y: number;
+}
+
+function ParaPopup({ popup, onClose }: { popup: ParaPopupData; onClose: () => void }) {
+  return (
+    <div
+      className="fixed z-50 w-72 rounded-2xl border border-border bg-white dark:bg-card shadow-2xl overflow-hidden"
+      style={{ left: Math.min(popup.x, window.innerWidth - 300), top: popup.y + 10 }}
+      onClick={e => e.stopPropagation()}
+    >
+      <div className="flex items-center justify-between px-4 py-3 border-b border-border">
+        <span className="text-xs font-extrabold uppercase tracking-wider text-foreground">
+          {popup.type} Error
+        </span>
+        <button onClick={onClose} className="text-muted-foreground hover:text-foreground transition-colors">
+          <X className="w-4 h-4" />
+        </button>
+      </div>
+      <div className="px-4 py-3 space-y-3">
+        <div>
+          <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">Correction</p>
+          <p className="text-sm font-semibold text-primary leading-snug">{popup.correction}</p>
+        </div>
+        <div>
+          <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">Explanation</p>
+          <p className="text-xs text-muted-foreground leading-relaxed">{popup.explanation}</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function buildParaSegments(text: string, corrections: ParagraphCorrection[]) {
+  type Ann = { start: number; end: number; correction: ParagraphCorrection };
+  const annotations: Ann[] = [];
+
+  for (const c of corrections) {
+    const idx = text.toLowerCase().indexOf(c.original.toLowerCase());
+    if (idx !== -1) {
+      annotations.push({ start: idx, end: idx + c.original.length, correction: c });
+    }
+  }
+
+  annotations.sort((a, b) => a.start - b.start);
+  const merged: Ann[] = [];
+  for (const ann of annotations) {
+    if (merged.length && ann.start < merged[merged.length - 1].end) continue;
+    merged.push(ann);
+  }
+
+  const segments: Array<{ text: string; ann?: Ann["correction"] }> = [];
+  let cursor = 0;
+  for (const ann of merged) {
+    if (ann.start > cursor) segments.push({ text: text.slice(cursor, ann.start) });
+    segments.push({ text: text.slice(ann.start, ann.end), ann: ann.correction });
+    cursor = ann.end;
+  }
+  if (cursor < text.length) segments.push({ text: text.slice(cursor) });
+  return segments;
+}
+
+function AnnotatedParagraph({ text, corrections }: { text: string; corrections: ParagraphCorrection[] }) {
+  const [popup, setPopup] = useState<ParaPopupData | null>(null);
+  const segments = buildParaSegments(text, corrections);
+
+  const handleClick = (e: React.MouseEvent, ann: ParagraphCorrection) => {
+    e.stopPropagation();
+    const rect = (e.target as HTMLElement).getBoundingClientRect();
+    setPopup({
+      original: ann.original,
+      correction: ann.correction,
+      explanation: ann.explanation,
+      type: ann.type,
+      x: rect.left,
+      y: rect.bottom + window.scrollY,
+    });
+  };
+
+  return (
+    <div onClick={() => setPopup(null)} className="relative">
+      <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-2xl p-5 space-y-3">
+        <div className="flex items-center justify-between">
+          <h3 className="text-sm font-bold flex items-center gap-2">🔍 Annotated Version</h3>
+          {corrections.length > 0 && (
+            <span className="text-xs text-muted-foreground font-medium">
+              {corrections.length} error{corrections.length !== 1 ? "s" : ""} · tap to inspect
+            </span>
+          )}
+        </div>
+        <div className="text-sm leading-relaxed whitespace-pre-wrap font-medium">
+          {segments.map((seg, i) =>
+            seg.ann ? (
+              <span
+                key={i}
+                onClick={(e) => handleClick(e, seg.ann!)}
+                className="cursor-pointer rounded px-0.5 bg-red-200/80 dark:bg-red-800/50 hover:bg-red-300/80 dark:hover:bg-red-700/60 transition-colors"
+                title="Click for correction"
+              >
+                {seg.text}
+              </span>
+            ) : (
+              <span key={i}>{seg.text}</span>
+            )
+          )}
+        </div>
+        {corrections.length > 0 && (
+          <p className="text-xs text-muted-foreground italic">
+            · Click any highlighted phrase to see the correction
+          </p>
+        )}
+      </div>
+      {popup && <ParaPopup popup={popup} onClose={() => setPopup(null)} />}
+    </div>
+  );
+}
+
 // ─── Main component ───────────────────────────────────────────────────────────
 
 export default function EssayChecker() {
@@ -478,8 +609,8 @@ export default function EssayChecker() {
       "⚠️ AREAS FOR IMPROVEMENT",
       paragraphResult.improvements,
       "",
-      "🔍 ANNOTATED VERSION",
-      paragraphResult.annotated,
+      "🔍 CORRECTIONS",
+      ...(paragraphResult.corrections ?? []).map(c => `• "${c.original}" → "${c.correction}" (${c.type}): ${c.explanation}`),
       "",
       "📄 CORRECTED VERSION",
       paragraphResult.corrected,
@@ -717,11 +848,9 @@ export default function EssayChecker() {
                   content={paragraphResult.improvements}
                   accentClass="bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800"
                 />
-                <ParagraphCard
-                  emoji="🔍"
-                  title="Annotated Version"
-                  content={paragraphResult.annotated}
-                  accentClass="bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800"
+                <AnnotatedParagraph
+                  text={essay}
+                  corrections={paragraphResult.corrections ?? []}
                 />
                 <ParagraphCard
                   emoji="📄"

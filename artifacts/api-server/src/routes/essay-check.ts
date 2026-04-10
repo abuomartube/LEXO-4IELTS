@@ -64,17 +64,28 @@ The student has written a paragraph, message, or email — NOT an IELTS task.
 Do NOT apply IELTS band score criteria.
 Evaluate based on: Grammar, Punctuation, Vocabulary, and Coherence.
 
-Return ONLY a valid JSON object with these exact keys (all values are plain text strings):
+Return ONLY a valid JSON object with these exact keys:
 {
   "strengths": "A clear list of what the student did well. Use bullet points with • for each point.",
-  "improvements": "A clear list of specific issues found. Use ❌ original → ✅ correction format for each issue.",
-  "annotated": "The full original text with every error marked inline. Format: ❌ [wrong word/phrase] → ✅ [correction]. Show the complete text with all corrections embedded naturally.",
-  "corrected": "The original paragraph fully corrected, keeping the student's original voice and style. No explanations — just the clean corrected version.",
-  "better": "An improved version with more sophisticated vocabulary and varied sentence structures. Same meaning, more impressive language.",
-  "formal": "A professional/formal version suitable for work, email, or academic submission. Polished and authoritative tone."
+  "improvements": "A clear list of specific issues. Use ❌ original → ✅ correction format for each.",
+  "corrections": [
+    {
+      "original": "the exact phrase as it appears in the student's text (must match exactly for highlighting)",
+      "correction": "the corrected version",
+      "explanation": "brief explanation of the error",
+      "type": "Grammar"
+    }
+  ],
+  "corrected": "The original paragraph fully corrected, keeping the student's original voice and style.",
+  "better": "An improved version with more sophisticated vocabulary and varied sentence structures.",
+  "formal": "A professional/formal version suitable for work, email, or academic submission."
 }
 
-IMPORTANT: Return only the JSON object. No markdown, no extra text.`;
+IMPORTANT:
+- Return only the JSON object. No markdown, no extra text.
+- For each correction, the "original" field must be the EXACT phrase as it appears in the student's text so it can be located and highlighted.
+- Include all grammar, spelling, punctuation, and vocabulary errors.
+- Type can be: Grammar, Spelling, Punctuation, Vocabulary, Word Choice`;
 
 router.post("/paragraph-check", async (req, res) => {
   try {
