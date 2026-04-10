@@ -127,7 +127,7 @@ function VoiceReader({ content }: { content: string }) {
       const res = await fetch("/api/speaking/tts", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text: content, speed }),
+        body: JSON.stringify({ text: content, speed, model: "tts-1" }),
       });
 
       if (genRef.current !== myGen) return; // user stopped/changed speed
@@ -142,6 +142,15 @@ function VoiceReader({ content }: { content: string }) {
       if (genRef.current !== myGen) return;
 
       const audioBuffer = await ctx.decodeAudioData(arrayBuffer);
+
+      if (genRef.current !== myGen) return;
+
+      // The fetch + decode can take 30+ seconds. Chrome auto-suspends an
+      // AudioContext that has been idle that long, so we must resume it
+      // before trying to start a source node.
+      if (ctx.state === "suspended") {
+        await ctx.resume();
+      }
 
       if (genRef.current !== myGen) return;
 

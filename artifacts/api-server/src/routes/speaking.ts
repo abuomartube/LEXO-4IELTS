@@ -285,24 +285,43 @@ router.post("/speaking/tts", async (req, res) => {
       : 1.0;
     const speed = Math.max(0.25, Math.min(4.0, rawSpeed));
 
+    // Allow callers to request the faster tts-1 model (e.g. story reader).
+    // Default stays tts-1-hd for Churchill speaking practice.
+    const rawModel = (req.body as { model?: unknown }).model;
+    const model: "tts-1" | "tts-1-hd" =
+      rawModel === "tts-1" ? "tts-1" : "tts-1-hd";
+
     const speech = await openai.audio.speech.create({
-      model: "tts-1-hd",
+      model,
       voice: "onyx",
       input: text.slice(0, 4096),
       speed,
     });
 
+    // Stream the response body directly — no full-buffer round-trip
     res.setHeader("Content-Type", "audio/mpeg");
     res.setHeader("Cache-Control", "no-cache");
-    const buffer = Buffer.from(await speech.arrayBuffer());
-    res.send(buffer);
+    const stream = speech.body as ReadableStream<Uint8Array>;
+    const reader = stream.getReader();
+    try {
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        res.write(Buffer.from(value));
+      }
+      res.end();
+    } finally {
+      reader.releaseLock();
+    }
   } catch (err: unknown) {
     console.error("TTS error:", err);
-    const status = (err as { status?: number })?.status;
-    if (status === 429) {
-      res.status(402).json({ error: "quota_exceeded" });
-    } else {
-      res.status(500).json({ error: "tts_failed" });
+    if (!res.headersSent) {
+      const status = (err as { status?: number })?.status;
+      if (status === 429) {
+        res.status(402).json({ error: "quota_exceeded" });
+      } else {
+        res.status(500).json({ error: "tts_failed" });
+      }
     }
   }
 });
