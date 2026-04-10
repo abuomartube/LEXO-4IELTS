@@ -33,6 +33,23 @@ const levelBorder: Record<string, string> = {
   C1: "border-rose-200 dark:border-rose-800",
 };
 
+// Split story text into [firstChunk, remainder] at a sentence boundary.
+// firstChunk is kept short so TTS generates it in ~2 seconds.
+function splitContent(text: string): [string, string] {
+  const MAX = 350;
+  if (text.length <= MAX) return [text, ""];
+  for (let i = MAX; i >= 80; i--) {
+    if (text[i] === "." || text[i] === "!" || text[i] === "?") {
+      return [text.slice(0, i + 1).trim(), text.slice(i + 1).trim()];
+    }
+  }
+  // fallback: split at a space
+  for (let i = MAX; i >= 80; i--) {
+    if (text[i] === " ") return [text.slice(0, i).trim(), text.slice(i).trim()];
+  }
+  return [text.slice(0, MAX), text.slice(MAX)];
+}
+
 const SPEEDS = [
   { label: "Slow", value: 0.75 },
   { label: "Normal", value: 1.0 },
@@ -67,6 +84,8 @@ function VoiceReader({ content }: { content: string }) {
   const sourceStartCtxTimeRef = useRef(0);   // ctx.currentTime when source.start() was called
   const sourceStartOffsetRef = useRef(0);    // buffer offset used in source.start()
   const fetchedSpeedRef = useRef<SpeedValue>(1.0); // OpenAI speed the current buffer was fetched at
+  // Content-time (at 1.0×) before the currently-playing chunk — for multi-chunk position maths
+  const chunkContentOffsetRef = useRef(0);
 
   // Generation counter to discard stale responses
   const genRef = useRef(0);
@@ -98,8 +117,14 @@ function VoiceReader({ content }: { content: string }) {
     return () => stopPlayback();
   }, [stopPlayback]);
 
-  // Wire up a buffer to the context and start playback from `offset` seconds
-  const startSource = useCallback((buffer: AudioBuffer, ctx: AudioContext, offset = 0) => {
+  // Wire up a buffer to the context and start playback from `offset` seconds.
+  // `afterEnded` fires when the source finishes naturally (not when stopped manually).
+  const startSource = useCallback((
+    buffer: AudioBuffer,
+    ctx: AudioContext,
+    offset = 0,
+    afterEnded?: () => void,
+  ) => {
     stopSource();
     const source = ctx.createBufferSource();
     source.buffer = buffer;
@@ -108,7 +133,7 @@ function VoiceReader({ content }: { content: string }) {
     source.onended = () => {
       if (sourceRef.current === source) {
         sourceRef.current = null;
-        setPlayerState("idle");
+        afterEnded ? afterEnded() : setPlayerState("idle");
       }
     };
     source.start(0, offset);
@@ -161,8 +186,30 @@ function VoiceReader({ content }: { content: string }) {
     setPlayerState("playing");
   }, [content, startSource]);
 
-  // After the main audio starts playing, silently pre-fetch the other two speeds
-  // so any speed switch is an instant cache hit with no loading state.
+  // Raw fetch helper — fetches TTS audio and decodes it, no cache interaction
+  const fetchBuffer = useCallback(async (
+    text: string,
+    spd: SpeedValue,
+    ctx: AudioContext,
+    myGen: number,
+  ): Promise<AudioBuffer | null> => {
+    const res = await fetch("/api/speaking/tts", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text, speed: spd, model: "tts-1" }),
+    });
+    if (genRef.current !== myGen) return null;
+    if (!res.ok) {
+      const errData = await res.json().catch(() => ({}));
+      throw new Error((errData as { error?: string }).error ?? "tts_failed");
+    }
+    const ab = await res.arrayBuffer();
+    if (genRef.current !== myGen) return null;
+    if (ctx.state === "closed") return null;
+    return ctx.decodeAudioData(ab);
+  }, []);
+
+  // Silently pre-fetch the other two speeds (full text) so speed switches are instant
   const prefetchOtherSpeeds = useCallback((playingSpeed: SpeedValue, ctx: AudioContext) => {
     const others = (SPEEDS.map(s => s.value) as SpeedValue[]).filter(s => s !== playingSpeed);
     others.forEach(async (s) => {
@@ -175,18 +222,17 @@ function VoiceReader({ content }: { content: string }) {
         });
         if (!res.ok) return;
         const ab = await res.arrayBuffer();
-        // Don't decode if the AudioContext is already closed
         if (ctx.state === "closed") return;
         const buf = await ctx.decodeAudioData(ab);
         audioCacheRef.current.set(s, buf);
-      } catch { /* silent — this is background pre-fetching */ }
+      } catch { /* silent */ }
     });
   }, [content]);
 
   const handlePlay = async () => {
     setError(null);
 
-    // Resume from pause (AudioContext was suspended — just un-suspend it)
+    // Resume from pause
     if (playerState === "paused" && audioCtxRef.current) {
       await audioCtxRef.current.resume();
       setPlayerState("playing");
@@ -195,18 +241,78 @@ function VoiceReader({ content }: { content: string }) {
 
     stopPlayback();
 
-    // Create AudioContext NOW (during the user-gesture) — no expiry risk
+    // Create AudioContext NOW (during user-gesture) — no expiry risk
     const ctx = new AudioContext();
     audioCtxRef.current = ctx;
     const myGen = ++genRef.current;
     fetchedSpeedRef.current = speed;
+    chunkContentOffsetRef.current = 0;
 
     setPlayerState("loading");
 
     try {
-      await fetchAndPlay(speed, 0, ctx, myGen);
-      // Pre-fetch the other two speeds in background so speed switches are instant
+      // ── Split story and fetch both chunks in parallel ──────────────────
+      // chunk1 (~350 chars) generates in ~2s — user hears audio quickly.
+      // chunk2 (rest) is fetched at the same time in the background.
+      const [chunk1Text, chunk2Text] = splitContent(content);
+
+      const chunk1Promise = fetchBuffer(chunk1Text, speed, ctx, myGen);
+      // Start fetching chunk2 immediately in parallel (don't await chunk1 first)
+      const chunk2Promise = chunk2Text
+        ? fetchBuffer(chunk2Text, speed, ctx, myGen)
+        : Promise.resolve(null);
+
+      // Wait for chunk1 and start playing
+      const buffer1 = await chunk1Promise;
+      if (!buffer1 || genRef.current !== myGen) return;
+
+      if (ctx.state === "suspended") await ctx.resume();
+      if (genRef.current !== myGen) return;
+
+      // Mutable box so the afterEnded closure and the chunk2 await can share state
+      let chunk2Buffer: AudioBuffer | null = null;
+      let chunk2Pending = false; // chunk1 ended before chunk2 was ready
+
+      const chunk1ContentDuration = buffer1.duration * speed; // in 1.0× seconds
+
+      startSource(buffer1, ctx, 0, () => {
+        // chunk1 finished naturally
+        if (genRef.current !== myGen) return;
+        if (chunk2Buffer) {
+          chunkContentOffsetRef.current = chunk1ContentDuration;
+          startSource(chunk2Buffer, ctx, 0);
+          setPlayerState("playing");
+        } else if (chunk2Text) {
+          chunk2Pending = true;
+          setPlayerState("loading"); // brief gap while chunk2 finishes
+        } else {
+          setPlayerState("idle");
+        }
+      });
+      setPlayerState("playing");
+
+      // Pre-fetch other speeds (full text) in background for instant speed switching
       prefetchOtherSpeeds(speed, ctx);
+
+      // Wait for chunk2 (already fetching in parallel)
+      if (chunk2Text) {
+        const buffer2 = await chunk2Promise;
+        if (genRef.current !== myGen) return;
+        if (buffer2) {
+          chunk2Buffer = buffer2;
+          if (chunk2Pending) {
+            // chunk1 already ended — start chunk2 now
+            chunk2Pending = false;
+            if (ctx.state === "suspended") await ctx.resume();
+            if (genRef.current !== myGen) return;
+            chunkContentOffsetRef.current = chunk1ContentDuration;
+            startSource(buffer2, ctx, 0);
+            setPlayerState("playing");
+          }
+          // else: chunk2Buffer is set and afterEnded will use it when chunk1 ends
+        }
+      }
+
     } catch (err: unknown) {
       if (genRef.current !== myGen) return;
       stopPlayback();
@@ -235,39 +341,42 @@ function VoiceReader({ content }: { content: string }) {
   const handleSpeedChange = async (newSpeed: SpeedValue) => {
     setSpeed(newSpeed);
 
-    // Nothing playing — just record the preference
+    // Nothing active — just record the preference
     if (playerState === "idle" || playerState === "loading") return;
 
     const ctx = audioCtxRef.current;
     if (!ctx) return;
 
-    // ── Compute where we are in the story content ──────────────────────────
-    // ctx.currentTime stops advancing while suspended, so this is safe for
-    // both "playing" and "paused" states.
+    // ── Compute absolute content position across chunks ────────────────
+    // ctx.currentTime is frozen while suspended, so this works in both states.
     const currentBufferPos =
       sourceStartOffsetRef.current + (ctx.currentTime - sourceStartCtxTimeRef.current);
-    // newOffset = bufferPos × fetchedSpeed / newSpeed
-    // (buffer duration scales as 1/speed for the same spoken content)
-    const newOffset = currentBufferPos * fetchedSpeedRef.current / newSpeed;
-    // ───────────────────────────────────────────────────────────────────────
+    // contentPosInChunk (at 1.0×) = bufferPos × fetchedSpeed
+    // absoluteContentPos (at 1.0×) = chunkOffset + contentPosInChunk
+    const absoluteContentPos =
+      chunkContentOffsetRef.current + currentBufferPos * fetchedSpeedRef.current;
+    // In the full-text buffer at newSpeed: offset = absoluteContentPos / newSpeed
+    const newOffset = absoluteContentPos / newSpeed;
+    // ──────────────────────────────────────────────────────────────────
 
-    // If paused, resume the context first so we can start a new source
+    // If paused, resume context so we can start a new source
     if (playerState === "paused" && ctx.state === "suspended") {
       await ctx.resume();
     }
 
-    // ── Cache hit → instant switch, no loading spinner ───────────────────
+    // ── Cache hit → instant switch, no loading spinner ────────────────
     const cached = audioCacheRef.current.get(newSpeed);
     if (cached) {
       const safeOffset = Math.max(0, Math.min(newOffset, cached.duration - 0.1));
       fetchedSpeedRef.current = newSpeed;
+      chunkContentOffsetRef.current = 0; // now playing full-text buffer from one chunk
       startSource(cached, ctx, safeOffset);
       setPlayerState("playing");
       return;
     }
-    // ───────────────────────────────────────────────────────────────────────
+    // ──────────────────────────────────────────────────────────────────
 
-    // Cache miss — need to fetch (this only happens if pre-fetch hasn't finished yet)
+    // Cache miss (pre-fetch not done yet) — fetch full text at new speed
     const myGen = ++genRef.current;
     setPlayerState("loading");
 
