@@ -56,40 +56,54 @@ function VoiceReader({ content }: { content: string }) {
   const [playerState, setPlayerState] = useState<PlayerState>("idle");
   const [error, setError] = useState<string | null>(null);
 
-  // Web Audio API refs — AudioContext is created immediately on user click
-  // to preserve the browser's user-gesture activation before the long TTS fetch
+  // Web Audio API refs
   const audioCtxRef = useRef<AudioContext | null>(null);
   const sourceRef = useRef<AudioBufferSourceNode | null>(null);
-  const audioBufferRef = useRef<AudioBuffer | null>(null);
+
+  // Per-speed audio cache — avoids re-fetching when switching back to a speed
+  const audioCacheRef = useRef<Map<SpeedValue, AudioBuffer>>(new Map());
+
+  // Position tracking — needed to resume from same spot after a speed change
+  const sourceStartCtxTimeRef = useRef(0);   // ctx.currentTime when source.start() was called
+  const sourceStartOffsetRef = useRef(0);    // buffer offset used in source.start()
+  const fetchedSpeedRef = useRef<SpeedValue>(1.0); // OpenAI speed the current buffer was fetched at
+
   // Generation counter to discard stale responses
   const genRef = useRef(0);
 
-  const stopPlayback = useCallback(() => {
+  // Clear cache whenever the story content changes
+  useEffect(() => {
+    audioCacheRef.current = new Map();
+  }, [content]);
+
+  // Stop the source node only (keep AudioContext open for speed-change continuity)
+  const stopSource = useCallback(() => {
     if (sourceRef.current) {
       try { sourceRef.current.stop(); } catch { /* already stopped */ }
       sourceRef.current.disconnect();
       sourceRef.current = null;
     }
+  }, []);
+
+  // Full stop — also closes and discards the AudioContext
+  const stopPlayback = useCallback(() => {
+    stopSource();
     if (audioCtxRef.current) {
       audioCtxRef.current.close().catch(() => {});
       audioCtxRef.current = null;
     }
-    audioBufferRef.current = null;
-  }, []);
+  }, [stopSource]);
 
   useEffect(() => {
     return () => stopPlayback();
   }, [stopPlayback]);
 
-  const startSource = useCallback((buffer: AudioBuffer, ctx: AudioContext, playbackRate: number, offset = 0) => {
-    if (sourceRef.current) {
-      try { sourceRef.current.stop(); } catch { /* ok */ }
-      sourceRef.current.disconnect();
-      sourceRef.current = null;
-    }
+  // Wire up a buffer to the context and start playback from `offset` seconds
+  const startSource = useCallback((buffer: AudioBuffer, ctx: AudioContext, offset = 0) => {
+    stopSource();
     const source = ctx.createBufferSource();
     source.buffer = buffer;
-    source.playbackRate.value = playbackRate;
+    source.playbackRate.value = 1.0; // pitch preserved — speed comes from OpenAI
     source.connect(ctx.destination);
     source.onended = () => {
       if (sourceRef.current === source) {
@@ -99,16 +113,59 @@ function VoiceReader({ content }: { content: string }) {
     };
     source.start(0, offset);
     sourceRef.current = source;
-  }, []);
+    sourceStartCtxTimeRef.current = ctx.currentTime;
+    sourceStartOffsetRef.current = offset;
+  }, [stopSource]);
+
+  // Fetch (or serve from cache) at a given OpenAI speed then start playing
+  // from `offset` seconds into that buffer.  Uses the existing `ctx`.
+  const fetchAndPlay = useCallback(async (
+    targetSpeed: SpeedValue,
+    offset: number,
+    ctx: AudioContext,
+    myGen: number,
+  ) => {
+    let buffer = audioCacheRef.current.get(targetSpeed) ?? null;
+
+    if (!buffer) {
+      const res = await fetch("/api/speaking/tts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: content, speed: targetSpeed, model: "tts-1" }),
+      });
+
+      if (genRef.current !== myGen) return;
+
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}));
+        throw new Error((errData as { error?: string }).error ?? "tts_failed");
+      }
+
+      const ab = await res.arrayBuffer();
+      if (genRef.current !== myGen) return;
+
+      buffer = await ctx.decodeAudioData(ab);
+      if (genRef.current !== myGen) return;
+
+      audioCacheRef.current.set(targetSpeed, buffer);
+    }
+
+    // Chrome auto-suspends idle AudioContext after long fetches
+    if (ctx.state === "suspended") await ctx.resume();
+    if (genRef.current !== myGen) return;
+
+    // Clamp offset to valid range
+    const safeOffset = Math.max(0, Math.min(offset, buffer.duration - 0.1));
+    fetchedSpeedRef.current = targetSpeed;
+    startSource(buffer, ctx, safeOffset);
+    setPlayerState("playing");
+  }, [content, startSource]);
 
   const handlePlay = async () => {
     setError(null);
 
-    // Resume from pause — apply any speed change made while paused
-    if (playerState === "paused" && audioCtxRef.current && audioBufferRef.current) {
-      if (sourceRef.current) {
-        sourceRef.current.playbackRate.value = speed;
-      }
+    // Resume from pause (AudioContext was suspended — just un-suspend it)
+    if (playerState === "paused" && audioCtxRef.current) {
       await audioCtxRef.current.resume();
       setPlayerState("playing");
       return;
@@ -116,64 +173,24 @@ function VoiceReader({ content }: { content: string }) {
 
     stopPlayback();
 
-    // ── KEY FIX ──────────────────────────────────────────────────────────────
-    // Create the AudioContext RIGHT HERE, while the user-gesture is still live.
-    // The browser grants audio permission for this context regardless of how
-    // long the subsequent fetch takes (no expiry on AudioContext, unlike play()).
-    // ─────────────────────────────────────────────────────────────────────────
+    // Create AudioContext NOW (during the user-gesture) — no expiry risk
     const ctx = new AudioContext();
     audioCtxRef.current = ctx;
     const myGen = ++genRef.current;
+    fetchedSpeedRef.current = speed;
 
     setPlayerState("loading");
 
     try {
-      // Always fetch at speed=1.0 — playback rate is controlled via
-      // AudioBufferSourceNode.playbackRate so it can be changed in real-time
-      // without re-fetching the audio.
-      const res = await fetch("/api/speaking/tts", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text: content, speed: 1.0, model: "tts-1" }),
-      });
-
-      if (genRef.current !== myGen) return; // user stopped
-
-      if (!res.ok) {
-        const errData = await res.json().catch(() => ({}));
-        throw new Error((errData as { error?: string }).error ?? "tts_failed");
-      }
-
-      const arrayBuffer = await res.arrayBuffer();
-
-      if (genRef.current !== myGen) return;
-
-      const audioBuffer = await ctx.decodeAudioData(arrayBuffer);
-
-      if (genRef.current !== myGen) return;
-
-      // Chrome auto-suspends idle AudioContext — resume before starting source
-      if (ctx.state === "suspended") {
-        await ctx.resume();
-      }
-
-      if (genRef.current !== myGen) return;
-
-      audioBufferRef.current = audioBuffer;
-      // Use the current speed value (user may have changed it during loading)
-      startSource(audioBuffer, ctx, speed);
-      setPlayerState("playing");
-
+      await fetchAndPlay(speed, 0, ctx, myGen);
     } catch (err: unknown) {
       if (genRef.current !== myGen) return;
       stopPlayback();
       setPlayerState("idle");
       const msg = err instanceof Error ? err.message : "";
-      if (msg === "quota_exceeded") {
-        setError("Audio quota reached. Please try again later.");
-      } else {
-        setError("Could not load audio. Please try again.");
-      }
+      setError(msg === "quota_exceeded"
+        ? "Audio quota reached. Please try again later."
+        : "Could not load audio. Please try again.");
     }
   };
 
@@ -185,19 +202,52 @@ function VoiceReader({ content }: { content: string }) {
   };
 
   const handleStop = () => {
-    genRef.current++; // invalidate any in-flight fetch
+    genRef.current++;
     stopPlayback();
     setPlayerState("idle");
     setError(null);
   };
 
-  const handleSpeedChange = (newSpeed: SpeedValue) => {
+  const handleSpeedChange = async (newSpeed: SpeedValue) => {
     setSpeed(newSpeed);
-    // Change rate on the live source node — no restart, no re-fetch needed
-    if (sourceRef.current) {
-      sourceRef.current.playbackRate.value = newSpeed;
+
+    // Nothing playing — just record the preference
+    if (playerState === "idle" || playerState === "loading") return;
+
+    const ctx = audioCtxRef.current;
+    if (!ctx) return;
+
+    // ── Compute where we are in the story content ──────────────────────────
+    // ctx.currentTime stops advancing while suspended, so this is safe for
+    // both "playing" and "paused" states.
+    // currentBufferPos: seconds into the buffer that is currently playing
+    const currentBufferPos =
+      sourceStartOffsetRef.current + (ctx.currentTime - sourceStartCtxTimeRef.current);
+    // Convert to content position using the formula:
+    //   newOffset = bufferPos × fetchedSpeed / newSpeed
+    // (Because buffer duration scales as 1/speed for the same spoken content.)
+    const newOffset = currentBufferPos * fetchedSpeedRef.current / newSpeed;
+    // ───────────────────────────────────────────────────────────────────────
+
+    // If paused, resume the context first so we can start a new source
+    if (playerState === "paused" && ctx.state === "suspended") {
+      await ctx.resume();
     }
-    // If loading or idle, the new speed will be applied when startSource runs
+
+    const myGen = ++genRef.current;
+    setPlayerState("loading");
+
+    try {
+      await fetchAndPlay(newSpeed, newOffset, ctx, myGen);
+    } catch (err: unknown) {
+      if (genRef.current !== myGen) return;
+      stopPlayback();
+      setPlayerState("idle");
+      const msg = err instanceof Error ? err.message : "";
+      setError(msg === "quota_exceeded"
+        ? "Audio quota reached. Please try again later."
+        : "Could not load audio. Please try again.");
+    }
   };
 
   const isActive = playerState === "playing" || playerState === "paused" || playerState === "loading";
