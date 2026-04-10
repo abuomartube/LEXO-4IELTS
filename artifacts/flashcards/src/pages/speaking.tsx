@@ -182,7 +182,11 @@ const CUE_CARDS: Record<string, string> = {
 
 const TOTAL_TOPICS = TOPICS.length;
 
-const PART_LIMITS = { 1: 5, 2: 1, 3: 4 };
+const PART_LIMITS = { 1: 8, 2: 1, 3: 4 };
+
+const VOICE_INTRO = "Welcome to 4IELTS Speaking Practice. I am your examiner today. Please relax and speak naturally. We will go through Part 1, Part 2, and Part 3. Take a breath, and let's begin. Here is your first question.";
+
+const GOODBYE_MESSAGE = "Thank you for practicing today on 4IELTS. You did a great job. Keep practicing and you will reach your target band score. Goodbye and good luck!";
 const PREP_TIME = 60;
 
 const USED_TOPICS_KEY = "ielts_speaking_used_topics";
@@ -701,12 +705,13 @@ function buildTranscriptText(
 }
 
 function TranscriptViewer({
-  topic, entries, report, onClose,
+  topic, entries, report, onClose, onNewSession,
 }: {
   topic: string;
   entries: TranscriptEntry[];
   report: ReportData | null;
   onClose: () => void;
+  onNewSession?: () => void;
 }) {
   const text = buildTranscriptText(topic, entries, report);
 
@@ -724,34 +729,36 @@ function TranscriptViewer({
     URL.revokeObjectURL(url);
   };
 
+  // Count how many parts appear in transcript
+  const partsInTranscript = [...new Set(entries.map((e) => e.part))].length;
+  const date = new Date().toLocaleDateString("en-GB", { day: "2-digit", month: "long", year: "numeric" });
+
+  // Build per-part question counters
+  const partCounters: Record<number, number> = {};
+
   return (
     <div className="fixed inset-0 z-50 bg-background/95 backdrop-blur-sm flex flex-col">
+      {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-border shrink-0">
-        <h2 className="text-base font-bold text-foreground">📄 نص الجلسة الكامل</h2>
-        <div className="flex gap-2">
-          <button
-            onClick={copyToClipboard}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-border text-xs font-semibold text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
-          >
-            📋 نسخ
-          </button>
-          <button
-            onClick={download}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-border text-xs font-semibold text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
-          >
-            💾 تحميل
-          </button>
-          <button
-            onClick={onClose}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-muted text-xs font-semibold text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
-          >
-            ✕ إغلاق
-          </button>
+        <div>
+          <h2 className="text-base font-bold text-foreground">📄 نص الجلسة الكامل</h2>
+          <p className="text-xs text-muted-foreground mt-0.5">{topic} · {date} · Completed: Part {partsInTranscript} of 3</p>
         </div>
+        <button
+          onClick={onClose}
+          className="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-muted text-xs font-semibold text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
+        >
+          ✕
+        </button>
       </div>
+
+      {/* Body */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {entries.map((e, i) => {
           const isNewPart = e.part !== (entries[i - 1]?.part ?? 0);
+          if (isNewPart) partCounters[e.part] = 0;
+          partCounters[e.part] = (partCounters[e.part] ?? 0) + 1;
+          const qNum = partCounters[e.part];
           const partLabels: Record<number, string> = { 1: "Part 1 — Introduction", 2: "Part 2 — Long Turn", 3: "Part 3 — Discussion" };
           return (
             <div key={i}>
@@ -762,24 +769,58 @@ function TranscriptViewer({
               )}
               <div className="bg-card rounded-2xl border border-border p-3 space-y-1.5 text-sm">
                 {e.question && (
-                  <p className="text-muted-foreground"><span className="font-semibold text-foreground">Q:</span> {e.question}</p>
+                  <p className="text-muted-foreground text-xs">
+                    <span className="font-semibold text-foreground">Q{qNum}:</span> {e.question}
+                  </p>
                 )}
-                <p><span className="font-semibold text-primary">A:</span> {e.answer}</p>
-                {e.correction && <p className="text-amber-600 dark:text-amber-400 text-xs">✅ {e.correction}</p>}
-                {e.vocab && <p className="text-sky-600 dark:text-sky-400 text-xs">📝 {e.vocab}</p>}
-                {e.band && <p className="text-green-600 dark:text-green-400 text-xs font-semibold">⭐ {e.band}</p>}
+                <p className="font-medium"><span className="text-primary font-semibold">Your answer:</span> {e.answer}</p>
+                {e.correction && <p className="text-amber-600 dark:text-amber-400 text-xs">❌ {e.correction.split("→").map((s, idx) => idx === 0 ? `${s} →` : <strong key={idx}>{s}</strong>)}</p>}
+                {e.vocab && <p className="text-sky-600 dark:text-sky-400 text-xs">📝 Better: {e.vocab}</p>}
+                {e.band && <p className="text-green-600 dark:text-green-400 text-xs font-semibold">⭐ Band: {e.band}</p>}
               </div>
             </div>
           );
         })}
         {report && (
-          <div className="bg-primary/5 rounded-2xl border border-primary/20 p-4 text-sm space-y-1">
-            <h3 className="font-bold text-primary mb-2">📊 Final Report</h3>
-            <p>Overall Band: <strong>{report.overallBand}/9</strong></p>
-            <p>Fluency: {report.fluencyCoherence.band}/9</p>
+          <div className="bg-primary/5 rounded-2xl border border-primary/20 p-4 text-sm space-y-1.5">
+            <h3 className="font-bold text-primary mb-2">📊 FINAL REPORT</h3>
+            <p className="text-base font-bold">Overall Band: {report.overallBand}/9</p>
+            <p>Fluency & Coherence: {report.fluencyCoherence.band}/9</p>
             <p>Lexical Resource: {report.lexicalResource.band}/9</p>
-            <p>Grammar: {report.grammaticalRange.band}/9</p>
+            <p>Grammatical Range: {report.grammaticalRange.band}/9</p>
+            {report.improvements?.length > 0 && (
+              <div className="mt-2">
+                <p className="font-semibold text-xs mb-1">Top improvements:</p>
+                {report.improvements.slice(0, 5).map((imp, idx) => (
+                  <p key={idx} className="text-xs text-muted-foreground">{idx + 1}. {imp}</p>
+                ))}
+              </div>
+            )}
           </div>
+        )}
+      </div>
+
+      {/* Footer buttons */}
+      <div className="shrink-0 flex gap-2 p-4 border-t border-border">
+        <button
+          onClick={copyToClipboard}
+          className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl border border-border text-sm font-semibold text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
+        >
+          📋 نسخ النص
+        </button>
+        <button
+          onClick={download}
+          className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl border border-border text-sm font-semibold text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
+        >
+          💾 تحميل .txt
+        </button>
+        {onNewSession && (
+          <button
+            onClick={onNewSession}
+            className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-colors"
+          >
+            🔄 جلسة جديدة
+          </button>
         )}
       </div>
     </div>
@@ -824,6 +865,8 @@ export default function SpeakingPage() {
   const sessionRef = useRef(session);
   const startRecordingRef = useRef<(() => Promise<void>) | null>(null);
   const sessionModeRef = useRef<SessionMode | null>(null);
+  const isSpeakingRef = useRef(false);
+  const lastTtsTextRef = useRef<string | null>(null);
 
   // Auto-scroll chat
   useEffect(() => {
@@ -834,11 +877,76 @@ export default function SpeakingPage() {
   useEffect(() => { sessionRef.current = session; }, [session]);
   useEffect(() => { sessionModeRef.current = sessionMode; }, [sessionMode]);
 
+  // ── Cleanup on unmount (FIX 1) ────────────────────────────────────────────
+  useEffect(() => {
+    return () => {
+      // Stop all audio when student navigates away
+      if (ttsAudioRef.current) {
+        ttsAudioRef.current.pause();
+        ttsAudioRef.current.src = "";
+        ttsAudioRef.current = null;
+      }
+      if (audioCtxRef.current) { audioCtxRef.current.close(); audioCtxRef.current = null; }
+      if (rafRef.current) { cancelAnimationFrame(rafRef.current); rafRef.current = null; }
+      if (silenceTimerRef.current) { clearTimeout(silenceTimerRef.current); silenceTimerRef.current = null; }
+      mediaRecorderRef.current?.stop();
+      mediaRecorderRef.current = null;
+    };
+  }, []);
+
   // ── TTS speed ────────────────────────────────────────────────────────────────
 
   const setTtsSpeed = useCallback((speed: number) => {
     setTtsSpeedState(speed);
     localStorage.setItem(TTS_SPEED_KEY, String(speed));
+    // FIX 6: If AI is currently speaking, stop and re-play with new speed instantly
+    if (isSpeakingRef.current && lastTtsTextRef.current) {
+      const textToReplay = lastTtsTextRef.current;
+      if (ttsAudioRef.current) {
+        ttsAudioRef.current.pause();
+        ttsAudioRef.current.src = "";
+        ttsAudioRef.current = null;
+      }
+      isSpeakingRef.current = false;
+      // Short delay so state settles, then re-play with new speed
+      setTimeout(async () => {
+        const clean = stripForTts(textToReplay);
+        if (!clean) return;
+        try {
+          const res = await fetch("/api/speaking/tts", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ text: clean, speed }),
+          });
+          if (!res.ok) return;
+          const blob = await res.blob();
+          const url = URL.createObjectURL(blob);
+          const audio = new Audio(url);
+          ttsAudioRef.current = audio;
+          isSpeakingRef.current = true;
+          setIsSpeaking(true);
+          audio.onended = () => {
+            URL.revokeObjectURL(url);
+            ttsAudioRef.current = null;
+            isSpeakingRef.current = false;
+            setIsSpeaking(false);
+            if (sessionModeRef.current === "voice") {
+              const s = sessionRef.current;
+              if (!s.partDone && (s.phase === "part1" || s.phase === "part2-answer" || s.phase === "part3")) {
+                startRecordingRef.current?.();
+              }
+            }
+          };
+          audio.onerror = () => {
+            URL.revokeObjectURL(url);
+            ttsAudioRef.current = null;
+            isSpeakingRef.current = false;
+            setIsSpeaking(false);
+          };
+          await audio.play();
+        } catch { isSpeakingRef.current = false; setIsSpeaking(false); }
+      }, 80);
+    }
   }, []);
 
   // Keep a ref so playTts always uses the latest speed value
@@ -853,6 +961,7 @@ export default function SpeakingPage() {
       ttsAudioRef.current.src = "";
       ttsAudioRef.current = null;
     }
+    isSpeakingRef.current = false;
     setIsSpeaking(false);
   }, []);
 
@@ -862,6 +971,7 @@ export default function SpeakingPage() {
     const clean = stripForTts(text);
     if (!clean) return;
     setLastTtsText(clean);
+    lastTtsTextRef.current = clean;
 
     try {
       const res = await fetch("/api/speaking/tts", {
@@ -875,11 +985,13 @@ export default function SpeakingPage() {
       const url = URL.createObjectURL(blob);
       const audio = new Audio(url);
       ttsAudioRef.current = audio;
+      isSpeakingRef.current = true;
       setIsSpeaking(true);
 
       audio.onended = () => {
         URL.revokeObjectURL(url);
         ttsAudioRef.current = null;
+        isSpeakingRef.current = false;
         setIsSpeaking(false);
         // Voice mode: auto-activate mic after examiner finishes speaking
         if (sessionModeRef.current === "voice") {
@@ -892,10 +1004,12 @@ export default function SpeakingPage() {
       audio.onerror = () => {
         URL.revokeObjectURL(url);
         ttsAudioRef.current = null;
+        isSpeakingRef.current = false;
         setIsSpeaking(false);
       };
       await audio.play();
     } catch {
+      isSpeakingRef.current = false;
       setIsSpeaking(false);
     }
   }, [stopTts]);
@@ -931,6 +1045,10 @@ export default function SpeakingPage() {
     });
 
     try {
+      // FIX 2: Voice mode — play warm intro first, then get Q1
+      if (mode === "voice") {
+        await playTts(VOICE_INTRO);
+      }
       const reply = await callSpeakingAPIStream([], topic, 1, 1, true, setStreamingContent);
       setStreamingContent(null);
       setSession((s) => ({
@@ -1097,6 +1215,18 @@ export default function SpeakingPage() {
     mediaRecorderRef.current = null;
     setIsRecording(false);
   }, []);
+
+  // ── Stop Practice (FIX 3) ──
+  const stopSession = useCallback(async () => {
+    stopRecording();
+    stopTts();
+    setIsLoading(false);
+    // Play goodbye, then show transcript
+    try {
+      await playTts(GOODBYE_MESSAGE);
+    } catch { /* ignore */ }
+    setShowTranscript(true);
+  }, [stopRecording, stopTts, playTts]);
 
   // ── New session ──
   const newSession = useCallback(() => {
@@ -1487,6 +1617,14 @@ export default function SpeakingPage() {
                     <Volume2 className="w-3.5 h-3.5" /> إعادة سؤال المحكّم
                   </button>
                 )}
+                {/* FIX 3: Stop session button */}
+                <button
+                  onClick={stopSession}
+                  disabled={isLoading && !isSpeaking}
+                  className="flex items-center gap-2 px-4 py-2 rounded-xl border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 text-sm font-semibold hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors disabled:opacity-40"
+                >
+                  ⏹ إنهاء التمرين
+                </button>
               </div>
             )}
 
@@ -1554,6 +1692,7 @@ export default function SpeakingPage() {
           entries={transcript}
           report={session.report}
           onClose={() => setShowTranscript(false)}
+          onNewSession={() => { setShowTranscript(false); newSession(); }}
         />
       )}
     </Layout>

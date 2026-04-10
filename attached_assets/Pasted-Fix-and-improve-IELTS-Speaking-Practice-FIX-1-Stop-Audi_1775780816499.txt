@@ -1,0 +1,127 @@
+Fix and improve IELTS Speaking Practice.
+
+──────────────────────
+FIX 1: Stop Audio When Leaving Page
+──────────────────────
+- When student navigates away from 
+  Speaking Practice page:
+  IMMEDIATELY stop all audio playback
+- Cancel any pending TTS requests
+- Reset all recording states
+- No audio should play on other pages
+- Use cleanup function on page unmount
+
+──────────────────────
+FIX 2: Welcome Introduction
+──────────────────────
+When student selects Voice Mode:
+AI examiner speaks this intro first:
+
+"Welcome to your IELTS Speaking Practice.
+I am your examiner today.
+Please relax and speak naturally.
+We will go through Part 1, Part 2, 
+and Part 3.
+Take a breath, and let's begin.
+Here is your first question."
+
+- Play intro audio completely
+- Then automatically ask Question 1
+- Warm, professional, encouraging tone
+
+──────────────────────
+FIX 3: Stop Practice Button
+──────────────────────
+Add visible "⏹ إنهاء التمرين" button
+during voice session.
+
+When tapped:
+1. Stop recording immediately
+2. Stop any audio playing
+3. AI says goodbye:
+   "Thank you for practicing today.
+   You did a great job. 
+   Keep practicing and you will 
+   reach your target band score.
+   Goodbye and good luck!"
+4. Play goodbye audio
+5. Then show Full Transcript screen
+
+──────────────────────
+FIX 4: Part 1 = 8 Questions
+──────────────────────
+Change Part 1 from 5 to 8 questions.
+Mix of question types:
+- Personal questions (3)
+- Habit questions (3)  
+- Opinion questions (2)
+
+──────────────────────
+FIX 5: Full Transcript Screen
+──────────────────────
+Show after session ends OR student stops.
+Display in clean modal/screen:
+
+━━━━━━━━━━━━━━━━━━━━━
+📄 SESSION TRANSCRIPT
+━━━━━━━━━━━━━━━━━━━━━
+Topic: [topic] | Date: [date]
+Completed: Part X of 3
+
+PART 1 - Introduction
+─────────────────────
+Q1: [question]
+Your answer: [answer]
+❌ [mistake] → ✅ [correction]
+📝 Better: [word1], [word2]
+⭐ Band: X/9
+
+Q2: [question]
+...
+
+PART 2 - Long Turn
+─────────────────────
+Cue Card: [text]
+Your answer: [answer]
+...
+
+PART 3 - Discussion
+─────────────────────
+...
+
+━━━━━━━━━━━━━━━━━━━━━
+FINAL REPORT
+━━━━━━━━━━━━━━━━━━━━━
+Overall Band: X/9
+Fluency & Coherence: X/9
+Lexical Resource: X/9
+Grammatical Range: X/9
+
+Top 5 improvements:
+1. [suggestion]
+2. [suggestion]
+3. [suggestion]
+4. [suggestion]
+5. [suggestion]
+━━━━━━━━━━━━━━━━━━━━━
+
+Buttons:
+[📋 نسخ النص] [💾 تحميل .txt] [🔄 جلسة جديدة]
+
+──────────────────────
+FIX 6: Instant Speed Change
+──────────────────────
+Speed change must apply IMMEDIATELY.
+
+CURRENT (wrong):
+- Speed updates only on next question
+
+CORRECT:
+- If AI is currently speaking and 
+  student changes speed:
+  1. Stop current audio immediately
+  2. Re-generate same sentence with new speed
+  3. Play again with new speed instantly
+
+- Speed change = real-time, no delay
+- Apply within current sentence, not next
