@@ -1445,31 +1445,55 @@ export default function SpeakingPage() {
 
         {/* ── IDLE STATE ── */}
         {session.phase === "idle" && (
-          <div className="flex-1 flex flex-col items-center justify-center text-center gap-6 px-4">
-            <div className="w-20 h-20 rounded-3xl bg-primary flex items-center justify-center shadow-lg">
-              <Mic className="w-10 h-10 text-primary-foreground" />
+          <div className="flex-1 flex flex-col items-center gap-5 px-2 pb-4">
+
+            {/* Hero card */}
+            <div
+              className="w-full rounded-3xl overflow-hidden flex flex-col items-center text-center px-6 pt-6 pb-5 gap-4"
+              style={{ background: "linear-gradient(160deg, hsl(177,83%,28%) 0%, hsl(177,83%,32%) 60%, hsl(177,83%,28%) 100%)" }}
+            >
+              {/* Portrait */}
+              <div
+                className="rounded-2xl overflow-hidden shrink-0 border-4 shadow-xl"
+                style={{ width: 180, height: 220, borderColor: "rgba(255,255,255,0.25)" }}
+              >
+                <img
+                  src="/churchill.png"
+                  alt="Churchill AI"
+                  className="w-full h-full object-cover object-top"
+                />
+              </div>
+
+              {/* Name + greeting */}
+              <div>
+                <h2 className="text-2xl font-extrabold text-white mb-0.5">Churchill AI</h2>
+                <p className="text-xs font-semibold mb-3" style={{ color: "rgba(255,255,255,0.65)" }}>
+                  IELTS Speaking Examiner · Powered by 4IELTS
+                </p>
+                <div className="bg-white/10 rounded-2xl px-4 py-3 max-w-sm mx-auto">
+                  <p className="text-sm text-white/90 leading-relaxed italic">
+                    "Hi, this is Churchill AI. I am here to enhance your speaking skills and help you achieve your target IELTS band score. Let's begin."
+                  </p>
+                </div>
+              </div>
             </div>
-            <div>
-              <h2 className="text-2xl font-extrabold text-foreground mb-1">Churchill AI</h2>
-              <p className="text-sm font-semibold text-primary mb-2">IELTS Speaking Examiner · Powered by 4IELTS</p>
-              <p className="text-muted-foreground max-w-md leading-relaxed text-sm">
-                Practise all 3 parts of the IELTS Speaking test with Churchill AI.
-                Get real-time feedback on grammar, vocabulary, and band scores after every answer.
-              </p>
-            </div>
-            <div className="flex flex-col sm:flex-row gap-3 text-sm text-muted-foreground">
+
+            {/* Part info pills */}
+            <div className="flex flex-col sm:flex-row gap-2 text-sm text-muted-foreground w-full">
               {[
                 { icon: "1️⃣", text: "Part 1 — 8 personal questions" },
                 { icon: "2️⃣", text: "Part 2 — 1 minute long turn" },
                 { icon: "3️⃣", text: "Part 3 — 4 discussion questions" },
               ].map((item) => (
-                <div key={item.text} className="flex items-center gap-2 bg-muted/50 px-3 py-2 rounded-xl">
+                <div key={item.text} className="flex items-center gap-2 bg-muted/50 px-3 py-2 rounded-xl flex-1 justify-center">
                   <span>{item.icon}</span>
                   <span className="font-medium">{item.text}</span>
                 </div>
               ))}
             </div>
-            <div className="flex flex-col sm:flex-row gap-3 w-full max-w-md">
+
+            {/* Mode buttons */}
+            <div className="flex flex-col sm:flex-row gap-3 w-full">
               <button
                 onClick={() => startSession("voice")}
                 className="flex-1 flex flex-col items-center gap-1 bg-primary text-primary-foreground px-6 py-4 rounded-2xl font-bold hover:bg-primary/90 transition-colors shadow-md"
