@@ -184,9 +184,9 @@ const TOTAL_TOPICS = TOPICS.length;
 
 const PART_LIMITS = { 1: 8, 2: 1, 3: 4 };
 
-const VOICE_INTRO = "Welcome to Churchill AI, your personal IELTS Speaking Examiner, powered by 4IELTS. I am here to help you reach your target band score. Please relax and speak naturally. Let's begin your practice session.";
+const VOICE_INTRO = "Welcome to the 4IELTS platform. I am Churchill AI, your personal IELTS Speaking Examiner. I am here to help you reach your target band score. Please relax, speak naturally, and let's begin your practice session.";
 
-const GOODBYE_MESSAGE = "This has been Churchill AI, your IELTS Speaking Examiner. Thank you for practicing with us today. Keep going, stay consistent, and your band score will improve. Goodbye and good luck from 4IELTS.";
+const GOODBYE_MESSAGE = "This has been Churchill AI on the 4IELTS platform. Thank you for practicing with us today. Keep going, stay consistent, and your band score will improve. We look forward to seeing you again on 4IELTS. Goodbye and good luck.";
 const PREP_TIME = 60;
 
 const USED_TOPICS_KEY = "ielts_speaking_used_topics";
