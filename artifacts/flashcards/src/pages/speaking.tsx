@@ -1098,10 +1098,8 @@ export default function SpeakingPage() {
     });
 
     try {
-      // FIX 2: Voice mode — play warm intro first, then get Q1
-      if (mode === "voice") {
-        await playTts(VOICE_INTRO);
-      }
+      // Fetch Q1 first so we can play intro + Q1 as a single TTS in voice mode,
+      // ensuring the mic only activates after the student has actually heard the question.
       const reply = await callSpeakingAPIStream([], topic, 1, 1, true, setStreamingContent);
       setStreamingContent(null);
       setSession((s) => ({
@@ -1109,7 +1107,12 @@ export default function SpeakingPage() {
         messages: [{ role: "assistant", content: reply }],
       }));
       const { examinerText } = parseFeedback(reply);
-      await playTts(examinerText || reply);
+      const q1Text = stripForTts(examinerText || reply);
+      if (mode === "voice") {
+        await playTts(VOICE_INTRO + " " + q1Text);
+      } else {
+        await playTts(q1Text);
+      }
       // In voice mode, mic auto-activates after TTS ends (handled in playTts onended)
     } catch {
       setStreamingContent(null);
