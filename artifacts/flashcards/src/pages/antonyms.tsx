@@ -18,6 +18,9 @@ interface AntonymEntry {
   pronunciation: string;
   example: string;
   exampleAr: string;
+  antonymTranslation?: string;
+  antonymExample?: string;
+  antonymExampleAr?: string;
 }
 
 const allAntonyms: AntonymEntry[] = antonymsRaw as AntonymEntry[];
@@ -283,11 +286,15 @@ export default function Antonyms() {
                     </div>
                   </div>
 
-                  {/* Bottom: translation + example */}
+                  {/* Bottom: antonym translation + antonym example */}
                   <div className="flex-1 px-8 py-5 flex flex-col justify-center gap-4">
                     <div className="text-center">
-                      <p className="text-xs text-primary-foreground/50 uppercase tracking-widest mb-1">Translation · الترجمة</p>
-                      <p className="text-2xl font-bold arabic-text" dir="rtl" lang="ar">{card.translation}</p>
+                      <p className="text-xs text-primary-foreground/50 uppercase tracking-widest mb-1">
+                        Antonym Meaning · معنى الضد
+                      </p>
+                      <p className="text-2xl font-bold arabic-text" dir="rtl" lang="ar">
+                        {card.antonymTranslation ?? card.translation}
+                      </p>
                     </div>
 
                     <div className="w-10 h-px bg-primary-foreground/25 mx-auto" />
@@ -295,10 +302,10 @@ export default function Antonyms() {
                     <div>
                       <p className="text-xs text-primary-foreground/50 uppercase tracking-widest mb-1.5">Example · مثال</p>
                       <p className="text-sm text-primary-foreground/90 italic leading-relaxed mb-2">
-                        "{card.example}"
+                        "{card.antonymExample ?? card.example}"
                       </p>
                       <p className="text-sm text-primary-foreground/75 leading-relaxed arabic-text text-right" dir="rtl" lang="ar">
-                        «{card.exampleAr}»
+                        «{card.antonymExampleAr ?? card.exampleAr}»
                       </p>
                     </div>
                   </div>
