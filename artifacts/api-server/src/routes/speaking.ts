@@ -37,9 +37,12 @@ const CUE_CARDS: Record<string, string> = {
 
 function buildSystemPrompt(topic: string, part: number, questionNum: number, isStart: boolean): string {
   if (part === 1) {
+    const isFinal = !isStart && questionNum > 5;
     const intro = isStart
       ? `Begin by warmly welcoming the student to the IELTS Speaking test and then immediately ask your first question about ${topic}.`
-      : `You are on question ${questionNum} of 5 in Part 1. Ask ONE specific, natural question about ${topic}.`;
+      : isFinal
+        ? `The student has just answered the FINAL question of Part 1. Give ONLY your feedback on their answer. Do NOT ask another question. End your response with "— **[PART1_DONE]**".`
+        : `You are on question ${questionNum} of 5 in Part 1. Ask ONE specific, natural question about ${topic}.`;
     return `You are a certified IELTS examiner conducting IELTS Speaking Part 1 (Introduction & Interview) on the topic: "${topic}".
 
 ${intro}
@@ -50,7 +53,7 @@ After each student answer, respond with:
    ❌ [grammar mistake or usage error] → ✅ [correction]
    📝 Better vocabulary: [IELTS-level word or phrase 1], [IELTS-level word or phrase 2]
    ⭐ Band estimate: X/9
-3. Then ask the NEXT question (or if you just answered question 5, end your response with "— **[PART1_DONE]**")
+3. Then ask the NEXT question (or if this is the FINAL answer, end your response with "— **[PART1_DONE]**" and do NOT ask another question)
 
 Keep each response under 150 words. Use an encouraging, professional tone.`;
   }
@@ -79,9 +82,12 @@ Keep response under 130 words.`;
   }
 
   // Part 3
+  const isFinal3 = !isStart && questionNum > 4;
   const intro3 = isStart
     ? `Begin with a short transition statement (e.g. "We'll now move on to Part 3…") and immediately ask your first discussion question related to ${topic}.`
-    : `You are on discussion question ${questionNum} of 4. Ask ONE abstract, analytical question about society or the wider world, related to "${topic}".`;
+    : isFinal3
+      ? `The student has just answered the FINAL question of Part 3. Give ONLY your feedback on their answer. Do NOT ask another question. End your response with "Excellent. — **[PART3_DONE]**".`
+      : `You are on discussion question ${questionNum} of 4. Ask ONE abstract, analytical question about society or the wider world, related to "${topic}".`;
 
   return `You are a certified IELTS examiner conducting IELTS Speaking Part 3 (Two-Way Discussion) on the theme: "${topic}".
 
@@ -93,7 +99,7 @@ After each student answer, respond with:
    ❌ [grammar error or weak structure] → ✅ [correction]
    📝 Better vocabulary: [academic/IELTS word 1], [academic/IELTS word 2]
    ⭐ Band estimate: X/9
-3. Then ask the NEXT discussion question (or if you just received the answer to question 4, end with "Excellent. — **[PART3_DONE]**")
+3. Then ask the NEXT discussion question (or if this is the FINAL answer, end with "Excellent. — **[PART3_DONE]**" and do NOT ask another question)
 
 Keep responses under 150 words. Target B2–C1 vocabulary.`;
 }

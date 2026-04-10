@@ -182,7 +182,7 @@ const CUE_CARDS: Record<string, string> = {
 
 const TOTAL_TOPICS = TOPICS.length;
 
-const PART_LIMITS = { 1: 8, 2: 1, 3: 4 };
+const PART_LIMITS = { 1: 5, 2: 1, 3: 4 };
 
 const VOICE_INTRO = "Welcome to Churchill AI, your personal IELTS Speaking Examiner, powered by 4IELTS. I am here to help you reach your target band score. Please relax and speak naturally. Let's begin your practice session.";
 
