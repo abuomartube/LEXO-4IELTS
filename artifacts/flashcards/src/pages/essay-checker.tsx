@@ -383,28 +383,44 @@ interface ParaPopupData {
   y: number;
 }
 
+const paraKindColor: Record<string, string> = {
+  Grammar:    "bg-red-50 border-red-200 dark:bg-red-950/40 dark:border-red-800",
+  Vocabulary: "bg-yellow-50 border-yellow-200 dark:bg-yellow-950/40 dark:border-yellow-800",
+  Coherence:  "bg-blue-50 border-blue-200 dark:bg-blue-950/40 dark:border-blue-800",
+};
+const paraBadgeColor: Record<string, string> = {
+  Grammar:    "bg-red-100 text-red-700 dark:bg-red-900/60 dark:text-red-300",
+  Vocabulary: "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/60 dark:text-yellow-300",
+  Coherence:  "bg-blue-100 text-blue-700 dark:bg-blue-900/60 dark:text-blue-300",
+};
+
 function ParaPopup({ popup, onClose }: { popup: ParaPopupData; onClose: () => void }) {
+  const kind = popup.type in paraKindColor ? popup.type : "Grammar";
   return (
     <div
-      className="fixed z-50 w-72 rounded-2xl border border-border bg-white dark:bg-card shadow-2xl overflow-hidden"
-      style={{ left: Math.min(popup.x, window.innerWidth - 300), top: popup.y + 10 }}
+      className={`fixed z-50 w-80 rounded-2xl border shadow-2xl p-4 ${paraKindColor[kind]}`}
+      style={{ left: Math.min(popup.x, window.innerWidth - 340), top: popup.y + 12 }}
       onClick={e => e.stopPropagation()}
     >
-      <div className="flex items-center justify-between px-4 py-3 border-b border-border">
-        <span className="text-xs font-extrabold uppercase tracking-wider text-foreground">
-          {popup.type} Error
+      <div className="flex items-center justify-between mb-3">
+        <span className={`text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-full ${paraBadgeColor[kind]}`}>
+          {popup.type}
         </span>
         <button onClick={onClose} className="text-muted-foreground hover:text-foreground transition-colors">
           <X className="w-4 h-4" />
         </button>
       </div>
-      <div className="px-4 py-3 space-y-3">
+      <div className="space-y-2">
         <div>
-          <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">Correction</p>
-          <p className="text-sm font-semibold text-primary leading-snug">{popup.correction}</p>
+          <p className="text-[10px] font-semibold uppercase text-muted-foreground tracking-wider mb-0.5">Original</p>
+          <p className="text-sm font-medium line-through text-muted-foreground">"{popup.original}"</p>
         </div>
         <div>
-          <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">Explanation</p>
+          <p className="text-[10px] font-semibold uppercase text-muted-foreground tracking-wider mb-0.5">Correction</p>
+          <p className="text-sm font-semibold text-foreground">"{popup.correction}"</p>
+        </div>
+        <div>
+          <p className="text-[10px] font-semibold uppercase text-muted-foreground tracking-wider mb-0.5">Why</p>
           <p className="text-xs text-muted-foreground leading-relaxed">{popup.explanation}</p>
         </div>
       </div>
@@ -441,6 +457,12 @@ function buildParaSegments(text: string, corrections: ParagraphCorrection[]) {
   return segments;
 }
 
+const paraHlBg: Record<string, string> = {
+  Grammar:    "bg-red-200/80 dark:bg-red-800/50 hover:bg-red-300/80 dark:hover:bg-red-700/60",
+  Vocabulary: "bg-yellow-200/80 dark:bg-yellow-800/50 hover:bg-yellow-300/80 dark:hover:bg-yellow-700/60",
+  Coherence:  "bg-blue-200/80 dark:bg-blue-800/50 hover:bg-blue-300/80 dark:hover:bg-blue-700/60",
+};
+
 function AnnotatedParagraph({ text, corrections }: { text: string; corrections: ParagraphCorrection[] }) {
   const [popup, setPopup] = useState<ParaPopupData | null>(null);
   const segments = buildParaSegments(text, corrections);
@@ -458,24 +480,27 @@ function AnnotatedParagraph({ text, corrections }: { text: string; corrections: 
     });
   };
 
+  const hlColor = (type: string) => paraHlBg[type] ?? paraHlBg["Grammar"];
+
   return (
     <div onClick={() => setPopup(null)} className="relative">
-      <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-2xl p-5 space-y-3">
+      <div className="bg-card border border-border rounded-2xl p-5 space-y-3">
         <div className="flex items-center justify-between">
           <h3 className="text-sm font-bold flex items-center gap-2">🔍 Annotated Version</h3>
           {corrections.length > 0 && (
             <span className="text-xs text-muted-foreground font-medium">
-              {corrections.length} error{corrections.length !== 1 ? "s" : ""} · tap to inspect
+              {corrections.length} error{corrections.length !== 1 ? "s" : ""} · click to inspect
             </span>
           )}
         </div>
-        <div className="text-sm leading-relaxed whitespace-pre-wrap font-medium">
+
+        <div className="bg-muted/30 rounded-xl p-4 text-sm leading-relaxed whitespace-pre-wrap font-medium">
           {segments.map((seg, i) =>
             seg.ann ? (
               <span
                 key={i}
                 onClick={(e) => handleClick(e, seg.ann!)}
-                className="cursor-pointer rounded px-0.5 bg-red-200/80 dark:bg-red-800/50 hover:bg-red-300/80 dark:hover:bg-red-700/60 transition-colors"
+                className={`cursor-pointer rounded px-0.5 transition-colors ${hlColor(seg.ann.type)}`}
                 title="Click for correction"
               >
                 {seg.text}
@@ -485,11 +510,14 @@ function AnnotatedParagraph({ text, corrections }: { text: string; corrections: 
             )
           )}
         </div>
-        {corrections.length > 0 && (
-          <p className="text-xs text-muted-foreground italic">
-            · Click any highlighted phrase to see the correction
-          </p>
-        )}
+
+        {/* Legend */}
+        <div className="flex items-center gap-5 flex-wrap text-xs text-muted-foreground">
+          <span className="flex items-center gap-1.5"><span className="inline-block w-3 h-3 rounded bg-red-300 dark:bg-red-700" /> Grammar</span>
+          <span className="flex items-center gap-1.5"><span className="inline-block w-3 h-3 rounded bg-yellow-300 dark:bg-yellow-700" /> Vocabulary</span>
+          <span className="flex items-center gap-1.5"><span className="inline-block w-3 h-3 rounded bg-blue-300 dark:bg-blue-700" /> Coherence</span>
+          <span className="italic">· Click any highlight for details</span>
+        </div>
       </div>
       {popup && <ParaPopup popup={popup} onClose={() => setPopup(null)} />}
     </div>

@@ -67,10 +67,10 @@ Evaluate based on: Grammar, Punctuation, Vocabulary, and Coherence.
 Return ONLY a valid JSON object with these exact keys:
 {
   "strengths": "A clear list of what the student did well. Use bullet points with • for each point.",
-  "improvements": "A clear list of specific issues. Use ❌ original → ✅ correction format for each.",
+  "improvements": "A clear list of specific issues. Use the format: ❌ original → ✅ correction for each.",
   "corrections": [
     {
-      "original": "the exact phrase as it appears in the student's text (must match exactly for highlighting)",
+      "original": "the exact phrase as it appears in the student's text",
       "correction": "the corrected version",
       "explanation": "brief explanation of the error",
       "type": "Grammar"
@@ -83,9 +83,12 @@ Return ONLY a valid JSON object with these exact keys:
 
 IMPORTANT:
 - Return only the JSON object. No markdown, no extra text.
-- For each correction, the "original" field must be the EXACT phrase as it appears in the student's text so it can be located and highlighted.
-- Include all grammar, spelling, punctuation, and vocabulary errors.
-- Type can be: Grammar, Spelling, Punctuation, Vocabulary, Word Choice`;
+- The "original" field must be the EXACT phrase as it appears in the student's text so it can be located and highlighted.
+- The "type" field must be exactly one of these three values: Grammar, Vocabulary, Coherence.
+  - Grammar = grammar errors, spelling mistakes, punctuation errors
+  - Vocabulary = poor word choice, weak/repetitive words, informal words
+  - Coherence = unclear flow, missing linking words, awkward sentence order
+- Include all errors found across all three categories.`;
 
 router.post("/paragraph-check", async (req, res) => {
   try {
