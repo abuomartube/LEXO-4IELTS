@@ -133,7 +133,7 @@ router.post("/speaking/message", async (req, res) => {
     res.flushHeaders();
 
     const stream = anthropic.messages.stream({
-      model: "claude-haiku-4-5",
+      model: "claude-sonnet-4-5",
       max_tokens: 300,
       system: systemPrompt,
       messages: contextMessages,

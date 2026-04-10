@@ -1014,12 +1014,22 @@ export default function SpeakingPage() {
           resolve();
         };
 
+        const triggerMicIfNeeded = () => {
+          if (sessionModeRef.current === "voice" && !mediaRecorderRef.current) {
+            const s = sessionRef.current;
+            if (!s.partDone && (s.phase === "part1" || s.phase === "part2-answer" || s.phase === "part3")) {
+              startRecordingRef.current?.();
+            }
+          }
+        };
+
         audio.onerror = () => {
           URL.revokeObjectURL(url);
           if (ttsAudioRef.current === audio) ttsAudioRef.current = null;
           isSpeakingRef.current = false;
           setIsSpeaking(false);
           ttsEndResolveRef.current = null;
+          triggerMicIfNeeded();
           resolve();
         };
 
@@ -1028,12 +1038,20 @@ export default function SpeakingPage() {
           isSpeakingRef.current = false;
           setIsSpeaking(false);
           ttsEndResolveRef.current = null;
+          triggerMicIfNeeded();
           resolve();
         });
       });
     } catch {
       isSpeakingRef.current = false;
       setIsSpeaking(false);
+      // Even if TTS fetch fails entirely, still activate mic in voice mode
+      if (sessionModeRef.current === "voice" && !mediaRecorderRef.current) {
+        const s = sessionRef.current;
+        if (!s.partDone && (s.phase === "part1" || s.phase === "part2-answer" || s.phase === "part3")) {
+          startRecordingRef.current?.();
+        }
+      }
     }
   }, [stopTts]);
 
