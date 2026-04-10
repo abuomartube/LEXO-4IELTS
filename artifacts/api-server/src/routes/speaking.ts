@@ -37,12 +37,12 @@ const CUE_CARDS: Record<string, string> = {
 
 function buildSystemPrompt(topic: string, part: number, questionNum: number, isStart: boolean): string {
   if (part === 1) {
-    const isFinal = !isStart && questionNum > 5;
+    const isFinal = !isStart && questionNum > 8;
     const intro = isStart
       ? `Begin by warmly welcoming the student to the IELTS Speaking test and then immediately ask your first question about ${topic}.`
       : isFinal
         ? `The student has just answered the FINAL question of Part 1. Give ONLY your feedback on their answer. Do NOT ask another question. End your response with "— **[PART1_DONE]**".`
-        : `You are on question ${questionNum} of 5 in Part 1. Ask ONE specific, natural question about ${topic}.`;
+        : `You are on question ${questionNum} of 8 in Part 1. Ask ONE specific, natural question about ${topic}.`;
     return `You are a certified IELTS examiner conducting IELTS Speaking Part 1 (Introduction & Interview) on the topic: "${topic}".
 
 ${intro}
