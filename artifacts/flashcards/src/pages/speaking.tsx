@@ -223,6 +223,7 @@ interface TranscriptEntry {
   question: string;
   answer: string;
   correction: string | null;
+  suggestion: string | null;
   vocab: string | null;
   band: string | null;
 }
@@ -273,18 +274,22 @@ function loadTtsSpeed(): number {
 function parseFeedback(text: string): {
   examinerText: string;
   correction: string | null;
+  suggestion: string | null;
   vocab: string | null;
   band: string | null;
 } {
   const lines = text.split("\n");
   const examinerLines: string[] = [];
   let correction: string | null = null;
+  let suggestion: string | null = null;
   let vocab: string | null = null;
   let band: string | null = null;
 
   for (const line of lines) {
     if (line.includes("❌") && line.includes("→")) {
       correction = line.trim();
+    } else if (line.includes("💡")) {
+      suggestion = line.trim();
     } else if (line.includes("📝")) {
       vocab = line.trim();
     } else if (line.includes("⭐")) {
@@ -299,7 +304,7 @@ function parseFeedback(text: string): {
     .replace(/—\s*$/gm, "")
     .trim();
 
-  return { examinerText, correction, vocab, band };
+  return { examinerText, correction, suggestion, vocab, band };
 }
 
 function stripForTts(text: string): string {
@@ -402,8 +407,8 @@ function PartIndicator({ part, phase }: { part: 1 | 2 | 3; phase: Phase }) {
 }
 
 function AIChatBubble({ content }: { content: string }) {
-  const { examinerText, correction, vocab, band } = parseFeedback(content);
-  const hasFeedback = correction || vocab || band;
+  const { examinerText, correction, suggestion, vocab, band } = parseFeedback(content);
+  const hasFeedback = correction || suggestion || vocab || band;
 
   return (
     <div className="flex gap-3 justify-start">
@@ -417,22 +422,26 @@ function AIChatBubble({ content }: { content: string }) {
           </div>
         )}
         {hasFeedback && (
-          <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-2xl px-4 py-3 space-y-2">
+          <div className="rounded-2xl px-4 py-3 space-y-2.5 border border-border bg-muted/40">
             {correction && (
-              <div className="text-sm flex items-start gap-2">
-                <span className="shrink-0">{correction.split("→")[0].trim().includes("❌") ? "" : ""}</span>
+              <div className="rounded-xl bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800 px-3 py-2 text-sm flex flex-wrap items-start gap-x-2 gap-y-1">
                 <span className="text-red-600 dark:text-red-400 font-medium">{correction.split("→")[0].trim()}</span>
                 <span className="text-muted-foreground shrink-0">→</span>
-                <span className="text-green-700 dark:text-green-400 font-medium">{correction.split("→")[1]?.trim()}</span>
+                <span className="text-green-700 dark:text-green-400 font-semibold">{correction.split("→")[1]?.trim()}</span>
+              </div>
+            )}
+            {suggestion && (
+              <div className="rounded-xl bg-teal-50 dark:bg-teal-950/30 border border-teal-200 dark:border-teal-700 px-3 py-2 text-sm text-teal-800 dark:text-teal-300">
+                {suggestion}
               </div>
             )}
             {vocab && (
-              <div className="text-sm text-blue-700 dark:text-blue-300">
+              <div className="text-sm text-blue-700 dark:text-blue-300 px-1">
                 {vocab}
               </div>
             )}
             {band && (
-              <div className="text-sm font-bold text-amber-700 dark:text-amber-400">
+              <div className="text-sm font-bold text-amber-700 dark:text-amber-400 px-1">
                 {band}
               </div>
             )}
@@ -689,6 +698,7 @@ function buildTranscriptText(
     if (e.question) lines.push(`Q: ${e.question}`);
     lines.push(`A: ${e.answer}`);
     if (e.correction) lines.push(`✅ Corrections: ${e.correction}`);
+    if (e.suggestion) lines.push(`💡 Alternative: ${e.suggestion}`);
     if (e.vocab) lines.push(`📝 Better words: ${e.vocab}`);
     if (e.band) lines.push(`⭐ Band: ${e.band}`);
     lines.push("");
@@ -1162,11 +1172,11 @@ export default function SpeakingPage() {
         messages: [...newMessages, { role: "assistant", content: reply }],
         partDone: partDoneNow,
       }));
-      const { examinerText, correction, vocab, band } = parseFeedback(reply);
+      const { examinerText, correction, suggestion, vocab, band } = parseFeedback(reply);
       // Record transcript entry
       setTranscript((prev) => [
         ...prev,
-        { part: session.part, question: lastQuestion || "", answer: text, correction, vocab, band },
+        { part: session.part, question: lastQuestion || "", answer: text, correction, suggestion, vocab, band },
       ]);
       const ttsText = examinerText || reply;
       if (partDoneNow && session.part === 3) {

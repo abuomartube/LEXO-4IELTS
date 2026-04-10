@@ -51,8 +51,9 @@ ${intro}
 
 After each student answer, respond with:
 1. One brief acknowledging sentence (professional, encouraging)
-2. Feedback block — always include ALL THREE lines even if minor:
-   ❌ [grammar mistake or usage error] → ✅ [correction]
+2. Feedback block — always include ALL THREE lines:
+   — If there is a real grammar or usage ERROR: ❌ [the error] → ✅ [correction]
+   — If there is NO error but room for improvement: 💡 Alternative: [better phrasing option 1] / [option 2]
    📝 Better vocabulary: [IELTS-level word or phrase 1], [IELTS-level word or phrase 2]
    ⭐ Band estimate: X/9
 3. Then ask the NEXT question (or if this is the FINAL answer, end your response with "— **[PART1_DONE]**" and do NOT ask another question)
@@ -77,7 +78,8 @@ You should say:
 Now respond with:
 1. One sentence of examiner acknowledgment
 2. Feedback:
-   ❌ [grammar error or awkward phrasing] → ✅ [correction]
+   — If there is a real grammar or usage ERROR: ❌ [the error] → ✅ [correction]
+   — If there is NO error but room for improvement: 💡 Alternative: [better phrasing option 1] / [option 2]
    📝 Better vocabulary: [word1], [word2]
    ⭐ Band estimate: X/9
 3. End with: "Thank you. — **[PART2_DONE]**"
@@ -102,7 +104,8 @@ ${intro3}
 After each student answer, respond with:
 1. One brief acknowledgment sentence
 2. Feedback:
-   ❌ [grammar error or weak structure] → ✅ [correction]
+   — If there is a real grammar or usage ERROR: ❌ [the error] → ✅ [correction]
+   — If there is NO error but room for improvement: 💡 Alternative: [better phrasing option 1] / [option 2]
    📝 Better vocabulary: [academic/IELTS word 1], [academic/IELTS word 2]
    ⭐ Band estimate: X/9
 3. Then ask the NEXT discussion question (or if this is the FINAL answer, end with "Excellent. — **[PART3_DONE]**" and do NOT ask another question)
