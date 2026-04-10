@@ -4,10 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import {
   ArrowLeft, ArrowRight, RefreshCw, CheckCircle2,
-  XCircle, Volume2, Sparkles, Trophy, Zap, RotateCcw
+  XCircle, Sparkles, Trophy, Zap, RotateCcw
 } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import synonymsRaw from "@/data/synonyms-data.json";
+import { PronounceButton } from "@/components/pronounce-button";
 
 interface SynonymEntry {
   id: number;
@@ -32,14 +33,6 @@ const skillColors: Record<string, string> = {
   "All Skills": "bg-teal-100 text-teal-700 dark:bg-teal-900/40 dark:text-teal-300 border border-teal-200 dark:border-teal-800",
 };
 
-function speak(text: string) {
-  if ("speechSynthesis" in window) {
-    const u = new SpeechSynthesisUtterance(text);
-    u.lang = "en-GB";
-    window.speechSynthesis.cancel();
-    window.speechSynthesis.speak(u);
-  }
-}
 
 export default function Synonyms() {
   const [skillFilter, setSkillFilter] = useState("All Skills");
@@ -225,13 +218,7 @@ export default function Synonyms() {
                     <h2 className="text-5xl font-extrabold text-foreground tracking-tight mb-3">
                       {card.word}
                     </h2>
-                    <button
-                      onClick={e => { e.stopPropagation(); speak(card.word); }}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 hover:bg-primary/20 text-primary text-sm font-medium transition-colors"
-                      aria-label="Listen"
-                    >
-                      <Volume2 className="w-4 h-4" /> Listen
-                    </button>
+                    <PronounceButton word={card.word} />
                   </div>
 
                   {/* Prompt */}
@@ -266,13 +253,7 @@ export default function Synonyms() {
                     {/* Word */}
                     <div className="flex items-center gap-3 mb-2">
                       <h2 className="text-3xl font-extrabold">{card.word}</h2>
-                      <button
-                        onClick={e => { e.stopPropagation(); speak(card.word); }}
-                        className="w-8 h-8 rounded-full bg-white/15 hover:bg-white/25 flex items-center justify-center transition-colors"
-                        aria-label="Listen"
-                      >
-                        <Volume2 className="w-4 h-4" />
-                      </button>
+                      <PronounceButton word={card.word} variant="inverted" />
                     </div>
 
                     {/* Synonym */}
@@ -280,13 +261,7 @@ export default function Synonyms() {
                       <Zap className="w-4 h-4 text-yellow-300 shrink-0" />
                       <span className="text-primary-foreground/70 text-sm font-medium">Synonym:</span>
                       <span className="text-xl font-bold text-yellow-200">{card.synonym}</span>
-                      <button
-                        onClick={e => { e.stopPropagation(); speak(card.synonym); }}
-                        className="w-7 h-7 rounded-full bg-white/15 hover:bg-white/25 flex items-center justify-center transition-colors"
-                        aria-label="Listen"
-                      >
-                        <Volume2 className="w-3.5 h-3.5" />
-                      </button>
+                      <PronounceButton word={card.synonym} variant="inverted" />
                     </div>
                   </div>
 
