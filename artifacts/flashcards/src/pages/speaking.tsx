@@ -184,9 +184,9 @@ const TOTAL_TOPICS = TOPICS.length;
 
 const PART_LIMITS = { 1: 8, 2: 1, 3: 4 };
 
-const VOICE_INTRO = "Welcome to 4IELTS Speaking Practice. I am your examiner today. Please relax and speak naturally. We will go through Part 1, Part 2, and Part 3. Take a breath, and let's begin. Here is your first question.";
+const VOICE_INTRO = "Welcome to Churchill AI, your personal IELTS Speaking Examiner, powered by 4IELTS. I am here to help you reach your target band score. Please relax and speak naturally. Let's begin your practice session.";
 
-const GOODBYE_MESSAGE = "Thank you for practicing today on 4IELTS. You did a great job. Keep practicing and you will reach your target band score. Goodbye and good luck!";
+const GOODBYE_MESSAGE = "This has been Churchill AI, your IELTS Speaking Examiner. Thank you for practicing with us today. Keep going, stay consistent, and your band score will improve. Goodbye and good luck from 4IELTS.";
 const PREP_TIME = 60;
 
 const USED_TOPICS_KEY = "ielts_speaking_used_topics";
@@ -671,10 +671,13 @@ function buildTranscriptText(
 ): string {
   const date = new Date().toLocaleDateString("en-GB", { day: "2-digit", month: "long", year: "numeric" });
   const lines: string[] = [
-    "SESSION TRANSCRIPT",
+    "🎤 CHURCHILL AI",
+    "IELTS Speaking Session Report",
+    "Powered by 4IELTS.com",
+    "━━━━━━━━━━━━━━━━━━━━━",
     `Topic: ${topic}`,
     `Date: ${date}`,
-    "─────────────────",
+    "━━━━━━━━━━━━━━━━━━━━━",
   ];
   let currentPart = 0;
   for (const e of entries) {
@@ -691,15 +694,16 @@ function buildTranscriptText(
     lines.push("");
   }
   if (report) {
-    lines.push("─────────────────", "FINAL REPORT:");
+    lines.push("", "━━━━━━━━━━━━━━━━━━━━━", "FINAL REPORT", "━━━━━━━━━━━━━━━━━━━━━");
     lines.push(`Overall Band: ${report.overallBand}/9`);
     lines.push(`Fluency & Coherence: ${report.fluencyCoherence.band}/9`);
     lines.push(`Lexical Resource: ${report.lexicalResource.band}/9`);
-    lines.push(`Grammar: ${report.grammaticalRange.band}/9`);
+    lines.push(`Grammatical Range: ${report.grammaticalRange.band}/9`);
     if (report.improvements?.length) {
       lines.push("", "Top improvements:");
-      report.improvements.forEach((i) => lines.push(`• ${i}`));
+      report.improvements.slice(0, 5).forEach((imp, idx) => lines.push(`${idx + 1}. ${imp}`));
     }
+    lines.push("━━━━━━━━━━━━━━━━━━━━━");
   }
   return lines.join("\n");
 }
@@ -739,17 +743,33 @@ function TranscriptViewer({
   return (
     <div className="fixed inset-0 z-50 bg-background/95 backdrop-blur-sm flex flex-col">
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-border shrink-0">
-        <div>
-          <h2 className="text-base font-bold text-foreground">📄 نص الجلسة الكامل</h2>
-          <p className="text-xs text-muted-foreground mt-0.5">{topic} · {date} · Completed: Part {partsInTranscript} of 3</p>
+      <div className="shrink-0 border-b border-border">
+        <div className="flex items-center justify-between px-4 pt-4 pb-2">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-xl bg-primary flex items-center justify-center shrink-0">
+              <Mic className="w-4 h-4 text-primary-foreground" />
+            </div>
+            <div>
+              <h2 className="text-sm font-extrabold text-foreground tracking-wide">🎤 CHURCHILL AI</h2>
+              <p className="text-xs text-primary font-semibold">IELTS Speaking Session Report</p>
+            </div>
+          </div>
+          <button
+            onClick={onClose}
+            className="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-muted text-xs font-semibold text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
+          >
+            ✕
+          </button>
         </div>
-        <button
-          onClick={onClose}
-          className="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-muted text-xs font-semibold text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
-        >
-          ✕
-        </button>
+        <div className="px-4 pb-3 flex items-center gap-2 flex-wrap text-xs text-muted-foreground">
+          <span className="font-medium">Powered by 4IELTS.com</span>
+          <span>·</span>
+          <span>{topic}</span>
+          <span>·</span>
+          <span>{date}</span>
+          <span>·</span>
+          <span>Completed: Part {partsInTranscript} of 3</span>
+        </div>
       </div>
 
       {/* Body */}
@@ -1060,7 +1080,7 @@ export default function SpeakingPage() {
       // In voice mode, mic auto-activates after TTS ends (handled in playTts onended)
     } catch {
       setStreamingContent(null);
-      setError("Could not connect to the AI examiner. Please try again.");
+      setError("Could not connect to Churchill AI. Please try again.");
       setSession((s) => ({ ...s, phase: "idle" }));
     } finally {
       setIsLoading(false);
@@ -1389,21 +1409,22 @@ export default function SpeakingPage() {
                 <Mic className="w-5 h-5 text-primary-foreground" />
               </div>
               <div>
-                <h1 className="text-xl font-extrabold text-foreground">IELTS Speaking Practice</h1>
-                {session.topic ? (
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-xs font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded-full">
+                <h1 className="text-xl font-extrabold text-foreground">Churchill AI</h1>
+                <div className="flex items-center gap-2 flex-wrap mt-0.5">
+                  <span className="text-xs font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded-full">
+                    IELTS Speaking Examiner
+                  </span>
+                  {session.topic && (
+                    <span className="text-xs font-semibold text-muted-foreground bg-muted px-2 py-0.5 rounded-full">
                       Topic: {session.topic}
                     </span>
-                    {sessionNumber > 0 && (
-                      <span className="text-xs font-semibold text-muted-foreground bg-muted px-2 py-0.5 rounded-full">
-                        Session {sessionNumber}/{TOTAL_TOPICS}
-                      </span>
-                    )}
-                  </div>
-                ) : (
-                  <p className="text-xs text-muted-foreground">AI-powered mock speaking test</p>
-                )}
+                  )}
+                  {sessionNumber > 0 && (
+                    <span className="text-xs font-semibold text-muted-foreground bg-muted px-2 py-0.5 rounded-full">
+                      Session {sessionNumber}/{TOTAL_TOPICS}
+                    </span>
+                  )}
+                </div>
               </div>
             </div>
             {session.phase !== "idle" && (
@@ -1425,19 +1446,20 @@ export default function SpeakingPage() {
         {/* ── IDLE STATE ── */}
         {session.phase === "idle" && (
           <div className="flex-1 flex flex-col items-center justify-center text-center gap-6 px-4">
-            <div className="w-20 h-20 rounded-3xl bg-primary/10 flex items-center justify-center">
-              <Mic className="w-10 h-10 text-primary" />
+            <div className="w-20 h-20 rounded-3xl bg-primary flex items-center justify-center shadow-lg">
+              <Mic className="w-10 h-10 text-primary-foreground" />
             </div>
             <div>
-              <h2 className="text-2xl font-extrabold text-foreground mb-2">IELTS Speaking Mock Test</h2>
-              <p className="text-muted-foreground max-w-md leading-relaxed">
-                Practise all 3 parts of the IELTS Speaking test with an AI examiner.
+              <h2 className="text-2xl font-extrabold text-foreground mb-1">Churchill AI</h2>
+              <p className="text-sm font-semibold text-primary mb-2">IELTS Speaking Examiner · Powered by 4IELTS</p>
+              <p className="text-muted-foreground max-w-md leading-relaxed text-sm">
+                Practise all 3 parts of the IELTS Speaking test with Churchill AI.
                 Get real-time feedback on grammar, vocabulary, and band scores after every answer.
               </p>
             </div>
             <div className="flex flex-col sm:flex-row gap-3 text-sm text-muted-foreground">
               {[
-                { icon: "1️⃣", text: "Part 1 — 5 personal questions" },
+                { icon: "1️⃣", text: "Part 1 — 8 personal questions" },
                 { icon: "2️⃣", text: "Part 2 — 1 minute long turn" },
                 { icon: "3️⃣", text: "Part 3 — 4 discussion questions" },
               ].map((item) => (
@@ -1665,7 +1687,7 @@ export default function SpeakingPage() {
                 </div>
                 {lastTtsText && !isSpeaking && !isLoading && (
                   <button onClick={replayTts} className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors px-1">
-                    <Volume2 className="w-3.5 h-3.5" /> Replay examiner's last question
+                    <Volume2 className="w-3.5 h-3.5" /> Replay Churchill AI's last question
                   </button>
                 )}
               </div>

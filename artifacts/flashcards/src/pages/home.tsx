@@ -279,7 +279,7 @@ export default function Home() {
                     <Link href="/stories"><BookMarked className="w-4 h-4 mr-2" />Short Stories</Link>
                   </Button>
                   <Button asChild variant="outline" className="rounded-full border-rose-300 text-rose-700 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-900/20">
-                    <Link href="/speaking"><Mic className="w-4 h-4 mr-2" />Speaking Practice</Link>
+                    <Link href="/speaking"><Mic className="w-4 h-4 mr-2" />Churchill AI</Link>
                   </Button>
                 </div>
               </div>

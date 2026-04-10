@@ -16,7 +16,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
     { href: "/antonyms", label: "Antonyms", icon: Shuffle },
     { href: "/essay-checker", label: "Essay Checker", icon: FileText },
     { href: "/stories", label: "Short Stories", icon: BookMarked },
-    { href: "/speaking", label: "Speaking Practice", icon: Mic },
+    { href: "/speaking", label: "Churchill AI", icon: Mic },
     { href: "/browse", label: "Browse Cards", icon: Layers },
     { href: "/progress", label: "Progress", icon: PieChart },
   ];
