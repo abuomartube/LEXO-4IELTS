@@ -891,6 +891,8 @@ export default function SpeakingPage() {
   const ttsEndResolveRef = useRef<(() => void) | null>(null);
   const playTtsRef = useRef<((text: string) => Promise<void>) | null>(null);
   const ttsGeneratedSpeedRef = useRef(1.0); // speed the current audio was generated at
+  const sessionGenRef = useRef(0);          // incremented on every new/reset session
+  const isProcessingRef = useRef(false);    // prevents concurrent processAnswer calls
 
   // Auto-scroll chat
   useEffect(() => {
@@ -1002,7 +1004,8 @@ export default function SpeakingPage() {
           setIsSpeaking(false);
           ttsEndResolveRef.current = null;
           // Voice mode: auto-activate mic only after examiner finishes speaking
-          if (sessionModeRef.current === "voice") {
+          // Guard: skip if another recorder is already running (prevents double-recording echo)
+          if (sessionModeRef.current === "voice" && !mediaRecorderRef.current) {
             const s = sessionRef.current;
             if (!s.partDone && (s.phase === "part1" || s.phase === "part2-answer" || s.phase === "part3")) {
               startRecordingRef.current?.();
@@ -1044,6 +1047,8 @@ export default function SpeakingPage() {
 
   // ── Start a new session ──
   const startSession = useCallback(async (mode: SessionMode) => {
+    sessionGenRef.current += 1;
+    isProcessingRef.current = false;
     stopTts();
     setSessionMode(mode);
     const { topic, sessionNumber: sNum } = pickTopic();
@@ -1089,7 +1094,12 @@ export default function SpeakingPage() {
 
   // ── Core send logic (shared by manual send + auto-send after voice) ──
   const processAnswer = useCallback(async (text: string) => {
-    if (!text.trim() || isLoading) return;
+    // Ref-based lock: prevents concurrent calls even with React's async state batching
+    if (!text.trim() || isLoading || isProcessingRef.current) return;
+    isProcessingRef.current = true;
+
+    // Capture session generation so stale callbacks from old sessions self-abort
+    const myGen = sessionGenRef.current;
 
     stopTts();
     setInput("");
@@ -1122,6 +1132,10 @@ export default function SpeakingPage() {
         false,
         setStreamingContent,
       );
+
+      // Abort if session was reset while we were waiting for the API
+      if (myGen !== sessionGenRef.current) return;
+
       setStreamingContent(null);
       setSession((s) => ({
         ...s,
@@ -1139,6 +1153,7 @@ export default function SpeakingPage() {
       setStreamingContent(null);
       setError("Failed to get AI response. Please try again.");
     } finally {
+      isProcessingRef.current = false;
       setIsLoading(false);
       if (sessionModeRef.current === "text") {
         setTimeout(() => inputRef.current?.focus(), 100);
@@ -1250,6 +1265,8 @@ export default function SpeakingPage() {
 
   // ── New session ──
   const newSession = useCallback(() => {
+    sessionGenRef.current += 1;
+    isProcessingRef.current = false;
     stopTts();
     stopRecording();
     setSession({
@@ -1271,6 +1288,8 @@ export default function SpeakingPage() {
   }, [stopTts, stopRecording]);
 
   const startRecording = useCallback(async () => {
+    // Guard: never start a second recorder while one is already active
+    if (mediaRecorderRef.current) return;
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       audioChunksRef.current = [];
