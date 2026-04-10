@@ -98,7 +98,7 @@ export default function Home() {
               4IELTS Vocabulary App
             </span>
             <h1 className="text-4xl md:text-5xl font-extrabold text-primary-foreground leading-tight mb-4">
-              Master English Vocabulary<br/>the Smart Way
+              Learn Smarter With Lexo
             </h1>
             <p className="text-primary-foreground/80 text-lg mb-8 leading-relaxed">
               3,000 flashcards across A2–C1 levels, with Arabic translations, audio
