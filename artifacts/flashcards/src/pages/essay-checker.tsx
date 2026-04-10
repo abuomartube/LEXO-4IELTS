@@ -476,7 +476,7 @@ function AnnotatedParagraph({ text, corrections }: { text: string; corrections: 
       explanation: ann.explanation,
       type: ann.type,
       x: rect.left,
-      y: rect.bottom + window.scrollY,
+      y: rect.bottom,
     });
   };
 
