@@ -1096,6 +1096,8 @@ export default function SpeakingPage() {
   const processAnswer = useCallback(async (text: string) => {
     // Ref-based lock: prevents concurrent calls even with React's async state batching
     if (!text.trim() || isLoading || isProcessingRef.current) return;
+    // Guard: never send more answers after a part is already done
+    if (session.partDone) return;
     isProcessingRef.current = true;
 
     // Capture session generation so stale callbacks from old sessions self-abort
@@ -1148,7 +1150,13 @@ export default function SpeakingPage() {
         ...prev,
         { part: session.part, question: lastQuestion || "", answer: text, correction, vocab, band },
       ]);
-      playTts(examinerText || reply);
+      const ttsText = examinerText || reply;
+      if (partDoneNow && session.part === 3) {
+        // Auto-play goodbye after the final Part 3 feedback finishes
+        playTts(ttsText).then(() => playTts(GOODBYE_MESSAGE));
+      } else {
+        playTts(ttsText);
+      }
     } catch {
       setStreamingContent(null);
       setError("Failed to get AI response. Please try again.");
