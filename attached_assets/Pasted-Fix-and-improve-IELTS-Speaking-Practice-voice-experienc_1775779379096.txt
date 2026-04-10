@@ -1,0 +1,98 @@
+Fix and improve IELTS Speaking Practice 
+voice experience completely.
+
+──────────────────────
+CRITICAL FIX 1: Speed Control Delay
+──────────────────────
+- Speed selection must be INSTANT
+- No reload, no API call on speed change
+- Just update a variable in memory
+- Apply new speed on NEXT TTS call only
+- No delay whatsoever
+
+──────────────────────
+CRITICAL FIX 2: Voice Flow
+──────────────────────
+CURRENT (wrong):
+🎤 tap → speak → stop → text appears 
+→ manual send → AI responds
+
+CORRECT flow must be:
+🎤 tap once → speak → 3sec silence 
+→ auto-transcribe → auto-send 
+→ AI text response → AI speaks answer
+→ ready for next answer automatically
+
+RULES:
+- After tapping 🎤, NEVER show send button
+- Auto-send immediately after transcription
+- No manual steps between speaking and AI reply
+- Mic stays in "listening mode" until 
+  student taps it again to stop session
+
+──────────────────────
+CRITICAL FIX 3: Two Clear Modes
+──────────────────────
+Show two buttons at start:
+
+[🎤 محادثة صوتية] [⌨️ محادثة كتابية]
+
+VOICE MODE:
+- Full voice loop (speak → auto-send → AI speaks)
+- No text box visible
+- Only stop button to end session
+
+TEXT MODE:
+- Text box always visible
+- No mic
+- Student types and sends manually
+
+NO MIXING between modes in same session.
+
+──────────────────────
+FEATURE: Full Session Transcript
+──────────────────────
+During VOICE MODE:
+- Record every exchange in background
+- Format:
+
+SESSION TRANSCRIPT
+Topic: [topic name]
+Date: [date]
+─────────────────
+Part 1 - Introduction
+
+Q: [AI question]
+A: [Student answer]
+✅ Corrections: [corrections]
+📝 Better words: [vocabulary]
+⭐ Band: [score]
+
+Q: [next question]
+A: [answer]
+...
+
+Part 2 - Long Turn
+Cue Card: [cue card text]
+A: [Student answer]
+...
+
+Part 3 - Discussion
+...
+
+─────────────────
+FINAL REPORT:
+Overall Band: X/9
+Fluency: X/9
+Lexical Resource: X/9
+Grammar: X/9
+Top improvements: [list]
+
+- At end of session show:
+  "📄 عرض النص الكامل" button
+- Opens full transcript in clean view
+- "📋 نسخ النص" copy button
+- "💾 تحميل" download as .txt file
+
+
+أرسله لـ Replit! 🚀​​​​​​​​​​​​​​​​

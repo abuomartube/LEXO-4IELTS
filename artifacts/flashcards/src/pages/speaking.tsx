@@ -212,6 +212,17 @@ interface ReportData {
   improvements: string[];
 }
 
+type SessionMode = "voice" | "text";
+
+interface TranscriptEntry {
+  part: 1 | 2 | 3;
+  question: string;
+  answer: string;
+  correction: string | null;
+  vocab: string | null;
+  band: string | null;
+}
+
 type Phase =
   | "idle"
   | "part1"
@@ -647,6 +658,134 @@ function FinalReport({ report, topic, onNewSession }: { report: ReportData; topi
   );
 }
 
+// ─── Transcript Viewer ───────────────────────────────────────────────────────
+
+function buildTranscriptText(
+  topic: string,
+  entries: TranscriptEntry[],
+  report: ReportData | null,
+): string {
+  const date = new Date().toLocaleDateString("en-GB", { day: "2-digit", month: "long", year: "numeric" });
+  const lines: string[] = [
+    "SESSION TRANSCRIPT",
+    `Topic: ${topic}`,
+    `Date: ${date}`,
+    "─────────────────",
+  ];
+  let currentPart = 0;
+  for (const e of entries) {
+    if (e.part !== currentPart) {
+      currentPart = e.part;
+      const labels: Record<number, string> = { 1: "Part 1 - Introduction", 2: "Part 2 - Long Turn", 3: "Part 3 - Discussion" };
+      lines.push("", labels[e.part] ?? `Part ${e.part}`, "");
+    }
+    if (e.question) lines.push(`Q: ${e.question}`);
+    lines.push(`A: ${e.answer}`);
+    if (e.correction) lines.push(`✅ Corrections: ${e.correction}`);
+    if (e.vocab) lines.push(`📝 Better words: ${e.vocab}`);
+    if (e.band) lines.push(`⭐ Band: ${e.band}`);
+    lines.push("");
+  }
+  if (report) {
+    lines.push("─────────────────", "FINAL REPORT:");
+    lines.push(`Overall Band: ${report.overallBand}/9`);
+    lines.push(`Fluency & Coherence: ${report.fluencyCoherence.band}/9`);
+    lines.push(`Lexical Resource: ${report.lexicalResource.band}/9`);
+    lines.push(`Grammar: ${report.grammaticalRange.band}/9`);
+    if (report.improvements?.length) {
+      lines.push("", "Top improvements:");
+      report.improvements.forEach((i) => lines.push(`• ${i}`));
+    }
+  }
+  return lines.join("\n");
+}
+
+function TranscriptViewer({
+  topic, entries, report, onClose,
+}: {
+  topic: string;
+  entries: TranscriptEntry[];
+  report: ReportData | null;
+  onClose: () => void;
+}) {
+  const text = buildTranscriptText(topic, entries, report);
+
+  const copyToClipboard = async () => {
+    await navigator.clipboard.writeText(text);
+  };
+
+  const download = () => {
+    const blob = new Blob([text], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `IELTS_Speaking_${topic.replace(/\s+/g, "_")}.txt`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 bg-background/95 backdrop-blur-sm flex flex-col">
+      <div className="flex items-center justify-between px-4 py-3 border-b border-border shrink-0">
+        <h2 className="text-base font-bold text-foreground">📄 نص الجلسة الكامل</h2>
+        <div className="flex gap-2">
+          <button
+            onClick={copyToClipboard}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-border text-xs font-semibold text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
+          >
+            📋 نسخ
+          </button>
+          <button
+            onClick={download}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-border text-xs font-semibold text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
+          >
+            💾 تحميل
+          </button>
+          <button
+            onClick={onClose}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-muted text-xs font-semibold text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
+          >
+            ✕ إغلاق
+          </button>
+        </div>
+      </div>
+      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+        {entries.map((e, i) => {
+          const isNewPart = e.part !== (entries[i - 1]?.part ?? 0);
+          const partLabels: Record<number, string> = { 1: "Part 1 — Introduction", 2: "Part 2 — Long Turn", 3: "Part 3 — Discussion" };
+          return (
+            <div key={i}>
+              {isNewPart && (
+                <h3 className="text-sm font-bold text-primary mb-2 border-b border-border pb-1">
+                  {partLabels[e.part]}
+                </h3>
+              )}
+              <div className="bg-card rounded-2xl border border-border p-3 space-y-1.5 text-sm">
+                {e.question && (
+                  <p className="text-muted-foreground"><span className="font-semibold text-foreground">Q:</span> {e.question}</p>
+                )}
+                <p><span className="font-semibold text-primary">A:</span> {e.answer}</p>
+                {e.correction && <p className="text-amber-600 dark:text-amber-400 text-xs">✅ {e.correction}</p>}
+                {e.vocab && <p className="text-sky-600 dark:text-sky-400 text-xs">📝 {e.vocab}</p>}
+                {e.band && <p className="text-green-600 dark:text-green-400 text-xs font-semibold">⭐ {e.band}</p>}
+              </div>
+            </div>
+          );
+        })}
+        {report && (
+          <div className="bg-primary/5 rounded-2xl border border-primary/20 p-4 text-sm space-y-1">
+            <h3 className="font-bold text-primary mb-2">📊 Final Report</h3>
+            <p>Overall Band: <strong>{report.overallBand}/9</strong></p>
+            <p>Fluency: {report.fluencyCoherence.band}/9</p>
+            <p>Lexical Resource: {report.lexicalResource.band}/9</p>
+            <p>Grammar: {report.grammaticalRange.band}/9</p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 // ─── Main Page ────────────────────────────────────────────────────────────────
 
 export default function SpeakingPage() {
@@ -669,6 +808,9 @@ export default function SpeakingPage() {
   const [lastTtsText, setLastTtsText] = useState<string | null>(null);
   const [ttsSpeed, setTtsSpeedState] = useState<number>(loadTtsSpeed);
   const [sessionNumber, setSessionNumber] = useState<number>(0);
+  const [sessionMode, setSessionMode] = useState<SessionMode | null>(null);
+  const [transcript, setTranscript] = useState<TranscriptEntry[]>([]);
+  const [showTranscript, setShowTranscript] = useState(false);
 
   const chatEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -681,6 +823,7 @@ export default function SpeakingPage() {
   const ttsAudioRef = useRef<HTMLAudioElement | null>(null);
   const sessionRef = useRef(session);
   const startRecordingRef = useRef<(() => Promise<void>) | null>(null);
+  const sessionModeRef = useRef<SessionMode | null>(null);
 
   // Auto-scroll chat
   useEffect(() => {
@@ -689,6 +832,7 @@ export default function SpeakingPage() {
 
   // Keep refs in sync
   useEffect(() => { sessionRef.current = session; }, [session]);
+  useEffect(() => { sessionModeRef.current = sessionMode; }, [sessionMode]);
 
   // ── TTS speed ────────────────────────────────────────────────────────────────
 
@@ -737,7 +881,13 @@ export default function SpeakingPage() {
         URL.revokeObjectURL(url);
         ttsAudioRef.current = null;
         setIsSpeaking(false);
-        // No auto-mic — student types or taps mic when ready
+        // Voice mode: auto-activate mic after examiner finishes speaking
+        if (sessionModeRef.current === "voice") {
+          const s = sessionRef.current;
+          if (!s.partDone && (s.phase === "part1" || s.phase === "part2-answer" || s.phase === "part3")) {
+            startRecordingRef.current?.();
+          }
+        }
       };
       audio.onerror = () => {
         URL.revokeObjectURL(url);
@@ -759,10 +909,13 @@ export default function SpeakingPage() {
   }, []);
 
   // ── Start a new session ──
-  const startSession = useCallback(async () => {
+  const startSession = useCallback(async (mode: SessionMode) => {
     stopTts();
+    setSessionMode(mode);
     const { topic, sessionNumber: sNum } = pickTopic();
     setSessionNumber(sNum);
+    setTranscript([]);
+    setShowTranscript(false);
     setError(null);
     setIsLoading(true);
     setStreamingContent("");
@@ -785,7 +938,8 @@ export default function SpeakingPage() {
         messages: [{ role: "assistant", content: reply }],
       }));
       const { examinerText } = parseFeedback(reply);
-      playTts(examinerText || reply);
+      await playTts(examinerText || reply);
+      // In voice mode, mic auto-activates after TTS ends (handled in playTts onended)
     } catch {
       setStreamingContent(null);
       setError("Could not connect to the AI examiner. Please try again.");
@@ -802,6 +956,10 @@ export default function SpeakingPage() {
     stopTts();
     setInput("");
     setError(null);
+
+    // Capture the AI's last question for the transcript
+    const lastAiMsg = [...session.messages].reverse().find((m) => m.role === "assistant");
+    const { examinerText: lastQuestion } = lastAiMsg ? parseFeedback(lastAiMsg.content) : { examinerText: "" };
 
     const userMsg: Message = { role: "user", content: text };
     const newMessages = [...session.messages, userMsg];
@@ -832,14 +990,21 @@ export default function SpeakingPage() {
         messages: [...newMessages, { role: "assistant", content: reply }],
         partDone: partDoneNow,
       }));
-      const { examinerText } = parseFeedback(reply);
+      const { examinerText, correction, vocab, band } = parseFeedback(reply);
+      // Record transcript entry
+      setTranscript((prev) => [
+        ...prev,
+        { part: session.part, question: lastQuestion || "", answer: text, correction, vocab, band },
+      ]);
       playTts(examinerText || reply);
     } catch {
       setStreamingContent(null);
       setError("Failed to get AI response. Please try again.");
     } finally {
       setIsLoading(false);
-      setTimeout(() => inputRef.current?.focus(), 100);
+      if (sessionModeRef.current === "text") {
+        setTimeout(() => inputRef.current?.focus(), 100);
+      }
     }
   }, [isLoading, session, stopTts, playTts]);
 
@@ -950,6 +1115,9 @@ export default function SpeakingPage() {
     setError(null);
     setLastTtsText(null);
     setSessionNumber(0);
+    setSessionMode(null);
+    setTranscript([]);
+    setShowTranscript(false);
   }, [stopTts, stopRecording]);
 
   const startRecording = useCallback(async () => {
@@ -1012,14 +1180,18 @@ export default function SpeakingPage() {
             return;
           }
           if (data.text?.trim()) {
-            // Put transcribed text in the input box — student edits & sends manually
-            setInput((prev) => prev ? prev + " " + data.text.trim() : data.text.trim());
-            setTimeout(() => {
-              inputRef.current?.focus();
-              // Move cursor to end
-              const el = inputRef.current;
-              if (el) el.setSelectionRange(el.value.length, el.value.length);
-            }, 50);
+            if (sessionModeRef.current === "voice") {
+              // Voice mode: auto-send immediately
+              sendTextRef.current?.(data.text.trim());
+            } else {
+              // Text mode: put in box for editing
+              setInput((prev) => prev ? prev + " " + data.text.trim() : data.text.trim());
+              setTimeout(() => {
+                inputRef.current?.focus();
+                const el = inputRef.current;
+                if (el) el.setSelectionRange(el.value.length, el.value.length);
+              }, 50);
+            }
           }
         } catch {
           setError("Voice transcription failed. Please type your answer instead.");
@@ -1145,16 +1317,24 @@ export default function SpeakingPage() {
                 </div>
               ))}
             </div>
-            <button
-              onClick={startSession}
-              className="flex items-center gap-2 bg-primary text-primary-foreground px-8 py-3.5 rounded-2xl font-bold text-base hover:bg-primary/90 transition-colors shadow-md"
-            >
-              <Mic className="w-5 h-5" />
-              Start Practice
-            </button>
-            <p className="text-xs text-muted-foreground max-w-xs">
-              Type your answers or tap the 🎤 mic to speak. You choose when to send each answer.
-            </p>
+            <div className="flex flex-col sm:flex-row gap-3 w-full max-w-md">
+              <button
+                onClick={() => startSession("voice")}
+                className="flex-1 flex flex-col items-center gap-1 bg-primary text-primary-foreground px-6 py-4 rounded-2xl font-bold hover:bg-primary/90 transition-colors shadow-md"
+              >
+                <span className="text-2xl">🎤</span>
+                <span className="text-base">محادثة صوتية</span>
+                <span className="text-xs font-normal opacity-80">تكلم والـ AI يرد تلقائياً</span>
+              </button>
+              <button
+                onClick={() => startSession("text")}
+                className="flex-1 flex flex-col items-center gap-1 bg-card border-2 border-border text-foreground px-6 py-4 rounded-2xl font-bold hover:bg-accent hover:border-primary/40 transition-colors shadow-sm"
+              >
+                <span className="text-2xl">⌨️</span>
+                <span className="text-base">محادثة كتابية</span>
+                <span className="text-xs font-normal opacity-60">اكتب إجاباتك يدوياً</span>
+              </button>
+            </div>
           </div>
         )}
 
@@ -1168,8 +1348,16 @@ export default function SpeakingPage() {
 
         {/* ── FINAL REPORT ── */}
         {session.phase === "complete" && session.report && (
-          <div className="flex-1 overflow-y-auto">
+          <div className="flex-1 overflow-y-auto space-y-3">
             <FinalReport report={session.report} topic={session.topic} onNewSession={newSession} />
+            {transcript.length > 0 && (
+              <button
+                onClick={() => setShowTranscript(true)}
+                className="w-full flex items-center justify-center gap-2 border border-border rounded-2xl py-3 text-sm font-semibold text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
+              >
+                📄 عرض النص الكامل للجلسة
+              </button>
+            )}
           </div>
         )}
 
@@ -1255,28 +1443,60 @@ export default function SpeakingPage() {
               </div>
             )}
 
-            {/* Input area */}
-            {!showNextPartBtn && !showViewReportBtn && (
+            {/* ── VOICE MODE input area ── */}
+            {sessionMode === "voice" && !showNextPartBtn && !showViewReportBtn && (
+              <div className="shrink-0 mt-3 flex flex-col items-center gap-3">
+                {/* Status */}
+                <div className={`w-full flex items-center justify-center gap-2 px-4 py-3 rounded-2xl text-sm font-medium ${
+                  isSpeaking
+                    ? "bg-primary/10 border border-primary/30 text-primary"
+                    : isLoading || streamingContent !== null
+                    ? "bg-muted/60 border border-border text-muted-foreground"
+                    : isTranscribing
+                    ? "bg-sky-50 dark:bg-sky-950/20 border border-sky-200 dark:border-sky-800 text-sky-700 dark:text-sky-300"
+                    : isRecording
+                    ? "bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400"
+                    : "bg-muted/40 border border-border text-muted-foreground"
+                }`}>
+                  {isSpeaking && <><Volume2 className="w-4 h-4 shrink-0 animate-pulse" /> المحكّم يتكلم…</>}
+                  {!isSpeaking && (isLoading || streamingContent !== null) && <><Loader2 className="w-4 h-4 animate-spin shrink-0" /> يفكّر المحكّم…</>}
+                  {!isSpeaking && !isLoading && streamingContent === null && isTranscribing && <><Loader2 className="w-4 h-4 animate-spin shrink-0" /> يحوّل الصوت لنص…</>}
+                  {!isSpeaking && !isLoading && streamingContent === null && !isTranscribing && isRecording && <><span className="w-2 h-2 rounded-full bg-red-500 animate-pulse shrink-0" /> يسجّل… (صمت 3 ثوانٍ → يُرسَل تلقائياً)</>}
+                  {!isSpeaking && !isLoading && streamingContent === null && !isTranscribing && !isRecording && <><Mic className="w-4 h-4 shrink-0" /> جاهز لإجابتك…</>}
+                </div>
+                {/* Large mic button */}
+                <button
+                  onClick={isSpeaking ? stopTts : toggleRecording}
+                  disabled={isLoading || isTranscribing}
+                  className={`w-20 h-20 rounded-full flex items-center justify-center transition-all shadow-lg disabled:opacity-40 disabled:cursor-not-allowed ${
+                    isSpeaking
+                      ? "bg-primary/20 text-primary border-2 border-primary/40 animate-pulse"
+                      : isRecording
+                      ? "bg-red-500 text-white animate-pulse scale-110"
+                      : "bg-primary text-primary-foreground hover:bg-primary/90"
+                  }`}
+                >
+                  {isSpeaking ? <VolumeX className="w-9 h-9" /> : isRecording ? <MicOff className="w-9 h-9" /> : <Mic className="w-9 h-9" />}
+                </button>
+                <p className="text-xs text-muted-foreground text-center">
+                  {isRecording ? "اضغط مرة ثانية لإيقاف التسجيل" : isSpeaking ? "اضغط لمقاطعة المحكّم والإجابة" : "اضغط للتسجيل · يُرسَل تلقائياً"}
+                </p>
+                {/* Replay button */}
+                {lastTtsText && !isRecording && !isSpeaking && !isLoading && !isTranscribing && (
+                  <button onClick={replayTts} className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors">
+                    <Volume2 className="w-3.5 h-3.5" /> إعادة سؤال المحكّم
+                  </button>
+                )}
+              </div>
+            )}
+
+            {/* ── TEXT MODE input area ── */}
+            {sessionMode === "text" && !showNextPartBtn && !showViewReportBtn && (
               <div className="shrink-0 mt-3 space-y-2">
-                {/* TTS speaking indicator */}
                 {isSpeaking && (
                   <div className="flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium bg-primary/10 border border-primary/30 text-primary">
                     <Volume2 className="w-4 h-4 shrink-0 animate-pulse" />
-                    Examiner is speaking — you can type your answer or tap 🎤 to interrupt and speak
-                  </div>
-                )}
-                {/* Recording / transcribing indicator */}
-                {(isRecording || isTranscribing) && (
-                  <div className={`flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium ${
-                    isTranscribing
-                      ? "bg-sky-50 dark:bg-sky-950/20 border border-sky-200 dark:border-sky-800 text-sky-700 dark:text-sky-300"
-                      : "bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400"
-                  }`}>
-                    {isTranscribing ? (
-                      <><Loader2 className="w-4 h-4 animate-spin shrink-0" /> Converting voice to text — it will appear in the box below for you to edit…</>
-                    ) : (
-                      <><span className="w-2 h-2 rounded-full bg-red-500 animate-pulse shrink-0" /> Recording… tap 🎤 again to stop. Auto-stops after 3 s of silence.</>
-                    )}
+                    المحكّم يتكلم — اكتب إجابتك أثناء الاستماع
                   </div>
                 )}
                 <div className="flex gap-2 items-end">
@@ -1290,53 +1510,12 @@ export default function SpeakingPage() {
                       placeholder={
                         session.phase === "part2-prep"
                           ? "Waiting for preparation time to end…"
-                          : isRecording
-                          ? "Recording… your words will appear here when done"
-                          : isTranscribing
-                          ? "Processing your voice…"
                           : "Type your answer here, then press Send ↗"
                       }
                       rows={3}
                       className="w-full px-4 py-3 text-sm bg-transparent text-foreground placeholder:text-muted-foreground resize-none focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
                     />
                   </div>
-                  {/* Mic button — tap to interrupt examiner or toggle recording */}
-                  <button
-                    onClick={isSpeaking ? stopTts : toggleRecording}
-                    disabled={!isSpeaking && (inputDisabled || isTranscribing)}
-                    title={
-                      isSpeaking
-                        ? "Tap to stop examiner and respond"
-                        : isRecording
-                        ? "Tap to stop recording"
-                        : "Tap to record your answer"
-                    }
-                    className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all shrink-0 shadow-sm disabled:opacity-40 disabled:cursor-not-allowed ${
-                      isSpeaking
-                        ? "bg-primary/20 text-primary border border-primary/40 animate-pulse"
-                        : isRecording
-                        ? "bg-red-500 text-white hover:bg-red-600 animate-pulse"
-                        : "bg-muted text-muted-foreground hover:bg-accent hover:text-foreground border border-border"
-                    }`}
-                  >
-                    {isSpeaking ? (
-                      <VolumeX className="w-5 h-5" />
-                    ) : isRecording ? (
-                      <MicOff className="w-5 h-5" />
-                    ) : (
-                      <Mic className="w-5 h-5" />
-                    )}
-                  </button>
-                  {/* Replay TTS button */}
-                  {lastTtsText && !isRecording && !isSpeaking && !isLoading && (
-                    <button
-                      onClick={replayTts}
-                      title="Replay examiner's last message"
-                      className="w-12 h-12 rounded-2xl bg-muted text-muted-foreground hover:bg-accent hover:text-foreground border border-border flex items-center justify-center transition-all shrink-0 shadow-sm"
-                    >
-                      <Volume2 className="w-5 h-5" />
-                    </button>
-                  )}
                   {/* Send button */}
                   <button
                     onClick={sendMessage}
@@ -1346,31 +1525,37 @@ export default function SpeakingPage() {
                     {isLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Send className="w-5 h-5" />}
                   </button>
                 </div>
+                {lastTtsText && !isSpeaking && !isLoading && (
+                  <button onClick={replayTts} className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors px-1">
+                    <Volume2 className="w-3.5 h-3.5" /> Replay examiner's last question
+                  </button>
+                )}
               </div>
             )}
 
-            {/* Part 2 note */}
-            {session.phase === "part2-answer" && !session.partDone && (
-              <p className="shrink-0 text-xs text-center text-muted-foreground mt-1">
-                Speak for 1–2 minutes. Type your full response, then press Send.
-              </p>
-            )}
-
-            {/* Hint */}
-            {session.phase !== "part2-prep" && !session.partDone && !isLoading && streamingContent === null && session.messages.length > 0 && (
+            {/* Hint row */}
+            {!session.partDone && !isLoading && streamingContent === null && session.messages.length > 0 && session.phase !== "part2-prep" && (
               <div className="shrink-0 flex items-center justify-between text-xs text-muted-foreground mt-1 px-1">
                 <span className="flex items-center gap-1">
                   <MessageSquare className="w-3 h-3" />
                   Part {session.part} · {session.answeredCount}/{PART_LIMITS[session.part]} answered
                 </span>
-                <span className="flex items-center gap-1">
-                  <Mic className="w-3 h-3" /> tap to speak · or type + Enter
-                </span>
+                <span className="text-xs opacity-60">{sessionMode === "voice" ? "🎤 وضع صوتي" : "⌨️ وضع كتابي"}</span>
               </div>
             )}
           </>
         )}
       </div>
+
+      {/* ── TRANSCRIPT OVERLAY ── */}
+      {showTranscript && (
+        <TranscriptViewer
+          topic={session.topic}
+          entries={transcript}
+          report={session.report}
+          onClose={() => setShowTranscript(false)}
+        />
+      )}
     </Layout>
   );
 }
