@@ -81,7 +81,7 @@ function VoiceReader({ content }: { content: string }) {
     return () => stopPlayback();
   }, [stopPlayback]);
 
-  const startSource = useCallback((buffer: AudioBuffer, ctx: AudioContext) => {
+  const startSource = useCallback((buffer: AudioBuffer, ctx: AudioContext, playbackRate: number, offset = 0) => {
     if (sourceRef.current) {
       try { sourceRef.current.stop(); } catch { /* ok */ }
       sourceRef.current.disconnect();
@@ -89,6 +89,7 @@ function VoiceReader({ content }: { content: string }) {
     }
     const source = ctx.createBufferSource();
     source.buffer = buffer;
+    source.playbackRate.value = playbackRate;
     source.connect(ctx.destination);
     source.onended = () => {
       if (sourceRef.current === source) {
@@ -96,15 +97,18 @@ function VoiceReader({ content }: { content: string }) {
         setPlayerState("idle");
       }
     };
-    source.start(0);
+    source.start(0, offset);
     sourceRef.current = source;
   }, []);
 
   const handlePlay = async () => {
     setError(null);
 
-    // Resume from pause — AudioContext.resume() is safe (no gesture required)
+    // Resume from pause — apply any speed change made while paused
     if (playerState === "paused" && audioCtxRef.current && audioBufferRef.current) {
+      if (sourceRef.current) {
+        sourceRef.current.playbackRate.value = speed;
+      }
       await audioCtxRef.current.resume();
       setPlayerState("playing");
       return;
@@ -124,13 +128,16 @@ function VoiceReader({ content }: { content: string }) {
     setPlayerState("loading");
 
     try {
+      // Always fetch at speed=1.0 — playback rate is controlled via
+      // AudioBufferSourceNode.playbackRate so it can be changed in real-time
+      // without re-fetching the audio.
       const res = await fetch("/api/speaking/tts", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text: content, speed, model: "tts-1" }),
+        body: JSON.stringify({ text: content, speed: 1.0, model: "tts-1" }),
       });
 
-      if (genRef.current !== myGen) return; // user stopped/changed speed
+      if (genRef.current !== myGen) return; // user stopped
 
       if (!res.ok) {
         const errData = await res.json().catch(() => ({}));
@@ -145,9 +152,7 @@ function VoiceReader({ content }: { content: string }) {
 
       if (genRef.current !== myGen) return;
 
-      // The fetch + decode can take 30+ seconds. Chrome auto-suspends an
-      // AudioContext that has been idle that long, so we must resume it
-      // before trying to start a source node.
+      // Chrome auto-suspends idle AudioContext — resume before starting source
       if (ctx.state === "suspended") {
         await ctx.resume();
       }
@@ -155,7 +160,8 @@ function VoiceReader({ content }: { content: string }) {
       if (genRef.current !== myGen) return;
 
       audioBufferRef.current = audioBuffer;
-      startSource(audioBuffer, ctx);
+      // Use the current speed value (user may have changed it during loading)
+      startSource(audioBuffer, ctx, speed);
       setPlayerState("playing");
 
     } catch (err: unknown) {
@@ -187,9 +193,11 @@ function VoiceReader({ content }: { content: string }) {
 
   const handleSpeedChange = (newSpeed: SpeedValue) => {
     setSpeed(newSpeed);
-    if (playerState === "playing" || playerState === "paused") {
-      handleStop();
+    // Change rate on the live source node — no restart, no re-fetch needed
+    if (sourceRef.current) {
+      sourceRef.current.playbackRate.value = newSpeed;
     }
+    // If loading or idle, the new speed will be applied when startSource runs
   };
 
   const isActive = playerState === "playing" || playerState === "paused" || playerState === "loading";
