@@ -253,7 +253,7 @@ export function PasswordGate({ children }: PasswordGateProps) {
           <div className="flex flex-col items-center mb-8">
             <img src="/4ielts-logo.png" alt="4IELTS" className="h-20 w-auto object-contain mb-4" />
             <h1 className="text-2xl font-extrabold text-gray-900 dark:text-white text-center">
-              4IELTS Vocabulary App
+              LEXO
             </h1>
             <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 text-center">
               Enter your email and the access code from your instructor
