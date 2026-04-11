@@ -251,7 +251,12 @@ export function PasswordGate({ children }: PasswordGateProps) {
       <div className="w-full max-w-sm">
         <div className="bg-white dark:bg-gray-900 rounded-3xl shadow-2xl p-8">
           <div className="flex flex-col items-center mb-8">
-            <img src="/4ielts-logo.png" alt="4IELTS" className="h-20 w-auto object-contain mb-4" />
+            <div className="flex flex-col items-center gap-1 mb-4">
+              <img src="/4ielts-logo.png" alt="4IELTS" className="h-16 w-auto object-contain" />
+              <span className="text-xs font-semibold tracking-widest uppercase text-teal-600 dark:text-teal-400">
+                4IELTS AI Tools
+              </span>
+            </div>
             <h1 className="text-2xl font-extrabold text-gray-900 dark:text-white text-center">
               LEXO
             </h1>
