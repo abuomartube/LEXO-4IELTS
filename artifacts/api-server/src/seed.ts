@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { db, storiesTable } from "@workspace/db";
+import { db, storiesTable, flashcardsTable } from "@workspace/db";
 import { logger } from "./lib/logger";
 import seedData from "./flashcards-seed.json";
 import storiesSeedData from "./stories-seed.json";
@@ -67,18 +67,15 @@ async function seedFlashcards() {
   const BATCH = 500;
   for (let i = 0; i < rows.length; i += BATCH) {
     const chunk = rows.slice(i, i + BATCH);
-    const values = chunk
-      .map(
-        (r) =>
-          `(${[r.english, r.arabic, r.level, r.category, r.example_sentence, r.example_sentence_arabic]
-            .map((v) => (v == null ? "NULL" : `'${String(v).replace(/'/g, "''")}'`))
-            .join(",")})`
-      )
-      .join(",");
-    await db.execute(
-      sql.raw(
-        `INSERT INTO flashcards (english,arabic,level,category,example_sentence,example_sentence_arabic) VALUES ${values}`
-      )
+    await db.insert(flashcardsTable).values(
+      chunk.map((r) => ({
+        english: r.english,
+        arabic: r.arabic,
+        level: r.level,
+        category: r.category,
+        exampleSentence: r.example_sentence ?? null,
+        exampleSentenceArabic: r.example_sentence_arabic ?? null,
+      }))
     );
   }
 }
