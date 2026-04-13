@@ -358,6 +358,105 @@ After each student answer, respond with:
 Keep responses under 80 words. Target B2–C1 vocabulary.`;
 }
 
+// ── Realtime API (WebRTC ephemeral token) ────────────────────────────────────
+
+function buildRealtimeSystemPrompt(topic: string, cue: string): string {
+  return `You are Churchill AI, a certified IELTS Speaking Examiner. Speak in a professional, clear, warm British examiner voice.
+
+You are conducting a complete IELTS Speaking test. The topic is: "${topic}".
+
+Follow this EXACT structure — do not skip any part:
+
+══════════════════════════════════════
+PART 1 — Introduction (8 questions)
+══════════════════════════════════════
+Open with: "Welcome. I'm Churchill AI, your IELTS Speaking Examiner. Let's begin Part 1. The topic today is ${topic}."
+
+Ask exactly 8 different personal questions about "${topic}". After EACH student answer:
+- One brief acknowledgment sentence (1–2 words max like "Good." or "Interesting.")
+- If there is a grammar or vocabulary mistake, note it briefly: say "You could say [correction] instead"
+- Then ask the next question immediately
+
+After the 8th answer: "Thank you. That completes Part 1. Now let me give you your Part 2 cue card."
+
+══════════════════════════════════════
+PART 2 — Long Turn (1–2 min talk)
+══════════════════════════════════════
+Read the cue card aloud: "Describe ${cue}. You should say: what it is or who they are, when and where you experienced it, why it is important or special to you, and how it has affected your life. You have one minute to prepare, then please speak for one to two minutes. Begin whenever you are ready."
+
+Stay silent while the student prepares and speaks. After their talk:
+- Give 2–3 sentences of specific feedback on their performance
+- Then say: "Thank you. We will now move on to Part 3."
+
+══════════════════════════════════════
+PART 3 — Discussion (4 questions)
+══════════════════════════════════════
+Open with: "In Part 3, I'll ask you some broader questions about ${topic} and society."
+
+Ask exactly 4 abstract, analytical questions about society or the wider world related to "${topic}". After EACH answer:
+- One brief acknowledgment
+- Note any grammar or vocabulary improvement briefly if needed
+- Ask the next question
+
+After the 4th answer, say: "Excellent. That concludes our IELTS Speaking test today. You have done very well. Keep practising consistently and your band score will improve. Goodbye and good luck."
+
+══════════════════════════════════════
+RULES
+══════════════════════════════════════
+- Speak naturally — you are the voice examiner, this is an audio session
+- Keep all feedback brief: never more than 2 sentences after each answer
+- Do NOT use emoji, markdown, bullet points, or written formatting in your speech
+- If the student is silent more than 5 seconds after a question, gently prompt: "Please go ahead when you are ready."
+- Occasionally give a band estimate spoken naturally: "That answer would be around Band 6 to 7."
+- Never break character`;
+}
+
+app.post("/api/realtime-session", async (req, res) => {
+  try {
+    const { topic, cue } = req.body as { topic: string; cue?: string };
+    if (!topic) { res.status(400).json({ error: "Missing topic" }); return; }
+
+    const apiKey = process.env.OPENAI_API_KEY;
+    if (!apiKey) { res.status(500).json({ error: "OPENAI_API_KEY not configured" }); return; }
+
+    const instructions = buildRealtimeSystemPrompt(topic, cue ?? `something related to ${topic}`);
+
+    const response = await fetch("https://api.openai.com/v1/realtime/sessions", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "gpt-4o-realtime-preview-2024-12-17",
+        modalities: ["audio", "text"],
+        instructions,
+        voice: "echo",
+        input_audio_transcription: { model: "whisper-1" },
+        turn_detection: {
+          type: "server_vad",
+          threshold: 0.5,
+          prefix_padding_ms: 300,
+          silence_duration_ms: 700,
+        },
+      }),
+    });
+
+    if (!response.ok) {
+      const errText = await response.text();
+      console.error("Realtime session error:", errText);
+      res.status(response.status).json({ error: "Failed to create realtime session" });
+      return;
+    }
+
+    const data = await response.json() as { client_secret: { value: string }; id: string };
+    res.json({ client_secret: data.client_secret, session_id: data.id });
+  } catch (err) {
+    console.error("Realtime session error:", err);
+    res.status(500).json({ error: "Failed to create realtime session" });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Churchill AI server running on http://localhost:${PORT}`);
 });

@@ -550,6 +550,18 @@ export default function Speaking({ onBack }: Props) {
   const [lastTtsText, setLastTtsText] = useState<string|null>(null);
   const [ttsSpeed, setTtsSpeedState] = useState<number>(loadSpeed);
   const [sessionNumber, setSessionNumber] = useState<number>(0);
+
+  // ── Realtime API state ───────────────────────────────────────────────────
+  const [rtStatus, setRtStatus] = useState<"idle"|"connecting"|"live"|"done">("idle");
+  const [rtMessages, setRtMessages] = useState<{role:"user"|"assistant"; text:string; id:string}[]>([]);
+  const [rtStreamText, setRtStreamText] = useState("");
+  const [rtIsUserSpeaking, setRtIsUserSpeaking] = useState(false);
+  const [rtIsAiSpeaking, setRtIsAiSpeaking] = useState(false);
+  const [rtPhase, setRtPhase] = useState<1|2|3>(1);
+  const [rtTopic, setRtTopic] = useState("");
+  const [rtReport, setRtReport] = useState<ReportData|null>(null);
+  const [rtError, setRtError] = useState<string|null>(null);
+  const [rtGeneratingReport, setRtGeneratingReport] = useState(false);
   const [sessionMode, setSessionMode] = useState<SessionMode|null>(null);
   const [transcript, setTranscript] = useState<TranscriptEntry[]>([]);
   const [showTranscript, setShowTranscript] = useState(false);
@@ -575,10 +587,22 @@ export default function Speaking({ onBack }: Props) {
   const sessionGenRef = useRef(0);
   const isProcessingRef = useRef(false);
 
+  // ── Realtime refs ────────────────────────────────────────────────────────
+  const rtPcRef = useRef<RTCPeerConnection|null>(null);
+  const rtAudioElRef = useRef<HTMLAudioElement|null>(null);
+  const rtMicStreamRef = useRef<MediaStream|null>(null);
+  const rtConversationRef = useRef<{role:"user"|"assistant"; content:string}[]>([]);
+  const rtResponseTextRef = useRef("");
+  const rtHandlerRef = useRef<((e: Record<string,unknown>)=>void)|null>(null);
+  const rtMessagesEndRef = useRef<HTMLDivElement|null>(null);
+  const rtTopicRef = useRef("");
+
   useEffect(() => { chatEndRef.current?.scrollIntoView({ behavior:"smooth" }); }, [session.messages, isLoading, streamingContent]);
   useEffect(() => { sessionRef.current = session; }, [session]);
   useEffect(() => { sessionModeRef.current = sessionMode; }, [sessionMode]);
   useEffect(() => { ttsSpeedRef.current = ttsSpeed; }, [ttsSpeed]);
+  useEffect(() => { rtMessagesEndRef.current?.scrollIntoView({ behavior:"smooth" }); }, [rtMessages, rtStreamText]);
+  useEffect(() => { rtTopicRef.current = rtTopic; }, [rtTopic]);
 
   useEffect(() => {
     return () => {
@@ -588,6 +612,9 @@ export default function Speaking({ onBack }: Props) {
       if (silenceTimerRef.current) clearTimeout(silenceTimerRef.current);
       mediaRecorderRef.current?.stop();
       mediaRecorderRef.current = null;
+      rtMicStreamRef.current?.getTracks().forEach(t => t.stop());
+      rtPcRef.current?.close();
+      if (rtAudioElRef.current) { rtAudioElRef.current.pause(); rtAudioElRef.current.srcObject = null; rtAudioElRef.current.remove(); rtAudioElRef.current = null; }
     };
   }, []);
 
@@ -802,6 +829,174 @@ export default function Speaking({ onBack }: Props) {
 
   useEffect(()=>{ startRecordingRef.current=startRecording; },[startRecording]);
 
+  // ── Realtime API (WebRTC) ─────────────────────────────────────────────────
+
+  const handleRtEvent = useCallback((event: Record<string,unknown>) => {
+    switch (event.type as string) {
+      case "input_audio_buffer.speech_started":
+        setRtIsUserSpeaking(true);
+        break;
+      case "input_audio_buffer.speech_stopped":
+        setRtIsUserSpeaking(false);
+        break;
+      case "response.created":
+        setRtIsAiSpeaking(true);
+        rtResponseTextRef.current = "";
+        setRtStreamText("");
+        break;
+      case "response.audio_transcript.delta": {
+        const delta = (event.delta as string) ?? "";
+        rtResponseTextRef.current += delta;
+        setRtStreamText(rtResponseTextRef.current);
+        break;
+      }
+      case "response.output_item.done": {
+        const item = event.item as {role?:string; content?:{type:string; transcript?:string}[]} | undefined;
+        if (item?.role === "assistant") {
+          const audioPart = item.content?.find(c => c.type === "audio");
+          const text = audioPart?.transcript ?? rtResponseTextRef.current;
+          if (text?.trim()) {
+            const id = `ai-${Date.now()}-${Math.random()}`;
+            setRtMessages(prev => [...prev, { role:"assistant", text, id }]);
+            rtConversationRef.current.push({ role:"assistant", content:text });
+            const lower = text.toLowerCase();
+            if (/part 2|cue card|long turn/.test(lower)) setRtPhase(2);
+            else if (/part 3|discussion/.test(lower)) setRtPhase(3);
+          }
+          setRtStreamText("");
+          rtResponseTextRef.current = "";
+        }
+        break;
+      }
+      case "response.done":
+        setRtIsAiSpeaking(false);
+        break;
+      case "conversation.item.input_audio_transcription.completed": {
+        const userText = ((event.transcript as string) ?? "").trim();
+        if (userText) {
+          const id = (event.item_id as string) ?? `user-${Date.now()}`;
+          setRtMessages(prev => {
+            if (prev.some(m => m.id === id)) return prev;
+            return [...prev, { role:"user", text:userText, id }];
+          });
+          rtConversationRef.current.push({ role:"user", content:userText });
+        }
+        break;
+      }
+      case "error": {
+        const err = event.error as {message?:string} | undefined;
+        setRtError(err?.message ?? "Realtime connection error. Please try again.");
+        break;
+      }
+    }
+  }, []);
+
+  useEffect(() => { rtHandlerRef.current = handleRtEvent; }, [handleRtEvent]);
+
+  const stopRealtimeSession = useCallback((andReport = false) => {
+    rtMicStreamRef.current?.getTracks().forEach(t => t.stop());
+    rtMicStreamRef.current = null;
+    rtPcRef.current?.close();
+    rtPcRef.current = null;
+    if (rtAudioElRef.current) {
+      rtAudioElRef.current.pause();
+      rtAudioElRef.current.srcObject = null;
+      rtAudioElRef.current.remove();
+      rtAudioElRef.current = null;
+    }
+    setRtIsAiSpeaking(false);
+    setRtIsUserSpeaking(false);
+    setRtStreamText("");
+    if (andReport) {
+      setRtGeneratingReport(true);
+      const topic = rtTopicRef.current;
+      const msgs = rtConversationRef.current.map(m => ({ role: m.role as "user"|"assistant", content: m.content }));
+      callReport(msgs, topic)
+        .then(report => setRtReport(report))
+        .catch(() => setRtError("Failed to generate report."))
+        .finally(() => setRtGeneratingReport(false));
+    }
+    setRtStatus("done");
+  }, []);
+
+  const resetRealtimeSession = useCallback(() => {
+    setRtStatus("idle");
+    setRtMessages([]);
+    setRtStreamText("");
+    setRtReport(null);
+    setRtError(null);
+    setRtPhase(1);
+    setRtTopic("");
+    rtConversationRef.current = [];
+    rtResponseTextRef.current = "";
+  }, []);
+
+  const startRealtimeSession = useCallback(async () => {
+    const { topic, sessionNumber: sNum } = pickTopic();
+    setRtTopic(topic);
+    rtTopicRef.current = topic;
+    setRtStatus("connecting");
+    setRtMessages([]);
+    setRtStreamText("");
+    setRtReport(null);
+    setRtError(null);
+    setRtPhase(1);
+    setSessionNumber(sNum);
+    rtConversationRef.current = [];
+    rtResponseTextRef.current = "";
+
+    try {
+      const res = await fetch("/api/realtime-session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ topic, cue: CUE_CARDS[topic] ?? `something related to ${topic}` }),
+      });
+      if (!res.ok) throw new Error("Could not create realtime session");
+      const { client_secret } = await res.json() as { client_secret: { value: string } };
+
+      const pc = new RTCPeerConnection();
+      rtPcRef.current = pc;
+
+      const audioEl = document.createElement("audio");
+      audioEl.autoplay = true;
+      document.body.appendChild(audioEl);
+      rtAudioElRef.current = audioEl;
+      pc.ontrack = (e) => { audioEl.srcObject = e.streams[0]; };
+
+      const micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      rtMicStreamRef.current = micStream;
+      micStream.getTracks().forEach(track => pc.addTrack(track, micStream));
+
+      const dc = pc.createDataChannel("oai-events");
+      dc.onopen = () => setRtStatus("live");
+      dc.onmessage = (e) => {
+        try { rtHandlerRef.current?.(JSON.parse(e.data) as Record<string,unknown>); } catch { /* ignore */ }
+      };
+
+      pc.onconnectionstatechange = () => {
+        if (pc.connectionState === "failed" || pc.connectionState === "disconnected") {
+          setRtError("Voice connection lost. Please start a new session.");
+          setRtStatus("done");
+        }
+      };
+
+      const offer = await pc.createOffer();
+      await pc.setLocalDescription(offer);
+
+      const sdpRes = await fetch(
+        "https://api.openai.com/v1/realtime?model=gpt-4o-realtime-preview-2024-12-17",
+        { method:"POST", body: offer.sdp, headers: { Authorization:`Bearer ${client_secret.value}`, "Content-Type":"application/sdp" } }
+      );
+      if (!sdpRes.ok) throw new Error("WebRTC negotiation failed — check your OpenAI API key");
+      const answerSdp = await sdpRes.text();
+      await pc.setRemoteDescription({ type:"answer", sdp: answerSdp });
+
+    } catch (err: unknown) {
+      setRtStatus("idle");
+      setRtError(err instanceof Error ? err.message : "Failed to connect. Please try again.");
+    }
+  }, []);
+
   const toggleRecording = useCallback(() => {
     if (isRecording) stopRecording();
     else { stopTts(); startRecording(); }
@@ -832,10 +1027,10 @@ export default function Speaking({ onBack }: Props) {
           <span className="text-xs font-semibold px-2 py-0.5 rounded-full" style={{ background:"rgba(201,168,76,0.15)", color: GOLD }}>IELTS Speaking Examiner</span>
         </div>
         <div className="flex items-center gap-2">
-          {session.topic && <span className="text-xs text-white/40 hidden sm:inline">Topic: {session.topic}</span>}
+          {(rtTopic || session.topic) && <span className="text-xs text-white/40 hidden sm:inline">Topic: {rtTopic || session.topic}</span>}
           {sessionNumber>0 && <span className="text-xs text-white/40 hidden sm:inline">Session {sessionNumber}/{TOTAL_TOPICS}</span>}
-          {session.phase!=="idle" && (
-            <button onClick={newSession} className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-white/60 hover:bg-white/10 transition-colors" style={{ border:"1px solid rgba(255,255,255,0.15)" }}>
+          {(session.phase!=="idle" || rtStatus!=="idle") && (
+            <button onClick={rtStatus!=="idle" ? ()=>{ stopRealtimeSession(false); resetRealtimeSession(); } : newSession} className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-white/60 hover:bg-white/10 transition-colors" style={{ border:"1px solid rgba(255,255,255,0.15)" }}>
               <RotateCcw className="w-3 h-3" />New
             </button>
           )}
@@ -845,15 +1040,132 @@ export default function Speaking({ onBack }: Props) {
       {/* ── MAIN ── */}
       <div className="flex-1 flex flex-col max-w-3xl w-full mx-auto px-4 py-4 overflow-hidden">
 
-        {/* Part indicator */}
-        {session.phase!=="idle"&&session.phase!=="complete"&&session.phase!=="report-loading" && (
+        {/* ── REALTIME SESSION ── */}
+        {rtStatus !== "idle" && (
+          <>
+            {/* Connecting */}
+            {rtStatus === "connecting" && (
+              <div className="flex-1 flex flex-col items-center justify-center gap-5">
+                <div className="relative">
+                  <div className="w-20 h-20 rounded-full animate-ping absolute inset-0" style={{ background:"rgba(201,168,76,0.3)" }} />
+                  <div className="w-20 h-20 rounded-full flex items-center justify-center relative" style={{ background: GOLD }}>
+                    <Mic className="w-8 h-8" style={{ color: NAVY }} />
+                  </div>
+                </div>
+                <p className="text-white font-bold text-lg">Connecting to Churchill AI…</p>
+                <p className="text-white/40 text-sm text-center">Setting up real-time voice connection via WebRTC</p>
+              </div>
+            )}
+
+            {/* Live or Done */}
+            {(rtStatus === "live" || rtStatus === "done") && (
+              <>
+                {/* Part badge + voice status bar */}
+                <div className="shrink-0 flex items-center justify-between mb-3 flex-wrap gap-2">
+                  <div className="flex items-center gap-2">
+                    {[1,2,3].map(p => (
+                      <div key={p} className="flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-bold transition-all" style={rtPhase === p ? {background:GOLD, color:NAVY} : {background:"rgba(255,255,255,0.07)", color:"rgba(255,255,255,0.3)"}}>
+                        Part {p}
+                      </div>
+                    ))}
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {rtStatus === "live" && (
+                      <div className="flex items-center gap-1.5">
+                        <div className={`w-2.5 h-2.5 rounded-full ${rtIsAiSpeaking ? "animate-pulse" : rtIsUserSpeaking ? "bg-green-400" : "bg-white/20"}`} style={rtIsAiSpeaking ? {background:GOLD} : {}} />
+                        <span className="text-xs font-medium" style={rtIsAiSpeaking ? {color:GOLD} : rtIsUserSpeaking ? {color:"#4ade80"} : {color:"rgba(255,255,255,0.4)"}}>
+                          {rtIsAiSpeaking ? "Churchill AI is speaking…" : rtIsUserSpeaking ? "Listening to you…" : "Waiting…"}
+                        </span>
+                      </div>
+                    )}
+                    {rtStatus === "done" && <span className="text-xs text-white/40">Session ended</span>}
+                  </div>
+                </div>
+
+                {/* Chat transcript */}
+                <div className="flex-1 overflow-y-auto space-y-4 py-2 pr-1">
+                  {rtMessages.length === 0 && rtStatus === "live" && (
+                    <div className="flex flex-col items-center gap-3 pt-8 text-center">
+                      <div className="relative">
+                        <div className="w-14 h-14 rounded-full animate-ping absolute inset-0" style={{ background:"rgba(201,168,76,0.2)" }} />
+                        <div className="w-14 h-14 rounded-full flex items-center justify-center relative" style={{ background:"rgba(201,168,76,0.15)", border:"2px solid rgba(201,168,76,0.4)" }}>
+                          <Volume2 className="w-6 h-6" style={{ color: GOLD }} />
+                        </div>
+                      </div>
+                      <p className="text-white/60 text-sm">Churchill AI is introducing the test…</p>
+                      <p className="text-white/30 text-xs">Speak naturally — the examiner will hear you automatically</p>
+                    </div>
+                  )}
+                  {rtMessages.map(m => m.role === "assistant"
+                    ? <AIChatBubble key={m.id} content={m.text} />
+                    : <UserChatBubble key={m.id} content={m.text} />
+                  )}
+                  {rtStreamText && <AIChatBubble content={rtStreamText + "▌"} />}
+                  <div ref={rtMessagesEndRef} />
+                </div>
+
+                {/* Error */}
+                {rtError && (
+                  <div className="shrink-0 flex items-center gap-2 px-3 py-2 rounded-xl text-sm text-red-400 mb-2" style={{ background:"rgba(239,68,68,0.1)", border:"1px solid rgba(239,68,68,0.3)" }}>
+                    <AlertCircle className="w-4 h-4 shrink-0" />{rtError}
+                  </div>
+                )}
+
+                {/* Live controls */}
+                {rtStatus === "live" && (
+                  <div className="shrink-0 flex gap-2 mt-3">
+                    <button onClick={() => stopRealtimeSession(true)} className="flex-1 flex items-center justify-center gap-2 py-3 rounded-2xl font-bold text-sm transition-opacity hover:opacity-90" style={{ background:"#4ade80", color:NAVY }}>
+                      <Trophy className="w-4 h-4" />End &amp; Get Report
+                    </button>
+                    <button onClick={() => stopRealtimeSession(false)} className="px-4 py-3 rounded-2xl text-sm font-semibold text-white/50 hover:bg-white/10 transition-colors" style={{ border:"1px solid rgba(255,255,255,0.15)" }}>
+                      End
+                    </button>
+                  </div>
+                )}
+
+                {/* Done state: report or new session */}
+                {rtStatus === "done" && (
+                  <div className="shrink-0 mt-3 space-y-3">
+                    {rtGeneratingReport && (
+                      <div className="flex items-center justify-center gap-3 py-4">
+                        <Loader2 className="w-6 h-6 animate-spin" style={{ color: GOLD }} />
+                        <span className="text-white/60 font-medium text-sm">Generating your Speaking Report…</span>
+                      </div>
+                    )}
+                    {rtReport && (
+                      <>
+                        <FinalReport report={rtReport} topic={rtTopic} onNewSession={resetRealtimeSession} />
+                        <button onClick={resetRealtimeSession} className="w-full flex items-center justify-center gap-2 py-3 rounded-2xl text-sm font-semibold text-white/50 hover:bg-white/10 transition-colors" style={{ border:"1px solid rgba(255,255,255,0.15)" }}>
+                          <RotateCcw className="w-4 h-4" />New Session
+                        </button>
+                      </>
+                    )}
+                    {!rtReport && !rtGeneratingReport && (
+                      <div className="flex gap-2">
+                        <button onClick={() => { setRtGeneratingReport(true); callReport(rtConversationRef.current.map(m=>({role:m.role as "user"|"assistant",content:m.content})), rtTopic).then(r=>setRtReport(r)).catch(()=>setRtError("Failed to generate report.")).finally(()=>setRtGeneratingReport(false)); }} className="flex-1 flex items-center justify-center gap-2 py-3 rounded-2xl font-bold text-sm transition-opacity hover:opacity-90" style={{ background:"#4ade80", color:NAVY }}>
+                          <Trophy className="w-4 h-4" />Generate Report
+                        </button>
+                        <button onClick={resetRealtimeSession} className="px-4 py-3 rounded-2xl text-sm font-semibold text-white/50 hover:bg-white/10 transition-colors" style={{ border:"1px solid rgba(255,255,255,0.15)" }}>
+                          <RotateCcw className="w-4 h-4" />
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </>
+            )}
+          </>
+        )}
+
+        {/* Part indicator — only shown for classic text/sequential session */}
+        {rtStatus === "idle" && session.phase!=="idle"&&session.phase!=="complete"&&session.phase!=="report-loading" && (
           <div className="mb-3 shrink-0">
             <PartIndicator part={session.part} phase={session.phase} />
           </div>
         )}
 
         {/* ── IDLE ── */}
-        {session.phase==="idle" && (
+        {rtStatus === "idle" && session.phase==="idle" && (
           <div className="flex-1 flex flex-col items-center gap-5 overflow-y-auto pb-4">
             <div className="w-full rounded-3xl overflow-hidden flex flex-col items-center text-center px-6 pt-6 pb-5 gap-4" style={{ background:"linear-gradient(160deg,#0D1B3E 0%,#132244 100%)", border:"1px solid rgba(201,168,76,0.2)" }}>
               <div className="rounded-2xl overflow-hidden shrink-0 border-4 shadow-xl" style={{ width:160, height:200, borderColor:"rgba(201,168,76,0.4)" }}>
@@ -876,9 +1188,16 @@ export default function Speaking({ onBack }: Props) {
               ))}
             </div>
 
+            {rtError && (
+              <div className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-sm text-red-400" style={{ background:"rgba(239,68,68,0.1)", border:"1px solid rgba(239,68,68,0.3)" }}>
+                <AlertCircle className="w-4 h-4 shrink-0" />{rtError}
+              </div>
+            )}
             <div className="flex flex-col sm:flex-row gap-3 w-full">
-              <button onClick={()=>startSession("voice")} className="flex-1 flex flex-col items-center gap-1 px-6 py-4 rounded-2xl font-bold shadow-xl transition-all hover:opacity-90" style={{ background: GOLD, color: NAVY }}>
-                <span className="text-2xl">🎤</span><span className="text-base">محادثة صوتية</span><span className="text-xs font-normal opacity-70">تكلم والـ AI يرد تلقائياً</span>
+              <button onClick={startRealtimeSession} className="flex-1 flex flex-col items-center gap-1 px-6 py-4 rounded-2xl font-bold shadow-xl transition-all hover:opacity-90" style={{ background: GOLD, color: NAVY }}>
+                <span className="text-2xl">🎤</span>
+                <span className="text-base">محادثة صوتية حية</span>
+                <span className="text-xs font-normal opacity-70">Real-time · بدون تأخير</span>
               </button>
               <button onClick={()=>startSession("text")} className="flex-1 flex flex-col items-center gap-1 px-6 py-4 rounded-2xl font-bold transition-all hover:bg-white/10" style={{ background:"rgba(255,255,255,0.07)", border:"2px solid rgba(255,255,255,0.15)", color:"white" }}>
                 <span className="text-2xl">⌨️</span><span className="text-base">محادثة كتابية</span><span className="text-xs font-normal opacity-50">اكتب إجاباتك يدوياً</span>
@@ -888,7 +1207,7 @@ export default function Speaking({ onBack }: Props) {
         )}
 
         {/* ── REPORT LOADING ── */}
-        {session.phase==="report-loading" && (
+        {rtStatus === "idle" && session.phase==="report-loading" && (
           <div className="flex-1 flex flex-col items-center justify-center gap-4">
             <Loader2 className="w-12 h-12 animate-spin" style={{ color: GOLD }} />
             <p className="text-white/60 font-medium">Generating your Speaking Report…</p>
@@ -896,7 +1215,7 @@ export default function Speaking({ onBack }: Props) {
         )}
 
         {/* ── FINAL REPORT ── */}
-        {session.phase==="complete"&&session.report && (
+        {rtStatus === "idle" && session.phase==="complete"&&session.report && (
           <div className="flex-1 overflow-y-auto space-y-3">
             <FinalReport report={session.report} topic={session.topic} onNewSession={newSession} />
             {transcript.length>0 && (
@@ -907,8 +1226,8 @@ export default function Speaking({ onBack }: Props) {
           </div>
         )}
 
-        {/* ── ACTIVE SESSION ── */}
-        {(session.phase==="part1"||session.phase==="part2-prep"||session.phase==="part2-answer"||session.phase==="part3") && (
+        {/* ── ACTIVE SESSION (text / classic voice mode) ── */}
+        {rtStatus === "idle" && (session.phase==="part1"||session.phase==="part2-prep"||session.phase==="part2-answer"||session.phase==="part3") && (
           <>
             {/* Speed selector */}
             <div className="shrink-0 flex items-center gap-2 mb-2 flex-wrap">
