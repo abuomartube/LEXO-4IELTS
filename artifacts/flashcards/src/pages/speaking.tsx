@@ -1075,6 +1075,15 @@ export default function SpeakingPage() {
 
   // ── Start a new session ──
   const startSession = useCallback(async (mode: SessionMode) => {
+    // Unlock HTMLAudioElement autoplay immediately — must happen before any await.
+    // Browsers expire the "user gesture" context after ~1s, so TTS calls that come
+    // seconds later would be silently blocked without this pre-unlock.
+    try {
+      const unlock = new Audio("data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=");
+      unlock.volume = 0;
+      unlock.play().catch(() => {});
+    } catch { /* ignore */ }
+
     sessionGenRef.current += 1;
     isProcessingRef.current = false;
     stopTts();
