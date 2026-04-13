@@ -4,11 +4,12 @@ import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { LevelBadge } from "@/components/level-badge";
+import { useState } from "react";
 import {
   BookOpen, Trophy, Zap, Target,
   Volume2, Globe, Layers, Award, ExternalLink,
   Flame, Star, HelpCircle, Sparkles, MessageCircle,
-  FileText, ArrowLeftRight, BookMarked, Mic
+  FileText, ArrowLeftRight, BookMarked, Mic, Send, CheckCircle2, Loader2
 } from "lucide-react";
 import { Layout } from "@/components/layout";
 
@@ -306,7 +307,139 @@ export default function Home() {
           </section>
         ) : null}
 
+        {/* ── Leave a Review ── */}
+        <ReviewSection />
+
       </div>
     </Layout>
+  );
+}
+
+function ReviewSection() {
+  const storedRaw = typeof window !== "undefined" ? localStorage.getItem("4ielts_email") : null;
+  let storedEmail = "";
+  try { storedEmail = storedRaw ? JSON.parse(storedRaw).email ?? "" : ""; } catch { storedEmail = ""; }
+
+  const [name, setName] = useState("");
+  const [comment, setComment] = useState("");
+  const [rating, setRating] = useState(5);
+  const [hoverRating, setHoverRating] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!comment.trim() || comment.trim().length < 10) {
+      setError("Please write at least 10 characters.");
+      return;
+    }
+    setLoading(true);
+    setError("");
+    try {
+      const res = await fetch("/api/reviews", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: storedEmail, name: name.trim(), comment: comment.trim(), rating }),
+      });
+      if (res.ok) {
+        setSubmitted(true);
+      } else {
+        const d = await res.json();
+        setError(d.error ?? "Failed to submit. Please try again.");
+      }
+    } catch {
+      setError("Connection error. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (submitted) {
+    return (
+      <section className="bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-800 rounded-3xl p-8 text-center">
+        <CheckCircle2 className="w-12 h-12 text-green-500 mx-auto mb-3" />
+        <h3 className="text-xl font-bold text-foreground mb-2">Thank you for your feedback!</h3>
+        <p className="text-muted-foreground text-sm">Your review has been submitted and will appear after it is approved.</p>
+        <p className="text-xs text-muted-foreground mt-1" dir="rtl" lang="ar">شكراً لمراجعتك! ستظهر بعد موافقة المشرف.</p>
+      </section>
+    );
+  }
+
+  return (
+    <section className="bg-card border border-border rounded-3xl p-8 space-y-5">
+      <div className="flex items-center gap-3 mb-1">
+        <div className="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center shrink-0">
+          <Star className="w-5 h-5 text-amber-500" />
+        </div>
+        <div>
+          <h2 className="text-xl font-extrabold text-foreground">Leave a Review</h2>
+          <p className="text-sm text-muted-foreground">Share your experience with LEXO · شارك تجربتك</p>
+        </div>
+      </div>
+
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label className="block text-sm font-medium text-foreground mb-1.5">Your Name (optional)</label>
+          <input
+            type="text"
+            value={name}
+            onChange={e => setName(e.target.value)}
+            placeholder="e.g. Ahmed from Egypt"
+            maxLength={80}
+            className="w-full px-4 py-3 rounded-xl border border-border bg-background text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-foreground mb-2">Rating</label>
+          <div className="flex gap-1">
+            {[1, 2, 3, 4, 5].map(s => (
+              <button
+                key={s}
+                type="button"
+                onClick={() => setRating(s)}
+                onMouseEnter={() => setHoverRating(s)}
+                onMouseLeave={() => setHoverRating(0)}
+                className="transition-transform hover:scale-110"
+              >
+                <Star
+                  className={`w-8 h-8 transition-colors ${(hoverRating || rating) >= s ? "text-amber-400 fill-amber-400" : "text-muted-foreground/40"}`}
+                />
+              </button>
+            ))}
+            <span className="ml-2 text-sm font-medium text-muted-foreground self-center">
+              {rating === 5 ? "Excellent" : rating === 4 ? "Good" : rating === 3 ? "Average" : rating === 2 ? "Fair" : "Poor"}
+            </span>
+          </div>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-foreground mb-1.5">
+            Your Comment <span className="text-muted-foreground font-normal">(min. 10 characters)</span>
+          </label>
+          <textarea
+            value={comment}
+            onChange={e => setComment(e.target.value)}
+            placeholder="Tell us what you think about LEXO — what helped you most? What would you improve?"
+            rows={4}
+            maxLength={2000}
+            className="w-full px-4 py-3 rounded-xl border border-border bg-background text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary text-sm resize-none"
+          />
+          <p className="text-xs text-muted-foreground mt-1 text-right">{comment.length}/2000</p>
+        </div>
+
+        {error && <p className="text-sm text-red-600 dark:text-red-400">{error}</p>}
+
+        <button
+          type="submit"
+          disabled={loading || !comment.trim()}
+          className="flex items-center gap-2 px-6 py-3 rounded-xl bg-primary text-primary-foreground font-semibold hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+        >
+          {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
+          {loading ? "Submitting…" : "Submit Review"}
+        </button>
+      </form>
+    </section>
   );
 }

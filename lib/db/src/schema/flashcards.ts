@@ -74,3 +74,16 @@ export const storiesTable = pgTable("stories", {
 });
 
 export type Story = typeof storiesTable.$inferSelect;
+
+export const reviewsTable = pgTable("reviews", {
+  id: serial("id").primaryKey(),
+  email: text("email").notNull(),
+  name: text("name"),
+  comment: text("comment").notNull(),
+  rating: integer("rating").notNull().default(5),
+  status: text("status").notNull().default("pending"),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  reviewedAt: timestamp("reviewed_at", { withTimezone: true }),
+});
+
+export type Review = typeof reviewsTable.$inferSelect;
