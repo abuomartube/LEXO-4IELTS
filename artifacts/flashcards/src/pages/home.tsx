@@ -385,7 +385,7 @@ function ReviewSection() {
             type="text"
             value={name}
             onChange={e => setName(e.target.value)}
-            placeholder="e.g. Ahmed from Egypt"
+            placeholder="e.g. Ahmed from Saudi Arabia"
             maxLength={80}
             className="w-full px-4 py-3 rounded-xl border border-border bg-background text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary text-sm"
           />
