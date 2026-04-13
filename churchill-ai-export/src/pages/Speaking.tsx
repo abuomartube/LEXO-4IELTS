@@ -1096,7 +1096,7 @@ export default function Speaking({ onBack }: Props) {
                       <p className="text-white/30 text-xs">Speak naturally — the examiner will hear you automatically</p>
                     </div>
                   )}
-                  {rtMessages.map(m => m.role === "assistant"
+                  {(rtMessages as {role:"user"|"assistant"; text:string; id:string}[]).map(m => m.role === "assistant"
                     ? <AIChatBubble key={m.id} content={m.text} />
                     : <UserChatBubble key={m.id} content={m.text} />
                   )}
