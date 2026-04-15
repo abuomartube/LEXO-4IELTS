@@ -1,12 +1,30 @@
-import { useGetProgressSummary, useGetFlashcardLevelStats } from "@workspace/api-client-react";
+import { useState } from "react";
+import { useGetProgressSummary, useGetFlashcardLevelStats, customFetch } from "@workspace/api-client-react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Layout } from "@/components/layout";
 import { Progress } from "@/components/ui/progress";
 import { LevelBadge } from "@/components/level-badge";
-import { Trophy, Zap, BookMarked, TrendingUp } from "lucide-react";
+import { Trophy, Zap, BookMarked, TrendingUp, RotateCcw } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 export default function ProgressPage() {
   const { data: summary, isLoading: summaryLoading } = useGetProgressSummary();
   const { data: levelStats, isLoading: statsLoading } = useGetFlashcardLevelStats();
+  const [showResetConfirm, setShowResetConfirm] = useState(false);
+  const { toast } = useToast();
+  const qc = useQueryClient();
+
+  const resetMutation = useMutation({
+    mutationFn: () => customFetch("/api/progress/reset", { method: "DELETE" }),
+    onSuccess: () => {
+      qc.invalidateQueries();
+      setShowResetConfirm(false);
+      toast({ title: "Progress Reset", description: "All your progress has been cleared. You can start fresh!" });
+    },
+    onError: () => {
+      toast({ title: "Error", description: "Failed to reset progress. Please try again.", variant: "destructive" });
+    },
+  });
 
   const isLoading = summaryLoading || statsLoading;
 
@@ -89,10 +107,46 @@ export default function ProgressPage() {
             </div>
           </>
         ) : null}
+
+        {!isLoading && summary && (
+          <div className="border-t border-border pt-8 mt-4">
+            {!showResetConfirm ? (
+              <button
+                onClick={() => setShowResetConfirm(true)}
+                className="flex items-center gap-2 text-sm text-muted-foreground hover:text-destructive transition-colors mx-auto"
+              >
+                <RotateCcw className="w-4 h-4" />
+                Start from the beginning
+              </button>
+            ) : (
+              <div className="bg-destructive/5 border border-destructive/20 rounded-2xl p-6 max-w-md mx-auto text-center space-y-4">
+                <p className="font-semibold text-destructive">Are you sure?</p>
+                <p className="text-sm text-muted-foreground">
+                  This will permanently erase all your progress, bookmarks, and review history. You cannot undo this.
+                </p>
+                <div className="flex gap-3 justify-center">
+                  <button
+                    onClick={() => setShowResetConfirm(false)}
+                    className="px-4 py-2 text-sm rounded-xl border border-border bg-background hover:bg-accent transition-colors"
+                    disabled={resetMutation.isPending}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={() => resetMutation.mutate()}
+                    disabled={resetMutation.isPending}
+                    className="px-4 py-2 text-sm rounded-xl bg-destructive text-destructive-foreground hover:bg-destructive/90 transition-colors disabled:opacity-50 flex items-center gap-2"
+                  >
+                    {resetMutation.isPending ? "Resetting..." : "Yes, reset everything"}
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </Layout>
   );
 }
 
-// Ensure icon is imported
 import { CheckCircle2 } from "lucide-react";

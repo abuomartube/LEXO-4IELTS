@@ -316,4 +316,13 @@ router.post("/srs/:id", async (req, res): Promise<void> => {
   res.json({ flashcardId: id, nextReviewAt: nextReviewAt.toISOString(), intervalDays, reviewCount });
 });
 
+router.delete("/progress/reset", async (req, res): Promise<void> => {
+  const email = verifyStudentEmail(req);
+  if (!email) { res.status(401).json({ error: "Unauthorized" }); return; }
+  await db.delete(progressTable).where(eq(progressTable.email, email));
+  await db.delete(bookmarksTable).where(eq(bookmarksTable.email, email));
+  await db.delete(cardSrsTable).where(eq(cardSrsTable.email, email));
+  res.json({ success: true });
+});
+
 export default router;
