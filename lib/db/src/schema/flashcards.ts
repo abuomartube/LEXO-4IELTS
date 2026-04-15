@@ -99,3 +99,22 @@ export const activityPositionTable = pgTable("activity_positions", {
   filters: text("filters").notNull().default("{}"),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
 }, (t) => [unique().on(t.email, t.activity)]);
+
+export const quizScoresTable = pgTable("quiz_scores", {
+  id: serial("id").primaryKey(),
+  email: text("email").notNull(),
+  mode: text("mode").notNull(),
+  level: text("level").notNull(),
+  total: integer("total").notNull(),
+  correct: integer("correct").notNull(),
+  wrong: integer("wrong").notNull(),
+  completedAt: timestamp("completed_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const userDataTable = pgTable("user_data", {
+  id: serial("id").primaryKey(),
+  email: text("email").notNull(),
+  key: text("key").notNull(),
+  value: text("value").notNull().default(""),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+}, (t) => [unique().on(t.email, t.key)]);

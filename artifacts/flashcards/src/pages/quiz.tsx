@@ -1,15 +1,25 @@
-import { useState } from "react";
-import { useQuiz, useFillBlank } from "@workspace/api-client-react";
+import { useState, useEffect, useCallback } from "react";
+import { useQuiz, useFillBlank, customFetch } from "@workspace/api-client-react";
 import { Layout } from "@/components/layout";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import {
   CheckCircle2, XCircle, RefreshCw, HelpCircle,
-  ArrowRight, Trophy, Volume2, PenLine
+  ArrowRight, Trophy, Volume2, PenLine, History, Clock
 } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+
+interface QuizScore {
+  id: number;
+  mode: string;
+  level: string;
+  total: number;
+  correct: number;
+  wrong: number;
+  completedAt: string;
+}
 
 type QuizMode = "multiple-choice" | "fill-blank";
 type Level = "ALL" | "A2" | "B1" | "B2" | "C1";
@@ -36,6 +46,17 @@ export default function Quiz() {
   const [fillCorrect, setFillCorrect] = useState(false);
   const [results, setResults] = useState<SessionResult>({ total: 0, correct: 0, wrong: 0 });
   const [done, setDone] = useState(false);
+  const [history, setHistory] = useState<QuizScore[]>([]);
+  const [scoreSaved, setScoreSaved] = useState(false);
+
+  const loadHistory = useCallback(async () => {
+    try {
+      const data = await customFetch<QuizScore[]>("/api/quiz-scores");
+      setHistory(data);
+    } catch {}
+  }, []);
+
+  useEffect(() => { loadHistory(); }, [loadHistory]);
 
   const mcCount = level === "ALL" ? 20 : 100;
   const fbCount = level === "ALL" ? 20 : 50;
@@ -60,6 +81,7 @@ export default function Quiz() {
     setFillCorrect(false);
     setResults({ total: 0, correct: 0, wrong: 0 });
     setDone(false);
+    setScoreSaved(false);
     if (mode === "multiple-choice") await refetchMc();
     else await refetchFb();
   };
@@ -100,6 +122,17 @@ export default function Quiz() {
       wrong: !correct ? r.wrong + 1 : r.wrong,
     }));
   };
+
+  useEffect(() => {
+    if (done && !scoreSaved && results.total > 0) {
+      setScoreSaved(true);
+      customFetch("/api/quiz-scores", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ mode, level, total: results.total, correct: results.correct, wrong: results.wrong }),
+      }).then(() => loadHistory()).catch(() => {});
+    }
+  }, [done, scoreSaved, results, mode, level, loadHistory]);
 
   const pct = questions.length > 0 ? Math.round((currentIndex / questions.length) * 100) : 0;
 
@@ -179,12 +212,46 @@ export default function Quiz() {
               Start Quiz <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
           </div>
+
+          {history.length > 0 && (
+            <div className="bg-card border border-border rounded-3xl p-6 shadow-sm mt-6">
+              <h3 className="text-sm font-semibold text-foreground mb-4 flex items-center gap-2">
+                <History className="w-4 h-4 text-primary" />
+                Recent Quiz History
+              </h3>
+              <div className="space-y-3">
+                {history.slice(0, 5).map((s) => {
+                  const pct = s.total > 0 ? Math.round((s.correct / s.total) * 100) : 0;
+                  return (
+                    <div key={s.id} className="flex items-center justify-between bg-background rounded-xl px-4 py-3 border border-border">
+                      <div className="flex items-center gap-3 min-w-0">
+                        <div className={cn("w-8 h-8 rounded-lg flex items-center justify-center shrink-0", pct >= 80 ? "bg-green-100 dark:bg-green-900/30" : pct >= 60 ? "bg-yellow-100 dark:bg-yellow-900/30" : "bg-red-100 dark:bg-red-900/30")}>
+                          <span className="text-xs font-bold">{pct}%</span>
+                        </div>
+                        <div className="min-w-0">
+                          <div className="text-sm font-semibold text-foreground truncate">
+                            {s.mode === "multiple-choice" ? "Multiple Choice" : "Fill in the Blank"} · {s.level === "ALL" ? "All" : s.level}
+                          </div>
+                          <div className="text-xs text-muted-foreground flex items-center gap-1">
+                            <Clock className="w-3 h-3" />
+                            {new Date(s.completedAt).toLocaleDateString()}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="text-xs text-muted-foreground font-medium shrink-0 ml-2">
+                        {s.correct}/{s.total}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
       </Layout>
     );
   }
 
-  // ── Done Screen ───────────────────────────────────────────────────────────
   if (done) {
     const accuracy = results.total > 0 ? Math.round((results.correct / results.total) * 100) : 0;
     return (

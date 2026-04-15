@@ -1,7 +1,8 @@
 import { Router, type IRouter } from "express";
 import crypto from "node:crypto";
 import { eq, and, ilike, sql, lte, ne } from "drizzle-orm";
-import { db, flashcardsTable, progressTable, bookmarksTable, cardSrsTable, activityPositionTable } from "@workspace/db";
+import { db, flashcardsTable, progressTable, bookmarksTable, cardSrsTable, activityPositionTable, quizScoresTable, userDataTable } from "@workspace/db";
+import { desc } from "drizzle-orm";
 
 const SESSION_SECRET = process.env["SESSION_SECRET"] ?? "fallback-secret";
 
@@ -343,6 +344,55 @@ router.put("/activity-position/:activity", async (req, res): Promise<void> => {
   res.json({ success: true });
 });
 
+router.get("/quiz-scores", async (req, res): Promise<void> => {
+  const email = verifyStudentEmail(req);
+  if (!email) { res.json([]); return; }
+  const scores = await db.select().from(quizScoresTable)
+    .where(eq(quizScoresTable.email, email))
+    .orderBy(desc(quizScoresTable.completedAt))
+    .limit(20);
+  res.json(scores);
+});
+
+router.post("/quiz-scores", async (req, res): Promise<void> => {
+  const email = verifyStudentEmail(req);
+  if (!email) { res.status(401).json({ error: "Unauthorized" }); return; }
+  const { mode, level, total, correct, wrong } = req.body;
+  if (!mode || !level || typeof total !== "number" || total < 0) { res.status(400).json({ error: "Invalid data" }); return; }
+  const validModes = ["multiple-choice", "fill-blank"];
+  const validLevels = ["ALL", "A2", "B1", "B2", "C1"];
+  if (!validModes.includes(mode) || !validLevels.includes(level)) { res.status(400).json({ error: "Invalid mode or level" }); return; }
+  const c = Math.max(0, Math.floor(correct ?? 0));
+  const w = Math.max(0, Math.floor(wrong ?? 0));
+  const [row] = await db.insert(quizScoresTable)
+    .values({ email, mode, level, total: Math.floor(total), correct: c, wrong: w })
+    .returning();
+  res.json(row);
+});
+
+router.get("/user-data/:key", async (req, res): Promise<void> => {
+  const email = verifyStudentEmail(req);
+  if (!email) { res.json({ value: "" }); return; }
+  const [row] = await db.select().from(userDataTable)
+    .where(and(eq(userDataTable.email, email), eq(userDataTable.key, req.params.key)))
+    .limit(1);
+  res.json({ value: row?.value ?? "" });
+});
+
+router.put("/user-data/:key", async (req, res): Promise<void> => {
+  const email = verifyStudentEmail(req);
+  if (!email) { res.status(401).json({ error: "Unauthorized" }); return; }
+  const key = req.params.key;
+  const value = typeof req.body.value === "string" ? req.body.value.slice(0, 10000) : "";
+  await db.insert(userDataTable)
+    .values({ email, key, value, updatedAt: new Date() })
+    .onConflictDoUpdate({
+      target: [userDataTable.email, userDataTable.key],
+      set: { value, updatedAt: new Date() },
+    });
+  res.json({ success: true });
+});
+
 router.delete("/progress/reset", async (req, res): Promise<void> => {
   const email = verifyStudentEmail(req);
   if (!email) { res.status(401).json({ error: "Unauthorized" }); return; }
@@ -350,6 +400,8 @@ router.delete("/progress/reset", async (req, res): Promise<void> => {
   await db.delete(bookmarksTable).where(eq(bookmarksTable.email, email));
   await db.delete(cardSrsTable).where(eq(cardSrsTable.email, email));
   await db.delete(activityPositionTable).where(eq(activityPositionTable.email, email));
+  await db.delete(quizScoresTable).where(eq(quizScoresTable.email, email));
+  await db.delete(userDataTable).where(eq(userDataTable.email, email));
   res.json({ success: true });
 });
 

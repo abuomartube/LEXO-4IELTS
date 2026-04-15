@@ -66,6 +66,8 @@ export default function Study() {
 
   const isLoading = cardsLoading || (studyMode === "srs" && srsLoading);
 
+  const [welcomeBack, setWelcomeBack] = useState<{ position: number; total?: number } | null>(null);
+
   useEffect(() => {
     if (loadedRef.current) return;
     loadPosition().then((saved) => {
@@ -76,8 +78,11 @@ export default function Study() {
         if (f.category) setCategoryFilter(f.category);
         if (f.mode) setStudyMode(f.mode);
       } catch {}
-      if (saved.position > 0) setCurrentIndex(saved.position);
       loadedRef.current = true;
+      if (saved.position > 0) {
+        setCurrentIndex(saved.position);
+        setWelcomeBack({ position: saved.position });
+      }
       setPositionLoaded(true);
     });
   }, []);
@@ -148,6 +153,12 @@ export default function Study() {
 
   const progressPercent = cards && cards.length > 0 ? Math.round((currentIndex / cards.length) * 100) : 0;
 
+  useEffect(() => {
+    if (welcomeBack && cards && cards.length > 0) {
+      setWelcomeBack((prev) => prev ? { ...prev, total: cards.length } : null);
+    }
+  }, [cards, welcomeBack?.position]);
+
   // ── Session Summary ──────────────────────────────────────────────────────
   if (sessionDone) {
     const total = sessionStats.known + sessionStats.unknown;
@@ -192,6 +203,49 @@ export default function Study() {
               </Button>
               <Button variant="outline" className="rounded-full" onClick={() => { setStudyMode("unknown"); resetSession(); }}>
                 Review Unknown
+              </Button>
+            </div>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
+
+  if (welcomeBack && positionLoaded && cards && cards.length > 0) {
+    const pos = Math.min(welcomeBack.position, cards.length - 1);
+    return (
+      <Layout>
+        <div className="max-w-md mx-auto mt-16 animate-in fade-in zoom-in duration-500">
+          <div className="bg-card border border-border rounded-3xl p-8 text-center shadow-lg">
+            <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-5">
+              <BookOpen className="w-8 h-8 text-primary" />
+            </div>
+            <h2 className="text-2xl font-extrabold text-foreground mb-2">Welcome back!</h2>
+            <p className="text-muted-foreground mb-6">
+              You were on <span className="font-bold text-foreground">Card {pos + 1}</span> of {cards.length}. Would you like to continue where you left off?
+            </p>
+            <div className="flex gap-3 justify-center">
+              <Button
+                onClick={() => {
+                  setCurrentIndex(pos);
+                  setWelcomeBack(null);
+                }}
+                className="rounded-full"
+              >
+                <ArrowRight className="w-4 h-4 mr-2" />
+                Continue
+              </Button>
+              <Button
+                variant="outline"
+                className="rounded-full"
+                onClick={() => {
+                  setCurrentIndex(0);
+                  setWelcomeBack(null);
+                  resetSession();
+                }}
+              >
+                <RefreshCw className="w-4 h-4 mr-2" />
+                Start Over
               </Button>
             </div>
           </div>

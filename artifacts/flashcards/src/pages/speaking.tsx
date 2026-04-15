@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Layout } from "@/components/layout";
+import { customFetch } from "@workspace/api-client-react";
 import {
   Mic, MicOff, Send, ChevronRight, RotateCcw, Timer, Trophy,
   MessageSquare, Loader2, CheckCircle, AlertCircle, BookOpen, Sparkles,
@@ -249,16 +250,36 @@ interface SessionState {
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
-function pickTopic(): { topic: string; sessionNumber: number } {
-  const raw = localStorage.getItem(USED_TOPICS_KEY);
-  let used: string[] = [];
-  try { used = JSON.parse(raw ?? "[]"); } catch { used = []; }
+async function loadUsedTopicsFromDb(): Promise<string[]> {
+  try {
+    const data = await customFetch<{ value: string }>(`/api/user-data/${USED_TOPICS_KEY}`);
+    if (data.value) return JSON.parse(data.value);
+  } catch {}
+  try {
+    const raw = localStorage.getItem(USED_TOPICS_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch {}
+  return [];
+}
+
+async function saveUsedTopicsToDb(used: string[]) {
+  const value = JSON.stringify(used);
+  localStorage.setItem(USED_TOPICS_KEY, value);
+  customFetch(`/api/user-data/${USED_TOPICS_KEY}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ value }),
+  }).catch(() => {});
+}
+
+async function pickTopic(): Promise<{ topic: string; sessionNumber: number }> {
+  const used = await loadUsedTopicsFromDb();
   const available = TOPICS.filter((t) => !used.includes(t));
   const cycleComplete = available.length === 0;
   const pool = cycleComplete ? [...TOPICS] : available;
   const chosen = pool[Math.floor(Math.random() * pool.length)];
   const newUsed = cycleComplete ? [chosen] : [...used, chosen];
-  localStorage.setItem(USED_TOPICS_KEY, JSON.stringify(newUsed));
+  await saveUsedTopicsToDb(newUsed);
   const sessionNumber = cycleComplete ? 1 : newUsed.length;
   return { topic: chosen, sessionNumber };
 }
@@ -1061,7 +1082,7 @@ export default function SpeakingPage() {
     isProcessingRef.current = false;
     stopTts();
     setSessionMode(mode);
-    const { topic, sessionNumber: sNum } = pickTopic();
+    const { topic, sessionNumber: sNum } = await pickTopic();
     setSessionNumber(sNum);
     setTranscript([]);
     setShowTranscript(false);
