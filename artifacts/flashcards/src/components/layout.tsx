@@ -1,5 +1,6 @@
+import { useState } from "react";
 import { Link, useLocation } from "wouter";
-import { BookOpen, Home, Layers, PieChart, ExternalLink, Sun, Moon, HelpCircle, Sparkles, Shuffle, ArrowUpDown, FileText, BookMarked, Mic, LogOut, GraduationCap } from "lucide-react";
+import { BookOpen, Home, Layers, PieChart, ExternalLink, Sun, Moon, HelpCircle, Sparkles, Shuffle, ArrowUpDown, FileText, BookMarked, Mic, LogOut, GraduationCap, Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTheme } from "@/context/theme-context";
 import { Button } from "@/components/ui/button";
@@ -33,6 +34,7 @@ function handleLogout() {
 export function Layout({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
   const { theme, toggleTheme } = useTheme();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navItems = [
     { href: "/", label: "Dashboard", icon: Home },
@@ -53,13 +55,22 @@ export function Layout({ children }: { children: React.ReactNode }) {
     <div className="min-h-[100dvh] flex flex-col md:flex-row bg-background">
       <aside className="w-full md:w-64 bg-card border-r border-border shrink-0 flex flex-col">
         <div className="p-5 border-b border-border flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-3">
-            <img
-              src="/4ielts-logo.png"
-              alt="4IELTS"
-              className="h-24 w-auto object-contain"
-            />
-          </Link>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setMobileMenuOpen(true)}
+              className="md:hidden flex items-center justify-center w-9 h-9 rounded-lg bg-muted hover:bg-muted/80 transition-colors"
+              aria-label="Open menu"
+            >
+              <Menu className="w-5 h-5 text-foreground" />
+            </button>
+            <Link href="/" className="flex items-center gap-3">
+              <img
+                src="/4ielts-logo.png"
+                alt="4IELTS"
+                className="h-24 w-auto object-contain"
+              />
+            </Link>
+          </div>
           <Button
             variant="ghost"
             size="icon"
@@ -111,49 +122,87 @@ export function Layout({ children }: { children: React.ReactNode }) {
         </div>
       </aside>
 
-      {/* Mobile nav */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-card border-t border-border px-2 py-2 flex justify-between items-center pb-safe">
-        {navItems.map((item) => {
-          const isActive = location === item.href;
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={cn(
-                "flex flex-col items-center gap-1 transition-colors p-2 rounded-xl min-w-0 flex-1",
-                isActive ? "text-primary bg-primary/5" : "text-muted-foreground"
-              )}
-            >
-              <item.icon className="w-5 h-5 shrink-0" />
-              <span className="text-[9px] font-medium truncate">{item.label}</span>
-            </Link>
-          );
-        })}
-        <button
-          onClick={toggleTheme}
-          className="flex flex-col items-center gap-1 transition-colors p-2 rounded-xl text-muted-foreground flex-1"
-          aria-label="Toggle theme"
-        >
-          {theme === "dark" ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-          <span className="text-[9px] font-medium">Theme</span>
-        </button>
-        <button
-          onClick={handleLogout}
-          className="flex flex-col items-center gap-1 transition-colors p-2 rounded-xl text-muted-foreground flex-1"
-          aria-label="Log out"
-        >
-          <LogOut className="w-5 h-5" />
-          <span className="text-[9px] font-medium">Log Out</span>
-        </button>
-      </nav>
+      {mobileMenuOpen && (
+        <div className="md:hidden fixed inset-0 z-[60]">
+          <div
+            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+            onClick={() => setMobileMenuOpen(false)}
+          />
+          <div className="absolute top-0 left-0 bottom-0 w-72 bg-card border-r border-border flex flex-col animate-in slide-in-from-left duration-200">
+            <div className="p-4 border-b border-border flex items-center justify-between">
+              <Link href="/" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-3">
+                <img
+                  src="/4ielts-logo.png"
+                  alt="4IELTS"
+                  className="h-16 w-auto object-contain"
+                />
+              </Link>
+              <button
+                onClick={() => setMobileMenuOpen(false)}
+                className="w-9 h-9 rounded-lg bg-muted hover:bg-muted/80 flex items-center justify-center transition-colors"
+                aria-label="Close menu"
+              >
+                <X className="w-5 h-5 text-foreground" />
+              </button>
+            </div>
 
-      <main className="flex-1 overflow-y-auto pb-24 md:pb-0">
+            <nav className="flex-1 px-3 py-3 space-y-0.5 overflow-y-auto">
+              {navItems.map((item) => {
+                const isActive = location === item.href;
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={cn(
+                      "flex items-center gap-3 px-3 py-3 rounded-xl transition-colors font-medium text-sm",
+                      isActive
+                        ? "bg-primary/10 text-primary"
+                        : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                    )}
+                  >
+                    <item.icon className={cn("w-5 h-5", isActive ? "text-primary" : "text-muted-foreground")} />
+                    {item.label}
+                  </Link>
+                );
+              })}
+            </nav>
+
+            <div className="px-3 pb-5 pt-2 border-t border-border space-y-0.5">
+              <button
+                onClick={() => { toggleTheme(); setMobileMenuOpen(false); }}
+                className="flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium text-muted-foreground hover:bg-accent hover:text-accent-foreground transition-colors w-full"
+              >
+                {theme === "dark" ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+                {theme === "dark" ? "Light Mode" : "Dark Mode"}
+              </button>
+              <a
+                href="https://www.4ielts.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium text-muted-foreground hover:text-primary hover:bg-primary/5 transition-colors"
+              >
+                <ExternalLink className="w-5 h-5 shrink-0" />
+                www.4ielts.com
+              </a>
+              <button
+                onClick={() => { handleLogout(); setMobileMenuOpen(false); }}
+                className="flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium text-muted-foreground hover:text-destructive hover:bg-destructive/5 transition-colors w-full"
+              >
+                <LogOut className="w-5 h-5 shrink-0" />
+                Log Out
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <main className="flex-1 overflow-y-auto">
         <div className="max-w-5xl mx-auto p-4 md:p-8">
           {children}
         </div>
       </main>
 
-      {/* ── WhatsApp floating button ── */}
       <style>{`
         @keyframes wa-pulse {
           0%, 100% { box-shadow: 0 0 0 0 rgba(37,211,102,0.55), 0 4px 16px rgba(0,0,0,0.22); }
@@ -170,7 +219,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         className="wa-btn"
         style={{
           position: "fixed",
-          bottom: "88px",
+          bottom: "24px",
           left: "16px",
           zIndex: 9999,
           display: "flex",
@@ -187,7 +236,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
           userSelect: "none",
         }}
       >
-        {/* WhatsApp SVG icon */}
         <svg width="22" height="22" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0 }}>
           <circle cx="16" cy="16" r="16" fill="#25D366"/>
           <path
@@ -197,7 +245,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
         </svg>
         أبو عمر
 
-        {/* Tooltip */}
         <span
           className="wa-tooltip"
           style={{
