@@ -67,6 +67,15 @@ See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and pa
 - `PUT /api/user-data/:key` — save a user data value by key
 - `DELETE /api/progress/reset` — reset all progress, bookmarks, SRS, activity positions, quiz scores, and user data
 
+#### Phrasal Verbs
+- **200 IELTS phrasal verbs** — 50 per CEFR level (A2 / B1 / B2 / C1)
+- Data file: `artifacts/flashcards/src/data/phrasal-verbs-data.json`
+- Page: `artifacts/flashcards/src/pages/phrasal-verbs.tsx`
+- Each entry: phrasal verb, English meaning, IELTS example sentence, Arabic verb translation, Arabic meaning, Arabic example
+- Level filter dropdown (All Levels / A2 / B1 / B2 / C1)
+- Flip-card interface with session stats (known/unknown), progress bar, session-done summary
+- Position persistence via `useActivityPosition("phrasal-verbs", levelFilter)`
+
 #### Features
 - **Persistent Login** — Session saved to DB on login; returning students skip login and go straight to dashboard; logout clears DB session via sendBeacon; session respects expiry dates
 - **Dark mode** — ThemeContext, persists in localStorage, toggle in sidebar/mobile nav

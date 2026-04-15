@@ -9,7 +9,7 @@ import {
   BookOpen, Trophy, Zap, Target,
   Volume2, Globe, Layers, Award, ExternalLink,
   Flame, Star, HelpCircle, Sparkles, MessageCircle,
-  FileText, ArrowLeftRight, BookMarked, Mic, Send, CheckCircle2, Loader2
+  FileText, ArrowLeftRight, ArrowUpDown, BookMarked, Mic, Send, CheckCircle2, Loader2
 } from "lucide-react";
 import { Layout } from "@/components/layout";
 
@@ -272,6 +272,9 @@ export default function Home() {
                   </Button>
                   <Button asChild variant="outline" className="rounded-full border-orange-300 text-orange-700 dark:text-orange-400 hover:bg-orange-50 dark:hover:bg-orange-900/20">
                     <Link href="/antonyms"><ArrowLeftRight className="w-4 h-4 mr-2" />IELTS Antonyms</Link>
+                  </Button>
+                  <Button asChild variant="outline" className="rounded-full border-indigo-300 text-indigo-700 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/20">
+                    <Link href="/phrasal-verbs"><ArrowUpDown className="w-4 h-4 mr-2" />Phrasal Verbs</Link>
                   </Button>
                   <Button asChild variant="outline" className="rounded-full border-violet-300 text-violet-700 dark:text-violet-400 hover:bg-violet-50 dark:hover:bg-violet-900/20">
                     <Link href="/essay-checker"><FileText className="w-4 h-4 mr-2" />Orwell AI</Link>
