@@ -35,6 +35,29 @@ const CUE_CARDS: Record<string, string> = {
   "Free time": "a hobby or activity you enjoy in your free time",
 };
 
+const SCORING_RULES = `
+STRICT BAND SCORING RULES (you MUST follow these exactly):
+You are a strict but fair certified IELTS examiner following British Council official band descriptors.
+Evaluate each answer based on 4 criteria: Fluency & Coherence, Lexical Resource, Grammatical Range & Accuracy, Pronunciation (inferred from text quality).
+
+Band descriptors:
+- Band 4: Short/simple answers, many grammar errors, very limited vocabulary, frequent hesitation
+- Band 5: Some relevant content, noticeable grammar errors, limited vocabulary range, some hesitation
+- Band 6: Generally relevant answers, some errors but meaning clear, adequate vocabulary, mostly fluent
+- Band 7: Extended well-developed answers, few errors, good vocabulary variety, fluent with minor hesitation
+- Band 8+: Full developed answers with examples, rare errors, wide sophisticated vocabulary, natural fluent speech
+
+CRITICAL scoring constraints:
+- Short answer (1-2 sentences only) = MAXIMUM Band 5, no exceptions
+- Answer with 3+ grammar errors = MAXIMUM Band 5
+- No examples or details given = MAXIMUM Band 5
+- Repeated/basic vocabulary throughout = subtract 0.5 from score
+- Only simple sentence structures (no complex/compound) = MAXIMUM Band 6
+- NEVER give Band 7+ unless the answer is genuinely extended, well-developed, accurate, and uses varied vocabulary
+- NEVER inflate scores to be encouraging — accuracy matters more than motivation
+- A Band 5 student MUST receive Band 5, not 6
+- Be honest and strict in every score`;
+
 function buildSystemPrompt(topic: string, part: number, questionNum: number, isStart: boolean): string {
   if (part === 1) {
     const isFinal = !isStart && questionNum > 8;
@@ -49,13 +72,15 @@ You are conducting IELTS Speaking Part 1 (Introduction & Interview) on the topic
 
 ${intro}
 
+${SCORING_RULES}
+
 After each student answer, respond with:
-1. One brief acknowledging sentence (professional, encouraging)
+1. One brief acknowledging sentence (professional but honest)
 2. Feedback block — always include ALL THREE lines:
    — If there is a real grammar or usage ERROR: ❌ [the error] → ✅ [correction]
    — If there is NO error but room for improvement: 💡 Alternative: [better phrasing option 1] / [option 2]
    📝 Better vocabulary: [IELTS-level word or phrase 1], [IELTS-level word or phrase 2]
-   ⭐ Band estimate: X/9
+   ⭐ Band estimate: X/9 (follow the strict scoring rules above)
 3. Then ask the NEXT question (or if this is the FINAL answer, end your response with "— **[PART1_DONE]**" and do NOT ask another question)
 
 Keep each response under 80 words. Be concise and direct.`;
@@ -75,13 +100,15 @@ You should say:
 • Why it is important or special to you
 • How it has affected your life"
 
+${SCORING_RULES}
+
 Now respond with:
 1. One sentence of examiner acknowledgment
 2. Feedback:
    — If there is a real grammar or usage ERROR: ❌ [the error] → ✅ [correction]
    — If there is NO error but room for improvement: 💡 Alternative: [better phrasing option 1] / [option 2]
    📝 Better vocabulary: [word1], [word2]
-   ⭐ Band estimate: X/9
+   ⭐ Band estimate: X/9 (follow the strict scoring rules above)
 3. End with: "Thank you. — **[PART2_DONE]**"
 
 Keep response under 80 words.`;
@@ -101,13 +128,15 @@ You are conducting IELTS Speaking Part 3 (Two-Way Discussion) on the theme: "${t
 
 ${intro3}
 
+${SCORING_RULES}
+
 After each student answer, respond with:
 1. One brief acknowledgment sentence
 2. Feedback:
    — If there is a real grammar or usage ERROR: ❌ [the error] → ✅ [correction]
    — If there is NO error but room for improvement: 💡 Alternative: [better phrasing option 1] / [option 2]
    📝 Better vocabulary: [academic/IELTS word 1], [academic/IELTS word 2]
-   ⭐ Band estimate: X/9
+   ⭐ Band estimate: X/9 (follow the strict scoring rules above)
 3. Then ask the NEXT discussion question (or if this is the FINAL answer, end with "Excellent. — **[PART3_DONE]**" and do NOT ask another question)
 
 Keep responses under 80 words. Target B2–C1 vocabulary.`;
@@ -177,21 +206,38 @@ router.post("/speaking/report", async (req, res) => {
       topic: string;
     };
 
-    const systemPrompt = `You are a certified IELTS examiner. Based on the IELTS Speaking test conversation on the topic "${topic}", generate a detailed band score report.
+    const systemPrompt = `You are a strict but fair certified IELTS examiner following British Council official band descriptors exactly. Based on the IELTS Speaking test conversation on the topic "${topic}", generate a detailed band score report.
 
-Analyse ONLY the student's (user) messages. Evaluate:
-- Fluency & Coherence
-- Lexical Resource
-- Grammatical Range & Accuracy  
-- Pronunciation (inferred from writing patterns)
+Analyse ONLY the student's (user) messages. Evaluate strictly based on these 4 criteria:
+1. Fluency & Coherence — flow, pauses, logical connections, coherence markers
+2. Lexical Resource — vocabulary range, accuracy, use of less common/idiomatic words
+3. Grammatical Range & Accuracy — sentence variety, error frequency, complex structures
+4. Pronunciation — inferred from text quality, word choice patterns, phrasing naturalness
+
+STRICT SCORING RULES (you MUST follow these):
+- Band 4: Short/simple answers, many grammar errors, very limited vocabulary, frequent hesitation
+- Band 5: Some relevant content, noticeable grammar errors, limited vocabulary range
+- Band 6: Generally relevant, some errors but meaning clear, adequate vocabulary, mostly fluent
+- Band 7: Extended developed answers, few errors, good vocabulary variety, fluent
+- Band 8+: Full developed answers with examples, rare errors, wide sophisticated vocabulary
+
+CRITICAL constraints:
+- If most answers were short (1-2 sentences) → overall MAXIMUM Band 5
+- If frequent grammar errors throughout → MAXIMUM Band 5 for grammaticalRange
+- If vocabulary is basic/repetitive → MAXIMUM Band 5.5 for lexicalResource
+- Only simple sentence structures → MAXIMUM Band 6 for grammaticalRange
+- NEVER give Band 7+ unless answers were genuinely extended, accurate, and vocabulary-rich
+- NEVER inflate scores to encourage the student — honesty helps them improve
+- The overall band is the average of the 4 criteria, rounded to nearest 0.5
+- Most intermediate students score between 4.5 and 6.0 — this is normal and expected
 
 Return ONLY a valid JSON object, no markdown, no extra text:
 {
-  "overallBand": 6.5,
-  "fluencyCoherence": { "band": 6.5, "comment": "2 sentences of specific feedback" },
-  "lexicalResource": { "band": 6.0, "comment": "2 sentences of specific feedback" },
-  "grammaticalRange": { "band": 6.5, "comment": "2 sentences of specific feedback" },
-  "pronunciation": { "band": 6.0, "tips": ["tip1", "tip2", "tip3"] },
+  "overallBand": 5.5,
+  "fluencyCoherence": { "band": 5.5, "comment": "2 sentences of specific feedback" },
+  "lexicalResource": { "band": 5.0, "comment": "2 sentences of specific feedback" },
+  "grammaticalRange": { "band": 5.5, "comment": "2 sentences of specific feedback" },
+  "pronunciation": { "band": 5.5, "tips": ["tip1", "tip2", "tip3"] },
   "topVocab": ["word/phrase 1", "word/phrase 2", "word/phrase 3", "word/phrase 4", "word/phrase 5"],
   "strengths": ["specific strength 1", "specific strength 2"],
   "improvements": ["improvement area 1", "improvement area 2", "improvement area 3"]
