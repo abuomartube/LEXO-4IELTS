@@ -138,7 +138,7 @@ function LandingPage({ onLogin }: { onLogin: () => void }) {
             className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-white text-sm font-semibold transition-all backdrop-blur-sm"
           >
             <LogIn className="w-4 h-4" />
-            Log In / Sign Up
+            Log In
           </button>
         </header>
 
@@ -166,17 +166,17 @@ function LandingPage({ onLogin }: { onLogin: () => void }) {
                 onClick={onLogin}
                 className="flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-teal-500 hover:bg-teal-400 text-white font-bold text-lg transition-all shadow-lg shadow-teal-500/25 hover:shadow-teal-400/30"
               >
-                Get Started
-                <ChevronRight className="w-5 h-5" />
+                <LogIn className="w-5 h-5" />
+                Log In
               </button>
               <a
                 href={WHATSAPP_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 px-8 py-4 rounded-full border border-white/20 hover:bg-white/10 text-white font-semibold text-lg transition-all"
+                className="flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-green-600 hover:bg-green-500 text-white font-bold text-lg transition-all shadow-lg shadow-green-600/25 hover:shadow-green-500/30"
               >
                 <MessageCircle className="w-5 h-5" />
-                Contact Us
+                Subscribe · اشترك الآن
               </a>
             </div>
           </div>
