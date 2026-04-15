@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import { Mail, Lock, Eye, EyeOff, Loader2, Clock, CalendarX, MessageCircle, LogIn } from "lucide-react";
+import { Mail, Lock, Eye, EyeOff, Loader2, Clock, CalendarX, MessageCircle, LogIn, ChevronRight, Sparkles, Brain, Mic, PenTool, BookOpen, ArrowLeftRight, ArrowUpDown, BarChart3, Flame, Zap, CheckCircle2 } from "lucide-react";
 
 const STORAGE_KEY = "4ielts_email";
 const WHATSAPP_URL = "https://wa.me/message/KMWPDZOBBNAAB1";
@@ -50,10 +50,127 @@ async function checkDbSession(email: string): Promise<{ status: string; token?: 
   } catch { return { status: "none" }; }
 }
 
+const landingFeatures = [
+  { icon: BookOpen, text: "3,000 words from A2 to C1", color: "text-teal-400" },
+  { icon: Sparkles, text: "Interactive flashcards + word pronunciation", color: "text-sky-400" },
+  { icon: Brain, text: "Smart quizzes", color: "text-violet-400" },
+  { icon: Mic, text: "Churchill AI (Speaking)", color: "text-rose-400" },
+  { icon: PenTool, text: "Orwell AI (Writing Task 1 / Task 2)", color: "text-amber-400" },
+  { icon: CheckCircle2, text: "Quiz Mode", color: "text-emerald-400" },
+  { icon: ArrowLeftRight, text: "Synonyms", color: "text-purple-400" },
+  { icon: ArrowLeftRight, text: "Antonyms", color: "text-orange-400" },
+  { icon: ArrowUpDown, text: "Phrasal Verbs", color: "text-indigo-400" },
+  { icon: BarChart3, text: "Progress tracking", color: "text-cyan-400" },
+  { icon: Flame, text: "Daily streak", color: "text-red-400" },
+];
+
+function LandingPage({ onLogin }: { onLogin: () => void }) {
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-950 via-teal-950 to-sky-950 text-white overflow-hidden relative">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 left-10 w-72 h-72 bg-teal-500/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-sky-500/8 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-teal-400/5 rounded-full blur-3xl" />
+      </div>
+
+      <div className="relative z-10 max-w-5xl mx-auto px-6 py-8 flex flex-col min-h-screen">
+        <header className="flex items-center justify-between mb-12 md:mb-16">
+          <div className="flex items-center gap-3">
+            <img src="/4ielts-logo.png" alt="4IELTS" className="h-10 w-auto object-contain" />
+            <div className="hidden sm:block">
+              <p className="text-xs font-semibold tracking-widest uppercase text-teal-400">AI-Powered By</p>
+              <p className="text-sm font-bold text-white/90">4IELTS</p>
+            </div>
+          </div>
+          <button
+            onClick={onLogin}
+            className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-white text-sm font-semibold transition-all backdrop-blur-sm"
+          >
+            <LogIn className="w-4 h-4" />
+            Log In / Sign Up
+          </button>
+        </header>
+
+        <main className="flex-1 flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
+          <div className="flex-1 text-center lg:text-left">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-teal-500/15 border border-teal-500/25 text-teal-300 text-xs font-semibold tracking-wide uppercase mb-6">
+              <Zap className="w-3.5 h-3.5" />
+              IELTS Preparation Platform
+            </div>
+
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black tracking-tight mb-6 leading-[1.1]">
+              <span className="text-white">LEXO</span>
+            </h1>
+
+            <p className="text-lg sm:text-xl text-white/60 leading-relaxed mb-8 max-w-lg mx-auto lg:mx-0">
+              Your AI-powered companion for IELTS success. Master vocabulary, ace your speaking and writing — all in one platform.
+            </p>
+
+            <p className="text-base text-white/40 mb-10 max-w-lg mx-auto lg:mx-0 font-cairo" dir="rtl" lang="ar">
+              رفيقك الذكي في رحلة الآيلتس — تعلّم المفردات، أتقن المحادثة والكتابة، كل شيء في مكان واحد
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+              <button
+                onClick={onLogin}
+                className="flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-teal-500 hover:bg-teal-400 text-white font-bold text-lg transition-all shadow-lg shadow-teal-500/25 hover:shadow-teal-400/30"
+              >
+                Get Started
+                <ChevronRight className="w-5 h-5" />
+              </button>
+              <a
+                href={WHATSAPP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 px-8 py-4 rounded-full border border-white/20 hover:bg-white/10 text-white font-semibold text-lg transition-all"
+              >
+                <MessageCircle className="w-5 h-5" />
+                Contact Us
+              </a>
+            </div>
+          </div>
+
+          <div className="w-full max-w-md lg:max-w-sm xl:max-w-md">
+            <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-6 sm:p-8 shadow-2xl">
+              <h2 className="text-lg font-bold text-white mb-6 flex items-center gap-2">
+                <Sparkles className="w-5 h-5 text-teal-400" />
+                Features
+              </h2>
+              <div className="space-y-3">
+                {landingFeatures.map((f, i) => (
+                  <div
+                    key={i}
+                    className="flex items-center gap-3 py-2 px-3 rounded-xl hover:bg-white/5 transition-colors group"
+                  >
+                    <div className={`w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center shrink-0 group-hover:bg-white/10 transition-colors`}>
+                      <f.icon className={`w-4 h-4 ${f.color}`} />
+                    </div>
+                    <span className="text-sm text-white/80 font-medium">{f.text}</span>
+                    {f.text === "Daily streak" && <span className="text-lg">🔥</span>}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </main>
+
+        <footer className="mt-12 md:mt-16 pb-6 text-center">
+          <div className="flex items-center justify-center gap-2 text-white/30 text-sm">
+            <span>Powered by</span>
+            <a href="https://www.4ielts.com" target="_blank" rel="noopener noreferrer" className="text-teal-400/60 hover:text-teal-400 font-semibold transition-colors">
+              4IELTS.com
+            </a>
+          </div>
+        </footer>
+      </div>
+    </div>
+  );
+}
+
 interface PasswordGateProps { children: React.ReactNode; }
 
 export function PasswordGate({ children }: PasswordGateProps) {
-  const [phase, setPhase] = useState<"checking" | "form" | "pending" | "unlocked" | "expired">("checking");
+  const [phase, setPhase] = useState<"checking" | "landing" | "form" | "pending" | "unlocked" | "expired">("checking");
   const [email, setEmail] = useState("");
   const [accessCode, setAccessCode] = useState("");
   const [showCode, setShowCode] = useState(false);
@@ -149,7 +266,7 @@ export function PasswordGate({ children }: PasswordGateProps) {
         }
       }
 
-      setPhase("form");
+      setPhase("landing");
     }
     init();
     return stopPolling;
@@ -201,6 +318,10 @@ export function PasswordGate({ children }: PasswordGateProps) {
   }
 
   if (phase === "unlocked") return <>{children}</>;
+
+  if (phase === "landing") {
+    return <LandingPage onLogin={() => setPhase("form")} />;
+  }
 
   if (phase === "expired") {
     const tryAgain = () => {
@@ -303,7 +424,7 @@ export function PasswordGate({ children }: PasswordGateProps) {
             <div className="flex flex-col items-center gap-1 mb-4">
               <img src="/4ielts-logo.png" alt="4IELTS" className="h-16 w-auto object-contain" />
               <span className="text-xs font-semibold tracking-widest uppercase text-teal-600 dark:text-teal-400">
-                4IELTS AI Tools
+                AI-Powered By 4IELTS
               </span>
             </div>
             <h1 className="text-2xl font-extrabold text-gray-900 dark:text-white text-center">
@@ -376,6 +497,13 @@ export function PasswordGate({ children }: PasswordGateProps) {
               Contact us on WhatsApp
             </a>
           </p>
+
+          <button
+            onClick={() => setPhase("landing")}
+            className="w-full mt-4 text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors text-center"
+          >
+            ← Back to homepage
+          </button>
         </div>
       </div>
     </div>
