@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import { Mail, Lock, Eye, EyeOff, Loader2, Clock, CalendarX, MessageCircle, LogIn, ChevronRight, Sparkles, Brain, Mic, PenTool, BookOpen, ArrowLeftRight, ArrowUpDown, BarChart3, Flame, Zap, CheckCircle2 } from "lucide-react";
+import { Mail, Lock, Eye, EyeOff, Loader2, Clock, CalendarX, MessageCircle, LogIn, ChevronRight, Sparkles, Brain, Mic, PenTool, BookOpen, ArrowLeftRight, ArrowUpDown, BarChart3, Flame, Zap, CheckCircle2, Star, Quote } from "lucide-react";
 
 const STORAGE_KEY = "4ielts_email";
 const WHATSAPP_URL = "https://wa.me/message/KMWPDZOBBNAAB1";
@@ -63,6 +63,57 @@ const landingFeatures = [
   { icon: BarChart3, text: "Progress tracking", color: "text-cyan-400" },
   { icon: Flame, text: "Daily streak", color: "text-red-400" },
 ];
+
+function LandingReviews() {
+  const [reviews, setReviews] = useState<Array<{
+    id: number; name: string | null; comment: string; rating: number; createdAt: string;
+  }>>([]);
+
+  useEffect(() => {
+    fetch("/api/reviews/public")
+      .then(r => r.json())
+      .then(data => { if (Array.isArray(data)) setReviews(data); })
+      .catch(() => {});
+  }, []);
+
+  if (reviews.length === 0) return null;
+
+  return (
+    <section className="mt-12 md:mt-16">
+      <div className="text-center mb-8">
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/15 border border-amber-500/25 text-amber-300 text-xs font-semibold tracking-wide uppercase mb-4">
+          <Star className="w-3.5 h-3.5 fill-amber-300" />
+          Student Reviews
+        </div>
+        <h2 className="text-2xl sm:text-3xl font-bold text-white">What Our Students Say</h2>
+        <p className="text-white/40 text-sm mt-2" dir="rtl" lang="ar">آراء طلابنا</p>
+      </div>
+
+      <div className="grid gap-4 sm:grid-cols-2">
+        {reviews.map(r => (
+          <div key={r.id} className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 relative">
+            <Quote className="w-8 h-8 text-teal-400/20 absolute top-4 right-4" />
+            <div className="flex gap-0.5 mb-3">
+              {[1, 2, 3, 4, 5].map(s => (
+                <Star
+                  key={s}
+                  className={`w-4 h-4 ${s <= r.rating ? "text-amber-400 fill-amber-400" : "text-white/20"}`}
+                />
+              ))}
+            </div>
+            <p className="text-white/80 text-sm leading-relaxed mb-3">"{r.comment}"</p>
+            <div className="flex items-center justify-between">
+              {r.name && <p className="text-teal-300 text-xs font-semibold">— {r.name}</p>}
+              <span className="text-white/30 text-xs ml-auto">
+                {new Date(r.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
 
 function LandingPage({ onLogin }: { onLogin: () => void }) {
   return (
@@ -153,6 +204,8 @@ function LandingPage({ onLogin }: { onLogin: () => void }) {
             </div>
           </div>
         </main>
+
+        <LandingReviews />
 
         <footer className="mt-12 md:mt-16 pb-6 text-center">
           <div className="flex items-center justify-center gap-2 text-white/30 text-sm">
