@@ -2,33 +2,41 @@ import { useState, useRef } from "react";
 import { Layout } from "@/components/layout";
 import {
   BookOpen, ChevronRight, ChevronLeft, CheckCircle2, XCircle,
-  Clock, Trophy, AlertTriangle, RotateCcw, ArrowUp
+  Clock, Trophy, AlertTriangle, RotateCcw, ArrowUp, ListChecks
 } from "lucide-react";
 import {
-  readingPassages,
+  readingTests,
   calculateBand,
   getRecommendation,
   getArabicRecommendation,
   type ReadingPassage,
+  type ReadingTest,
   type QuestionSection
 } from "@/data/reading-test";
 
 type Answers = Record<number, string>;
+type Phase = "select" | "intro" | "test" | "results";
 
 export default function ReadingTestPage() {
-  const [started, setStarted] = useState(false);
+  const [phase, setPhase] = useState<Phase>("select");
+  const [selectedTest, setSelectedTest] = useState<ReadingTest | null>(null);
   const [currentPassage, setCurrentPassage] = useState(0);
   const [answers, setAnswers] = useState<Answers>({});
-  const [submitted, setSubmitted] = useState(false);
   const [timeLeft, setTimeLeft] = useState(60 * 60);
+  const [timeUsed, setTimeUsed] = useState(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const topRef = useRef<HTMLDivElement>(null);
 
+  const selectTest = (test: ReadingTest) => {
+    setSelectedTest(test);
+    setPhase("intro");
+  };
+
   const startTest = () => {
-    setStarted(true);
-    setSubmitted(false);
+    setPhase("test");
     setAnswers({});
     setCurrentPassage(0);
+    setTimeLeft(60 * 60);
     timerRef.current = setInterval(() => {
       setTimeLeft(prev => {
         if (prev <= 1) {
@@ -42,17 +50,25 @@ export default function ReadingTestPage() {
 
   const handleSubmit = () => {
     if (timerRef.current) clearInterval(timerRef.current);
-    setSubmitted(true);
+    setTimeUsed(3600 - timeLeft);
+    setPhase("results");
     topRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  const resetTest = () => {
+  const goToSelect = () => {
     if (timerRef.current) clearInterval(timerRef.current);
-    setStarted(false);
-    setSubmitted(false);
+    setPhase("select");
+    setSelectedTest(null);
     setAnswers({});
     setCurrentPassage(0);
     setTimeLeft(60 * 60);
+  };
+
+  const retakeTest = () => {
+    setAnswers({});
+    setCurrentPassage(0);
+    setTimeLeft(60 * 60);
+    setPhase("intro");
   };
 
   const setAnswer = (qNum: number, value: string) => {
@@ -65,7 +81,7 @@ export default function ReadingTestPage() {
     return `${m}:${sec.toString().padStart(2, "0")}`;
   };
 
-  if (!started) {
+  if (phase === "select") {
     return (
       <Layout>
         <div className="max-w-3xl mx-auto space-y-8">
@@ -73,7 +89,56 @@ export default function ReadingTestPage() {
             <div className="w-16 h-16 rounded-2xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mx-auto">
               <BookOpen className="w-8 h-8 text-blue-600 dark:text-blue-400" />
             </div>
-            <h1 className="text-3xl font-black text-foreground">IELTS Reading Test</h1>
+            <h1 className="text-3xl font-black text-foreground">IELTS Reading Tests</h1>
+            <p className="text-muted-foreground text-lg">Choose a test to begin</p>
+            <p className="text-sm text-muted-foreground" dir="rtl" lang="ar">اختر اختباراً للبدء</p>
+          </div>
+
+          <div className="grid gap-4">
+            {readingTests.map(test => (
+              <button
+                key={test.id}
+                onClick={() => selectTest(test)}
+                className="bg-card border border-border rounded-2xl p-6 text-left hover:border-blue-400 hover:shadow-lg hover:shadow-blue-600/10 transition-all group"
+              >
+                <div className="flex items-center justify-between">
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
+                        <ListChecks className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                      </div>
+                      <div>
+                        <h2 className="text-lg font-bold text-foreground group-hover:text-blue-600 transition-colors">{test.label}</h2>
+                        <p className="text-xs text-muted-foreground">3 Passages · 40 Questions · 60 Minutes</p>
+                      </div>
+                    </div>
+                    <div className="flex gap-2 flex-wrap ml-13">
+                      {test.passages.map(p => (
+                        <span key={p.id} className="text-xs bg-muted/60 text-muted-foreground rounded-lg px-2.5 py-1 border border-border">
+                          {p.title}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-blue-600 transition-colors shrink-0" />
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+      </Layout>
+    );
+  }
+
+  if (phase === "intro" && selectedTest) {
+    return (
+      <Layout>
+        <div className="max-w-3xl mx-auto space-y-8">
+          <div className="bg-card border border-border rounded-3xl p-8 text-center space-y-6">
+            <div className="w-16 h-16 rounded-2xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mx-auto">
+              <BookOpen className="w-8 h-8 text-blue-600 dark:text-blue-400" />
+            </div>
+            <h1 className="text-3xl font-black text-foreground">IELTS Reading — {selectedTest.label}</h1>
             <p className="text-muted-foreground text-lg">Academic Reading Test</p>
             <p className="text-sm text-muted-foreground" dir="rtl" lang="ar">اختبار القراءة الأكاديمية</p>
 
@@ -102,28 +167,46 @@ export default function ReadingTestPage() {
                 <li>You have 60 minutes for all 3 passages</li>
                 <li>Answer all 40 questions</li>
                 <li>For fill-in-the-blank questions, type your answer exactly</li>
-                <li>For TRUE/FALSE/NOT GIVEN, select one option</li>
+                <li>For TRUE/FALSE/NOT GIVEN or YES/NO/NOT GIVEN, select one option</li>
                 <li>For matching questions, select the correct letter</li>
               </ul>
             </div>
 
-            <button
-              onClick={startTest}
-              className="px-8 py-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-lg transition-colors shadow-lg shadow-blue-600/25"
-            >
-              Start Test
-            </button>
+            <div className="flex gap-3 justify-center">
+              <button
+                onClick={goToSelect}
+                className="px-6 py-3 rounded-xl bg-muted text-foreground font-semibold hover:bg-muted/80 transition-colors"
+              >
+                Back
+              </button>
+              <button
+                onClick={startTest}
+                className="px-8 py-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-lg transition-colors shadow-lg shadow-blue-600/25"
+              >
+                Start Test
+              </button>
+            </div>
           </div>
         </div>
       </Layout>
     );
   }
 
-  if (submitted) {
-    return <ResultsView answers={answers} onReset={resetTest} timeUsed={3600 - timeLeft} />;
+  if (phase === "results" && selectedTest) {
+    return (
+      <ResultsView
+        test={selectedTest}
+        answers={answers}
+        timeUsed={timeUsed}
+        onRetake={retakeTest}
+        onSelectOther={goToSelect}
+      />
+    );
   }
 
-  const passage = readingPassages[currentPassage];
+  if (!selectedTest) return null;
+  const passages = selectedTest.passages;
+  const passage = passages[currentPassage];
   const answeredCount = Object.keys(answers).filter(k => answers[Number(k)]?.trim()).length;
 
   return (
@@ -133,7 +216,7 @@ export default function ReadingTestPage() {
           <div className="flex items-center justify-between flex-wrap gap-3">
             <div className="flex items-center gap-3">
               <BookOpen className="w-5 h-5 text-blue-600" />
-              <h1 className="text-lg font-bold text-foreground">Reading Test</h1>
+              <h1 className="text-lg font-bold text-foreground">Reading — {selectedTest.label}</h1>
             </div>
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-1.5 text-sm">
@@ -148,7 +231,7 @@ export default function ReadingTestPage() {
           </div>
 
           <div className="flex gap-2 mt-3">
-            {readingPassages.map((p, i) => (
+            {passages.map((p, i) => (
               <button
                 key={p.id}
                 onClick={() => { setCurrentPassage(i); topRef.current?.scrollIntoView({ behavior: "smooth" }); }}
@@ -249,6 +332,14 @@ function PassageView({
   );
 }
 
+function getTfngOptions(section: QuestionSection): string[] {
+  const instruction = section.instruction.toUpperCase();
+  if (instruction.includes("YES") && instruction.includes("NO")) {
+    return ["YES", "NO", "NOT GIVEN"];
+  }
+  return ["TRUE", "FALSE", "NOT GIVEN"];
+}
+
 function QuestionSectionView({
   section,
   answers,
@@ -257,8 +348,9 @@ function QuestionSectionView({
   section: QuestionSection;
   answers: Answers;
   setAnswer: (q: number, v: string) => void;
-  reviewed?: boolean;
 }) {
+  const tfngOptions = section.type === "tfng" ? getTfngOptions(section) : [];
+
   return (
     <div className="bg-card border border-border rounded-2xl p-5 space-y-4">
       <p className="text-sm text-muted-foreground whitespace-pre-line font-medium">{section.instruction}</p>
@@ -283,10 +375,10 @@ function QuestionSectionView({
               {q.num}
             </span>
             <div className="flex-1 space-y-1.5">
-              <p className="text-sm text-foreground">{q.text}</p>
+              <p className="text-sm text-foreground whitespace-pre-line">{q.text}</p>
               {section.type === "tfng" ? (
                 <div className="flex gap-2 flex-wrap">
-                  {["TRUE", "FALSE", "NOT GIVEN"].map(opt => (
+                  {tfngOptions.map(opt => (
                     <button
                       key={opt}
                       onClick={() => setAnswer(q.num, opt)}
@@ -333,8 +425,21 @@ function QuestionSectionView({
   );
 }
 
-function ResultsView({ answers, onReset, timeUsed }: { answers: Answers; onReset: () => void; timeUsed: number }) {
-  const allQuestions = readingPassages.flatMap(p =>
+function ResultsView({
+  test,
+  answers,
+  timeUsed,
+  onRetake,
+  onSelectOther,
+}: {
+  test: ReadingTest;
+  answers: Answers;
+  timeUsed: number;
+  onRetake: () => void;
+  onSelectOther: () => void;
+}) {
+  const passages = test.passages;
+  const allQuestions = passages.flatMap(p =>
     p.questionSections.flatMap(s => s.questions)
   );
 
@@ -351,13 +456,13 @@ function ResultsView({ answers, onReset, timeUsed }: { answers: Answers; onReset
   const recommendation = getRecommendation(band);
   const arabicRec = getArabicRecommendation(band);
 
-  const passageResults = readingPassages.map(p => {
+  const passageResults = passages.map(p => {
     const nums = p.questionSections.flatMap(s => s.questions.map(q => q.num));
     const correct = results.filter(r => nums.includes(r.num) && r.isCorrect).length;
     return { title: p.title, correct, total: nums.length };
   });
 
-  const formatTime = (s: number) => {
+  const formatTime2 = (s: number) => {
     const m = Math.floor(s / 60);
     const sec = s % 60;
     return `${m}m ${sec}s`;
@@ -368,7 +473,7 @@ function ResultsView({ answers, onReset, timeUsed }: { answers: Answers; onReset
       <div className="max-w-4xl mx-auto space-y-6 pb-12">
         <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30 border border-blue-200 dark:border-blue-800 rounded-3xl p-8 text-center space-y-4">
           <Trophy className="w-12 h-12 text-amber-500 mx-auto" />
-          <h1 className="text-3xl font-black text-foreground">Test Complete!</h1>
+          <h1 className="text-3xl font-black text-foreground">{test.label} — Complete!</h1>
 
           <div className="flex items-center justify-center gap-8 flex-wrap">
             <div>
@@ -380,7 +485,7 @@ function ResultsView({ answers, onReset, timeUsed }: { answers: Answers; onReset
               <p className="text-sm text-muted-foreground mt-1">Correct Answers</p>
             </div>
             <div>
-              <p className="text-3xl font-bold text-foreground">{formatTime(timeUsed)}</p>
+              <p className="text-3xl font-bold text-foreground">{formatTime2(timeUsed)}</p>
               <p className="text-sm text-muted-foreground mt-1">Time Used</p>
             </div>
           </div>
@@ -418,7 +523,7 @@ function ResultsView({ answers, onReset, timeUsed }: { answers: Answers; onReset
         <div className="bg-card border border-border rounded-2xl p-6 space-y-4">
           <h2 className="text-lg font-bold text-foreground">Answer Review</h2>
 
-          {readingPassages.map((passage, pi) => (
+          {passages.map((passage, pi) => (
             <div key={pi} className="space-y-3">
               <h3 className="text-sm font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wide">
                 Passage {pi + 1}: {passage.title}
@@ -471,11 +576,18 @@ function ResultsView({ answers, onReset, timeUsed }: { answers: Answers; onReset
 
         <div className="flex justify-center gap-4 pt-4">
           <button
-            onClick={onReset}
+            onClick={onRetake}
             className="flex items-center gap-2 px-6 py-3 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-colors"
           >
             <RotateCcw className="w-4 h-4" />
-            Take Test Again
+            Retake This Test
+          </button>
+          <button
+            onClick={onSelectOther}
+            className="flex items-center gap-2 px-6 py-3 rounded-xl bg-muted text-foreground font-semibold hover:bg-muted/80 transition-colors"
+          >
+            <ArrowUp className="w-4 h-4" />
+            Choose Another Test
           </button>
         </div>
       </div>
