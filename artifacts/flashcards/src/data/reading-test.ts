@@ -264,11 +264,10 @@ export function calculateBand(correct: number): { band: number; label: string } 
   if (correct >= 15) return { band: 5, label: "Modest" };
   if (correct >= 13) return { band: 4.5, label: "Limited" };
   if (correct >= 10) return { band: 4, label: "Limited" };
-  if (correct >= 8) return { band: 3.5, label: "Extremely Limited" };
-  if (correct >= 6) return { band: 3, label: "Extremely Limited" };
-  if (correct >= 4) return { band: 2.5, label: "Intermittent" };
-  if (correct >= 2) return { band: 2, label: "Intermittent" };
-  if (correct >= 1) return { band: 1, label: "Non User" };
+  if (correct >= 7) return { band: 3.5, label: "Extremely Limited" };
+  if (correct >= 4) return { band: 3, label: "Extremely Limited" };
+  if (correct >= 2) return { band: 2.5, label: "Intermittent" };
+  if (correct >= 1) return { band: 2, label: "Intermittent" };
   return { band: 0, label: "Did Not Attempt" };
 }
 
