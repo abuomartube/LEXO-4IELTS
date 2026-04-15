@@ -267,7 +267,9 @@ export function calculateBand(correct: number): { band: number; label: string } 
   if (correct >= 8) return { band: 3.5, label: "Extremely Limited" };
   if (correct >= 6) return { band: 3, label: "Extremely Limited" };
   if (correct >= 4) return { band: 2.5, label: "Intermittent" };
-  return { band: 2, label: "Intermittent" };
+  if (correct >= 2) return { band: 2, label: "Intermittent" };
+  if (correct >= 1) return { band: 1, label: "Non User" };
+  return { band: 0, label: "Did Not Attempt" };
 }
 
 export function getRecommendation(band: number): string {
