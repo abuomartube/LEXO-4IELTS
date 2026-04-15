@@ -400,6 +400,37 @@ function QuestionSectionView({
                     </button>
                   ))}
                 </div>
+              ) : section.type === "multiSelect" ? (
+                <div className="flex gap-1.5 flex-wrap">
+                  {section.options!.map(o => {
+                    const selected = (answers[q.num] || "").split(",").filter(Boolean);
+                    const isSelected = selected.includes(o.label);
+                    return (
+                      <button
+                        key={o.label}
+                        onClick={() => {
+                          let next: string[];
+                          if (isSelected) {
+                            next = selected.filter(s => s !== o.label);
+                          } else if (selected.length < 2) {
+                            next = [...selected, o.label].sort();
+                          } else {
+                            next = [selected[1], o.label].sort();
+                          }
+                          setAnswer(q.num, next.join(","));
+                        }}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors ${
+                          isSelected
+                            ? "bg-blue-600 text-white border-blue-600"
+                            : "bg-background border-border text-muted-foreground hover:border-blue-400"
+                        }`}
+                      >
+                        {o.label}
+                      </button>
+                    );
+                  })}
+                  <span className="text-xs text-muted-foreground self-center ml-1">(choose 2)</span>
+                </div>
               ) : section.type === "mcParagraph" || section.type === "mcMatch" ? (
                 <div className="flex gap-1.5 flex-wrap">
                   {section.options!.map(o => (
@@ -451,23 +482,34 @@ function ResultsView({
     p.questionSections.flatMap(s => s.questions)
   );
 
+  const allSections = passages.flatMap(p => p.questionSections);
+
   const results = allQuestions.map(q => {
+    const section = allSections.find(s => s.questions.some(sq => sq.num === q.num));
+    if (section?.type === "multiSelect") {
+      const userParts = (answers[q.num] || "").split(",").filter(Boolean).sort();
+      const correctParts = q.answer.split(",").sort();
+      const matchCount = userParts.filter(u => correctParts.includes(u)).length;
+      return { ...q, userAnswer: answers[q.num] || "", isCorrect: matchCount === correctParts.length, partialCount: matchCount, totalParts: correctParts.length, isMulti: true as const };
+    }
     const userAnswer = (answers[q.num] || "").trim().toLowerCase();
     const correct = q.answer.toLowerCase();
     const alts = q.alternateAnswers?.map(a => a.toLowerCase()) || [];
     const isCorrect = userAnswer === correct || alts.includes(userAnswer);
-    return { ...q, userAnswer: answers[q.num] || "", isCorrect };
+    return { ...q, userAnswer: answers[q.num] || "", isCorrect, partialCount: isCorrect ? 1 : 0, totalParts: 1, isMulti: false as const };
   });
 
-  const correctCount = results.filter(r => r.isCorrect).length;
+  const correctCount = results.reduce((sum, r) => sum + (r.isMulti ? r.partialCount : (r.isCorrect ? 1 : 0)), 0);
   const { band, label } = calculateBand(correctCount);
   const recommendation = getRecommendation(band);
   const arabicRec = getArabicRecommendation(band);
 
   const passageResults = passages.map(p => {
     const nums = p.questionSections.flatMap(s => s.questions.map(q => q.num));
-    const correct = results.filter(r => nums.includes(r.num) && r.isCorrect).length;
-    return { title: p.title, correct, total: nums.length };
+    const pResults = results.filter(r => nums.includes(r.num));
+    const correct = pResults.reduce((s, r) => s + r.partialCount, 0);
+    const total = pResults.reduce((s, r) => s + r.totalParts, 0);
+    return { title: p.title, correct, total };
   });
 
   const formatTime2 = (s: number) => {
@@ -539,13 +581,16 @@ function ResultsView({
               <div className="space-y-2">
                 {passage.questionSections.flatMap(s => s.questions).map(q => {
                   const r = results.find(x => x.num === q.num)!;
+                  const isPartial = r.isMulti && r.partialCount > 0 && r.partialCount < r.totalParts;
                   return (
                     <div
                       key={q.num}
                       className={`flex items-start gap-3 p-3 rounded-xl border ${
                         r.isCorrect
                           ? "bg-green-50 dark:bg-green-950/20 border-green-200 dark:border-green-800"
-                          : "bg-red-50 dark:bg-red-950/20 border-red-200 dark:border-red-800"
+                          : isPartial
+                            ? "bg-amber-50 dark:bg-amber-950/20 border-amber-200 dark:border-amber-800"
+                            : "bg-red-50 dark:bg-red-950/20 border-red-200 dark:border-red-800"
                       }`}
                     >
                       <div className="mt-0.5">
