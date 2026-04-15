@@ -220,7 +220,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         style={{
           position: "fixed",
           bottom: "24px",
-          left: "16px",
+          right: "16px",
           zIndex: 9999,
           display: "flex",
           alignItems: "center",
