@@ -1,8 +1,13 @@
 import { Link, useLocation } from "wouter";
-import { BookOpen, Home, Layers, PieChart, ExternalLink, Sun, Moon, HelpCircle, Sparkles, Shuffle, FileText, BookMarked, Mic } from "lucide-react";
+import { BookOpen, Home, Layers, PieChart, ExternalLink, Sun, Moon, HelpCircle, Sparkles, Shuffle, FileText, BookMarked, Mic, LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTheme } from "@/context/theme-context";
 import { Button } from "@/components/ui/button";
+
+function handleLogout() {
+  localStorage.removeItem("4ielts_email");
+  window.location.reload();
+}
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
@@ -63,7 +68,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           })}
         </nav>
 
-        <div className="hidden md:block px-4 pb-5">
+        <div className="hidden md:block px-4 pb-5 space-y-1">
           <a
             href="https://www.4ielts.com"
             target="_blank"
@@ -73,6 +78,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <ExternalLink className="w-4 h-4 shrink-0" />
             www.4ielts.com
           </a>
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium text-muted-foreground hover:text-destructive hover:bg-destructive/5 transition-colors w-full"
+          >
+            <LogOut className="w-4 h-4 shrink-0" />
+            Log Out
+          </button>
         </div>
       </aside>
 
@@ -101,6 +113,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
         >
           {theme === "dark" ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
           <span className="text-[9px] font-medium">Theme</span>
+        </button>
+        <button
+          onClick={handleLogout}
+          className="flex flex-col items-center gap-1 transition-colors p-2 rounded-xl text-muted-foreground flex-1"
+          aria-label="Log out"
+        >
+          <LogOut className="w-5 h-5" />
+          <span className="text-[9px] font-medium">Log Out</span>
         </button>
       </nav>
 
