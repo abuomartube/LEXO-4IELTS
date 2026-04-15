@@ -39,6 +39,8 @@ interface ScoreBand {
 
 interface EssayResult {
   taskType: string;
+  wordCount?: number;
+  wordCountWarning?: string | null;
   overallBand: number;
   scores: {
     taskResponse: ScoreBand;
@@ -920,8 +922,14 @@ export default function EssayChecker() {
                 <div className="bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20 rounded-3xl p-6 text-center">
                   <p className="text-sm font-semibold text-muted-foreground uppercase tracking-widest mb-1">Overall Band Score</p>
                   <div className="text-8xl font-extrabold text-primary mb-1">{result.overallBand}</div>
-                  <p className="text-sm text-muted-foreground">{result.taskType} · {wordCount} words analysed</p>
+                  <p className="text-sm text-muted-foreground">{result.taskType} · {result.wordCount ?? wordCount} words analysed</p>
                 </div>
+
+                {result.wordCountWarning && (
+                  <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-300 dark:border-amber-700 rounded-2xl px-5 py-3 text-sm text-amber-800 dark:text-amber-300 font-medium">
+                    {result.wordCountWarning}
+                  </div>
+                )}
 
                 {/* 4 Band Scores */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
