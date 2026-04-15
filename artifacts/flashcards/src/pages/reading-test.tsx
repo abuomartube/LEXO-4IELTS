@@ -90,8 +90,9 @@ export default function ReadingTestPage() {
               <BookOpen className="w-8 h-8 text-blue-600 dark:text-blue-400" />
             </div>
             <h1 className="text-3xl font-black text-foreground">IELTS Reading Tests</h1>
-            <p className="text-muted-foreground text-lg">Choose a test to begin</p>
-            <p className="text-sm text-muted-foreground" dir="rtl" lang="ar">اختر اختباراً للبدء</p>
+            <p className="text-muted-foreground text-lg">Cambridge IELTS Official Past Exam Collection</p>
+            <p className="text-muted-foreground text-sm">Authentic Practice Tests Academic Class</p>
+            <p className="text-sm text-muted-foreground mt-1" dir="rtl" lang="ar">اختر اختباراً للبدء</p>
           </div>
 
           <div className="grid gap-4">
