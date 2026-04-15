@@ -74,8 +74,8 @@ export default function ReadingTestPage() {
               <BookOpen className="w-8 h-8 text-blue-600 dark:text-blue-400" />
             </div>
             <h1 className="text-3xl font-black text-foreground">IELTS Reading Test</h1>
-            <p className="text-muted-foreground text-lg">Cambridge IELTS 18 — Academic Reading Test 1</p>
-            <p className="text-sm text-muted-foreground" dir="rtl" lang="ar">اختبار القراءة الأكاديمية — كامبريدج آيلتس ١٨</p>
+            <p className="text-muted-foreground text-lg">Academic Reading Test</p>
+            <p className="text-sm text-muted-foreground" dir="rtl" lang="ar">اختبار القراءة الأكاديمية</p>
 
             <div className="grid grid-cols-3 gap-4 max-w-md mx-auto">
               <div className="bg-muted/50 rounded-xl p-4 text-center">
