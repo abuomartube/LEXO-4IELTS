@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 import { Layout } from "@/components/layout";
 import {
   BookOpen, ChevronRight, ChevronLeft, CheckCircle2, XCircle,
-  Clock, Trophy, AlertTriangle, RotateCcw, ArrowUp, ListChecks
+  Clock, Trophy, AlertTriangle, RotateCcw, ArrowUp, ListChecks, X
 } from "lucide-react";
 import {
   readingTests,
@@ -216,6 +216,13 @@ export default function ReadingTestPage() {
         <div className="sticky top-0 z-20 bg-background/95 backdrop-blur-sm border-b border-border pb-3 pt-1 -mx-4 px-4">
           <div className="flex items-center justify-between flex-wrap gap-3">
             <div className="flex items-center gap-3">
+              <button
+                onClick={goToSelect}
+                className="w-8 h-8 rounded-lg bg-muted hover:bg-red-100 dark:hover:bg-red-900/30 flex items-center justify-center transition-colors group"
+                title="Exit test"
+              >
+                <X className="w-4 h-4 text-muted-foreground group-hover:text-red-500" />
+              </button>
               <BookOpen className="w-5 h-5 text-blue-600" />
               <h1 className="text-lg font-bold text-foreground">Reading — {selectedTest.label}</h1>
             </div>
