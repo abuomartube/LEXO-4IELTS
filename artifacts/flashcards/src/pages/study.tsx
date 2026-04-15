@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useListFlashcards, useGetProgress, useUpsertProgress, useListCategories } from "@workspace/api-client-react";
 import { useSrsDue, useUpdateSrs, useListBookmarks } from "@workspace/api-client-react";
 import { Layout } from "@/components/layout";
@@ -8,6 +8,7 @@ import { Progress } from "@/components/ui/progress";
 import { CheckCircle2, XCircle, ArrowRight, ArrowLeft, RefreshCw, Filter, BookOpen, Zap, Bookmark } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
+import { useActivityPosition } from "@/hooks/use-activity-position";
 import type { ListFlashcardsLevel } from "@workspace/api-client-react/src/generated/api.schemas";
 
 type StudyMode = "all" | "srs" | "bookmarks" | "unknown";
@@ -27,8 +28,11 @@ export default function Study() {
   const [sessionStats, setSessionStats] = useState({ known: 0, unknown: 0 });
   const [sessionDone, setSessionDone] = useState(false);
   const [reviewedIds, setReviewedIds] = useState<Set<number>>(new Set());
+  const [positionLoaded, setPositionLoaded] = useState(false);
 
   const { toast } = useToast();
+  const filtersKey = `${levelFilter}:${categoryFilter}:${studyMode}`;
+  const { load: loadPosition, save: savePosition, loadedRef } = useActivityPosition("study", filtersKey);
 
   const { data: allCards, isLoading: cardsLoading } = useListFlashcards({
     level: levelFilter === "ALL" ? undefined : levelFilter,
@@ -61,6 +65,33 @@ export default function Study() {
   }, [allCards, studyMode, srsCards, bookmarks, progress]);
 
   const isLoading = cardsLoading || (studyMode === "srs" && srsLoading);
+
+  useEffect(() => {
+    if (loadedRef.current) return;
+    loadPosition().then((saved) => {
+      if (!saved) { setPositionLoaded(true); return; }
+      try {
+        const f = JSON.parse(saved.filters);
+        if (f.level) setLevelFilter(f.level);
+        if (f.category) setCategoryFilter(f.category);
+        if (f.mode) setStudyMode(f.mode);
+      } catch {}
+      if (saved.position > 0) setCurrentIndex(saved.position);
+      loadedRef.current = true;
+      setPositionLoaded(true);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (positionLoaded && cards && cards.length > 0 && currentIndex >= cards.length) {
+      setCurrentIndex(cards.length - 1);
+    }
+  }, [cards, positionLoaded, currentIndex]);
+
+  useEffect(() => {
+    if (!positionLoaded) return;
+    savePosition(currentIndex, JSON.stringify({ level: levelFilter, category: categoryFilter, mode: studyMode }));
+  }, [currentIndex, levelFilter, categoryFilter, studyMode, positionLoaded]);
 
   const handleNext = () => {
     if (cards && currentIndex < cards.length - 1) {

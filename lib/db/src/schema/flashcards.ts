@@ -90,3 +90,12 @@ export const reviewsTable = pgTable("reviews", {
 });
 
 export type Review = typeof reviewsTable.$inferSelect;
+
+export const activityPositionTable = pgTable("activity_positions", {
+  id: serial("id").primaryKey(),
+  email: text("email").notNull(),
+  activity: text("activity").notNull(),
+  position: integer("position").notNull().default(0),
+  filters: text("filters").notNull().default("{}"),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+}, (t) => [unique().on(t.email, t.activity)]);

@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Layout } from "@/components/layout";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -9,6 +9,7 @@ import {
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import synonymsRaw from "@/data/synonyms-data.json";
 import { PronounceButton } from "@/components/pronounce-button";
+import { useActivityPosition } from "@/hooks/use-activity-position";
 
 interface SynonymEntry {
   id: number;
@@ -41,11 +42,39 @@ export default function Synonyms() {
   const [sessionStats, setSessionStats] = useState({ known: 0, unknown: 0 });
   const [sessionDone, setSessionDone] = useState(false);
   const [reviewedIds, setReviewedIds] = useState<Set<number>>(new Set());
+  const [positionLoaded, setPositionLoaded] = useState(false);
+
+  const { load: loadPosition, save: savePosition, loadedRef } = useActivityPosition("synonyms", skillFilter);
 
   const cards = useMemo(() => {
     if (skillFilter === "All Skills") return allSynonyms;
     return allSynonyms.filter(c => c.skill === skillFilter || c.skill === "All Skills");
   }, [skillFilter]);
+
+  useEffect(() => {
+    if (loadedRef.current) return;
+    loadPosition().then((saved) => {
+      if (!saved) { setPositionLoaded(true); return; }
+      try {
+        const f = JSON.parse(saved.filters);
+        if (f.skill) setSkillFilter(f.skill);
+      } catch {}
+      if (saved.position > 0) setCurrentIndex(saved.position);
+      loadedRef.current = true;
+      setPositionLoaded(true);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (positionLoaded && cards.length > 0 && currentIndex >= cards.length) {
+      setCurrentIndex(cards.length - 1);
+    }
+  }, [cards, positionLoaded, currentIndex]);
+
+  useEffect(() => {
+    if (!positionLoaded) return;
+    savePosition(currentIndex, JSON.stringify({ skill: skillFilter }));
+  }, [currentIndex, skillFilter, positionLoaded]);
 
   const card = cards[currentIndex];
   const progressPercent = cards.length > 0 ? Math.round((currentIndex / cards.length) * 100) : 0;

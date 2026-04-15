@@ -1,7 +1,7 @@
 import { Router, type IRouter } from "express";
 import crypto from "node:crypto";
 import { eq, and, ilike, sql, lte, ne } from "drizzle-orm";
-import { db, flashcardsTable, progressTable, bookmarksTable, cardSrsTable } from "@workspace/db";
+import { db, flashcardsTable, progressTable, bookmarksTable, cardSrsTable, activityPositionTable } from "@workspace/db";
 
 const SESSION_SECRET = process.env["SESSION_SECRET"] ?? "fallback-secret";
 
@@ -316,12 +316,40 @@ router.post("/srs/:id", async (req, res): Promise<void> => {
   res.json({ flashcardId: id, nextReviewAt: nextReviewAt.toISOString(), intervalDays, reviewCount });
 });
 
+router.get("/activity-position/:activity", async (req, res): Promise<void> => {
+  const email = verifyStudentEmail(req);
+  if (!email) { res.json({ position: 0, filters: "{}" }); return; }
+  const activity = req.params.activity;
+  const [row] = await db.select().from(activityPositionTable)
+    .where(and(eq(activityPositionTable.email, email), eq(activityPositionTable.activity, activity)))
+    .limit(1);
+  res.json({ position: row?.position ?? 0, filters: row?.filters ?? "{}" });
+});
+
+router.put("/activity-position/:activity", async (req, res): Promise<void> => {
+  const email = verifyStudentEmail(req);
+  if (!email) { res.status(401).json({ error: "Unauthorized" }); return; }
+  const activity = req.params.activity;
+  const rawPos = req.body.position;
+  const position = typeof rawPos === "number" && Number.isFinite(rawPos) && rawPos >= 0 ? Math.floor(rawPos) : 0;
+  const rawFilters = req.body.filters;
+  const filters = typeof rawFilters === "string" && rawFilters.length <= 500 ? rawFilters : "{}";
+  await db.insert(activityPositionTable)
+    .values({ email, activity, position, filters, updatedAt: new Date() })
+    .onConflictDoUpdate({
+      target: [activityPositionTable.email, activityPositionTable.activity],
+      set: { position, filters, updatedAt: new Date() },
+    });
+  res.json({ success: true });
+});
+
 router.delete("/progress/reset", async (req, res): Promise<void> => {
   const email = verifyStudentEmail(req);
   if (!email) { res.status(401).json({ error: "Unauthorized" }); return; }
   await db.delete(progressTable).where(eq(progressTable.email, email));
   await db.delete(bookmarksTable).where(eq(bookmarksTable.email, email));
   await db.delete(cardSrsTable).where(eq(cardSrsTable.email, email));
+  await db.delete(activityPositionTable).where(eq(activityPositionTable.email, email));
   res.json({ success: true });
 });
 
