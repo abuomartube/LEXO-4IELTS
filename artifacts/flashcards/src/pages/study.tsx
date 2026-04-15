@@ -77,6 +77,9 @@ export default function Study() {
         if (f.level) setLevelFilter(f.level);
         if (f.category) setCategoryFilter(f.category);
         if (f.mode) setStudyMode(f.mode);
+        if (typeof f.known === "number" || typeof f.unknown === "number") {
+          setSessionStats({ known: f.known ?? 0, unknown: f.unknown ?? 0 });
+        }
       } catch {}
       loadedRef.current = true;
       if (saved.position > 0) {
@@ -95,8 +98,8 @@ export default function Study() {
 
   useEffect(() => {
     if (!positionLoaded) return;
-    savePosition(currentIndex, JSON.stringify({ level: levelFilter, category: categoryFilter, mode: studyMode }));
-  }, [currentIndex, levelFilter, categoryFilter, studyMode, positionLoaded]);
+    savePosition(currentIndex, JSON.stringify({ level: levelFilter, category: categoryFilter, mode: studyMode, known: sessionStats.known, unknown: sessionStats.unknown }));
+  }, [currentIndex, levelFilter, categoryFilter, studyMode, positionLoaded, sessionStats]);
 
   const handleNext = () => {
     if (cards && currentIndex < cards.length - 1) {
