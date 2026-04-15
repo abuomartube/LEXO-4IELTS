@@ -3,6 +3,7 @@ import { Mail, Lock, Eye, EyeOff, Loader2, Clock, CalendarX, MessageCircle, LogI
 
 const STORAGE_KEY = "4ielts_email";
 const WHATSAPP_URL = "https://wa.me/message/KMWPDZOBBNAAB1";
+const WHATSAPP_VISITOR_URL = "https://wa.me/4ielts";
 const CONTACT_EMAIL = "askabuomar@gmail.com";
 
 async function checkStatus(email: string): Promise<{ status: string; token?: string }> {
@@ -170,7 +171,7 @@ function LandingPage({ onLogin }: { onLogin: () => void }) {
                 Log In
               </button>
               <a
-                href={WHATSAPP_URL}
+                href={WHATSAPP_VISITOR_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-green-600 hover:bg-green-500 text-white font-bold text-lg transition-all shadow-lg shadow-green-600/25 hover:shadow-green-500/30"
@@ -408,7 +409,7 @@ export function PasswordGate({ children }: PasswordGateProps) {
 
             <div className="space-y-3">
               <a
-                href={WHATSAPP_URL}
+                href={WHATSAPP_VISITOR_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-green-500 hover:bg-green-600 text-white font-semibold transition-colors text-sm"
@@ -545,7 +546,7 @@ export function PasswordGate({ children }: PasswordGateProps) {
 
           <p className="text-xs text-center text-gray-400 dark:text-gray-500 mt-6">
             Don't have an access code?{" "}
-            <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer"
+            <a href={WHATSAPP_VISITOR_URL} target="_blank" rel="noopener noreferrer"
               className="text-teal-600 hover:underline font-medium">
               Contact us on WhatsApp
             </a>
