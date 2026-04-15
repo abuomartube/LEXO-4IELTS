@@ -68,6 +68,7 @@ See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and pa
 - `DELETE /api/progress/reset` — reset all progress, bookmarks, SRS, activity positions, quiz scores, and user data
 
 #### Features
+- **Persistent Login** — Session saved to DB on login; returning students skip login and go straight to dashboard; logout clears DB session via sendBeacon; session respects expiry dates
 - **Dark mode** — ThemeContext, persists in localStorage, toggle in sidebar/mobile nav
 - **Spaced Repetition (SRS)** — SM-2 algorithm stored in `card_srs` table
 - **Bookmarks** — Toggle per card; filter study/browse to bookmarked only

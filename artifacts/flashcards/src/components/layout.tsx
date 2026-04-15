@@ -5,7 +5,28 @@ import { useTheme } from "@/context/theme-context";
 import { Button } from "@/components/ui/button";
 
 function handleLogout() {
+  try {
+    const raw = localStorage.getItem("4ielts_email");
+    if (raw) {
+      const { email, token } = JSON.parse(raw);
+      if (email) {
+        const body = JSON.stringify({ email, token });
+        if (navigator.sendBeacon) {
+          const blob = new Blob([body], { type: "application/json" });
+          navigator.sendBeacon("/api/session/clear", blob);
+        } else {
+          fetch("/api/session/clear", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body,
+            keepalive: true,
+          }).catch(() => {});
+        }
+      }
+    }
+  } catch {}
   localStorage.removeItem("4ielts_email");
+  localStorage.removeItem("4ielts_last_email");
   window.location.reload();
 }
 

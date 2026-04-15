@@ -1,7 +1,7 @@
 import { Router, type IRouter } from "express";
 import crypto from "node:crypto";
-import { db, settingsTable, accessRequestsTable, reviewsTable } from "@workspace/db";
-import { eq, desc } from "drizzle-orm";
+import { db, settingsTable, accessRequestsTable, reviewsTable, userDataTable } from "@workspace/db";
+import { eq, desc, and } from "drizzle-orm";
 
 const router: IRouter = Router();
 
@@ -243,6 +243,62 @@ router.delete("/admin/reviews/:id", async (req, res): Promise<void> => {
   if (!await requireAdmin(req, res)) return;
   const id = Number(req.params.id);
   await db.delete(reviewsTable).where(eq(reviewsTable.id, id));
+  res.json({ success: true });
+});
+
+// ── Persistent session ───────────────────────────────────────────────────────
+
+const SESSION_KEY = "persistent_session";
+
+router.post("/session/save", async (req, res): Promise<void> => {
+  const { email, token } = req.body ?? {};
+  if (!email || !token) { res.status(400).json({ error: "Missing email or token" }); return; }
+  const normalizedEmail = (email as string).trim().toLowerCase();
+  const expectedToken = makeToken(normalizedEmail);
+  if (token !== expectedToken) { res.status(401).json({ error: "Invalid token" }); return; }
+  await db.insert(userDataTable)
+    .values({ email: normalizedEmail, key: SESSION_KEY, value: token, updatedAt: new Date() })
+    .onConflictDoUpdate({
+      target: [userDataTable.email, userDataTable.key],
+      set: { value: token, updatedAt: new Date() },
+    });
+  res.json({ success: true });
+});
+
+router.post("/session/check", async (req, res): Promise<void> => {
+  const { email } = req.body ?? {};
+  if (!email) { res.json({ status: "none" }); return; }
+  const normalizedEmail = (email as string).trim().toLowerCase();
+  const [row] = await db.select().from(userDataTable)
+    .where(and(eq(userDataTable.email, normalizedEmail), eq(userDataTable.key, SESSION_KEY)))
+    .limit(1);
+  if (!row || !row.value) { res.json({ status: "none" }); return; }
+  const accessRows = await db.select().from(accessRequestsTable)
+    .where(eq(accessRequestsTable.email, normalizedEmail));
+  if (accessRows.length === 0) { res.json({ status: "none" }); return; }
+  const access = accessRows[0];
+  if (access.status !== "approved") { res.json({ status: "none" }); return; }
+  if (isExpired(access)) {
+    await db.delete(userDataTable)
+      .where(and(eq(userDataTable.email, normalizedEmail), eq(userDataTable.key, SESSION_KEY)));
+    res.json({ status: "expired" });
+    return;
+  }
+  const expectedToken = makeToken(normalizedEmail);
+  if (row.value !== expectedToken) { res.json({ status: "none" }); return; }
+  res.json({ status: "active", token: expectedToken });
+});
+
+router.post("/session/clear", async (req, res): Promise<void> => {
+  const { email, token } = req.body ?? {};
+  if (!email) { res.json({ success: true }); return; }
+  const normalizedEmail = (email as string).trim().toLowerCase();
+  if (token) {
+    const expectedToken = makeToken(normalizedEmail);
+    if (token !== expectedToken) { res.status(401).json({ error: "Invalid token" }); return; }
+  }
+  await db.delete(userDataTable)
+    .where(and(eq(userDataTable.email, normalizedEmail), eq(userDataTable.key, SESSION_KEY)));
   res.json({ success: true });
 });
 

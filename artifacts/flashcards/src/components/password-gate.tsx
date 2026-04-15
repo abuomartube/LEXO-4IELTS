@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import { Mail, Lock, Eye, EyeOff, Loader2, Clock, CalendarX, MessageCircle } from "lucide-react";
+import { Mail, Lock, Eye, EyeOff, Loader2, Clock, CalendarX, MessageCircle, LogIn } from "lucide-react";
 
 const STORAGE_KEY = "4ielts_email";
 const WHATSAPP_URL = "https://wa.me/message/KMWPDZOBBNAAB1";
@@ -29,6 +29,27 @@ async function requestAccess(email: string, accessCode: string): Promise<{ statu
   } catch { return { status: "error", error: "Connection error. Please try again." }; }
 }
 
+async function saveSessionToDb(email: string, token: string) {
+  try {
+    await fetch("/api/session/save", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, token }),
+    });
+  } catch {}
+}
+
+async function checkDbSession(email: string): Promise<{ status: string; token?: string }> {
+  try {
+    const res = await fetch("/api/session/check", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email }),
+    });
+    return await res.json();
+  } catch { return { status: "none" }; }
+}
+
 interface PasswordGateProps { children: React.ReactNode; }
 
 export function PasswordGate({ children }: PasswordGateProps) {
@@ -43,13 +64,18 @@ export function PasswordGate({ children }: PasswordGateProps) {
 
   const stopPolling = () => { if (pollTimer.current) clearTimeout(pollTimer.current); };
 
+  const unlockAndSave = useCallback((em: string, token: string) => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ email: em, token }));
+    saveSessionToDb(em, token);
+    setPhase("unlocked");
+  }, []);
+
   const startPolling = useCallback((em: string) => {
     stopPolling();
     const poll = async () => {
       const result = await checkStatus(em);
       if (result.status === "approved" && result.token) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify({ email: em, token: result.token }));
-        setPhase("unlocked");
+        unlockAndSave(em, result.token);
       } else if (result.status === "expired") {
         localStorage.removeItem(STORAGE_KEY);
         expiredEmailRef.current = em;
@@ -64,45 +90,68 @@ export function PasswordGate({ children }: PasswordGateProps) {
       }
     };
     pollTimer.current = setTimeout(poll, 8000);
-  }, []); // eslint-disable-line
+  }, [unlockAndSave]); // eslint-disable-line
 
   const startExpiredPolling = useCallback((em: string) => {
     stopPolling();
     const poll = async () => {
       const result = await checkStatus(em);
       if (result.status === "approved" && result.token) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify({ email: em, token: result.token }));
-        setPhase("unlocked");
+        unlockAndSave(em, result.token);
       } else {
         pollTimer.current = setTimeout(poll, 10000);
       }
     };
     pollTimer.current = setTimeout(poll, 10000);
-  }, []); // eslint-disable-line
+  }, [unlockAndSave]); // eslint-disable-line
 
   useEffect(() => {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) { setPhase("form"); return; }
-    try {
-      const { email: storedEmail, token } = JSON.parse(raw);
-      checkStatus(storedEmail).then((result) => {
-        if (result.status === "approved" && result.token === token) {
-          setPhase("unlocked");
-        } else if (result.status === "expired") {
+    async function init() {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) {
+        try {
+          const { email: storedEmail, token } = JSON.parse(raw);
+          const result = await checkStatus(storedEmail);
+          if (result.status === "approved" && result.token === token) {
+            saveSessionToDb(storedEmail, token);
+            setPhase("unlocked");
+            return;
+          } else if (result.status === "expired") {
+            localStorage.removeItem(STORAGE_KEY);
+            expiredEmailRef.current = storedEmail;
+            setPhase("expired");
+            startExpiredPolling(storedEmail);
+            return;
+          } else if (result.status === "pending") {
+            setEmail(storedEmail);
+            setPhase("pending");
+            startPolling(storedEmail);
+            return;
+          }
           localStorage.removeItem(STORAGE_KEY);
-          expiredEmailRef.current = storedEmail;
-          setPhase("expired");
-          startExpiredPolling(storedEmail);
-        } else if (result.status === "pending") {
-          setEmail(storedEmail);
-          setPhase("pending");
-          startPolling(storedEmail);
-        } else {
+        } catch {
           localStorage.removeItem(STORAGE_KEY);
-          setPhase("form");
         }
-      });
-    } catch { localStorage.removeItem(STORAGE_KEY); setPhase("form"); }
+      }
+
+      const lastEmail = localStorage.getItem("4ielts_last_email");
+      if (lastEmail) {
+        const dbSession = await checkDbSession(lastEmail);
+        if (dbSession.status === "active" && dbSession.token) {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify({ email: lastEmail, token: dbSession.token }));
+          setPhase("unlocked");
+          return;
+        } else if (dbSession.status === "expired") {
+          expiredEmailRef.current = lastEmail;
+          setPhase("expired");
+          startExpiredPolling(lastEmail);
+          return;
+        }
+      }
+
+      setPhase("form");
+    }
+    init();
     return stopPolling;
   }, [startPolling, startExpiredPolling]);
 
@@ -115,8 +164,8 @@ export function PasswordGate({ children }: PasswordGateProps) {
     const result = await requestAccess(normalizedEmail, accessCode.trim());
     setLoading(false);
     if (result.status === "approved" && result.token) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({ email: normalizedEmail, token: result.token }));
-      setPhase("unlocked");
+      localStorage.setItem("4ielts_last_email", normalizedEmail);
+      unlockAndSave(normalizedEmail, result.token);
     } else if (result.status === "expired") {
       localStorage.removeItem(STORAGE_KEY);
       expiredEmailRef.current = normalizedEmail;
@@ -124,6 +173,7 @@ export function PasswordGate({ children }: PasswordGateProps) {
       startExpiredPolling(normalizedEmail);
     } else if (result.status === "pending") {
       localStorage.setItem(STORAGE_KEY, JSON.stringify({ email: normalizedEmail, token: "" }));
+      localStorage.setItem("4ielts_last_email", normalizedEmail);
       setPhase("pending");
       startPolling(normalizedEmail);
     } else if (result.status === "rejected") {
@@ -131,7 +181,7 @@ export function PasswordGate({ children }: PasswordGateProps) {
     } else {
       setError(result.error ?? "Something went wrong. Please try again.");
     }
-  }, [email, accessCode, startPolling, startExpiredPolling]);
+  }, [email, accessCode, startPolling, startExpiredPolling, unlockAndSave]);
 
   const resetForm = () => {
     stopPolling();
@@ -177,7 +227,6 @@ export function PasswordGate({ children }: PasswordGateProps) {
               انتهت صلاحية اشتراكك. تواصل مع أبو عمر لتجديد الاشتراك.
             </p>
 
-            {/* Auto-unlock indicator */}
             <div className="flex items-center justify-center gap-2 text-xs text-teal-600 dark:text-teal-400 mb-5 bg-teal-50 dark:bg-teal-900/20 rounded-xl py-2.5 px-3">
               <Loader2 className="w-3 h-3 animate-spin shrink-0" />
               Checking for renewal every 10 seconds — this will unlock automatically once renewed.
@@ -315,8 +364,8 @@ export function PasswordGate({ children }: PasswordGateProps) {
               disabled={loading || !email.trim() || !accessCode.trim()}
               className="w-full py-3 rounded-xl bg-teal-600 hover:bg-teal-700 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold transition-colors flex items-center justify-center gap-2"
             >
-              {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Mail className="w-4 h-4" />}
-              {loading ? "Sending Request…" : "Request Access"}
+              {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <LogIn className="w-4 h-4" />}
+              {loading ? "جاري الدخول... | Signing In…" : "دخول | Sign In"}
             </button>
           </form>
 
