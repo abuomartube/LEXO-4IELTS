@@ -22,6 +22,7 @@ export const progressTable = pgTable("progress", {
   flashcardId: integer("flashcard_id").notNull().references(() => flashcardsTable.id, { onDelete: "cascade" }),
   known: boolean("known").notNull().default(false),
   reviewedAt: timestamp("reviewed_at", { withTimezone: true }).notNull().defaultNow(),
+  email: text("email").notNull().default(""),
 });
 
 export const insertProgressSchema = createInsertSchema(progressTable).omit({ id: true, reviewedAt: true });
@@ -30,21 +31,23 @@ export type Progress = typeof progressTable.$inferSelect;
 
 export const bookmarksTable = pgTable("bookmarks", {
   id: serial("id").primaryKey(),
-  flashcardId: integer("flashcard_id").notNull().unique().references(() => flashcardsTable.id, { onDelete: "cascade" }),
+  flashcardId: integer("flashcard_id").notNull().references(() => flashcardsTable.id, { onDelete: "cascade" }),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-});
+  email: text("email").notNull().default(""),
+}, (t) => [unique().on(t.flashcardId, t.email)]);
 
 export type Bookmark = typeof bookmarksTable.$inferSelect;
 
 export const cardSrsTable = pgTable("card_srs", {
   id: serial("id").primaryKey(),
-  flashcardId: integer("flashcard_id").notNull().unique().references(() => flashcardsTable.id, { onDelete: "cascade" }),
+  flashcardId: integer("flashcard_id").notNull().references(() => flashcardsTable.id, { onDelete: "cascade" }),
   nextReviewAt: timestamp("next_review_at", { withTimezone: true }).notNull().defaultNow(),
   intervalDays: real("interval_days").notNull().default(1),
   easeFactor: real("ease_factor").notNull().default(2.5),
   reviewCount: integer("review_count").notNull().default(0),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
-});
+  email: text("email").notNull().default(""),
+}, (t) => [unique().on(t.flashcardId, t.email)]);
 
 export type CardSrs = typeof cardSrsTable.$inferSelect;
 

@@ -4,6 +4,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/context/theme-context";
 import { PasswordGate } from "@/components/password-gate";
+import { setStudentEmailGetter } from "@workspace/api-client-react";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
 import Study from "@/pages/study";
@@ -16,6 +17,16 @@ import Antonyms from "@/pages/antonyms";
 import EssayChecker from "@/pages/essay-checker";
 import Stories from "@/pages/stories";
 import Speaking from "@/pages/speaking";
+
+setStudentEmailGetter(() => {
+  try {
+    const raw = localStorage.getItem("4ielts_email");
+    if (!raw) return null;
+    const { email, token } = JSON.parse(raw);
+    if (!email || !token) return null;
+    return { email, token };
+  } catch { return null; }
+});
 
 const queryClient = new QueryClient({
   defaultOptions: {

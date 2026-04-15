@@ -18,6 +18,13 @@ const DEFAULT_JSON_ACCEPT = "application/json, application/problem+json";
 let _baseUrl: string | null = null;
 let _authTokenGetter: AuthTokenGetter | null = null;
 
+export type StudentIdentityGetter = () => { email: string; token: string } | null;
+let _studentIdentityGetter: StudentIdentityGetter | null = null;
+
+export function setStudentEmailGetter(getter: StudentIdentityGetter | null): void {
+  _studentIdentityGetter = getter;
+}
+
 /**
  * Set a base URL that is prepended to every relative request URL
  * (i.e. paths that start with `/`).
@@ -355,6 +362,14 @@ export async function customFetch<T = unknown>(
     const token = await _authTokenGetter();
     if (token) {
       headers.set("authorization", `Bearer ${token}`);
+    }
+  }
+
+  if (_studentIdentityGetter && !headers.has("x-student-email")) {
+    const identity = _studentIdentityGetter();
+    if (identity) {
+      headers.set("x-student-email", identity.email);
+      headers.set("x-student-token", identity.token);
     }
   }
 

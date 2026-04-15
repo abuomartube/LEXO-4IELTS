@@ -1,6 +1,18 @@
 import { Router, type IRouter } from "express";
+import crypto from "node:crypto";
 import { eq, and, ilike, sql, lte, ne } from "drizzle-orm";
 import { db, flashcardsTable, progressTable, bookmarksTable, cardSrsTable } from "@workspace/db";
+
+const SESSION_SECRET = process.env["SESSION_SECRET"] ?? "fallback-secret";
+
+function verifyStudentEmail(req: import("express").Request): string | null {
+  const email = (req.headers["x-student-email"] as string || "").trim().toLowerCase();
+  const token = (req.headers["x-student-token"] as string || "").trim();
+  if (!email || !token) return null;
+  const expected = crypto.createHmac("sha256", SESSION_SECRET).update(email + ":approved").digest("hex");
+  if (token !== expected) return null;
+  return email;
+}
 import {
   ListFlashcardsQueryParams,
   GetFlashcardParams,
@@ -32,11 +44,13 @@ router.get("/flashcards", async (req, res): Promise<void> => {
   res.json(ListFlashcardsResponse.parse(cards));
 });
 
-router.get("/flashcards/levels", async (_req, res): Promise<void> => {
+router.get("/flashcards/levels", async (req, res): Promise<void> => {
+  const email = verifyStudentEmail(req);
   const levels = ["A2", "B1", "B2", "C1"];
   const stats = await Promise.all(levels.map(async (level) => {
     const [totalResult] = await db.select({ count: sql<number>`count(*)::int` }).from(flashcardsTable).where(eq(flashcardsTable.level, level));
-    const knownCardIds = await db.selectDistinctOn([progressTable.flashcardId], { flashcardId: progressTable.flashcardId, known: progressTable.known }).from(progressTable).orderBy(progressTable.flashcardId, sql`${progressTable.reviewedAt} desc`);
+    if (!email) return { level, total: totalResult?.count ?? 0, known: 0 };
+    const knownCardIds = await db.selectDistinctOn([progressTable.flashcardId], { flashcardId: progressTable.flashcardId, known: progressTable.known }).from(progressTable).where(eq(progressTable.email, email)).orderBy(progressTable.flashcardId, sql`${progressTable.reviewedAt} desc`);
     const knownForLevel = knownCardIds.filter((p) => p.known);
     const levelCards = await db.select({ id: flashcardsTable.id }).from(flashcardsTable).where(eq(flashcardsTable.level, level));
     const levelCardIds = new Set(levelCards.map((c) => c.id));
@@ -62,23 +76,36 @@ router.get("/flashcards/:id", async (req, res): Promise<void> => {
 
 // ── Progress ───────────────────────────────────────────────────────────────
 
-router.get("/progress", async (_req, res): Promise<void> => {
-  const records = await db.select().from(progressTable).orderBy(sql`${progressTable.reviewedAt} desc`);
+router.get("/progress", async (req, res): Promise<void> => {
+  const email = verifyStudentEmail(req);
+  if (!email) { res.json([]); return; }
+  const records = await db.select().from(progressTable).where(eq(progressTable.email, email)).orderBy(sql`${progressTable.reviewedAt} desc`);
   res.json(GetProgressResponse.parse(records));
 });
 
 router.post("/progress", async (req, res): Promise<void> => {
   const parsed = UpsertProgressBody.safeParse(req.body);
   if (!parsed.success) { res.status(400).json({ error: parsed.error.message }); return; }
+  const email = verifyStudentEmail(req);
+  if (!email) { res.status(401).json({ error: "Unauthorized" }); return; }
   const { flashcardId, known } = parsed.data;
-  const [record] = await db.insert(progressTable).values({ flashcardId, known, reviewedAt: new Date() }).returning();
+  const [record] = await db.insert(progressTable).values({ flashcardId, known, reviewedAt: new Date(), email }).returning();
   res.json(UpsertProgressResponse.parse(record));
 });
 
-router.get("/progress/summary", async (_req, res): Promise<void> => {
+router.get("/progress/summary", async (req, res): Promise<void> => {
+  const email = verifyStudentEmail(req);
   const levels = ["A2", "B1", "B2", "C1"];
   const [totalResult] = await db.select({ count: sql<number>`count(*)::int` }).from(flashcardsTable);
-  const latestProgress = await db.selectDistinctOn([progressTable.flashcardId], { flashcardId: progressTable.flashcardId, known: progressTable.known }).from(progressTable).orderBy(progressTable.flashcardId, sql`${progressTable.reviewedAt} desc`);
+  if (!email) {
+    const byLevel = await Promise.all(levels.map(async (level) => {
+      const [levelTotal] = await db.select({ count: sql<number>`count(*)::int` }).from(flashcardsTable).where(eq(flashcardsTable.level, level));
+      return { level, total: levelTotal?.count ?? 0, known: 0 };
+    }));
+    res.json(GetProgressSummaryResponse.parse({ totalCards: totalResult?.count ?? 0, totalKnown: 0, byLevel }));
+    return;
+  }
+  const latestProgress = await db.selectDistinctOn([progressTable.flashcardId], { flashcardId: progressTable.flashcardId, known: progressTable.known }).from(progressTable).where(eq(progressTable.email, email)).orderBy(progressTable.flashcardId, sql`${progressTable.reviewedAt} desc`);
   const knownIds = new Set(latestProgress.filter((p) => p.known).map((p) => p.flashcardId));
   const totalKnown = knownIds.size;
   const byLevel = await Promise.all(levels.map(async (level) => {
@@ -93,20 +120,24 @@ router.get("/progress/summary", async (_req, res): Promise<void> => {
 
 // ── Bookmarks ──────────────────────────────────────────────────────────────
 
-router.get("/bookmarks", async (_req, res): Promise<void> => {
-  const rows = await db.select({ flashcardId: bookmarksTable.flashcardId }).from(bookmarksTable);
+router.get("/bookmarks", async (req, res): Promise<void> => {
+  const email = verifyStudentEmail(req);
+  if (!email) { res.json([]); return; }
+  const rows = await db.select({ flashcardId: bookmarksTable.flashcardId }).from(bookmarksTable).where(eq(bookmarksTable.email, email));
   res.json(rows.map((r) => r.flashcardId));
 });
 
 router.post("/bookmarks/:id", async (req, res): Promise<void> => {
   const id = parseInt(req.params.id, 10);
   if (isNaN(id)) { res.status(400).json({ error: "Invalid id" }); return; }
-  const existing = await db.select().from(bookmarksTable).where(eq(bookmarksTable.flashcardId, id));
+  const email = verifyStudentEmail(req);
+  if (!email) { res.status(401).json({ error: "Unauthorized" }); return; }
+  const existing = await db.select().from(bookmarksTable).where(and(eq(bookmarksTable.flashcardId, id), eq(bookmarksTable.email, email)));
   if (existing.length > 0) {
-    await db.delete(bookmarksTable).where(eq(bookmarksTable.flashcardId, id));
+    await db.delete(bookmarksTable).where(and(eq(bookmarksTable.flashcardId, id), eq(bookmarksTable.email, email)));
     res.json({ bookmarked: false });
   } else {
-    await db.insert(bookmarksTable).values({ flashcardId: id });
+    await db.insert(bookmarksTable).values({ flashcardId: id, email });
     res.json({ bookmarked: true });
   }
 });
@@ -125,10 +156,13 @@ router.get("/word-of-day", async (_req, res): Promise<void> => {
 
 // ── Streak ─────────────────────────────────────────────────────────────────
 
-router.get("/streak", async (_req, res): Promise<void> => {
+router.get("/streak", async (req, res): Promise<void> => {
+  const email = verifyStudentEmail(req);
+  if (!email) { res.json({ streak: 0, totalDays: 0 }); return; }
   const rows = await db
     .select({ day: sql<string>`date(${progressTable.reviewedAt})::text` })
     .from(progressTable)
+    .where(eq(progressTable.email, email))
     .groupBy(sql`date(${progressTable.reviewedAt})`)
     .orderBy(sql`date(${progressTable.reviewedAt}) desc`);
 
@@ -216,10 +250,13 @@ router.get("/fill-blank", async (req, res): Promise<void> => {
 // ── SRS ────────────────────────────────────────────────────────────────────
 
 router.get("/srs/due", async (req, res): Promise<void> => {
+  const email = verifyStudentEmail(req);
   const level = req.query.level as string | undefined;
   const now = new Date();
 
-  const srsRecords = await db.select().from(cardSrsTable).where(lte(cardSrsTable.nextReviewAt, now));
+  if (!email) { res.json([]); return; }
+
+  const srsRecords = await db.select().from(cardSrsTable).where(and(eq(cardSrsTable.email, email), lte(cardSrsTable.nextReviewAt, now)));
   const dueIds = new Set(srsRecords.map((r) => r.flashcardId));
 
   const conditions: any[] = [];
@@ -229,7 +266,7 @@ router.get("/srs/due", async (req, res): Promise<void> => {
     ? await db.select().from(flashcardsTable).where(and(...conditions))
     : await db.select().from(flashcardsTable);
 
-  const allSrsIds = new Set((await db.select({ id: cardSrsTable.flashcardId }).from(cardSrsTable)).map((r) => r.id));
+  const allSrsIds = new Set((await db.select({ id: cardSrsTable.flashcardId }).from(cardSrsTable).where(eq(cardSrsTable.email, email))).map((r) => r.id));
   const neverReviewed = allCards.filter((c) => !allSrsIds.has(c.id));
   const due = allCards.filter((c) => dueIds.has(c.id));
 
@@ -241,8 +278,10 @@ router.post("/srs/:id", async (req, res): Promise<void> => {
   const id = parseInt(req.params.id, 10);
   const known: boolean = req.body.known === true;
   if (isNaN(id)) { res.status(400).json({ error: "Invalid id" }); return; }
+  const email = verifyStudentEmail(req);
+  if (!email) { res.status(401).json({ error: "Unauthorized" }); return; }
 
-  const [existing] = await db.select().from(cardSrsTable).where(eq(cardSrsTable.flashcardId, id));
+  const [existing] = await db.select().from(cardSrsTable).where(and(eq(cardSrsTable.flashcardId, id), eq(cardSrsTable.email, email)));
 
   let intervalDays: number;
   let easeFactor: number;
@@ -269,9 +308,9 @@ router.post("/srs/:id", async (req, res): Promise<void> => {
   const nextReviewAt = new Date(Date.now() + intervalDays * 86400000);
 
   if (!existing) {
-    await db.insert(cardSrsTable).values({ flashcardId: id, nextReviewAt, intervalDays, easeFactor, reviewCount, updatedAt: new Date() });
+    await db.insert(cardSrsTable).values({ flashcardId: id, nextReviewAt, intervalDays, easeFactor, reviewCount, updatedAt: new Date(), email });
   } else {
-    await db.update(cardSrsTable).set({ nextReviewAt, intervalDays, easeFactor, reviewCount, updatedAt: new Date() }).where(eq(cardSrsTable.flashcardId, id));
+    await db.update(cardSrsTable).set({ nextReviewAt, intervalDays, easeFactor, reviewCount, updatedAt: new Date() }).where(and(eq(cardSrsTable.flashcardId, id), eq(cardSrsTable.email, email)));
   }
 
   res.json({ flashcardId: id, nextReviewAt: nextReviewAt.toISOString(), intervalDays, reviewCount });
