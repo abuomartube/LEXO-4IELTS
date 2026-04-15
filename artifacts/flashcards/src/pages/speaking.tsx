@@ -893,7 +893,6 @@ export default function SpeakingPage() {
   const sendTextRef = useRef<((text: string) => Promise<void>) | null>(null);
   const ttsAudioRef = useRef<HTMLAudioElement | null>(null);
   const sessionRef = useRef(session);
-  const startRecordingRef = useRef<(() => Promise<void>) | null>(null);
   const sessionModeRef = useRef<SessionMode | null>(null);
   const isSpeakingRef = useRef(false);
   const lastTtsTextRef = useRef<string | null>(null);
@@ -1013,24 +1012,7 @@ export default function SpeakingPage() {
           isSpeakingRef.current = false;
           setIsSpeaking(false);
           ttsEndResolveRef.current = null;
-          // Voice mode: auto-activate mic only after examiner finishes speaking
-          // Guard: skip if another recorder is already running (prevents double-recording echo)
-          if (sessionModeRef.current === "voice" && !mediaRecorderRef.current) {
-            const s = sessionRef.current;
-            if (!s.partDone && (s.phase === "part1" || s.phase === "part2-answer" || s.phase === "part3")) {
-              startRecordingRef.current?.();
-            }
-          }
           resolve();
-        };
-
-        const triggerMicIfNeeded = () => {
-          if (sessionModeRef.current === "voice" && !mediaRecorderRef.current) {
-            const s = sessionRef.current;
-            if (!s.partDone && (s.phase === "part1" || s.phase === "part2-answer" || s.phase === "part3")) {
-              startRecordingRef.current?.();
-            }
-          }
         };
 
         audio.onerror = () => {
@@ -1039,7 +1021,6 @@ export default function SpeakingPage() {
           isSpeakingRef.current = false;
           setIsSpeaking(false);
           ttsEndResolveRef.current = null;
-          triggerMicIfNeeded();
           resolve();
         };
 
@@ -1048,20 +1029,12 @@ export default function SpeakingPage() {
           isSpeakingRef.current = false;
           setIsSpeaking(false);
           ttsEndResolveRef.current = null;
-          triggerMicIfNeeded();
           resolve();
         });
       });
     } catch {
       isSpeakingRef.current = false;
       setIsSpeaking(false);
-      // Even if TTS fetch fails entirely, still activate mic in voice mode
-      if (sessionModeRef.current === "voice" && !mediaRecorderRef.current) {
-        const s = sessionRef.current;
-        if (!s.partDone && (s.phase === "part1" || s.phase === "part2-answer" || s.phase === "part3")) {
-          startRecordingRef.current?.();
-        }
-      }
     }
   }, [stopTts]);
 
@@ -1122,7 +1095,7 @@ export default function SpeakingPage() {
       } else {
         await playTts(q1Text);
       }
-      // In voice mode, mic auto-activates after TTS ends (handled in playTts onended)
+      // In voice mode, student manually taps mic after TTS ends
     } catch {
       setStreamingContent(null);
       setError("Could not connect to Churchill AI. Please try again.");
@@ -1424,8 +1397,6 @@ export default function SpeakingPage() {
     }
   }, [stopRecording]);
 
-  // Sync ref so TTS.onended can start a new recording
-  useEffect(() => { startRecordingRef.current = startRecording; }, [startRecording]);
   // Sync ref so setTtsSpeed can call playTts without a circular dependency
   useEffect(() => { playTtsRef.current = playTts; }, [playTts]);
 
@@ -1433,10 +1404,9 @@ export default function SpeakingPage() {
     if (isRecording) {
       stopRecording();
     } else {
-      stopTts(); // user taps mic = interrupt examiner
       startRecording();
     }
-  }, [isRecording, startRecording, stopRecording, stopTts]);
+  }, [isRecording, startRecording, stopRecording]);
 
   // ── Keyboard submit ──
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -1691,54 +1661,68 @@ export default function SpeakingPage() {
             {/* ── VOICE MODE input area ── */}
             {sessionMode === "voice" && !showNextPartBtn && !showViewReportBtn && (
               <div className="shrink-0 mt-3 flex flex-col items-center gap-3">
-                {/* Status */}
+                {/* Status label */}
                 <div className={`w-full flex items-center justify-center gap-2 px-4 py-3 rounded-2xl text-sm font-medium ${
                   isSpeaking
                     ? "bg-primary/10 border border-primary/30 text-primary"
                     : isLoading || streamingContent !== null
-                    ? "bg-muted/60 border border-border text-muted-foreground"
+                    ? "bg-violet-50 dark:bg-violet-950/20 border border-violet-200 dark:border-violet-800 text-violet-700 dark:text-violet-300"
                     : isTranscribing
-                    ? "bg-sky-50 dark:bg-sky-950/20 border border-sky-200 dark:border-sky-800 text-sky-700 dark:text-sky-300"
+                    ? "bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800 text-amber-700 dark:text-amber-400"
                     : isRecording
                     ? "bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400"
-                    : "bg-muted/40 border border-border text-muted-foreground"
+                    : "bg-sky-50 dark:bg-sky-950/20 border border-sky-200 dark:border-sky-800 text-sky-700 dark:text-sky-300"
                 }`}>
-                  {isSpeaking && <><Volume2 className="w-4 h-4 shrink-0 animate-pulse" /> المحكّم يتكلم…</>}
-                  {!isSpeaking && (isLoading || streamingContent !== null) && <><Loader2 className="w-4 h-4 animate-spin shrink-0" /> يفكّر المحكّم…</>}
-                  {!isSpeaking && !isLoading && streamingContent === null && isTranscribing && <><Loader2 className="w-4 h-4 animate-spin shrink-0" /> يحوّل الصوت لنص…</>}
-                  {!isSpeaking && !isLoading && streamingContent === null && !isTranscribing && isRecording && <><span className="w-2 h-2 rounded-full bg-red-500 animate-pulse shrink-0" /> يسجّل… (صمت 3 ثوانٍ → يُرسَل تلقائياً)</>}
-                  {!isSpeaking && !isLoading && streamingContent === null && !isTranscribing && !isRecording && <><Mic className="w-4 h-4 shrink-0" /> جاهز لإجابتك…</>}
+                  {isSpeaking && <><Volume2 className="w-4 h-4 shrink-0 animate-pulse" /> Churchill speaking…</>}
+                  {!isSpeaking && (isLoading || streamingContent !== null) && <><Loader2 className="w-4 h-4 animate-spin shrink-0" /> Churchill is responding…</>}
+                  {!isSpeaking && !isLoading && streamingContent === null && isTranscribing && <><Loader2 className="w-4 h-4 animate-spin shrink-0" /> Processing your answer…</>}
+                  {!isSpeaking && !isLoading && streamingContent === null && !isTranscribing && isRecording && <><span className="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse shrink-0" /> Recording… tap to stop</>}
+                  {!isSpeaking && !isLoading && streamingContent === null && !isTranscribing && !isRecording && (
+                    <span className="flex flex-col items-center gap-0.5">
+                      <span className="flex items-center gap-2">
+                        <Mic className="w-4 h-4 shrink-0" />
+                        Your turn — tap 🎤 to answer
+                      </span>
+                      <span className="text-[11px] opacity-70">Take a moment to think, then tap when ready</span>
+                    </span>
+                  )}
                 </div>
-                {/* Large mic button */}
+                {/* Large mic button — disabled while Churchill speaks or processing */}
                 <button
-                  onClick={isSpeaking ? stopTts : toggleRecording}
-                  disabled={isLoading || isTranscribing}
+                  onClick={toggleRecording}
+                  disabled={isSpeaking || isLoading || isTranscribing || streamingContent !== null}
                   className={`w-20 h-20 rounded-full flex items-center justify-center transition-all shadow-lg disabled:opacity-40 disabled:cursor-not-allowed ${
-                    isSpeaking
-                      ? "bg-primary/20 text-primary border-2 border-primary/40 animate-pulse"
-                      : isRecording
+                    isRecording
                       ? "bg-red-500 text-white animate-pulse scale-110"
-                      : "bg-primary text-primary-foreground hover:bg-primary/90"
+                      : isSpeaking || isLoading || isTranscribing || streamingContent !== null
+                      ? "bg-muted text-muted-foreground border-2 border-border"
+                      : "bg-primary text-primary-foreground hover:bg-primary/90 hover:scale-105"
                   }`}
                 >
-                  {isSpeaking ? <VolumeX className="w-9 h-9" /> : isRecording ? <MicOff className="w-9 h-9" /> : <Mic className="w-9 h-9" />}
+                  {isRecording ? <MicOff className="w-9 h-9" /> : <Mic className="w-9 h-9" />}
                 </button>
-                <p className="text-xs text-muted-foreground text-center">
-                  {isRecording ? "اضغط مرة ثانية لإيقاف التسجيل" : isSpeaking ? "اضغط لمقاطعة المحكّم والإجابة" : "اضغط للتسجيل · يُرسَل تلقائياً"}
+                <p className="text-xs text-muted-foreground text-center max-w-[260px]">
+                  {isRecording
+                    ? "Tap again to stop · auto-stops after 3s silence"
+                    : isSpeaking
+                    ? "Mic disabled while Churchill is speaking"
+                    : isLoading || isTranscribing || streamingContent !== null
+                    ? "Please wait…"
+                    : "Read the question above, then tap to answer"}
                 </p>
                 {/* Replay button */}
                 {lastTtsText && !isRecording && !isSpeaking && !isLoading && !isTranscribing && (
                   <button onClick={replayTts} className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors">
-                    <Volume2 className="w-3.5 h-3.5" /> إعادة سؤال المحكّم
+                    <Volume2 className="w-3.5 h-3.5" /> Replay Churchill's question
                   </button>
                 )}
-                {/* FIX 3: Stop session button */}
+                {/* Stop session button */}
                 <button
                   onClick={stopSession}
                   disabled={isLoading && !isSpeaking}
                   className="flex items-center gap-2 px-4 py-2 rounded-xl border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 text-sm font-semibold hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors disabled:opacity-40"
                 >
-                  ⏹ إنهاء التمرين
+                  ⏹ End Practice
                 </button>
               </div>
             )}
