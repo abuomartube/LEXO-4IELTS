@@ -40,7 +40,7 @@ See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and pa
 - **Study Mode** — 3D flip cards; tabs: All / Due (SRS) / Still Learning / Bookmarked; session summary modal
 - **Quiz Mode** — Multiple choice (pick Arabic translation) + Fill-in-the-blank; start screen + score summary
 - **Browse Cards** — Grid view with search/filter; bookmark toggle; bookmarks-only view
-- **Progress** — Per-level mastery bars
+- **Progress** — Full learning journey dashboard: vocabulary mastery by level, synonyms/antonyms/phrasal verbs session stats (known/unknown), stories completion tracking
 
 #### API Routes
 - `GET /api/flashcards` — list/search/filter cards
@@ -63,6 +63,7 @@ See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and pa
 - `PUT /api/activity-position/:activity` — save card position + filters (auto-saves as user navigates)
 - `GET /api/quiz-scores` — recent quiz scores for user (last 20)
 - `POST /api/quiz-scores` — save a quiz result (mode, level, total, correct, wrong)
+- `GET /api/user-data-prefix/:prefix` — get all user data keys matching a prefix (used for story completions)
 - `GET /api/user-data/:key` — get a user data value by key (generic key-value store)
 - `PUT /api/user-data/:key` — save a user data value by key
 - `DELETE /api/progress/reset` — reset all progress, bookmarks, SRS, activity positions, quiz scores, and user data
@@ -84,6 +85,9 @@ See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and pa
 - **Daily Streak** — Derived from progress records, shown on homepage
 - **Word of the Day** — Deterministic date-based pick, shown on homepage with audio
 - **Session Summary** — Modal after completing a study session
+- **Toast Notifications** — "Got it!" / "Keep learning!" toasts on card mark in study, synonyms, antonyms, and phrasal verbs
+- **Session Stats Persistence** — Known/unknown counts saved/restored in activity_position filters JSON for all flip-card features
+- **Story Completion Tracking** — "Mark as Read" button in story reader; completed stories show green checkmark on story cards; tracked via user_data API
 - **Quiz Mode** — Multiple choice + fill-in-the-blank with score tracking; quiz scores persisted to DB with history display
 - **Welcome Back Dialog** — Study page shows resume prompt when returning with saved position
 - **Speaking Topics** — Used topics stored in DB per user (with localStorage fallback for migration)

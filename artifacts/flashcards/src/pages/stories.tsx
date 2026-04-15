@@ -2,9 +2,11 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { Layout } from "@/components/layout";
 import {
   BookOpen, ChevronLeft, EyeOff, Eye, Loader2, BookMarked,
-  Play, Pause, Square, Volume2, Mic,
+  Play, Pause, Square, Volume2, Mic, CheckCircle2,
 } from "lucide-react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { customFetch } from "@workspace/api-client-react";
+import { useToast } from "@/hooks/use-toast";
 
 interface Story {
   id: number;
@@ -524,7 +526,7 @@ function VoiceReader({ content }: { content: string }) {
   );
 }
 
-function StoryReader({ story, onBack }: { story: Story; onBack: () => void }) {
+function StoryReader({ story, onBack, isCompleted, onMarkComplete }: { story: Story; onBack: () => void; isCompleted: boolean; onMarkComplete: () => void }) {
   const [showArabic, setShowArabic] = useState(true);
 
   return (
@@ -602,12 +604,30 @@ function StoryReader({ story, onBack }: { story: Story; onBack: () => void }) {
             </div>
           </div>
         )}
+
+        {/* Mark as Complete button */}
+        <div className="p-6 md:p-8 flex justify-center">
+          {isCompleted ? (
+            <div className="flex items-center gap-2 px-6 py-3 rounded-full bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 text-green-700 dark:text-green-400 font-semibold">
+              <CheckCircle2 className="w-5 h-5" />
+              Completed
+            </div>
+          ) : (
+            <button
+              onClick={onMarkComplete}
+              className="flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-colors shadow-sm"
+            >
+              <CheckCircle2 className="w-5 h-5" />
+              Mark as Read
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );
 }
 
-function StoryCard({ story, onClick }: { story: Story; onClick: () => void }) {
+function StoryCard({ story, onClick, isCompleted }: { story: Story; onClick: () => void; isCompleted: boolean }) {
   const preview = story.content.slice(0, 110).trim() + "…";
 
   return (
@@ -617,7 +637,11 @@ function StoryCard({ story, onClick }: { story: Story; onClick: () => void }) {
     >
       <div className="flex items-center justify-between gap-2 mb-3">
         <LevelBadge level={story.level} />
-        <BookOpen className="w-4 h-4 text-muted-foreground" />
+        {isCompleted ? (
+          <CheckCircle2 className="w-5 h-5 text-green-500" />
+        ) : (
+          <BookOpen className="w-4 h-4 text-muted-foreground" />
+        )}
       </div>
       <h3 className="font-bold text-foreground text-base leading-snug mb-1">{story.title}</h3>
       <p className="text-xs text-muted-foreground font-medium mb-3 font-cairo" dir="rtl" lang="ar">
@@ -631,6 +655,8 @@ function StoryCard({ story, onClick }: { story: Story; onClick: () => void }) {
 export default function StoriesPage() {
   const [levelFilter, setLevelFilter] = useState<LevelFilter>("All");
   const [selectedStory, setSelectedStory] = useState<Story | null>(null);
+  const { toast } = useToast();
+  const qc = useQueryClient();
 
   const { data: stories = [], isLoading } = useQuery<Story[]>({
     queryKey: ["stories", levelFilter],
@@ -644,11 +670,43 @@ export default function StoriesPage() {
     },
   });
 
+  const { data: completedKeys = {} } = useQuery<Record<string, string>>({
+    queryKey: ["story-completions"],
+    queryFn: async () => {
+      const res = await customFetch<{ keys: Record<string, string> }>("/api/user-data-prefix/story_completed_");
+      return res.keys;
+    },
+  });
+
+  const completedIds = new Set(
+    Object.keys(completedKeys)
+      .filter(k => completedKeys[k] === "1")
+      .map(k => Number(k.replace("story_completed_", "")))
+  );
+
+  const markCompleteMutation = useMutation({
+    mutationFn: (storyId: number) =>
+      customFetch(`/api/user-data/story_completed_${storyId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ value: "1" }),
+      }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["story-completions"] });
+      toast({ title: "✅ Story completed!", description: "Great job finishing this story.", duration: 1500 });
+    },
+  });
+
   if (selectedStory) {
     return (
       <Layout>
         <div className="max-w-3xl mx-auto">
-          <StoryReader story={selectedStory} onBack={() => setSelectedStory(null)} />
+          <StoryReader
+            story={selectedStory}
+            onBack={() => setSelectedStory(null)}
+            isCompleted={completedIds.has(selectedStory.id)}
+            onMarkComplete={() => markCompleteMutation.mutate(selectedStory.id)}
+          />
         </div>
       </Layout>
     );
@@ -723,6 +781,7 @@ export default function StoriesPage() {
                 key={story.id}
                 story={story}
                 onClick={() => setSelectedStory(story)}
+                isCompleted={completedIds.has(story.id)}
               />
             ))}
           </div>

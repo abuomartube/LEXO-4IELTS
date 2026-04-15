@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import phrasalVerbsRaw from "@/data/phrasal-verbs-data.json";
 import { PronounceButton } from "@/components/pronounce-button";
 import { useActivityPosition } from "@/hooks/use-activity-position";
+import { useToast } from "@/hooks/use-toast";
 
 interface PhrasalVerbEntry {
   id: number;
@@ -43,6 +44,7 @@ export default function PhrasalVerbs() {
   const [reviewedIds, setReviewedIds] = useState<Set<number>>(new Set());
   const [positionLoaded, setPositionLoaded] = useState(false);
 
+  const { toast } = useToast();
   const { load: loadPosition, save: savePosition, loadedRef } = useActivityPosition("phrasal-verbs", levelFilter);
 
   const cards = useMemo(() => {
@@ -57,6 +59,9 @@ export default function PhrasalVerbs() {
       try {
         const f = JSON.parse(saved.filters);
         if (f.level) setLevelFilter(f.level);
+        if (typeof f.known === "number" || typeof f.unknown === "number") {
+          setSessionStats({ known: f.known ?? 0, unknown: f.unknown ?? 0 });
+        }
       } catch {}
       if (saved.position > 0) setCurrentIndex(saved.position);
       loadedRef.current = true;
@@ -72,8 +77,8 @@ export default function PhrasalVerbs() {
 
   useEffect(() => {
     if (!positionLoaded) return;
-    savePosition(currentIndex, JSON.stringify({ level: levelFilter }));
-  }, [currentIndex, levelFilter, positionLoaded]);
+    savePosition(currentIndex, JSON.stringify({ level: levelFilter, known: sessionStats.known, unknown: sessionStats.unknown }));
+  }, [currentIndex, levelFilter, positionLoaded, sessionStats]);
 
   const card = cards[currentIndex];
   const progressPercent = cards.length > 0 ? Math.round((currentIndex / cards.length) * 100) : 0;
@@ -103,6 +108,11 @@ export default function PhrasalVerbs() {
         unknown: !known ? prev.unknown + 1 : prev.unknown,
       }));
     }
+    toast({
+      title: known ? "✅ Got it!" : "💪 Keep learning!",
+      description: known ? "Marked as known." : "We'll show this card again soon.",
+      duration: 1500,
+    });
     handleNext();
   };
 

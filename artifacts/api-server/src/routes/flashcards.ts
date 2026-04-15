@@ -370,6 +370,17 @@ router.post("/quiz-scores", async (req, res): Promise<void> => {
   res.json(row);
 });
 
+router.get("/user-data-prefix/:prefix", async (req, res): Promise<void> => {
+  const email = verifyStudentEmail(req);
+  if (!email) { res.json({ keys: {} }); return; }
+  const prefix = req.params.prefix;
+  const rows = await db.select().from(userDataTable)
+    .where(and(eq(userDataTable.email, email), ilike(userDataTable.key, `${prefix}%`)));
+  const keys: Record<string, string> = {};
+  for (const r of rows) keys[r.key] = r.value;
+  res.json({ keys });
+});
+
 router.get("/user-data/:key", async (req, res): Promise<void> => {
   const email = verifyStudentEmail(req);
   if (!email) { res.json({ value: "" }); return; }
