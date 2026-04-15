@@ -18,6 +18,7 @@ import EssayChecker from "@/pages/essay-checker";
 import Stories from "@/pages/stories";
 import Speaking from "@/pages/speaking";
 import PhrasalVerbs from "@/pages/phrasal-verbs";
+import ReadingTest from "@/pages/reading-test";
 
 setStudentEmailGetter(() => {
   try {
@@ -56,6 +57,7 @@ function Router() {
             <Route path="/antonyms" component={Antonyms} />
             <Route path="/phrasal-verbs" component={PhrasalVerbs} />
             <Route path="/essay-checker" component={EssayChecker} />
+            <Route path="/reading-test" component={ReadingTest} />
             <Route path="/stories" component={Stories} />
             <Route path="/speaking" component={Speaking} />
             <Route component={NotFound} />

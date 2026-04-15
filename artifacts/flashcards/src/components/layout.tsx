@@ -1,5 +1,5 @@
 import { Link, useLocation } from "wouter";
-import { BookOpen, Home, Layers, PieChart, ExternalLink, Sun, Moon, HelpCircle, Sparkles, Shuffle, ArrowUpDown, FileText, BookMarked, Mic, LogOut } from "lucide-react";
+import { BookOpen, Home, Layers, PieChart, ExternalLink, Sun, Moon, HelpCircle, Sparkles, Shuffle, ArrowUpDown, FileText, BookMarked, Mic, LogOut, GraduationCap } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTheme } from "@/context/theme-context";
 import { Button } from "@/components/ui/button";
@@ -43,6 +43,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
     { href: "/phrasal-verbs", label: "Phrasal Verbs", icon: ArrowUpDown },
     { href: "/speaking", label: "Churchill AI", icon: Mic },
     { href: "/essay-checker", label: "Orwell AI", icon: FileText },
+    { href: "/reading-test", label: "Reading IELTS", icon: GraduationCap },
     { href: "/stories", label: "Short Stories", icon: BookMarked },
     { href: "/browse", label: "Browse Cards", icon: Layers },
     { href: "/progress", label: "Progress", icon: PieChart },

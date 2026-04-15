@@ -89,6 +89,7 @@ See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and pa
 - **Session Stats Persistence** — Known/unknown counts saved/restored in activity_position filters JSON for all flip-card features
 - **Story Completion Tracking** — "Mark as Read" button in story reader; completed stories show green checkmark on story cards; tracked via user_data API
 - **Quiz Mode** — Multiple choice + fill-in-the-blank with score tracking; quiz scores persisted to DB with history display
+- **Reading IELTS Test** — Full Cambridge IELTS 18 Academic Reading Test 1 (3 passages, 40 questions); question types: fill-in-the-blank, TRUE/FALSE/NOT GIVEN, paragraph matching, person matching; 60-minute countdown timer; auto-grading with IELTS band score (2–9); per-passage breakdown; English + Arabic recommendations; full answer review with correct/incorrect indicators
 - **Welcome Back Dialog** — Study page shows resume prompt when returning with saved position
 - **Speaking Topics** — Used topics stored in DB per user (with localStorage fallback for migration)
 - **PDF Download** — `GET /api/vocab-pdf` generates and serves a PDF of all 2,198 words; uses puppeteer-core + system chromium; cached in `.local/pdf-cache/`; `/api/vocab-pdf/status` for polling
