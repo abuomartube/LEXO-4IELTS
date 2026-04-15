@@ -310,67 +310,11 @@ export default function Home() {
           </section>
         ) : null}
 
-        {/* ── Approved Reviews ── */}
-        <ApprovedReviews />
-
         {/* ── Leave a Review ── */}
         <ReviewSection />
 
       </div>
     </Layout>
-  );
-}
-
-function ApprovedReviews() {
-  const [reviews, setReviews] = useState<Array<{
-    id: number; name: string | null; comment: string; rating: number; createdAt: string;
-  }>>([]);
-
-  useEffect(() => {
-    fetch("/api/reviews/public")
-      .then(r => r.json())
-      .then(data => { if (Array.isArray(data)) setReviews(data); })
-      .catch(() => {});
-  }, []);
-
-  if (reviews.length === 0) return null;
-
-  return (
-    <section className="bg-card border border-border rounded-3xl p-8 space-y-5">
-      <div className="flex items-center gap-3 mb-2">
-        <div className="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center shrink-0">
-          <MessageCircle className="w-5 h-5 text-amber-500" />
-        </div>
-        <div>
-          <h2 className="text-xl font-extrabold text-foreground">What Students Say</h2>
-          <p className="text-sm text-muted-foreground">Real feedback from LEXO users · آراء الطلاب</p>
-        </div>
-      </div>
-
-      <div className="grid gap-4 sm:grid-cols-2">
-        {reviews.map(r => (
-          <div key={r.id} className="bg-muted/40 border border-border rounded-2xl p-5 space-y-2">
-            <div className="flex items-center gap-2">
-              <div className="flex gap-0.5">
-                {[1, 2, 3, 4, 5].map(s => (
-                  <Star
-                    key={s}
-                    className={`w-4 h-4 ${s <= r.rating ? "text-amber-400 fill-amber-400" : "text-muted-foreground/30"}`}
-                  />
-                ))}
-              </div>
-              <span className="text-xs text-muted-foreground ml-auto">
-                {new Date(r.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
-              </span>
-            </div>
-            <p className="text-sm text-foreground leading-relaxed">"{r.comment}"</p>
-            {r.name && (
-              <p className="text-xs font-medium text-muted-foreground">— {r.name}</p>
-            )}
-          </div>
-        ))}
-      </div>
-    </section>
   );
 }
 
