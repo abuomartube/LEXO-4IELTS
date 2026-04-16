@@ -1,7 +1,7 @@
 import { Router, type IRouter } from "express";
 import crypto from "node:crypto";
-import { db, settingsTable, accessRequestsTable, reviewsTable, userDataTable } from "@workspace/db";
-import { eq, desc, and } from "drizzle-orm";
+import { db, settingsTable, accessRequestsTable, reviewsTable, userDataTable, xpEventsTable, weakWordsTable, progressTable, quizScoresTable } from "@workspace/db";
+import { eq, desc, and, sql } from "drizzle-orm";
 
 const router: IRouter = Router();
 
@@ -244,6 +244,102 @@ router.delete("/admin/reviews/:id", async (req, res): Promise<void> => {
   const id = Number(req.params.id);
   await db.delete(reviewsTable).where(eq(reviewsTable.id, id));
   res.json({ success: true });
+});
+
+// ── Teacher Dashboard ───────────────────────────────────────────────────────
+
+router.get("/teacher/students", async (req, res): Promise<void> => {
+  if (!await requireAdmin(req, res)) return;
+
+  const students = await db
+    .select()
+    .from(accessRequestsTable)
+    .where(eq(accessRequestsTable.status, "approved"))
+    .orderBy(desc(accessRequestsTable.requestedAt));
+
+  const results = await Promise.all(
+    students.map(async (s) => {
+      const [xpRow] = await db
+        .select({ total: sql<number>`coalesce(sum(${xpEventsTable.xp}),0)::int` })
+        .from(xpEventsTable)
+        .where(eq(xpEventsTable.email, s.email));
+      const totalXp = xpRow?.total ?? 0;
+
+      const xpLevels = [
+        { min: 3500, level: 8, name: "Master" },
+        { min: 2000, level: 7, name: "Expert" },
+        { min: 1200, level: 6, name: "Advanced" },
+        { min: 700, level: 5, name: "Upper Int." },
+        { min: 350, level: 4, name: "Intermediate" },
+        { min: 150, level: 3, name: "Pre-Int." },
+        { min: 50, level: 2, name: "Elementary" },
+        { min: 0, level: 1, name: "Starter" },
+      ];
+      const lvl = xpLevels.find((l) => totalXp >= l.min)!;
+
+      const [weakRow] = await db
+        .select({ count: sql<number>`count(*)::int` })
+        .from(weakWordsTable)
+        .where(eq(weakWordsTable.email, s.email));
+      const weakCount = weakRow?.count ?? 0;
+
+      const latestProgress = await db
+        .selectDistinctOn([progressTable.flashcardId], {
+          flashcardId: progressTable.flashcardId,
+          known: progressTable.known,
+        })
+        .from(progressTable)
+        .where(eq(progressTable.email, s.email))
+        .orderBy(progressTable.flashcardId, sql`${progressTable.reviewedAt} desc`);
+      const wordsKnown = latestProgress.filter((p) => p.known).length;
+
+      const streakDays = await db
+        .select({ day: sql<string>`date(${progressTable.reviewedAt})::text` })
+        .from(progressTable)
+        .where(eq(progressTable.email, s.email))
+        .groupBy(sql`date(${progressTable.reviewedAt})`)
+        .orderBy(sql`date(${progressTable.reviewedAt}) desc`);
+
+      let streak = 0;
+      if (streakDays.length > 0) {
+        const today = new Date().toISOString().slice(0, 10);
+        const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+        const days = streakDays.map((r) => r.day);
+        let current = days[0] === today || days[0] === yesterday ? days[0] : null;
+        if (current) {
+          for (const day of days) {
+            const diff = Math.round(
+              (new Date(current).getTime() - new Date(day).getTime()) / 86400000
+            );
+            if (diff <= 1) { streak++; current = day; } else break;
+          }
+        }
+      }
+
+      const [quizRow] = await db
+        .select({ count: sql<number>`count(*)::int` })
+        .from(quizScoresTable)
+        .where(eq(quizScoresTable.email, s.email));
+      const quizzesTaken = quizRow?.count ?? 0;
+
+      const lastActivity = streakDays.length > 0 ? streakDays[0].day : null;
+
+      return {
+        email: s.email,
+        joinedAt: s.requestedAt,
+        xp: totalXp,
+        level: lvl.level,
+        levelName: lvl.name,
+        streak,
+        weakWordsCount: weakCount,
+        wordsKnown,
+        quizzesTaken,
+        lastActivity,
+      };
+    })
+  );
+
+  res.json(results);
 });
 
 // ── Persistent session ───────────────────────────────────────────────────────

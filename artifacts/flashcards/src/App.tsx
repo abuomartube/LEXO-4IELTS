@@ -23,6 +23,7 @@ import ListeningTest from "@/pages/listening-test";
 import WeakWords from "@/pages/weak-words";
 import SpeakingTopics from "@/pages/speaking-topics";
 import WritingTemplates from "@/pages/writing-templates";
+import TeacherDashboard from "@/pages/teacher-dashboard";
 import { ExitCommentPopup } from "@/components/exit-comment-popup";
 
 setStudentEmailGetter(() => {
@@ -50,6 +51,7 @@ function Router() {
   return (
     <Switch>
       <Route path="/admin" component={AdminPage} />
+      <Route path="/teacher" component={TeacherDashboard} />
       <Route>
         <PasswordGate>
           <Switch>
