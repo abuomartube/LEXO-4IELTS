@@ -147,7 +147,7 @@ function LandingPage({ onLogin }: { onLogin: () => void }) {
           <div className="flex-1 text-center lg:text-left">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-teal-500/15 border border-teal-500/25 text-teal-300 text-xs font-semibold tracking-wide uppercase mb-6">
               <Zap className="w-3.5 h-3.5" />
-              IELTS Preparation Platform
+              4IELTS Platform
             </div>
 
             <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black tracking-tight mb-6 leading-[1.1]">
