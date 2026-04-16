@@ -45,6 +45,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
     { href: "/antonyms", label: "Antonyms", icon: Shuffle },
     { href: "/phrasal-verbs", label: "Phrasal Verbs", icon: ArrowUpDown },
     { href: "/speaking", label: "Churchill AI", icon: Mic },
+    { href: "/speaking-topics", label: "Topic Bank", icon: BookOpen },
     { href: "/essay-checker", label: "Orwell AI", icon: FileText },
     { href: "/listening-test", label: "Listening Practice", icon: Headphones },
     { href: "/reading-test", label: "Reading Practice", icon: GraduationCap },

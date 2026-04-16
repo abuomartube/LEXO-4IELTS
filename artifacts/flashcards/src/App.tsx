@@ -21,6 +21,7 @@ import PhrasalVerbs from "@/pages/phrasal-verbs";
 import ReadingTest from "@/pages/reading-test";
 import ListeningTest from "@/pages/listening-test";
 import WeakWords from "@/pages/weak-words";
+import SpeakingTopics from "@/pages/speaking-topics";
 import { ExitCommentPopup } from "@/components/exit-comment-popup";
 
 setStudentEmailGetter(() => {
@@ -64,6 +65,7 @@ function Router() {
             <Route path="/reading-test" component={ReadingTest} />
             <Route path="/stories" component={Stories} />
             <Route path="/speaking" component={Speaking} />
+            <Route path="/speaking-topics" component={SpeakingTopics} />
             <Route path="/weak-words" component={WeakWords} />
             <Route component={NotFound} />
           </Switch>

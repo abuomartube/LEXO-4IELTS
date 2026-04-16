@@ -95,6 +95,7 @@ See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and pa
 - **Weak-Word Deck** — Words missed in quizzes collected into a review deck; flashcard review with mastering flow; XP awarded on mastery; accessible via sidebar nav
 - **Reading IELTS Test** — Full Cambridge IELTS 18 Academic Reading Test 1 (3 passages, 40 questions); question types: fill-in-the-blank, TRUE/FALSE/NOT GIVEN, paragraph matching, person matching; 60-minute countdown timer; auto-grading with IELTS band score (2–9); per-passage breakdown; English + Arabic recommendations; full answer review with correct/incorrect indicators
 - **Welcome Back Dialog** — Study page shows resume prompt when returning with saved position
+- **Speaking Topic Bank** — 10 themed topics (Hometown, Education, Technology, Health, Travel, Work, Environment, Food, Family, Media, Culture, Hobbies) with 50+ questions covering IELTS Speaking Parts 1, 2, and 3; Band 7-8 model answers, key vocabulary with definitions, and examiner tips; search functionality; browser TTS "Listen" button; accessible via sidebar "Topic Bank" nav item
 - **Speaking Topics** — Used topics stored in DB per user (with localStorage fallback for migration)
 - **PDF Download** — `GET /api/vocab-pdf` generates and serves a PDF of all 2,198 words; uses puppeteer-core + system chromium; cached in `.local/pdf-cache/`; `/api/vocab-pdf/status` for polling
 
