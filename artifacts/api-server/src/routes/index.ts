@@ -8,6 +8,7 @@ import storiesRouter from "./stories";
 import speakingRouter from "./speaking";
 import notificationsRouter from "./notifications";
 import lexoAiRouter from "./lexo-ai";
+import orwellRouter from "./orwell";
 
 const router: IRouter = Router();
 
@@ -20,5 +21,6 @@ router.use(storiesRouter);
 router.use(speakingRouter);
 router.use(notificationsRouter);
 router.use(lexoAiRouter);
+router.use(orwellRouter);
 
 export default router;

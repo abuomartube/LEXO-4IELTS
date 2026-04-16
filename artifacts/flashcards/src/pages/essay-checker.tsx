@@ -527,57 +527,177 @@ function AnnotatedParagraph({ text, corrections }: { text: string; corrections: 
   );
 }
 
-// ─── Main component ───────────────────────────────────────────────────────────
+
+import { useEffect } from "react";
+import { ChartRenderer } from "@/data/orwell-charts";
+import {
+  ASSIGNMENTS_BY_CATEGORY,
+  CATEGORY_META,
+  getAssignmentById,
+  type Category,
+  type OrwellAssignment,
+} from "@/data/orwell-assignments";
+import { SkipForward } from "lucide-react";
+
+const EMAIL_STORAGE_KEY = "4ielts_email";
+
+function getStudentAuthHeaders(): Record<string, string> {
+  try {
+    const raw = localStorage.getItem(EMAIL_STORAGE_KEY);
+    if (!raw) return {};
+    const { email, token } = JSON.parse(raw);
+    if (!email || !token) return {};
+    return { "X-Student-Email": email, "X-Student-Token": token };
+  } catch {
+    return {};
+  }
+}
+
+interface CategoryProgress {
+  submittedIds: string[];
+  skippedIds: string[];
+}
+
+function pickNextAssignment(category: Category, progress: CategoryProgress | null): OrwellAssignment | null {
+  const all = ASSIGNMENTS_BY_CATEGORY[category];
+  const submitted = new Set(progress?.submittedIds ?? []);
+  const skipped = new Set(progress?.skippedIds ?? []);
+  // Prefer never-touched, then skipped (but never re-show submitted)
+  const untouched = all.filter((a) => !submitted.has(a.id) && !skipped.has(a.id));
+  if (untouched.length) return untouched[Math.floor(Math.random() * untouched.length)];
+  const onlySkipped = all.filter((a) => skipped.has(a.id));
+  if (onlySkipped.length) return onlySkipped[Math.floor(Math.random() * onlySkipped.length)];
+  return null;
+}
+
+type Screen = "intro" | "select" | "writing" | "result";
 
 export default function EssayChecker() {
   const [screen, setScreen] = useState<Screen>("intro");
-  const [taskType, setTaskType] = useState<TaskType>("Task 2");
+  const [category, setCategory] = useState<Category>("task2");
+  const [assignment, setAssignment] = useState<OrwellAssignment | null>(null);
   const [essay, setEssay] = useState("");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<EssayResult | null>(null);
   const [paragraphResult, setParagraphResult] = useState<ParagraphResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const [progress, setProgress] = useState<Record<Category, { submitted: number; skipped: number }>>({
+    task1: { submitted: 0, skipped: 0 },
+    task2: { submitted: 0, skipped: 0 },
+    paragraph: { submitted: 0, skipped: 0 },
+  });
+  const [categoryProgress, setCategoryProgress] = useState<CategoryProgress | null>(null);
   const resultRef = useRef<HTMLDivElement>(null);
   const { mutate: awardXp } = useAwardXp();
 
-  const minWords = taskType === "Task 1" ? 150 : taskType === "Task 2" ? 250 : 20;
   const wordCount = essay.trim().split(/\s+/).filter(Boolean).length;
-  const canSubmit = essay.trim().length >= 10 && !loading;
+  const minWords = assignment?.minWords ?? 250;
+  const canSubmit = essay.trim().length >= 10 && !loading && !!assignment;
+  const taskType: TaskType = assignment?.category === "task1" ? "Task 1" : assignment?.category === "task2" ? "Task 2" : "Paragraph";
+
+  const totalForCat: Record<Category, number> = {
+    task1: ASSIGNMENTS_BY_CATEGORY.task1.length,
+    task2: ASSIGNMENTS_BY_CATEGORY.task2.length,
+    paragraph: ASSIGNMENTS_BY_CATEGORY.paragraph.length,
+  };
+
+  // Load global progress whenever we land on the select screen
+  useEffect(() => {
+    if (screen !== "select") return;
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch("/api/orwell/progress", { headers: getStudentAuthHeaders() });
+        if (!res.ok) return;
+        const data = await res.json();
+        if (!cancelled) setProgress(data);
+      } catch {
+        // silently ignore
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [screen]);
+
+  const loadNextForCategory = useCallback(async (cat: Category) => {
+    setError(null);
+    let prog: CategoryProgress | null = null;
+    try {
+      const res = await fetch(`/api/orwell/next?category=${cat}`, { headers: getStudentAuthHeaders() });
+      if (res.ok) prog = await res.json();
+    } catch {
+      // ignore — pick from full list
+    }
+    setCategoryProgress(prog);
+    const next = pickNextAssignment(cat, prog);
+    setAssignment(next);
+    setEssay("");
+    setResult(null);
+    setParagraphResult(null);
+  }, []);
+
+  const handleChooseCategory = async (cat: Category) => {
+    setCategory(cat);
+    setScreen("writing");
+    await loadNextForCategory(cat);
+  };
+
+  const handleSkip = useCallback(async () => {
+    if (!assignment) return;
+    try {
+      await fetch("/api/orwell/skip", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", ...getStudentAuthHeaders() },
+        body: JSON.stringify({ assignmentId: assignment.id, category: assignment.category }),
+      });
+    } catch {
+      // ignore
+    }
+    const updated: CategoryProgress = {
+      submittedIds: categoryProgress?.submittedIds ?? [],
+      skippedIds: Array.from(new Set([...(categoryProgress?.skippedIds ?? []), assignment.id])),
+    };
+    setCategoryProgress(updated);
+    setEssay("");
+    setError(null);
+    setAssignment(pickNextAssignment(assignment.category, updated));
+  }, [assignment, categoryProgress]);
 
   const handleSubmit = useCallback(async () => {
-    if (!canSubmit) return;
+    if (!canSubmit || !assignment) return;
     setLoading(true);
     setError(null);
     setResult(null);
     setParagraphResult(null);
 
     try {
-      if (taskType === "Paragraph") {
-        const res = await fetch("/api/paragraph-check", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ text: essay }),
-        });
-        if (!res.ok) {
-          const data = await res.json().catch(() => ({}));
-          throw new Error((data as { error?: string }).error ?? "Analysis failed.");
-        }
-        const data = await res.json() as ParagraphResult;
-        setParagraphResult(data);
-      } else {
-        const res = await fetch("/api/essay-check", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ essay, taskType }),
-        });
-        if (!res.ok) {
-          const data = await res.json().catch(() => ({}));
-          throw new Error((data as { error?: string }).error ?? "Analysis failed.");
-        }
-        const data = await res.json() as EssayResult;
-        setResult(data);
+      const res = await fetch("/api/orwell/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", ...getStudentAuthHeaders() },
+        body: JSON.stringify({
+          assignmentId: assignment.id,
+          category: assignment.category,
+          prompt: assignment.prompt,
+          text: essay,
+          taskType: taskType === "Paragraph" ? undefined : taskType,
+        }),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error((data as { error?: string }).error ?? "Analysis failed.");
       }
+      const data = await res.json();
+      if (assignment.category === "paragraph") {
+        setParagraphResult(data as ParagraphResult);
+      } else {
+        setResult(data as EssayResult);
+      }
+      // Track that this assignment is now submitted (not just skipped)
+      setCategoryProgress((prev) => {
+        const submittedIds = Array.from(new Set([...(prev?.submittedIds ?? []), assignment.id]));
+        const skippedIds = (prev?.skippedIds ?? []).filter((id) => id !== assignment.id);
+        return { submittedIds, skippedIds };
+      });
       setScreen("result");
       awardXp({ activity: "essay_check", amount: 10 });
       setTimeout(() => resultRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 100);
@@ -586,20 +706,27 @@ export default function EssayChecker() {
     } finally {
       setLoading(false);
     }
-  }, [canSubmit, essay, taskType]);
+  }, [canSubmit, assignment, essay, taskType, awardXp]);
 
-  const handleReset = () => {
+  const handleNextAssignment = async () => {
+    if (!assignment) { setScreen("select"); return; }
+    setScreen("writing");
+    await loadNextForCategory(assignment.category);
+  };
+
+  const handleBackToCategories = () => {
+    setScreen("select");
     setEssay("");
     setResult(null);
     setParagraphResult(null);
     setError(null);
-    setScreen("select");
   };
 
   const handleCopyReport = () => {
     if (!result) return;
     const lines = [
       `Orwell AI — IELTS ${result.taskType} Feedback`,
+      `Assignment: ${assignment?.title ?? ""}`,
       `Overall Band: ${result.overallBand}`,
       "",
       `Task Response: ${result.scores.taskResponse.band} — ${result.scores.taskResponse.feedback}`,
@@ -621,9 +748,6 @@ export default function EssayChecker() {
       "",
       "AREAS FOR IMPROVEMENT",
       ...result.improvements.map(i => `→ ${i}`),
-      "",
-      "REVISED INTRODUCTION",
-      result.revisedIntroduction,
     ];
     navigator.clipboard.writeText(lines.join("\n")).then(() => {
       setCopied(true);
@@ -635,24 +759,16 @@ export default function EssayChecker() {
     if (!paragraphResult) return;
     const lines = [
       "Orwell AI — Paragraph Correction",
+      `Assignment: ${assignment?.title ?? ""}`,
       "",
-      "✅ STRENGTHS",
-      paragraphResult.strengths,
-      "",
-      "⚠️ AREAS FOR IMPROVEMENT",
-      paragraphResult.improvements,
-      "",
+      "✅ STRENGTHS", paragraphResult.strengths, "",
+      "⚠️ AREAS FOR IMPROVEMENT", paragraphResult.improvements, "",
       "🔍 CORRECTIONS",
       ...(paragraphResult.corrections ?? []).map(c => `• "${c.original}" → "${c.correction}" (${c.type}): ${c.explanation}`),
       "",
-      "📄 CORRECTED VERSION",
-      paragraphResult.corrected,
-      "",
-      "⭐ BETTER VERSION",
-      paragraphResult.better,
-      "",
-      "🎩 FORMAL VERSION",
-      paragraphResult.formal,
+      "📄 CORRECTED VERSION", paragraphResult.corrected, "",
+      "⭐ BETTER VERSION", paragraphResult.better, "",
+      "🎩 FORMAL VERSION", paragraphResult.formal,
     ];
     navigator.clipboard.writeText(lines.join("\n")).then(() => {
       setCopied(true);
@@ -671,50 +787,32 @@ export default function EssayChecker() {
             style={{ background: "linear-gradient(160deg, hsl(177,83%,28%) 0%, hsl(177,83%,32%) 60%, hsl(177,83%,28%) 100%)" }}
           >
             <div className="flex flex-col items-center text-center px-6 pt-10 pb-8 gap-6">
-              {/* Logo text */}
               <div>
-                <h1 style={{ color: "#C9A84C" }} className="text-4xl font-extrabold tracking-tight">
-                  Orwell AI
-                </h1>
-                <p className="text-white/70 text-sm mt-1 font-medium">Your Personal Writing Corrector</p>
-                <p style={{ color: "#C9A84C" }} className="text-xs mt-0.5 font-semibold opacity-80">
-                  Powered by 4IELTS.com
-                </p>
+                <h1 style={{ color: "#C9A84C" }} className="text-4xl font-extrabold tracking-tight">Orwell AI</h1>
+                <p className="text-white/70 text-sm mt-1 font-medium">Structured IELTS Writing Assignments</p>
+                <p style={{ color: "#C9A84C" }} className="text-xs mt-0.5 font-semibold opacity-80">Powered by 4IELTS.com</p>
               </div>
-
-              {/* Profile image */}
-              <div
-                className="rounded-full overflow-hidden shrink-0 border-4"
-                style={{ width: 180, height: 180, borderColor: "#C9A84C" }}
-              >
-                <img
-                  src="/orwell.png"
-                  alt="Orwell AI"
-                  className="w-full h-full object-cover object-top"
-                />
+              <div className="rounded-full overflow-hidden shrink-0 border-4" style={{ width: 180, height: 180, borderColor: "#C9A84C" }}>
+                <img src="/orwell.png" alt="Orwell AI" className="w-full h-full object-cover object-top" />
               </div>
-
-              {/* Description */}
               <p className="text-white/80 text-sm leading-relaxed max-w-sm">
-                Meet Orwell AI — your expert writing corrector. Whether you're writing an IELTS Task 1,
-                Task 2, or an everyday paragraph, Orwell AI gives you professional feedback,
-                corrections, and better versions of your writing.
+                Practise real IELTS-style writing prompts. Choose a category, get an assignment, write your response,
+                and Orwell AI will grade it like an examiner. One assignment at a time — no copy-pasting essays you've
+                already written.
               </p>
-
-              {/* CTA button */}
               <button
                 onClick={() => setScreen("select")}
                 className="flex items-center gap-2 px-8 py-4 rounded-2xl font-bold text-base transition-all hover:opacity-90 active:scale-95 shadow-lg"
                 style={{ background: "#C9A84C", color: "#0D1B3E" }}
               >
-                ✍️ ابدأ التصحيح
+                ✍️ ابدأ التدريب
                 <ArrowRight className="w-5 h-5" />
               </button>
             </div>
           </div>
         )}
 
-        {/* ── TASK SELECTION SCREEN ── */}
+        {/* ── CATEGORY SELECT ── */}
         {screen === "select" && (
           <div className="space-y-6">
             <div className="flex items-center gap-3">
@@ -722,54 +820,45 @@ export default function EssayChecker() {
                 <FileText className="w-5 h-5 text-primary-foreground" />
               </div>
               <div>
-                <h1 className="text-xl font-extrabold text-foreground">Orwell AI</h1>
-                <p className="text-sm text-muted-foreground">IELTS Corrector · Powered by 4IELTS.com</p>
+                <h1 className="text-xl font-extrabold text-foreground">Orwell AI Assignments</h1>
+                <p className="text-sm text-muted-foreground">Choose what you want to practise today</p>
               </div>
             </div>
 
-            <div>
-              <h2 className="text-lg font-bold text-foreground mb-1">ماذا تريد أن تصحّح؟</h2>
-              <p className="text-sm text-muted-foreground">What would you like to correct?</p>
+            <div className="grid grid-cols-1 gap-3">
+              {(["task1", "task2", "paragraph"] as Category[]).map((cat) => {
+                const meta = CATEGORY_META[cat];
+                const done = progress[cat].submitted;
+                const total = totalForCat[cat];
+                const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+                return (
+                  <button
+                    key={cat}
+                    onClick={() => handleChooseCategory(cat)}
+                    className="flex items-center gap-4 p-5 rounded-2xl border-2 border-border bg-card hover:border-primary hover:bg-primary/5 transition-all text-left group"
+                  >
+                    <span className="text-4xl shrink-0">{meta.emoji}</span>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-bold text-foreground group-hover:text-primary transition-colors">{meta.label}</p>
+                      <p className="text-sm text-muted-foreground">{meta.description}</p>
+                      <div className="flex items-center gap-2 mt-2">
+                        <Progress value={pct} className="h-1.5 flex-1" />
+                        <span className="text-xs font-semibold text-muted-foreground shrink-0">{done}/{total}</span>
+                      </div>
+                    </div>
+                    <ArrowRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors shrink-0" />
+                  </button>
+                );
+              })}
             </div>
 
-            <div className="grid grid-cols-1 gap-3">
-              {[
-                {
-                  type: "Task 1" as TaskType,
-                  emoji: "📊",
-                  title: "Task 1",
-                  subtitle: "Academic/General — report or letter",
-                  arabic: "تقرير أو رسالة أكاديمية",
-                },
-                {
-                  type: "Task 2" as TaskType,
-                  emoji: "📝",
-                  title: "Task 2",
-                  subtitle: "Academic essay or argument",
-                  arabic: "مقالة أكاديمية أو حجة",
-                },
-                {
-                  type: "Paragraph" as TaskType,
-                  emoji: "💬",
-                  title: "Paragraph",
-                  subtitle: "Message, email, or any paragraph",
-                  arabic: "رسالة، بريد إلكتروني، أو فقرة عامة",
-                },
-              ].map((opt) => (
-                <button
-                  key={opt.type}
-                  onClick={() => { setTaskType(opt.type); setScreen("writing"); }}
-                  className="flex items-center gap-4 p-5 rounded-2xl border-2 border-border bg-card hover:border-primary hover:bg-primary/5 transition-all text-left group"
-                >
-                  <span className="text-4xl shrink-0">{opt.emoji}</span>
-                  <div className="flex-1 min-w-0">
-                    <p className="font-bold text-foreground group-hover:text-primary transition-colors">{opt.title}</p>
-                    <p className="text-sm text-muted-foreground">{opt.subtitle}</p>
-                    <p className="text-xs text-muted-foreground/70 mt-0.5">{opt.arabic}</p>
-                  </div>
-                  <ArrowRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors shrink-0" />
-                </button>
-              ))}
+            <div className="bg-muted/30 border border-border rounded-2xl p-4 text-xs text-muted-foreground leading-relaxed">
+              <p className="font-semibold text-foreground mb-1">How it works</p>
+              <ul className="space-y-1 list-disc list-inside">
+                <li>Each category has 15 assignments — you'll get one at a time.</li>
+                <li>Hit <strong>Refresh</strong> to skip and get a new one.</li>
+                <li>Your teacher can see how many you've completed.</li>
+              </ul>
             </div>
           </div>
         )}
@@ -777,78 +866,116 @@ export default function EssayChecker() {
         {/* ── WRITING SCREEN ── */}
         {screen === "writing" && (
           <div className="space-y-4">
-            {/* Header */}
             <div className="flex items-center gap-3">
               <button
-                onClick={() => setScreen("select")}
+                onClick={handleBackToCategories}
                 className="w-9 h-9 rounded-xl border border-border flex items-center justify-center text-muted-foreground hover:bg-accent transition-colors"
+                aria-label="Back to categories"
               >
                 ←
               </button>
-              <div className="flex items-center gap-2">
-                <span className="text-2xl">
-                  {taskType === "Task 1" ? "📊" : taskType === "Task 2" ? "📝" : "💬"}
-                </span>
-                <div>
-                  <h2 className="font-extrabold text-foreground">{taskType}</h2>
+              <div className="flex items-center gap-2 min-w-0">
+                <span className="text-2xl">{CATEGORY_META[category].emoji}</span>
+                <div className="min-w-0">
+                  <h2 className="font-extrabold text-foreground truncate">{CATEGORY_META[category].label}</h2>
                   <p className="text-xs text-muted-foreground">
-                    {taskType === "Paragraph" ? "Paragraph, message, or email" : `IELTS ${taskType}`}
+                    {(categoryProgress?.submittedIds.length ?? 0)} of {totalForCat[category]} completed
                   </p>
                 </div>
               </div>
             </div>
 
-            {/* Textarea */}
-            <div className="relative">
-              <textarea
-                className="w-full h-72 p-4 rounded-2xl border border-border bg-card text-foreground text-sm leading-relaxed resize-none focus:outline-none focus:ring-2 focus:ring-primary/40 transition-shadow"
-                placeholder={
-                  taskType === "Paragraph"
-                    ? "اكتب أو الصق فقرتك هنا...\n\nWrite or paste your paragraph, message, or email here…"
-                    : `Write or paste your IELTS ${taskType} here...\n\nMin ${minWords} words required.`
-                }
-                value={essay}
-                onChange={e => setEssay(e.target.value)}
-                disabled={loading}
-              />
-              <div className={`absolute bottom-3 right-4 text-xs font-semibold transition-colors ${
-                taskType === "Paragraph" ? "text-muted-foreground" :
-                wordCount >= minWords ? "text-green-600" : "text-muted-foreground"
-              }`}>
-                {wordCount} words{taskType !== "Paragraph" && ` / ${minWords}`}
+            {!assignment && (
+              <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-2xl p-6 text-center">
+                <CheckCircle2 className="w-10 h-10 text-green-600 mx-auto mb-3" />
+                <h3 className="font-bold text-green-800 dark:text-green-300 mb-1">All assignments completed!</h3>
+                <p className="text-sm text-green-700 dark:text-green-400">
+                  You've finished every assignment in this category. Great work — try another category.
+                </p>
+                <Button onClick={handleBackToCategories} className="rounded-full mt-4">
+                  Choose another category
+                </Button>
               </div>
-            </div>
-
-            {/* Submit */}
-            <Button
-              onClick={handleSubmit}
-              disabled={!canSubmit}
-              className="w-full rounded-full h-12 text-base font-semibold"
-            >
-              {loading ? (
-                <>
-                  <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                  {taskType === "Paragraph" ? "Orwell AI يصحّح…" : "Analysing your essay…"}
-                </>
-              ) : (
-                <>
-                  <Sparkles className="w-5 h-5 mr-2" />
-                  {taskType === "Paragraph" ? "✍️ صحّح فقرتي" : "Check My Essay"}
-                </>
-              )}
-            </Button>
-
-            {taskType !== "Paragraph" && wordCount > 0 && wordCount < minWords && !loading && (
-              <p className="text-center text-xs text-muted-foreground">
-                IELTS {taskType} recommends at least {minWords} words — you have {wordCount}
-              </p>
             )}
 
-            {error && (
-              <div className="flex items-start gap-3 p-4 rounded-2xl bg-destructive/10 border border-destructive/30 text-destructive text-sm">
-                <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
-                <p>{error}</p>
-              </div>
+            {assignment && (
+              <>
+                <div className="bg-card border border-border rounded-2xl p-5 space-y-3">
+                  <div className="flex items-center justify-between gap-2 flex-wrap">
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-primary/10 text-primary">
+                        {assignment.subtype}
+                      </span>
+                      <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-muted text-muted-foreground">
+                        Min {assignment.minWords} words
+                      </span>
+                    </div>
+                    <button
+                      onClick={handleSkip}
+                      disabled={loading}
+                      className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full border border-border bg-background hover:bg-muted transition-colors disabled:opacity-50"
+                      title="Skip and get another assignment"
+                    >
+                      <SkipForward className="w-3.5 h-3.5" />
+                      Refresh
+                    </button>
+                  </div>
+                  <h3 className="font-bold text-foreground">{assignment.title}</h3>
+                  <p className="text-sm text-foreground leading-relaxed whitespace-pre-wrap">{assignment.prompt}</p>
+                </div>
+
+                {assignment.chart && (
+                  <div className="text-foreground">
+                    <ChartRenderer spec={assignment.chart} />
+                  </div>
+                )}
+
+                <div className="relative">
+                  <textarea
+                    className="w-full h-72 p-4 rounded-2xl border border-border bg-card text-foreground text-sm leading-relaxed resize-none focus:outline-none focus:ring-2 focus:ring-primary/40 transition-shadow"
+                    placeholder="Write your response here. Address every part of the prompt."
+                    value={essay}
+                    onChange={(e) => setEssay(e.target.value)}
+                    disabled={loading}
+                  />
+                  <div className={`absolute bottom-3 right-4 text-xs font-semibold transition-colors ${
+                    wordCount >= minWords ? "text-green-600" : "text-muted-foreground"
+                  }`}>
+                    {wordCount} / {minWords} words
+                  </div>
+                </div>
+
+                <Button
+                  onClick={handleSubmit}
+                  disabled={!canSubmit}
+                  className="w-full rounded-full h-12 text-base font-semibold"
+                >
+                  {loading ? (
+                    <>
+                      <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                      Orwell AI is grading…
+                    </>
+                  ) : (
+                    <>
+                      <Sparkles className="w-5 h-5 mr-2" />
+                      Submit for grading
+                    </>
+                  )}
+                </Button>
+
+                {wordCount > 0 && wordCount < minWords && !loading && (
+                  <p className="text-center text-xs text-muted-foreground">
+                    Recommended at least {minWords} words — you have {wordCount}
+                  </p>
+                )}
+
+                {error && (
+                  <div className="flex items-start gap-3 p-4 rounded-2xl bg-destructive/10 border border-destructive/30 text-destructive text-sm">
+                    <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
+                    <p>{error}</p>
+                  </div>
+                )}
+              </>
             )}
           </div>
         )}
@@ -857,10 +984,18 @@ export default function EssayChecker() {
         {screen === "result" && (
           <div ref={resultRef} className="space-y-6">
 
-            {/* ── PARAGRAPH RESULTS ── */}
+            {/* Assignment context */}
+            {assignment && (
+              <div className="bg-muted/30 border border-border rounded-2xl px-4 py-3 text-xs text-muted-foreground">
+                <span className="font-semibold text-foreground">{assignment.title}</span>
+                <span className="mx-2">·</span>
+                {CATEGORY_META[assignment.category].label}
+              </div>
+            )}
+
+            {/* PARAGRAPH RESULTS */}
             {taskType === "Paragraph" && paragraphResult && (
               <>
-                {/* Header */}
                 <div className="flex items-center gap-3 pb-2 border-b border-border">
                   <span className="text-2xl">💬</span>
                   <div>
@@ -869,59 +1004,34 @@ export default function EssayChecker() {
                   </div>
                 </div>
 
-                <ParagraphCard
-                  emoji="✅"
-                  title="Strengths"
-                  content={paragraphResult.strengths}
-                  accentClass="bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800"
-                />
-                <ParagraphCard
-                  emoji="⚠️"
-                  title="Areas for Improvement"
-                  content={paragraphResult.improvements}
-                  accentClass="bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800"
-                />
-                <AnnotatedParagraph
-                  text={essay}
-                  corrections={paragraphResult.corrections ?? []}
-                />
-                <ParagraphCard
-                  emoji="📄"
-                  title="Corrected Version"
-                  content={paragraphResult.corrected}
-                  accentClass="bg-card border-border"
-                />
-                <ParagraphCard
-                  emoji="⭐"
-                  title="Better Version"
-                  content={paragraphResult.better}
-                  accentClass="bg-primary/5 border-primary/20"
-                />
-                <ParagraphCard
-                  emoji="🎩"
-                  title="Formal Version"
-                  content={paragraphResult.formal}
-                  accentClass="bg-slate-50 dark:bg-slate-900/30 border-slate-200 dark:border-slate-700"
-                />
+                <ParagraphCard emoji="✅" title="Strengths" content={paragraphResult.strengths}
+                  accentClass="bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800" />
+                <ParagraphCard emoji="⚠️" title="Areas for Improvement" content={paragraphResult.improvements}
+                  accentClass="bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800" />
+                <AnnotatedParagraph text={essay} corrections={paragraphResult.corrections ?? []} />
+                <ParagraphCard emoji="📄" title="Corrected Version" content={paragraphResult.corrected}
+                  accentClass="bg-card border-border" />
+                <ParagraphCard emoji="⭐" title="Better Version" content={paragraphResult.better}
+                  accentClass="bg-primary/5 border-primary/20" />
+                <ParagraphCard emoji="🎩" title="Formal Version" content={paragraphResult.formal}
+                  accentClass="bg-slate-50 dark:bg-slate-900/30 border-slate-200 dark:border-slate-700" />
 
-                {/* Action buttons */}
                 <div className="flex gap-3 flex-wrap pb-6">
                   <Button onClick={handleCopyParagraphAll} variant="outline" className="rounded-full flex-1">
                     {copied ? <CheckCircle2 className="w-4 h-4 mr-2 text-green-500" /> : <Copy className="w-4 h-4 mr-2" />}
-                    {copied ? "نُسخ!" : "📋 نسخ الكل"}
+                    {copied ? "Copied!" : "Copy all"}
                   </Button>
-                  <Button onClick={handleReset} variant="outline" className="rounded-full flex-1">
-                    <RotateCcw className="w-4 h-4 mr-2" />
-                    🔄 تصحيح جديد
+                  <Button onClick={handleNextAssignment} className="rounded-full flex-1">
+                    <ArrowRight className="w-4 h-4 mr-2" />
+                    Next assignment
                   </Button>
                 </div>
               </>
             )}
 
-            {/* ── IELTS ESSAY RESULTS ── */}
+            {/* IELTS ESSAY RESULTS */}
             {(taskType === "Task 1" || taskType === "Task 2") && result && (
               <>
-                {/* Overall Band */}
                 <div className="bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20 rounded-3xl p-6 text-center">
                   <p className="text-sm font-semibold text-muted-foreground uppercase tracking-widest mb-1">Overall Band Score</p>
                   <div className="text-8xl font-extrabold text-primary mb-1">{result.overallBand}</div>
@@ -934,7 +1044,6 @@ export default function EssayChecker() {
                   </div>
                 )}
 
-                {/* 4 Band Scores */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <BandCard label="Task Response" band={result.scores.taskResponse.band} feedback={result.scores.taskResponse.feedback} />
                   <BandCard label="Coherence & Cohesion" band={result.scores.coherenceCohesion.band} feedback={result.scores.coherenceCohesion.feedback} />
@@ -942,7 +1051,6 @@ export default function EssayChecker() {
                   <BandCard label="Grammatical Range & Accuracy" band={result.scores.grammaticalRange.band} feedback={result.scores.grammaticalRange.feedback} />
                 </div>
 
-                {/* Highlighted Essay */}
                 <div>
                   <h2 className="text-base font-bold mb-3 flex items-center gap-2">
                     <FileText className="w-4 h-4 text-primary" />
@@ -951,7 +1059,6 @@ export default function EssayChecker() {
                   <HighlightedEssay essay={essay} result={result} />
                 </div>
 
-                {/* Grammar Errors */}
                 {result.grammarErrors.length > 0 && (
                   <div>
                     <h2 className="text-base font-bold mb-3 flex items-center gap-2">
@@ -974,7 +1081,6 @@ export default function EssayChecker() {
                   </div>
                 )}
 
-                {/* Vocabulary Upgrades */}
                 {result.vocabularyUpgrades.length > 0 && (
                   <div>
                     <h2 className="text-base font-bold mb-3 flex items-center gap-2">
@@ -997,7 +1103,6 @@ export default function EssayChecker() {
                   </div>
                 )}
 
-                {/* Coherence Issues */}
                 {result.coherenceIssues.length > 0 && (
                   <div>
                     <h2 className="text-base font-bold mb-3 flex items-center gap-2">
@@ -1019,7 +1124,6 @@ export default function EssayChecker() {
                   </div>
                 )}
 
-                {/* Strengths + Improvements */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-2xl p-5">
                     <h3 className="text-sm font-bold text-green-700 dark:text-green-400 mb-3 flex items-center gap-2">
@@ -1033,7 +1137,6 @@ export default function EssayChecker() {
                       ))}
                     </ul>
                   </div>
-
                   <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-2xl p-5">
                     <h3 className="text-sm font-bold text-amber-700 dark:text-amber-400 mb-3 flex items-center gap-2">
                       <AlertCircle className="w-4 h-4" /> To Improve
@@ -1048,74 +1151,40 @@ export default function EssayChecker() {
                   </div>
                 </div>
 
-                {/* Revised Introduction */}
-                {result.revisedIntroduction && (
-                  <div>
-                    <h2 className="text-base font-bold mb-3">Revised Introduction</h2>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div className="bg-card border border-border rounded-2xl p-4">
-                        <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-2">Original</p>
-                        <p className="text-sm text-muted-foreground leading-relaxed italic">
-                          {essay.split(/\n\n/)[0] || essay.slice(0, 300)}
-                        </p>
-                      </div>
-                      <div className="bg-primary/5 border border-primary/20 rounded-2xl p-4">
-                        <p className="text-[10px] font-bold uppercase tracking-wider text-primary mb-2">Improved</p>
-                        <p className="text-sm text-foreground leading-relaxed">{result.revisedIntroduction}</p>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {/* Example Essays */}
                 {(result.exampleEssayBand6 || result.exampleEssayBand8) && (
                   <div>
                     <h2 className="text-base font-bold mb-1 flex items-center gap-2">
                       <Sparkles className="w-4 h-4 text-primary" />
-                      Example Essays for Improvement
+                      Example Essays
                     </h2>
                     <p className="text-xs text-muted-foreground mb-4">
-                      See how your essay can be rewritten at two different levels. Use these as a study guide — not to copy.
+                      See how this assignment can be answered at two different levels. Use these as a study guide — not to copy.
                     </p>
                     <div className="space-y-4">
-                      <EssayExampleBox
-                        label="Your Original Essay"
-                        band="—"
-                        text={essay}
-                        accentClass="bg-card border-border"
-                        badgeClass="bg-muted text-muted-foreground"
-                      />
+                      <EssayExampleBox label="Your Original Essay" band="—" text={essay}
+                        accentClass="bg-card border-border" badgeClass="bg-muted text-muted-foreground" />
                       {result.exampleEssayBand6 && (
-                        <EssayExampleBox
-                          label="Improved — Intermediate"
-                          band="5.5 – 6"
-                          text={result.exampleEssayBand6}
+                        <EssayExampleBox label="Improved — Intermediate" band="5.5 – 6" text={result.exampleEssayBand6}
                           accentClass="bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800"
-                          badgeClass="bg-amber-100 text-amber-700 dark:bg-amber-900/60 dark:text-amber-300"
-                        />
+                          badgeClass="bg-amber-100 text-amber-700 dark:bg-amber-900/60 dark:text-amber-300" />
                       )}
                       {result.exampleEssayBand8 && (
-                        <EssayExampleBox
-                          label="Improved — Advanced"
-                          band="7 – 8"
-                          text={result.exampleEssayBand8}
+                        <EssayExampleBox label="Improved — Advanced" band="7 – 8" text={result.exampleEssayBand8}
                           accentClass="bg-teal-50 dark:bg-teal-900/20 border-teal-200 dark:border-teal-800"
-                          badgeClass="bg-teal-100 text-teal-700 dark:bg-teal-900/60 dark:text-teal-300"
-                        />
+                          badgeClass="bg-teal-100 text-teal-700 dark:bg-teal-900/60 dark:text-teal-300" />
                       )}
                     </div>
                   </div>
                 )}
 
-                {/* Action buttons */}
                 <div className="flex gap-3 flex-wrap pb-6">
                   <Button onClick={handleCopyReport} variant="outline" className="rounded-full flex-1">
                     {copied ? <CheckCircle2 className="w-4 h-4 mr-2 text-green-500" /> : <Copy className="w-4 h-4 mr-2" />}
-                    {copied ? "Copied!" : "Copy Feedback"}
+                    {copied ? "Copied!" : "Copy feedback"}
                   </Button>
-                  <Button onClick={handleReset} variant="outline" className="rounded-full flex-1">
-                    <RotateCcw className="w-4 h-4 mr-2" />
-                    Check Another
+                  <Button onClick={handleNextAssignment} className="rounded-full flex-1">
+                    <ArrowRight className="w-4 h-4 mr-2" />
+                    Next assignment
                   </Button>
                 </div>
               </>
@@ -1126,3 +1195,5 @@ export default function EssayChecker() {
     </Layout>
   );
 }
+
+void getAssignmentById;

@@ -1,6 +1,6 @@
 import { Router, type IRouter } from "express";
 import crypto from "node:crypto";
-import { db, settingsTable, accessRequestsTable, reviewsTable, userDataTable, xpEventsTable, weakWordsTable, progressTable, quizScoresTable } from "@workspace/db";
+import { db, settingsTable, accessRequestsTable, reviewsTable, userDataTable, xpEventsTable, weakWordsTable, progressTable, quizScoresTable, orwellSubmissionsTable } from "@workspace/db";
 import { eq, desc, and, sql } from "drizzle-orm";
 
 const router: IRouter = Router();
@@ -324,6 +324,12 @@ router.get("/teacher/students", async (req, res): Promise<void> => {
 
       const lastActivity = streakDays.length > 0 ? streakDays[0].day : null;
 
+      const [assignRow] = await db
+        .select({ count: sql<number>`count(*)::int` })
+        .from(orwellSubmissionsTable)
+        .where(and(eq(orwellSubmissionsTable.email, s.email), eq(orwellSubmissionsTable.status, "submitted")));
+      const assignmentsCompleted = assignRow?.count ?? 0;
+
       return {
         email: s.email,
         joinedAt: s.requestedAt,
@@ -334,6 +340,7 @@ router.get("/teacher/students", async (req, res): Promise<void> => {
         weakWordsCount: weakCount,
         wordsKnown,
         quizzesTaken,
+        assignmentsCompleted,
         lastActivity,
       };
     })

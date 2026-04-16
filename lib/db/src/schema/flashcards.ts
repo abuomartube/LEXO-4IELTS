@@ -148,3 +148,16 @@ export const pushSubscriptionsTable = pgTable("push_subscriptions", {
 }, (t) => [unique().on(t.email, t.endpoint)]);
 
 export type PushSubscription = typeof pushSubscriptionsTable.$inferSelect;
+
+export const orwellSubmissionsTable = pgTable("orwell_submissions", {
+  id: serial("id").primaryKey(),
+  email: text("email").notNull(),
+  assignmentId: text("assignment_id").notNull(),
+  category: text("category").notNull(),
+  status: text("status").notNull().default("submitted"),
+  band: real("band"),
+  wordCount: integer("word_count"),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+}, (t) => [unique().on(t.email, t.assignmentId)]);
+
+export type OrwellSubmission = typeof orwellSubmissionsTable.$inferSelect;
