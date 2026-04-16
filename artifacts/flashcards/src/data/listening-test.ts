@@ -369,6 +369,373 @@ export const listeningTests: ListeningTest[] = [
       },
     ],
   },
+  {
+    id: "listening-3",
+    label: "Test 3",
+    source: "Cambridge IELTS 20 — Test 3",
+    parts: [
+      {
+        id: 1,
+        title: "City Library Membership",
+        audioSrc: "/listening3-part1.mp3",
+        questionRange: "Questions 1–10",
+        tableHtml: `<table class="w-full text-sm border-collapse">
+<thead><tr class="bg-muted/60"><th class="border border-border p-2 text-left font-bold" colspan="2">City Library — Membership Information</th></tr></thead>
+<tbody>
+<tr class="bg-muted/30"><td class="border border-border p-2 font-medium" colspan="2">Types of membership</td></tr>
+<tr><td class="border border-border p-2 pl-6 w-1/3">Standard membership</td><td class="border border-border p-2">Free — can borrow up to <strong>(1) ________</strong> books at a time</td></tr>
+<tr><td class="border border-border p-2 pl-6">Premium membership</td><td class="border border-border p-2">Costs £<strong>(2) ________</strong> per year — includes access to online <strong>(3) ________</strong></td></tr>
+<tr class="bg-muted/30"><td class="border border-border p-2 font-medium" colspan="2">Services available</td></tr>
+<tr><td class="border border-border p-2 pl-6">Study rooms</td><td class="border border-border p-2">Can be booked for a maximum of <strong>(4) ________</strong> hours</td></tr>
+<tr><td class="border border-border p-2 pl-6">Computer access</td><td class="border border-border p-2">Free printing up to 20 pages · must bring own <strong>(5) ________</strong></td></tr>
+<tr><td class="border border-border p-2 pl-6">Children's section</td><td class="border border-border p-2">Story time every <strong>(6) ________</strong> morning · craft activities during <strong>(7) ________</strong></td></tr>
+<tr class="bg-muted/30"><td class="border border-border p-2 font-medium" colspan="2">Requirements for joining</td></tr>
+<tr><td class="border border-border p-2 pl-6">Proof of address</td><td class="border border-border p-2">A recent <strong>(8) ________</strong> or bank statement</td></tr>
+<tr><td class="border border-border p-2 pl-6">Returning books</td><td class="border border-border p-2">Loan period is <strong>(9) ________</strong> weeks · fines charged at 50p per <strong>(10) ________</strong></td></tr>
+</tbody></table>`,
+        questionSections: [
+          {
+            instruction: "Complete the table below.\nWrite ONE WORD AND/OR A NUMBER for each answer.",
+            type: "fill",
+            questions: [
+              { num: 1, text: "Can borrow up to ________ books at a time", answer: "8", alternateAnswers: ["eight"] },
+              { num: 2, text: "Costs £________ per year", answer: "45", alternateAnswers: ["forty-five"] },
+              { num: 3, text: "Includes access to online ________", answer: "databases" },
+              { num: 4, text: "Study rooms can be booked for a maximum of ________ hours", answer: "3", alternateAnswers: ["three"] },
+              { num: 5, text: "Must bring own ________", answer: "headphones" },
+              { num: 6, text: "Story time every ________ morning", answer: "Saturday" },
+              { num: 7, text: "Craft activities during ________", answer: "holidays" },
+              { num: 8, text: "A recent ________ or bank statement", answer: "bill" },
+              { num: 9, text: "Loan period is ________ weeks", answer: "3", alternateAnswers: ["three"] },
+              { num: 10, text: "Fines charged at 50p per ________", answer: "day" },
+            ],
+          },
+        ],
+      },
+      {
+        id: 2,
+        title: "Wildlife Conservation Centre",
+        audioSrc: "/listening3-part2.mp3",
+        questionRange: "Questions 11–20",
+        questionSections: [
+          {
+            instruction: "Choose the correct letter, A, B or C.",
+            type: "mc",
+            options: [
+              { label: "A", text: "A" },
+              { label: "B", text: "B" },
+              { label: "C", text: "C" },
+            ],
+            questions: [
+              { num: 11, text: "The conservation centre was originally set up to\nA. breed endangered species.\nB. educate the local community.\nC. carry out scientific research.", answer: "A" },
+              { num: 12, text: "What does the speaker say has changed most about the centre in recent years?\nA. the number of visitors\nB. the range of animals\nC. the way it is funded", answer: "C" },
+              { num: 13, text: "The most popular programme for schools is about\nA. rainforest ecosystems.\nB. marine habitats.\nC. local wildlife.", answer: "C" },
+              { num: 14, text: "The volunteer programme requires a minimum commitment of\nA. two months.\nB. three months.\nC. six months.", answer: "B" },
+              { num: 15, text: "What surprised the speaker about the feeding programme?\nA. How much food is required.\nB. How carefully diets are planned.\nC. How the animals respond to keepers.", answer: "B" },
+              { num: 16, text: "The centre's biggest achievement this year has been\nA. successfully releasing animals into the wild.\nB. opening a new visitor education facility.\nC. winning an international conservation award.", answer: "A" },
+            ],
+          },
+          {
+            instruction: "Which TWO benefits of the conservation centre do visitors most frequently mention?\nChoose TWO letters, A–E.",
+            type: "multiSelect",
+            options: [
+              { label: "A", text: "the opportunity to see rare animals" },
+              { label: "B", text: "the quality of the guided tours" },
+              { label: "C", text: "the interactive exhibits" },
+              { label: "D", text: "the natural setting of the centre" },
+              { label: "E", text: "the value for money" },
+            ],
+            questions: [
+              { num: 17, text: "Which TWO benefits do visitors most frequently mention? (Questions 17–18)", answer: "A,D" },
+            ],
+          },
+          {
+            instruction: "Which TWO plans does the centre have for the future?\nChoose TWO letters, A–E.",
+            type: "multiSelect",
+            options: [
+              { label: "A", text: "building an underwater viewing area" },
+              { label: "B", text: "introducing night-time safari experiences" },
+              { label: "C", text: "expanding the car parking facilities" },
+              { label: "D", text: "creating a breeding programme for insects" },
+              { label: "E", text: "developing an online virtual tour" },
+            ],
+            questions: [
+              { num: 19, text: "Which TWO plans does the centre have for the future? (Questions 19–20)", answer: "B,E" },
+            ],
+          },
+        ],
+      },
+      {
+        id: 3,
+        title: "Marine Biology Research",
+        audioSrc: "/listening3-part3.mp3",
+        questionRange: "Questions 21–30",
+        questionSections: [
+          {
+            instruction: "Which TWO challenges did the researchers face during their study of coral reefs?\nChoose TWO letters, A–E.",
+            type: "multiSelect",
+            options: [
+              { label: "A", text: "obtaining permission to access certain sites" },
+              { label: "B", text: "dealing with unpredictable weather conditions" },
+              { label: "C", text: "finding enough qualified divers" },
+              { label: "D", text: "transporting equipment to remote locations" },
+              { label: "E", text: "getting sufficient funding" },
+            ],
+            questions: [
+              { num: 21, text: "Which TWO challenges did the researchers face? (Questions 21–22)", answer: "B,D" },
+            ],
+          },
+          {
+            instruction: "Which TWO findings surprised the researchers?\nChoose TWO letters, A–E.",
+            type: "multiSelect",
+            options: [
+              { label: "A", text: "the rate of coral recovery in warm waters" },
+              { label: "B", text: "the number of new species discovered" },
+              { label: "C", text: "the effect of pollution on fish behaviour" },
+              { label: "D", text: "the diversity of life near the ocean floor" },
+              { label: "E", text: "the impact of tourism on marine ecosystems" },
+            ],
+            questions: [
+              { num: 23, text: "Which TWO findings surprised the researchers? (Questions 23–24)", answer: "A,B" },
+            ],
+          },
+          {
+            instruction: "Which TWO methods proved to be most effective in the research?\nChoose TWO letters, A–E.",
+            type: "multiSelect",
+            options: [
+              { label: "A", text: "satellite imaging of reef areas" },
+              { label: "B", text: "underwater drone surveys" },
+              { label: "C", text: "analysis of water samples" },
+              { label: "D", text: "tagging and tracking fish populations" },
+              { label: "E", text: "using artificial intelligence to classify species" },
+            ],
+            questions: [
+              { num: 25, text: "Which TWO methods proved most effective? (Questions 25–26)", answer: "B,E" },
+            ],
+          },
+          {
+            instruction: "Choose the correct letter, A, B or C.",
+            type: "mc",
+            options: [
+              { label: "A", text: "A" },
+              { label: "B", text: "B" },
+              { label: "C", text: "C" },
+            ],
+            questions: [
+              { num: 27, text: "The researchers believe that their findings will mainly affect\nA. government environmental policy.\nB. the fishing industry.\nC. future academic research.", answer: "A" },
+              { num: 28, text: "What do the students think is the most important implication of the research?\nA. It proves that reef restoration is possible.\nB. It shows the need for stricter regulations.\nC. It provides a model for studying other ecosystems.", answer: "B" },
+              { num: 29, text: "The professor suggests that the next step should be\nA. publishing the results in an international journal.\nB. presenting at a marine biology conference.\nC. conducting a follow-up study in a different location.", answer: "C" },
+              { num: 30, text: "Both students agree that the most rewarding part of the project was\nA. working with an international team.\nB. learning new diving techniques.\nC. seeing the direct impact of their work.", answer: "C" },
+            ],
+          },
+        ],
+      },
+      {
+        id: 4,
+        title: "The History of Public Transport",
+        audioSrc: "/listening3-part4.mp3",
+        questionRange: "Questions 31–40",
+        questionSections: [
+          {
+            instruction: "Complete the notes below.\nWrite ONE WORD ONLY for each answer.\n\nThe History of Public Transport",
+            type: "fill",
+            questions: [
+              { num: 31, text: "The first public bus service used vehicles pulled by ________.", answer: "horses" },
+              { num: 32, text: "Early buses were mainly used by wealthy ________.", answer: "merchants", alternateAnswers: ["businessmen"] },
+              { num: 33, text: "The introduction of steam ________ made long-distance travel possible.", answer: "engines" },
+              { num: 34, text: "The first underground railway opened in London in the year ________.", answer: "1863" },
+              { num: 35, text: "Early underground passengers complained about the level of ________ from the trains.", answer: "smoke" },
+              { num: 36, text: "Electric trams were first introduced in the city of ________.", answer: "Berlin" },
+              { num: 37, text: "Trams declined because cities preferred to invest in ________.", answer: "roads" },
+              { num: 38, text: "Modern bus rapid transit systems have dedicated ________ to avoid delays.", answer: "lanes" },
+              { num: 39, text: "Some cities are now testing buses powered by ________.", answer: "hydrogen" },
+              { num: 40, text: "Experts predict that driverless ________ will transform urban transport.", answer: "vehicles", alternateAnswers: ["cars"] },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: "listening-4",
+    label: "Test 4",
+    source: "Cambridge IELTS 20 — Test 4",
+    parts: [
+      {
+        id: 1,
+        title: "Home Insurance Enquiry",
+        audioSrc: "/listening4-part1.mp3",
+        questionRange: "Questions 1–10",
+        tableHtml: `<table class="w-full text-sm border-collapse">
+<thead><tr class="bg-muted/60"><th class="border border-border p-2 text-left font-bold" colspan="2">Home Insurance — Policy Options</th></tr></thead>
+<tbody>
+<tr class="bg-muted/30"><td class="border border-border p-2 font-medium" colspan="2">Policy types</td></tr>
+<tr><td class="border border-border p-2 pl-6 w-1/3">Basic cover</td><td class="border border-border p-2">Covers fire and <strong>(1) ________</strong> only · costs £<strong>(2) ________</strong> per month</td></tr>
+<tr><td class="border border-border p-2 pl-6">Standard cover</td><td class="border border-border p-2">Also covers theft and <strong>(3) ________</strong> damage</td></tr>
+<tr><td class="border border-border p-2 pl-6">Premium cover</td><td class="border border-border p-2">Includes accidental damage · covers items up to £<strong>(4) ________</strong> in value</td></tr>
+<tr class="bg-muted/30"><td class="border border-border p-2 font-medium" colspan="2">Additional information</td></tr>
+<tr><td class="border border-border p-2 pl-6">Excess amount</td><td class="border border-border p-2">Standard excess is £<strong>(5) ________</strong> per claim</td></tr>
+<tr><td class="border border-border p-2 pl-6">Discount</td><td class="border border-border p-2">Available if the home has a <strong>(6) ________</strong> alarm fitted</td></tr>
+<tr><td class="border border-border p-2 pl-6">Garden items</td><td class="border border-border p-2">Only covered if kept in a locked <strong>(7) ________</strong></td></tr>
+<tr class="bg-muted/30"><td class="border border-border p-2 font-medium" colspan="2">Conditions</td></tr>
+<tr><td class="border border-border p-2 pl-6">Claims</td><td class="border border-border p-2">Must be reported within <strong>(8) ________</strong> days · need a crime reference <strong>(9) ________</strong> for theft</td></tr>
+<tr><td class="border border-border p-2 pl-6">Payment</td><td class="border border-border p-2">Can pay annually or by monthly <strong>(10) ________</strong></td></tr>
+</tbody></table>`,
+        questionSections: [
+          {
+            instruction: "Complete the table below.\nWrite ONE WORD AND/OR A NUMBER for each answer.",
+            type: "fill",
+            questions: [
+              { num: 1, text: "Covers fire and ________ only", answer: "flood", alternateAnswers: ["flooding"] },
+              { num: 2, text: "Costs £________ per month", answer: "15", alternateAnswers: ["fifteen"] },
+              { num: 3, text: "Also covers theft and ________ damage", answer: "water" },
+              { num: 4, text: "Covers items up to £________ in value", answer: "5000", alternateAnswers: ["5,000", "five thousand"] },
+              { num: 5, text: "Standard excess is £________ per claim", answer: "250", alternateAnswers: ["two hundred and fifty"] },
+              { num: 6, text: "Available if the home has a ________ alarm fitted", answer: "burglar", alternateAnswers: ["security"] },
+              { num: 7, text: "Only covered if kept in a locked ________", answer: "shed" },
+              { num: 8, text: "Must be reported within ________ days", answer: "14", alternateAnswers: ["fourteen"] },
+              { num: 9, text: "Need a crime reference ________ for theft", answer: "number" },
+              { num: 10, text: "Can pay annually or by monthly ________", answer: "instalments", alternateAnswers: ["installments"] },
+            ],
+          },
+        ],
+      },
+      {
+        id: 2,
+        title: "Museum Tour Guide Training",
+        audioSrc: "/listening4-part2.mp3",
+        questionRange: "Questions 11–20",
+        questionSections: [
+          {
+            instruction: "What is the main responsibility of guides in each area of the museum?\nChoose the correct letter, A–H, next to Questions 11–16.\n\nA. ensuring the safety of exhibits\nB. answering visitors' questions\nC. directing visitors to other areas\nD. supervising children's activities\nE. explaining the historical context\nF. demonstrating how equipment works\nG. managing queues at popular exhibits\nH. checking tickets and passes",
+            type: "mc",
+            options: [
+              { label: "A", text: "ensuring the safety of exhibits" },
+              { label: "B", text: "answering visitors' questions" },
+              { label: "C", text: "directing visitors to other areas" },
+              { label: "D", text: "supervising children's activities" },
+              { label: "E", text: "explaining the historical context" },
+              { label: "F", text: "demonstrating how equipment works" },
+              { label: "G", text: "managing queues at popular exhibits" },
+              { label: "H", text: "checking tickets and passes" },
+            ],
+            questions: [
+              { num: 11, text: "Ancient Civilisations gallery", answer: "E" },
+              { num: 12, text: "Natural History wing", answer: "B" },
+              { num: 13, text: "Science Discovery zone", answer: "F" },
+              { num: 14, text: "Art and Sculpture hall", answer: "A" },
+              { num: 15, text: "Children's Learning Lab", answer: "D" },
+              { num: 16, text: "Temporary Exhibition space", answer: "G" },
+            ],
+          },
+          {
+            instruction: "Choose the correct letter, A, B or C.",
+            type: "mc",
+            options: [
+              { label: "A", text: "A" },
+              { label: "B", text: "B" },
+              { label: "C", text: "C" },
+            ],
+            questions: [
+              { num: 17, text: "All new guides must complete a training course lasting\nA. one week.\nB. two weeks.\nC. one month.", answer: "B" },
+              { num: 18, text: "The most important quality for a museum guide is\nA. detailed knowledge of history.\nB. an ability to engage with different audiences.\nC. experience of working with children.", answer: "B" },
+              { num: 19, text: "Guides are expected to attend refresher training\nA. every three months.\nB. every six months.\nC. once a year.", answer: "B" },
+              { num: 20, text: "What benefit do guides receive?\nA. free entry to other museums\nB. a discount in the museum shop\nC. free parking at the museum", answer: "A" },
+            ],
+          },
+        ],
+      },
+      {
+        id: 3,
+        title: "Psychology Experiment Discussion",
+        audioSrc: "/listening4-part3.mp3",
+        questionRange: "Questions 21–30",
+        questionSections: [
+          {
+            instruction: "Which TWO problems did the students encounter when designing their experiment?\nChoose TWO letters, A–E.",
+            type: "multiSelect",
+            options: [
+              { label: "A", text: "recruiting enough participants" },
+              { label: "B", text: "choosing appropriate test materials" },
+              { label: "C", text: "getting ethical approval" },
+              { label: "D", text: "controlling for age differences" },
+              { label: "E", text: "finding a suitable room" },
+            ],
+            questions: [
+              { num: 21, text: "Which TWO problems did the students encounter? (Questions 21–22)", answer: "A,C" },
+            ],
+          },
+          {
+            instruction: "Which TWO results did the students find unexpected?\nChoose TWO letters, A–E.",
+            type: "multiSelect",
+            options: [
+              { label: "A", text: "Older participants performed better under pressure." },
+              { label: "B", text: "Music had no effect on concentration." },
+              { label: "C", text: "Male and female scores were almost identical." },
+              { label: "D", text: "Practice improved performance significantly." },
+              { label: "E", text: "Participants performed worse in the afternoon." },
+            ],
+            questions: [
+              { num: 23, text: "Which TWO results were unexpected? (Questions 23–24)", answer: "B,E" },
+            ],
+          },
+          {
+            instruction: "Which TWO changes would the students make if they repeated the experiment?\nChoose TWO letters, A–E.",
+            type: "multiSelect",
+            options: [
+              { label: "A", text: "use a larger sample size" },
+              { label: "B", text: "include a wider age range" },
+              { label: "C", text: "use different types of tasks" },
+              { label: "D", text: "record the sessions on video" },
+              { label: "E", text: "carry out the tests at the same time of day" },
+            ],
+            questions: [
+              { num: 25, text: "Which TWO changes would the students make? (Questions 25–26)", answer: "A,E" },
+            ],
+          },
+          {
+            instruction: "Choose the correct letter, A, B or C.",
+            type: "mc",
+            options: [
+              { label: "A", text: "A" },
+              { label: "B", text: "B" },
+              { label: "C", text: "C" },
+            ],
+            questions: [
+              { num: 27, text: "The professor thinks the experiment's main strength is\nA. its original research question.\nB. the clarity of its methodology.\nC. the way the data was analysed.", answer: "B" },
+              { num: 28, text: "The students were surprised by the professor's suggestion to\nA. submit the work to a journal.\nB. extend the experiment by another week.\nC. present the results at a student conference.", answer: "C" },
+              { num: 29, text: "What do the students think was the most difficult part of the project?\nA. writing up the literature review\nB. analysing the statistical data\nC. interpreting the results", answer: "B" },
+              { num: 30, text: "The students agree that the most valuable skill they gained was\nA. time management.\nB. critical thinking.\nC. teamwork.", answer: "C" },
+            ],
+          },
+        ],
+      },
+      {
+        id: 4,
+        title: "Sustainable Architecture",
+        audioSrc: "/listening4-part4.mp3",
+        questionRange: "Questions 31–40",
+        questionSections: [
+          {
+            instruction: "Complete the notes below.\nWrite ONE WORD ONLY for each answer.\n\nSustainable Architecture",
+            type: "fill",
+            questions: [
+              { num: 31, text: "Sustainable architecture aims to reduce a building's impact on the ________.", answer: "environment" },
+              { num: 32, text: "Traditional buildings used local ________ that were naturally available.", answer: "materials" },
+              { num: 33, text: "Green roofs help to reduce ________ in urban areas.", answer: "flooding" },
+              { num: 34, text: "The orientation of a building affects how much natural ________ it receives.", answer: "light", alternateAnswers: ["sunlight"] },
+              { num: 35, text: "Double-glazed windows improve a building's ________.", answer: "insulation" },
+              { num: 36, text: "Rainwater is collected and used for ________ gardens.", answer: "watering", alternateAnswers: ["irrigating"] },
+              { num: 37, text: "Solar panels can generate enough ________ for an entire household.", answer: "electricity", alternateAnswers: ["power", "energy"] },
+              { num: 38, text: "Recycled ________ is increasingly used in construction.", answer: "steel", alternateAnswers: ["concrete"] },
+              { num: 39, text: "Smart sensors can automatically adjust the ________ inside a building.", answer: "temperature" },
+              { num: 40, text: "The greatest challenge is persuading ________ to invest in sustainable design.", answer: "developers", alternateAnswers: ["clients"] },
+            ],
+          },
+        ],
+      },
+    ],
+  },
 ];
 
 export function calculateListeningBand(correct: number): { band: number; label: string } {
