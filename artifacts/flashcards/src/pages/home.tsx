@@ -75,6 +75,41 @@ const features = [
   },
 ];
 
+const highlightFeatures = [
+  {
+    emoji: "📖",
+    title: "Grammar",
+    desc: "Master 5 essential IELTS grammar topics with interactive exercises and bilingual explanations.",
+    href: "/grammar",
+    border: "hover:border-indigo-400/40",
+    bg: "bg-indigo-50 dark:bg-indigo-900/20",
+  },
+  {
+    emoji: "🎯",
+    title: "Full Mock IELTS",
+    desc: "Take a complete 4-skill mock exam — Listening, Reading, Writing & Speaking — with real timing.",
+    href: "/mock-test",
+    border: "hover:border-amber-400/40",
+    bg: "bg-amber-50 dark:bg-amber-900/20",
+  },
+  {
+    emoji: "🔥",
+    title: "Weak Word Deck",
+    desc: "Your personal deck of words you got wrong — review and conquer them until they stick.",
+    href: "/weak-words",
+    border: "hover:border-rose-400/40",
+    bg: "bg-rose-50 dark:bg-rose-900/20",
+  },
+  {
+    emoji: "✨",
+    title: "Word of the Day",
+    desc: "A new IELTS word every day with Arabic translation, example sentence and audio.",
+    href: "#word-of-day",
+    border: "hover:border-purple-400/40",
+    bg: "bg-purple-50 dark:bg-purple-900/20",
+  },
+];
+
 export default function Home() {
   const { data: summary, isLoading } = useGetProgressSummary();
   const { data: wordOfDay } = useWordOfDay();
@@ -165,7 +200,7 @@ export default function Home() {
 
           {/* Word of the Day */}
           {wordOfDay && (
-            <div data-tour="word-of-day" className="bg-card border border-primary/20 rounded-2xl p-6 relative overflow-hidden sm:col-span-2 lg:col-span-1">
+            <div id="word-of-day" data-tour="word-of-day" className="bg-card border border-primary/20 rounded-2xl p-6 relative overflow-hidden sm:col-span-2 lg:col-span-1">
               <div className="flex items-center gap-2 mb-3">
                 <Sparkles className="w-4 h-4 text-primary" />
                 <span className="text-xs font-semibold uppercase tracking-widest text-primary">Word of the Day</span>
@@ -206,6 +241,27 @@ export default function Home() {
                 <h3 className="font-bold text-foreground mb-1">{f.title}</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">{f.desc}</p>
               </div>
+            ))}
+          </div>
+        </section>
+
+        {/* ── Feature Highlights ── */}
+        <section>
+          <h2 className="text-2xl font-bold text-foreground mb-6">Explore LEXO</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {highlightFeatures.map((f, i) => (
+              <Link key={f.title} href={f.href}>
+                <div
+                  className={`bg-card border border-border rounded-2xl p-5 ${f.border} transition-colors animate-in fade-in slide-in-from-bottom-4 h-full`}
+                  style={{ animationDelay: `${i * 80}ms` }}
+                >
+                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-4 ${f.bg}`}>
+                    <span className="text-xl">{f.emoji}</span>
+                  </div>
+                  <h3 className="font-bold text-foreground mb-1">{f.title}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{f.desc}</p>
+                </div>
+              </Link>
             ))}
           </div>
         </section>
