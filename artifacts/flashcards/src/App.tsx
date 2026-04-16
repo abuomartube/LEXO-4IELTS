@@ -26,7 +26,6 @@ import WritingTemplates from "@/pages/writing-templates";
 import TeacherDashboard from "@/pages/teacher-dashboard";
 import MockTest from "@/pages/mock-test";
 import Grammar from "@/pages/grammar";
-import { ExitCommentPopup } from "@/components/exit-comment-popup";
 
 setStudentEmailGetter(() => {
   try {
@@ -92,7 +91,6 @@ function App() {
             <Router />
           </WouterRouter>
           <Toaster />
-          <ExitCommentPopup />
         </TooltipProvider>
       </QueryClientProvider>
     </ThemeProvider>
