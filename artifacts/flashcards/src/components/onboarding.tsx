@@ -69,13 +69,18 @@ export function Onboarding({ onComplete }: { onComplete: () => void }) {
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [targetBand, setTargetBand] = useState(6.5);
   const [examDate, setExamDate] = useState("");
+  const [noExamDate, setNoExamDate] = useState(false);
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState(false);
 
   const minDate = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split("T")[0];
   const maxDate = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString().split("T")[0];
 
-  const plan = examDate ? generateStudyPlan(targetBand, examDate) : null;
+  const effectiveExamDate = noExamDate
+    ? new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString().split("T")[0]
+    : examDate;
+  const canProceed = noExamDate || !!examDate;
+  const plan = canProceed ? generateStudyPlan(targetBand, effectiveExamDate) : null;
 
   async function handleSave() {
     setSaving(true);
@@ -90,7 +95,7 @@ export function Onboarding({ onComplete }: { onComplete: () => void }) {
         customFetch("/api/user-data/exam_date", {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ value: examDate }),
+          body: JSON.stringify({ value: noExamDate ? "not_set" : examDate }),
         }),
       ]);
       onComplete();
@@ -179,13 +184,27 @@ export function Onboarding({ onComplete }: { onComplete: () => void }) {
             <input
               type="date"
               value={examDate}
-              onChange={(e) => setExamDate(e.target.value)}
+              onChange={(e) => { setExamDate(e.target.value); setNoExamDate(false); }}
               min={minDate}
               max={maxDate}
-              className="w-full px-4 py-3 bg-background border border-border rounded-xl text-foreground text-lg font-medium focus:outline-none focus:ring-2 focus:ring-primary/50"
+              disabled={noExamDate}
+              className={cn("w-full px-4 py-3 bg-background border border-border rounded-xl text-foreground text-lg font-medium focus:outline-none focus:ring-2 focus:ring-primary/50",
+                noExamDate && "opacity-40"
+              )}
             />
 
-            {examDate && (() => {
+            <button
+              onClick={() => { setNoExamDate(!noExamDate); if (!noExamDate) setExamDate(""); }}
+              className={cn("w-full py-2.5 rounded-xl text-sm font-bold border transition-all",
+                noExamDate
+                  ? "bg-primary text-primary-foreground border-primary"
+                  : "border-border text-muted-foreground hover:border-primary hover:text-foreground"
+              )}
+            >
+              🤷 Not yet decided
+            </button>
+
+            {examDate && !noExamDate && (() => {
               const days = Math.ceil((new Date(examDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
               const weeks = Math.ceil(days / 7);
               return (
@@ -203,9 +222,9 @@ export function Onboarding({ onComplete }: { onComplete: () => void }) {
               );
             })()}
 
-            {!examDate && (
+            {noExamDate && (
               <p className="text-xs text-muted-foreground text-center">
-                Don't have a date yet? Pick an approximate date — you can change it later.
+                No problem! We'll create a balanced 3-month study plan you can adjust later.
               </p>
             )}
           </div>
@@ -214,8 +233,8 @@ export function Onboarding({ onComplete }: { onComplete: () => void }) {
             <button onClick={() => setStep(1)}
               className="flex-1 bg-muted text-foreground font-bold py-3 rounded-xl hover:opacity-80 transition-opacity"
             >Back</button>
-            <button onClick={() => { if (examDate) setStep(3); }}
-              disabled={!examDate}
+            <button onClick={() => { if (canProceed) setStep(3); }}
+              disabled={!canProceed}
               className="flex-1 bg-primary text-primary-foreground font-bold py-3 rounded-xl hover:opacity-90 transition-opacity disabled:opacity-40 flex items-center justify-center gap-2"
             >
               See My Plan <ChevronRight className="w-4 h-4" />
@@ -241,8 +260,11 @@ export function Onboarding({ onComplete }: { onComplete: () => void }) {
           </div>
           <h1 className="text-2xl font-extrabold text-foreground">Your Study Plan</h1>
           <p className="text-muted-foreground text-sm">
-            Target: Band <span className="font-bold text-primary">{targetBand.toFixed(1)}</span> in{" "}
-            <span className="font-bold text-primary">{plan!.daysLeft} days</span>
+            Target: Band <span className="font-bold text-primary">{targetBand.toFixed(1)}</span>
+            {noExamDate
+              ? <> — <span className="font-bold text-primary">balanced 3-month plan</span></>
+              : <> in <span className="font-bold text-primary">{plan!.daysLeft} days</span></>
+            }
           </p>
         </div>
 
