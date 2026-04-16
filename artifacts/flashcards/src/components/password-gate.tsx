@@ -159,7 +159,7 @@ function LandingPage({ onLogin }: { onLogin: () => void }) {
             </p>
 
             <p className="text-base text-white/40 mb-10 max-w-lg mx-auto lg:mx-0 font-cairo" dir="rtl" lang="ar">
-              رفيقك الذكي في رحلة الآيلتس — تعلّم المفردات، أتقن المحادثة والكتابة، كل شيء في مكان واحد
+              رفيقك الذكي في رحلة الآيلتس — تعلّم المفردات، أتقن المحادثة والاستماع، تدرب على القراءة والكتابة - كل شيء في مكان واحد
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
