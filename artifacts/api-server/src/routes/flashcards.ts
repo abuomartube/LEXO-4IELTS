@@ -1,7 +1,7 @@
 import { Router, type IRouter } from "express";
 import crypto from "node:crypto";
 import { eq, and, ilike, sql, lte, ne } from "drizzle-orm";
-import { db, flashcardsTable, progressTable, bookmarksTable, cardSrsTable, activityPositionTable, quizScoresTable, userDataTable } from "@workspace/db";
+import { db, flashcardsTable, progressTable, bookmarksTable, cardSrsTable, activityPositionTable, quizScoresTable, userDataTable, xpEventsTable } from "@workspace/db";
 import { desc } from "drizzle-orm";
 
 const SESSION_SECRET = process.env["SESSION_SECRET"] ?? "fallback-secret";
@@ -195,6 +195,89 @@ router.get("/streak", async (req, res): Promise<void> => {
 
   res.json({ streak, totalDays: days.length });
 });
+
+// ── XP ─────────────────────────────────────────────────────────────────────
+
+const XP_DAILY_CAP: Record<string, number> = {
+  flashcard_review: 30,
+  quiz_correct: 50,
+  listening_test: 40,
+  reading_test: 40,
+  essay_check: 20,
+  speaking_session: 20,
+};
+
+router.get("/xp", async (req, res): Promise<void> => {
+  const email = verifyStudentEmail(req);
+  if (!email) { res.json({ total: 0, todayXp: 0, level: 1, levelName: "Starter" }); return; }
+
+  const [totalRow] = await db
+    .select({ total: sql<number>`coalesce(sum(${xpEventsTable.xp}),0)::int` })
+    .from(xpEventsTable)
+    .where(eq(xpEventsTable.email, email));
+
+  const todayStart = new Date(); todayStart.setHours(0,0,0,0);
+  const [todayRow] = await db
+    .select({ total: sql<number>`coalesce(sum(${xpEventsTable.xp}),0)::int` })
+    .from(xpEventsTable)
+    .where(and(eq(xpEventsTable.email, email), sql`${xpEventsTable.createdAt} >= ${todayStart}`));
+
+  const total = totalRow?.total ?? 0;
+  const todayXp = todayRow?.total ?? 0;
+  const { level, levelName } = getXpLevel(total);
+  res.json({ total, todayXp, level, levelName });
+});
+
+router.post("/xp/award", async (req, res): Promise<void> => {
+  const email = verifyStudentEmail(req);
+  if (!email) { res.status(401).json({ error: "Unauthorized" }); return; }
+
+  const { activity, amount } = req.body as { activity: string; amount: number };
+  if (!activity || typeof amount !== "number" || amount <= 0) {
+    res.status(400).json({ error: "Invalid payload" }); return;
+  }
+
+  const cap = XP_DAILY_CAP[activity] ?? 20;
+  const todayStart = new Date(); todayStart.setHours(0,0,0,0);
+  const [todayRow] = await db
+    .select({ total: sql<number>`coalesce(sum(${xpEventsTable.xp}),0)::int` })
+    .from(xpEventsTable)
+    .where(and(
+      eq(xpEventsTable.email, email),
+      eq(xpEventsTable.activity, activity),
+      sql`${xpEventsTable.createdAt} >= ${todayStart}`
+    ));
+  const todayActivity = todayRow?.total ?? 0;
+  const awarded = Math.max(0, Math.min(amount, cap - todayActivity));
+
+  if (awarded > 0) {
+    await db.insert(xpEventsTable).values({ email, activity, xp: awarded });
+  }
+
+  const [totalRow] = await db
+    .select({ total: sql<number>`coalesce(sum(${xpEventsTable.xp}),0)::int` })
+    .from(xpEventsTable)
+    .where(eq(xpEventsTable.email, email));
+
+  const total = totalRow?.total ?? 0;
+  const { level, levelName } = getXpLevel(total);
+  res.json({ awarded, total, level, levelName });
+});
+
+function getXpLevel(xp: number): { level: number; levelName: string } {
+  const levels = [
+    { min: 3500, level: 8, name: "👑 Master" },
+    { min: 2000, level: 7, name: "🏆 Expert" },
+    { min: 1200, level: 6, name: "⭐ Advanced" },
+    { min: 700,  level: 5, name: "🚀 Upper Intermediate" },
+    { min: 350,  level: 4, name: "🎯 Intermediate" },
+    { min: 150,  level: 3, name: "✏️ Pre-Intermediate" },
+    { min: 50,   level: 2, name: "📚 Elementary" },
+    { min: 0,    level: 1, name: "🌱 Starter" },
+  ];
+  const found = levels.find(l => xp >= l.min)!;
+  return { level: found.level, levelName: found.name };
+}
 
 // ── Quiz ───────────────────────────────────────────────────────────────────
 

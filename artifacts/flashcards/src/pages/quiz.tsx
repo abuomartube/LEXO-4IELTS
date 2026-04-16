@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { useQuiz, useFillBlank, customFetch } from "@workspace/api-client-react";
+import { useQuiz, useFillBlank, customFetch, useAwardXp } from "@workspace/api-client-react";
 import { Layout } from "@/components/layout";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -48,6 +48,7 @@ export default function Quiz() {
   const [done, setDone] = useState(false);
   const [history, setHistory] = useState<QuizScore[]>([]);
   const [scoreSaved, setScoreSaved] = useState(false);
+  const { mutate: awardXp } = useAwardXp();
 
   const loadHistory = useCallback(async () => {
     try {
@@ -131,8 +132,11 @@ export default function Quiz() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ mode, level, total: results.total, correct: results.correct, wrong: results.wrong }),
       }).then(() => loadHistory()).catch(() => {});
+      if (results.correct > 0) {
+        awardXp({ activity: "quiz_correct", amount: results.correct * 5 });
+      }
     }
-  }, [done, scoreSaved, results, mode, level, loadHistory]);
+  }, [done, scoreSaved, results, mode, level, loadHistory, awardXp]);
 
   const pct = questions.length > 0 ? Math.round((currentIndex / questions.length) * 100) : 0;
 

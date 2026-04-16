@@ -118,3 +118,13 @@ export const userDataTable = pgTable("user_data", {
   value: text("value").notNull().default(""),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
 }, (t) => [unique().on(t.email, t.key)]);
+
+export const xpEventsTable = pgTable("xp_events", {
+  id: serial("id").primaryKey(),
+  email: text("email").notNull(),
+  activity: text("activity").notNull(),
+  xp: integer("xp").notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export type XpEvent = typeof xpEventsTable.$inferSelect;

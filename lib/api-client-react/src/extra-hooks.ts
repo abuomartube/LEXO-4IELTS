@@ -68,6 +68,41 @@ export const useStreak = () =>
     queryFn: () => customFetch<StreakInfo>("/api/streak", { method: "GET" }),
   });
 
+// ── XP ─────────────────────────────────────────────────────────────────────
+
+export interface XpInfo {
+  total: number;
+  todayXp: number;
+  level: number;
+  levelName: string;
+}
+
+export interface AwardXpResult {
+  awarded: number;
+  total: number;
+  level: number;
+  levelName: string;
+}
+
+export const useXp = () =>
+  useQuery<XpInfo>({
+    queryKey: ["/api/xp"],
+    queryFn: () => customFetch<XpInfo>("/api/xp", { method: "GET" }),
+  });
+
+export const useAwardXp = () => {
+  const qc = useQueryClient();
+  return useMutation<AwardXpResult, unknown, { activity: string; amount: number }>({
+    mutationFn: ({ activity, amount }) =>
+      customFetch<AwardXpResult>("/api/xp/award", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ activity, amount }),
+      }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["/api/xp"] }),
+  });
+};
+
 // ── Quiz ───────────────────────────────────────────────────────────────────
 
 export const useQuiz = (level?: string, count = 10) =>

@@ -14,6 +14,7 @@ import {
   type ListeningTest,
   type ListeningQuestionSection,
 } from "@/data/listening-test";
+import { useAwardXp } from "@workspace/api-client-react";
 
 type Answers = Record<number, string>;
 type Phase = "select" | "intro" | "test" | "results";
@@ -26,6 +27,7 @@ export default function ListeningTestPage() {
   const [timeElapsed, setTimeElapsed] = useState(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const topRef = useRef<HTMLDivElement>(null);
+  const { mutate: awardXp } = useAwardXp();
 
   const selectTest = (test: ListeningTest) => {
     setSelectedTest(test);
@@ -46,6 +48,7 @@ export default function ListeningTestPage() {
     if (timerRef.current) clearInterval(timerRef.current);
     setPhase("results");
     topRef.current?.scrollIntoView({ behavior: "smooth" });
+    awardXp({ activity: "listening_test", amount: 20 });
   };
 
   const goToSelect = () => {

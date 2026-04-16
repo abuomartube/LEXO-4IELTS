@@ -1,4 +1,5 @@
 import { useState, useRef, useCallback } from "react";
+import { useAwardXp } from "@workspace/api-client-react";
 import { Layout } from "@/components/layout";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -538,6 +539,7 @@ export default function EssayChecker() {
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const resultRef = useRef<HTMLDivElement>(null);
+  const { mutate: awardXp } = useAwardXp();
 
   const minWords = taskType === "Task 1" ? 150 : taskType === "Task 2" ? 250 : 20;
   const wordCount = essay.trim().split(/\s+/).filter(Boolean).length;
@@ -577,6 +579,7 @@ export default function EssayChecker() {
         setResult(data);
       }
       setScreen("result");
+      awardXp({ activity: "essay_check", amount: 10 });
       setTimeout(() => resultRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 100);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");

@@ -1,5 +1,5 @@
 import { useGetProgressSummary } from "@workspace/api-client-react";
-import { useWordOfDay, useStreak } from "@workspace/api-client-react";
+import { useWordOfDay, useStreak, useXp } from "@workspace/api-client-react";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -9,7 +9,8 @@ import {
   BookOpen, Trophy, Zap, Target,
   Volume2, Globe, Layers, Award, ExternalLink,
   Flame, Star, HelpCircle, Sparkles, MessageCircle,
-  FileText, ArrowLeftRight, ArrowUpDown, BookMarked, Mic, Send, CheckCircle2, Loader2
+  FileText, ArrowLeftRight, ArrowUpDown, BookMarked, Mic, Send, CheckCircle2, Loader2,
+  TrendingUp
 } from "lucide-react";
 import { Layout } from "@/components/layout";
 
@@ -78,6 +79,7 @@ export default function Home() {
   const { data: summary, isLoading } = useGetProgressSummary();
   const { data: wordOfDay } = useWordOfDay();
   const { data: streakInfo } = useStreak();
+  const { data: xpInfo } = useXp();
 
   const speak = (text: string) => {
     if ("speechSynthesis" in window) {
@@ -124,8 +126,8 @@ export default function Home() {
           <div className="absolute top-0 right-0 w-64 h-64 rounded-full bg-white/5 -translate-y-1/3 translate-x-1/3" />
         </section>
 
-        {/* ── Streak + Word of the Day ── */}
-        <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* ── Streak + XP + Word of the Day ── */}
+        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {/* Streak */}
           <div className="bg-card border border-border rounded-2xl p-6 flex items-center gap-5">
             <div className="w-14 h-14 rounded-2xl bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center shrink-0">
@@ -141,9 +143,29 @@ export default function Home() {
             </div>
           </div>
 
+          {/* XP */}
+          <div className="bg-card border border-border rounded-2xl p-6 flex items-center gap-5">
+            <div className="w-14 h-14 rounded-2xl bg-violet-100 dark:bg-violet-900/30 flex items-center justify-center shrink-0">
+              <TrendingUp className="w-7 h-7 text-violet-500" />
+            </div>
+            <div className="min-w-0">
+              <p className="text-sm font-medium text-muted-foreground">Experience</p>
+              <div className="flex items-end gap-1">
+                <span className="text-4xl font-extrabold text-foreground">{xpInfo?.total ?? 0}</span>
+                <span className="text-lg font-semibold text-muted-foreground mb-1">XP</span>
+              </div>
+              <p className="text-xs text-violet-600 dark:text-violet-400 font-semibold mt-1 truncate">
+                {xpInfo?.levelName ?? "🌱 Starter"}
+              </p>
+              {(xpInfo?.todayXp ?? 0) > 0 && (
+                <p className="text-xs text-muted-foreground">+{xpInfo?.todayXp} today</p>
+              )}
+            </div>
+          </div>
+
           {/* Word of the Day */}
           {wordOfDay && (
-            <div className="bg-card border border-primary/20 rounded-2xl p-6 relative overflow-hidden">
+            <div className="bg-card border border-primary/20 rounded-2xl p-6 relative overflow-hidden sm:col-span-2 lg:col-span-1">
               <div className="flex items-center gap-2 mb-3">
                 <Sparkles className="w-4 h-4 text-primary" />
                 <span className="text-xs font-semibold uppercase tracking-widest text-primary">Word of the Day</span>

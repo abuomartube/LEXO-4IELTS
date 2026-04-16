@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import { useAwardXp } from "@workspace/api-client-react";
 import { Layout } from "@/components/layout";
 import {
   BookOpen, ChevronRight, ChevronLeft, CheckCircle2, XCircle,
@@ -26,6 +27,7 @@ export default function ReadingTestPage() {
   const [timeUsed, setTimeUsed] = useState(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const topRef = useRef<HTMLDivElement>(null);
+  const { mutate: awardXp } = useAwardXp();
 
   const selectTest = (test: ReadingTest) => {
     setSelectedTest(test);
@@ -53,6 +55,7 @@ export default function ReadingTestPage() {
     setTimeUsed(3600 - timeLeft);
     setPhase("results");
     topRef.current?.scrollIntoView({ behavior: "smooth" });
+    awardXp({ activity: "reading_test", amount: 20 });
   };
 
   const goToSelect = () => {
