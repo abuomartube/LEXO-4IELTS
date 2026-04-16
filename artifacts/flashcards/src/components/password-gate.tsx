@@ -155,7 +155,7 @@ function LandingPage({ onLogin }: { onLogin: () => void }) {
             </h1>
 
             <p className="text-lg sm:text-xl text-white/60 leading-relaxed mb-8 max-w-lg mx-auto lg:mx-0">
-              Your AI-powered companion for IELTS success. Master vocabulary, ace your speaking and writing — all in one platform.
+              Your AI-powered companion for IELTS success. Master vocabulary, ace your speaking and listening, practice reading and writing — all on one platform.
             </p>
 
             <p className="text-base text-white/40 mb-10 max-w-lg mx-auto lg:mx-0 font-cairo" dir="rtl" lang="ar">
