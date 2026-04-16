@@ -20,6 +20,7 @@ import Speaking from "@/pages/speaking";
 import PhrasalVerbs from "@/pages/phrasal-verbs";
 import ReadingTest from "@/pages/reading-test";
 import ListeningTest from "@/pages/listening-test";
+import { ExitCommentPopup } from "@/components/exit-comment-popup";
 
 setStudentEmailGetter(() => {
   try {
@@ -79,6 +80,7 @@ function App() {
             <Router />
           </WouterRouter>
           <Toaster />
+          <ExitCommentPopup />
         </TooltipProvider>
       </QueryClientProvider>
     </ThemeProvider>
