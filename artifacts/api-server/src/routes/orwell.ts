@@ -1,17 +1,52 @@
 import { Router, type IRouter } from "express";
 import crypto from "node:crypto";
 import Anthropic from "@anthropic-ai/sdk";
-import { eq, and, sql } from "drizzle-orm";
-import { db, orwellSubmissionsTable, xpEventsTable } from "@workspace/db";
+import { eq, and, sql, or, lt, inArray } from "drizzle-orm";
+import { db, orwellSubmissionsTable, xpEventsTable, accessRequestsTable } from "@workspace/db";
+import { getOrwellEntry } from "../data/orwell-catalog.js";
 
 const SESSION_SECRET = process.env["SESSION_SECRET"] ?? "fallback-secret";
 
-function verifyStudentEmail(req: import("express").Request): string | null {
+// Tiny in-process cache of approved-and-unexpired emails to avoid hitting the
+// access_requests table on every request. Entries expire after 60s.
+const APPROVAL_CACHE_TTL_MS = 60_000;
+const approvalCache = new Map<string, number>(); // email -> expiry epoch ms
+
+async function isStudentApproved(email: string): Promise<boolean> {
+  const now = Date.now();
+  const cached = approvalCache.get(email);
+  if (cached !== undefined && cached > now) return true;
+  const rows = await db
+    .select({ status: accessRequestsTable.status, expiresAt: accessRequestsTable.expiresAt })
+    .from(accessRequestsTable)
+    .where(eq(accessRequestsTable.email, email))
+    .limit(1);
+  const row = rows[0];
+  if (!row || row.status !== "approved") {
+    approvalCache.delete(email);
+    return false;
+  }
+  if (row.expiresAt && row.expiresAt.getTime() < now) {
+    approvalCache.delete(email);
+    return false;
+  }
+  // Cache for the shorter of 60s or until expiry.
+  const ttlExpiry = now + APPROVAL_CACHE_TTL_MS;
+  const cacheUntil = row.expiresAt ? Math.min(ttlExpiry, row.expiresAt.getTime()) : ttlExpiry;
+  approvalCache.set(email, cacheUntil);
+  return true;
+}
+
+async function verifyStudentEmail(req: import("express").Request): Promise<string | null> {
   const email = (req.headers["x-student-email"] as string || "").trim().toLowerCase();
   const token = (req.headers["x-student-token"] as string || "").trim();
   if (!email || !token) return null;
   const expected = crypto.createHmac("sha256", SESSION_SECRET).update(email + ":approved").digest("hex");
-  if (token !== expected) return null;
+  // Constant-time compare to mitigate timing attacks.
+  const a = Buffer.from(token, "hex");
+  const b = Buffer.from(expected, "hex");
+  if (a.length !== b.length || !crypto.timingSafeEqual(a, b)) return null;
+  if (!(await isStudentApproved(email))) return null;
   return email;
 }
 
@@ -28,7 +63,7 @@ const router: IRouter = Router();
 
 // ── Next assignment ───────────────────────────────────────────────────────
 router.get("/orwell/next", async (req, res): Promise<void> => {
-  const email = verifyStudentEmail(req);
+  const email = await verifyStudentEmail(req);
   if (!email) { res.status(401).json({ error: "Unauthorized" }); return; }
   const category = String(req.query.category || "");
   if (!CATEGORIES.has(category)) { res.status(400).json({ error: "Invalid category" }); return; }
@@ -36,7 +71,12 @@ router.get("/orwell/next", async (req, res): Promise<void> => {
   const rows = await db
     .select({ id: orwellSubmissionsTable.assignmentId, status: orwellSubmissionsTable.status })
     .from(orwellSubmissionsTable)
-    .where(and(eq(orwellSubmissionsTable.email, email), eq(orwellSubmissionsTable.category, category)));
+    .where(and(
+      eq(orwellSubmissionsTable.email, email),
+      eq(orwellSubmissionsTable.category, category),
+      // Hide in-progress "grading" rows from the client — they're not user-visible state.
+      inArray(orwellSubmissionsTable.status, ["submitted", "skipped"]),
+    ));
 
   const submittedIds = new Set(rows.filter((r) => r.status === "submitted").map((r) => r.id));
   const skippedIds = new Set(rows.filter((r) => r.status === "skipped").map((r) => r.id));
@@ -45,12 +85,17 @@ router.get("/orwell/next", async (req, res): Promise<void> => {
 
 // ── Skip assignment ───────────────────────────────────────────────────────
 router.post("/orwell/skip", async (req, res): Promise<void> => {
-  const email = verifyStudentEmail(req);
+  const email = await verifyStudentEmail(req);
   if (!email) { res.status(401).json({ error: "Unauthorized" }); return; }
   const { assignmentId, category } = req.body as { assignmentId: string; category: string };
   if (!assignmentId || !CATEGORIES.has(category)) { res.status(400).json({ error: "Invalid payload" }); return; }
+  const entry = getOrwellEntry(assignmentId);
+  if (!entry || entry.category !== category) {
+    res.status(400).json({ error: "Unknown assignment" });
+    return;
+  }
 
-  // Only record skip if not already submitted
+  // Only record skip if not already submitted/grading
   await db
     .insert(orwellSubmissionsTable)
     .values({ email, assignmentId, category, status: "skipped" })
@@ -128,31 +173,73 @@ Return ONLY a valid JSON object:
 - original must be the EXACT phrase as it appears in the student's text so it can be highlighted.
 - No markdown, no extra text.`;
 
+// How long a "grading" lock is allowed to stay before another request can take it over.
+// Anthropic calls typically finish in <30s; 5 minutes is a generous safety net.
+const GRADING_LOCK_TIMEOUT_MS = 5 * 60 * 1000;
+
 router.post("/orwell/submit", async (req, res): Promise<void> => {
-  const email = verifyStudentEmail(req);
+  const email = await verifyStudentEmail(req);
   if (!email) { res.status(401).json({ error: "Unauthorized" }); return; }
 
-  const { assignmentId, category, prompt, text, taskType } = req.body as {
-    assignmentId: string;
-    category: string;
-    prompt: string;
-    text: string;
+  const { assignmentId, text, taskType } = req.body as {
+    assignmentId?: string;
+    text?: string;
     taskType?: string;
   };
 
-  if (!assignmentId || !CATEGORIES.has(category) || !prompt || !text || text.trim().length < 10) {
+  if (!assignmentId || typeof assignmentId !== "string" ||
+      !text || typeof text !== "string" || text.trim().length < 10) {
     res.status(400).json({ error: "Missing or invalid payload." });
     return;
   }
 
-  // Reject if already submitted
-  const [existing] = await db
-    .select({ id: orwellSubmissionsTable.id, status: orwellSubmissionsTable.status })
-    .from(orwellSubmissionsTable)
-    .where(and(eq(orwellSubmissionsTable.email, email), eq(orwellSubmissionsTable.assignmentId, assignmentId)))
-    .limit(1);
-  if (existing && existing.status === "submitted") {
-    res.status(409).json({ error: "This assignment has already been submitted." });
+  // Server-side validation against canonical catalog.
+  const entry = getOrwellEntry(assignmentId);
+  if (!entry) {
+    res.status(400).json({ error: "Unknown assignment." });
+    return;
+  }
+  const category = entry.category;
+  const prompt = entry.prompt; // canonical prompt — ignore any client-supplied prompt
+
+  // ── Idempotency / concurrency lock ─────────────────────────────────────
+  // Atomically claim a "grading" slot. We take ownership only when there is
+  // no row yet, OR the row is "skipped", OR the row is a stale "grading"
+  // older than GRADING_LOCK_TIMEOUT_MS. Otherwise (status='submitted' or
+  // a fresh 'grading' from a concurrent request) the upsert no-ops and we
+  // return 409.
+  const staleCutoff = new Date(Date.now() - GRADING_LOCK_TIMEOUT_MS);
+  const claim = await db
+    .insert(orwellSubmissionsTable)
+    .values({ email, assignmentId, category, status: "grading" })
+    .onConflictDoUpdate({
+      target: [orwellSubmissionsTable.email, orwellSubmissionsTable.assignmentId],
+      set: { status: "grading", category, createdAt: new Date() },
+      setWhere: or(
+        eq(orwellSubmissionsTable.status, "skipped"),
+        and(
+          eq(orwellSubmissionsTable.status, "grading"),
+          lt(orwellSubmissionsTable.createdAt, staleCutoff),
+        ),
+      ),
+    })
+    .returning({ id: orwellSubmissionsTable.id });
+
+  if (claim.length === 0) {
+    // Either already submitted or another request is currently grading it.
+    const [existing] = await db
+      .select({ status: orwellSubmissionsTable.status })
+      .from(orwellSubmissionsTable)
+      .where(and(
+        eq(orwellSubmissionsTable.email, email),
+        eq(orwellSubmissionsTable.assignmentId, assignmentId),
+      ))
+      .limit(1);
+    if (existing?.status === "submitted") {
+      res.status(409).json({ error: "This assignment has already been submitted." });
+    } else {
+      res.status(409).json({ error: "This assignment is currently being graded. Please wait a moment and try again." });
+    }
     return;
   }
 
@@ -194,6 +281,19 @@ router.post("/orwell/submit", async (req, res): Promise<void> => {
     }
   } catch (err) {
     console.error("Orwell submit error:", err);
+    // Release our grading lock so the user can retry. Roll the row back to
+    // "skipped" if it existed, or delete the freshly-inserted lock row.
+    try {
+      await db
+        .delete(orwellSubmissionsTable)
+        .where(and(
+          eq(orwellSubmissionsTable.email, email),
+          eq(orwellSubmissionsTable.assignmentId, assignmentId),
+          eq(orwellSubmissionsTable.status, "grading"),
+        ));
+    } catch (cleanupErr) {
+      console.error("Failed to release Orwell grading lock:", cleanupErr);
+    }
     res.status(500).json({ error: "AI grading failed. Please try again." });
     return;
   }
@@ -205,22 +305,25 @@ router.post("/orwell/submit", async (req, res): Promise<void> => {
     ? (parsed as { overallBand: number }).overallBand
     : band;
 
-  await db
-    .insert(orwellSubmissionsTable)
-    .values({
-      email,
-      assignmentId,
-      category,
-      status: "submitted",
-      band: overallBand ?? null,
-      wordCount,
-    })
-    .onConflictDoUpdate({
-      target: [orwellSubmissionsTable.email, orwellSubmissionsTable.assignmentId],
-      set: { status: "submitted", band: overallBand ?? null, wordCount, createdAt: new Date() },
-    });
+  // Promote our grading lock to a finalized submission. Only update rows we own
+  // (status='grading') so a concurrent finalize from elsewhere can't be clobbered.
+  const finalize = await db
+    .update(orwellSubmissionsTable)
+    .set({ status: "submitted", band: overallBand ?? null, wordCount, createdAt: new Date() })
+    .where(and(
+      eq(orwellSubmissionsTable.email, email),
+      eq(orwellSubmissionsTable.assignmentId, assignmentId),
+      eq(orwellSubmissionsTable.status, "grading"),
+    ))
+    .returning({ id: orwellSubmissionsTable.id });
 
-  // Award XP (capped by the global /xp/award logic semantics — we inline the capping here)
+  if (finalize.length === 0) {
+    // Lock was stolen by a stale-takeover or already finalized; don't double-award XP.
+    res.json({ ...parsed, wordCount });
+    return;
+  }
+
+  // Award XP (capped at 20/day for essay_check)
   try {
     const todayStart = new Date(); todayStart.setHours(0, 0, 0, 0);
     const [todayRow] = await db
@@ -246,7 +349,7 @@ router.post("/orwell/submit", async (req, res): Promise<void> => {
 
 // ── Progress ─────────────────────────────────────────────────────────────
 router.get("/orwell/progress", async (req, res): Promise<void> => {
-  const email = verifyStudentEmail(req);
+  const email = await verifyStudentEmail(req);
   if (!email) { res.status(401).json({ error: "Unauthorized" }); return; }
 
   const rows = await db
