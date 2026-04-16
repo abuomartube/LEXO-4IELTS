@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
-import { BookOpen, Home, Layers, PieChart, ExternalLink, Sun, Moon, HelpCircle, Sparkles, Shuffle, ArrowUpDown, FileText, BookMarked, Mic, LogOut, GraduationCap, Headphones, Menu, X, AlertTriangle, NotebookPen, Trophy } from "lucide-react";
+import { BookOpen, Home, Layers, PieChart, ExternalLink, Sun, Moon, HelpCircle, Sparkles, Shuffle, ArrowUpDown, FileText, BookMarked, Mic, LogOut, GraduationCap, Headphones, Menu, X, AlertTriangle, NotebookPen, Trophy, BookText } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTheme } from "@/context/theme-context";
 import { Button } from "@/components/ui/button";
@@ -44,6 +44,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
     { href: "/synonyms", label: "Synonyms", icon: Sparkles },
     { href: "/antonyms", label: "Antonyms", icon: Shuffle },
     { href: "/phrasal-verbs", label: "Phrasal Verbs", icon: ArrowUpDown },
+    { href: "/grammar", label: "Grammar", icon: BookText },
     { href: "/speaking", label: "Churchill AI", icon: Mic },
     { href: "/speaking-topics", label: "Topic Bank", icon: BookOpen },
     { href: "/essay-checker", label: "Orwell AI", icon: FileText },

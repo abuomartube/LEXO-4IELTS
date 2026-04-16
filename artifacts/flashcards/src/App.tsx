@@ -25,6 +25,7 @@ import SpeakingTopics from "@/pages/speaking-topics";
 import WritingTemplates from "@/pages/writing-templates";
 import TeacherDashboard from "@/pages/teacher-dashboard";
 import MockTest from "@/pages/mock-test";
+import Grammar from "@/pages/grammar";
 import { ExitCommentPopup } from "@/components/exit-comment-popup";
 
 setStudentEmailGetter(() => {
@@ -72,6 +73,7 @@ function Router() {
             <Route path="/speaking-topics" component={SpeakingTopics} />
             <Route path="/writing-templates" component={WritingTemplates} />
             <Route path="/weak-words" component={WeakWords} />
+            <Route path="/grammar" component={Grammar} />
             <Route path="/mock-test" component={MockTest} />
             <Route component={NotFound} />
           </Switch>
