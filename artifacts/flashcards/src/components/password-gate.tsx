@@ -3,6 +3,7 @@ import { Mail, Lock, Eye, EyeOff, Loader2, Clock, CalendarX, MessageCircle, LogI
 import { Onboarding, useOnboardingCheck } from "./onboarding";
 import { NotificationPrompt } from "./notification-prompt";
 import { GuidedTour, useGuidedTour } from "./guided-tour";
+import { LexoAiChat } from "./lexo-ai-chat";
 
 const STORAGE_KEY = "4ielts_email";
 const WHATSAPP_URL = "https://wa.me/message/KMWPDZOBBNAAB1";
@@ -239,6 +240,7 @@ function PasswordGateUnlocked({ children }: { children: ReactNode }) {
         <GuidedTour onComplete={completeTour} />
       )}
       <NotificationPrompt />
+      {checked && !needsOnboarding && <LexoAiChat />}
     </>
   );
 }

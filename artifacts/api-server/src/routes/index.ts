@@ -7,6 +7,7 @@ import essayCheckRouter from "./essay-check";
 import storiesRouter from "./stories";
 import speakingRouter from "./speaking";
 import notificationsRouter from "./notifications";
+import lexoAiRouter from "./lexo-ai";
 
 const router: IRouter = Router();
 
@@ -18,5 +19,6 @@ router.use(essayCheckRouter);
 router.use(storiesRouter);
 router.use(speakingRouter);
 router.use(notificationsRouter);
+router.use(lexoAiRouter);
 
 export default router;
