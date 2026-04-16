@@ -7,7 +7,6 @@ import {
   type OrwellAssignment,
 } from "@/data/orwell-assignments";
 import { SkipForward } from "lucide-react";
-import { useAwardXp } from "@workspace/api-client-react";
 import { Layout } from "@/components/layout";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -584,7 +583,6 @@ export default function EssayChecker() {
   });
   const [categoryProgress, setCategoryProgress] = useState<CategoryProgress | null>(null);
   const resultRef = useRef<HTMLDivElement>(null);
-  const { mutate: awardXp } = useAwardXp();
 
   const wordCount = essay.trim().split(/\s+/).filter(Boolean).length;
   const minWords = assignment?.minWords ?? 250;
@@ -694,14 +692,13 @@ export default function EssayChecker() {
         return { submittedIds, skippedIds };
       });
       setScreen("result");
-      awardXp({ activity: "essay_check", amount: 10 });
       setTimeout(() => resultRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 100);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
-  }, [canSubmit, assignment, essay, taskType, awardXp]);
+  }, [canSubmit, assignment, essay, taskType]);
 
   const handleNextAssignment = async () => {
     if (!assignment) { setScreen("select"); return; }
