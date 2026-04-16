@@ -1,5 +1,6 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, type ReactNode } from "react";
 import { Mail, Lock, Eye, EyeOff, Loader2, Clock, CalendarX, MessageCircle, LogIn, ChevronRight, Sparkles, Brain, Mic, PenTool, BookOpen, ArrowLeftRight, ArrowUpDown, BarChart3, Flame, Zap, CheckCircle2, Star, Quote, Headphones } from "lucide-react";
+import { Onboarding, useOnboardingCheck } from "./onboarding";
 
 const STORAGE_KEY = "4ielts_email";
 const WHATSAPP_URL = "https://wa.me/message/KMWPDZOBBNAAB1";
@@ -222,6 +223,19 @@ function LandingPage({ onLogin }: { onLogin: () => void }) {
   );
 }
 
+function PasswordGateUnlocked({ children }: { children: ReactNode }) {
+  const { needsOnboarding, checked, setNeedsOnboarding } = useOnboardingCheck();
+
+  return (
+    <>
+      {!checked ? null : needsOnboarding ? (
+        <Onboarding onComplete={() => setNeedsOnboarding(false)} />
+      ) : null}
+      {children}
+    </>
+  );
+}
+
 interface PasswordGateProps { children: React.ReactNode; }
 
 export function PasswordGate({ children }: PasswordGateProps) {
@@ -372,7 +386,7 @@ export function PasswordGate({ children }: PasswordGateProps) {
     );
   }
 
-  if (phase === "unlocked") return <>{children}</>;
+  if (phase === "unlocked") return <PasswordGateUnlocked>{children}</PasswordGateUnlocked>;
 
   if (phase === "landing") {
     return <LandingPage onLogin={() => setPhase("form")} />;
