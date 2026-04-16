@@ -129,7 +129,7 @@ export default function Home() {
         {/* ── Streak + XP + Word of the Day ── */}
         <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {/* Streak */}
-          <div className="bg-card border border-border rounded-2xl p-6 flex items-center gap-5">
+          <div data-tour="streak" className="bg-card border border-border rounded-2xl p-6 flex items-center gap-5">
             <div className="w-14 h-14 rounded-2xl bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center shrink-0">
               <Flame className="w-7 h-7 text-orange-500" />
             </div>
@@ -165,7 +165,7 @@ export default function Home() {
 
           {/* Word of the Day */}
           {wordOfDay && (
-            <div className="bg-card border border-primary/20 rounded-2xl p-6 relative overflow-hidden sm:col-span-2 lg:col-span-1">
+            <div data-tour="word-of-day" className="bg-card border border-primary/20 rounded-2xl p-6 relative overflow-hidden sm:col-span-2 lg:col-span-1">
               <div className="flex items-center gap-2 mb-3">
                 <Sparkles className="w-4 h-4 text-primary" />
                 <span className="text-xs font-semibold uppercase tracking-widest text-primary">Word of the Day</span>
@@ -207,6 +207,43 @@ export default function Home() {
                 <p className="text-sm text-muted-foreground leading-relaxed">{f.desc}</p>
               </div>
             ))}
+          </div>
+        </section>
+
+        {/* ── Tour Highlights ── */}
+        <section className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <Link href="/weak-words" className="block">
+            <div data-tour="weak-words" className="bg-card border border-border rounded-2xl p-5 hover:border-rose-400/40 transition-colors h-full">
+              <div className="w-10 h-10 rounded-xl bg-rose-50 dark:bg-rose-900/20 flex items-center justify-center mb-3">
+                <Target className="w-5 h-5 text-rose-500" />
+              </div>
+              <h3 className="font-bold text-foreground mb-1">Weak Words</h3>
+              <p className="text-sm text-muted-foreground">Words you got wrong — review and master them.</p>
+            </div>
+          </Link>
+          <div data-tour="ai-tools" className="bg-card border border-border rounded-2xl p-5">
+            <div className="flex gap-2 mb-3">
+              <div className="w-10 h-10 rounded-xl bg-teal-50 dark:bg-teal-900/20 flex items-center justify-center">
+                <Mic className="w-5 h-5 text-teal-600" />
+              </div>
+              <div className="w-10 h-10 rounded-xl bg-violet-50 dark:bg-violet-900/20 flex items-center justify-center">
+                <FileText className="w-5 h-5 text-violet-600" />
+              </div>
+            </div>
+            <h3 className="font-bold text-foreground mb-1">Churchill & Orwell AI</h3>
+            <p className="text-sm text-muted-foreground">Speaking practice + Writing grading by AI.</p>
+          </div>
+          <div data-tour="tests" className="bg-card border border-border rounded-2xl p-5">
+            <div className="flex gap-2 mb-3">
+              <div className="w-10 h-10 rounded-xl bg-sky-50 dark:bg-sky-900/20 flex items-center justify-center">
+                <BookOpen className="w-5 h-5 text-sky-600" />
+              </div>
+              <div className="w-10 h-10 rounded-xl bg-amber-50 dark:bg-amber-900/20 flex items-center justify-center">
+                <Trophy className="w-5 h-5 text-amber-600" />
+              </div>
+            </div>
+            <h3 className="font-bold text-foreground mb-1">Tests & Mock IELTS</h3>
+            <p className="text-sm text-muted-foreground">Listening, Reading tests + full Mock IELTS exam.</p>
           </div>
         </section>
 

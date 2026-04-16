@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useRef, type ReactNode } from "react"
 import { Mail, Lock, Eye, EyeOff, Loader2, Clock, CalendarX, MessageCircle, LogIn, ChevronRight, Sparkles, Brain, Mic, PenTool, BookOpen, ArrowLeftRight, ArrowUpDown, BarChart3, Flame, Zap, CheckCircle2, Star, Quote, Headphones } from "lucide-react";
 import { Onboarding, useOnboardingCheck } from "./onboarding";
 import { NotificationPrompt } from "./notification-prompt";
+import { GuidedTour, useGuidedTour } from "./guided-tour";
 
 const STORAGE_KEY = "4ielts_email";
 const WHATSAPP_URL = "https://wa.me/message/KMWPDZOBBNAAB1";
@@ -226,6 +227,7 @@ function LandingPage({ onLogin }: { onLogin: () => void }) {
 
 function PasswordGateUnlocked({ children }: { children: ReactNode }) {
   const { needsOnboarding, checked, setNeedsOnboarding } = useOnboardingCheck();
+  const { showTour, checked: tourChecked, completeTour } = useGuidedTour();
 
   return (
     <>
@@ -233,6 +235,9 @@ function PasswordGateUnlocked({ children }: { children: ReactNode }) {
         <Onboarding onComplete={() => setNeedsOnboarding(false)} />
       ) : null}
       {children}
+      {checked && !needsOnboarding && tourChecked && showTour && (
+        <GuidedTour onComplete={completeTour} />
+      )}
       <NotificationPrompt />
     </>
   );
