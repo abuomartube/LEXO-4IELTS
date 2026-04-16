@@ -103,6 +103,49 @@ export const useAwardXp = () => {
   });
 };
 
+// ── Weak Words ─────────────────────────────────────────────────────────────
+
+export interface WeakWordItem {
+  id: number;
+  flashcardId: number;
+  wrongCount: number;
+  lastWrongAt: string;
+  english: string;
+  arabic: string;
+  level: string;
+  category: string;
+  exampleSentence?: string;
+  exampleSentenceArabic?: string;
+}
+
+export const useWeakWords = () =>
+  useQuery<WeakWordItem[]>({
+    queryKey: ["/api/weak-words"],
+    queryFn: () => customFetch<WeakWordItem[]>("/api/weak-words", { method: "GET" }),
+  });
+
+export const useAddWeakWords = () => {
+  const qc = useQueryClient();
+  return useMutation<{ added: number }, unknown, number[]>({
+    mutationFn: (flashcardIds) =>
+      customFetch<{ added: number }>("/api/weak-words/add", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ flashcardIds }),
+      }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["/api/weak-words"] }),
+  });
+};
+
+export const useMasterWeakWord = () => {
+  const qc = useQueryClient();
+  return useMutation<{ mastered: boolean }, unknown, number>({
+    mutationFn: (id) =>
+      customFetch<{ mastered: boolean }>(`/api/weak-words/${id}/master`, { method: "POST" }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["/api/weak-words"] }),
+  });
+};
+
 // ── Quiz ───────────────────────────────────────────────────────────────────
 
 export const useQuiz = (level?: string, count = 10) =>

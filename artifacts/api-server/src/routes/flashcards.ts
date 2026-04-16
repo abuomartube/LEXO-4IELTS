@@ -1,7 +1,7 @@
 import { Router, type IRouter } from "express";
 import crypto from "node:crypto";
 import { eq, and, ilike, sql, lte, ne } from "drizzle-orm";
-import { db, flashcardsTable, progressTable, bookmarksTable, cardSrsTable, activityPositionTable, quizScoresTable, userDataTable, xpEventsTable } from "@workspace/db";
+import { db, flashcardsTable, progressTable, bookmarksTable, cardSrsTable, activityPositionTable, quizScoresTable, userDataTable, xpEventsTable, weakWordsTable } from "@workspace/db";
 import { desc } from "drizzle-orm";
 
 const SESSION_SECRET = process.env["SESSION_SECRET"] ?? "fallback-secret";
@@ -278,6 +278,71 @@ function getXpLevel(xp: number): { level: number; levelName: string } {
   const found = levels.find(l => xp >= l.min)!;
   return { level: found.level, levelName: found.name };
 }
+
+// ── Weak Words ─────────────────────────────────────────────────────────────
+
+router.get("/weak-words", async (req, res): Promise<void> => {
+  const email = verifyStudentEmail(req);
+  if (!email) { res.json([]); return; }
+
+  const rows = await db
+    .select({
+      id: weakWordsTable.id,
+      flashcardId: weakWordsTable.flashcardId,
+      wrongCount: weakWordsTable.wrongCount,
+      lastWrongAt: weakWordsTable.lastWrongAt,
+      english: flashcardsTable.english,
+      arabic: flashcardsTable.arabic,
+      level: flashcardsTable.level,
+      category: flashcardsTable.category,
+      exampleSentence: flashcardsTable.exampleSentence,
+      exampleSentenceArabic: flashcardsTable.exampleSentenceArabic,
+    })
+    .from(weakWordsTable)
+    .innerJoin(flashcardsTable, eq(weakWordsTable.flashcardId, flashcardsTable.id))
+    .where(eq(weakWordsTable.email, email))
+    .orderBy(desc(weakWordsTable.wrongCount));
+
+  res.json(rows);
+});
+
+router.post("/weak-words/add", async (req, res): Promise<void> => {
+  const email = verifyStudentEmail(req);
+  if (!email) { res.status(401).json({ error: "Unauthorized" }); return; }
+
+  const { flashcardIds } = req.body as { flashcardIds: number[] };
+  if (!Array.isArray(flashcardIds) || flashcardIds.length === 0) {
+    res.json({ added: 0 }); return;
+  }
+
+  let added = 0;
+  for (const fid of flashcardIds) {
+    const existing = await db.select().from(weakWordsTable)
+      .where(and(eq(weakWordsTable.email, email), eq(weakWordsTable.flashcardId, fid)))
+      .limit(1);
+
+    if (existing.length > 0) {
+      await db.update(weakWordsTable)
+        .set({ wrongCount: sql`${weakWordsTable.wrongCount} + 1`, lastWrongAt: new Date() })
+        .where(eq(weakWordsTable.id, existing[0].id));
+    } else {
+      await db.insert(weakWordsTable).values({ email, flashcardId: fid });
+      added++;
+    }
+  }
+  res.json({ added });
+});
+
+router.post("/weak-words/:id/master", async (req, res): Promise<void> => {
+  const email = verifyStudentEmail(req);
+  if (!email) { res.status(401).json({ error: "Unauthorized" }); return; }
+
+  const id = parseInt(req.params.id, 10);
+  await db.delete(weakWordsTable)
+    .where(and(eq(weakWordsTable.id, id), eq(weakWordsTable.email, email)));
+
+  res.json({ mastered: true });
+});
 
 // ── Quiz ───────────────────────────────────────────────────────────────────
 

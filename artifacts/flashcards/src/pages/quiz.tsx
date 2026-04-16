@@ -1,5 +1,5 @@
-import { useState, useEffect, useCallback } from "react";
-import { useQuiz, useFillBlank, customFetch, useAwardXp } from "@workspace/api-client-react";
+import { useState, useEffect, useCallback, useRef } from "react";
+import { useQuiz, useFillBlank, customFetch, useAwardXp, useAddWeakWords } from "@workspace/api-client-react";
 import { Layout } from "@/components/layout";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -49,6 +49,8 @@ export default function Quiz() {
   const [history, setHistory] = useState<QuizScore[]>([]);
   const [scoreSaved, setScoreSaved] = useState(false);
   const { mutate: awardXp } = useAwardXp();
+  const { mutate: addWeakWords } = useAddWeakWords();
+  const wrongIdsRef = useRef<number[]>([]);
 
   const loadHistory = useCallback(async () => {
     try {
@@ -83,6 +85,7 @@ export default function Quiz() {
     setResults({ total: 0, correct: 0, wrong: 0 });
     setDone(false);
     setScoreSaved(false);
+    wrongIdsRef.current = [];
     if (mode === "multiple-choice") await refetchMc();
     else await refetchFb();
   };
@@ -109,6 +112,9 @@ export default function Quiz() {
       correct: correct ? r.correct + 1 : r.correct,
       wrong: !correct ? r.wrong + 1 : r.wrong,
     }));
+    if (!correct && q.flashcard?.id) {
+      wrongIdsRef.current.push(q.flashcard.id);
+    }
   };
 
   const checkFillAnswer = () => {
@@ -122,6 +128,9 @@ export default function Quiz() {
       correct: correct ? r.correct + 1 : r.correct,
       wrong: !correct ? r.wrong + 1 : r.wrong,
     }));
+    if (!correct && q.flashcard?.id) {
+      wrongIdsRef.current.push(q.flashcard.id);
+    }
   };
 
   useEffect(() => {
@@ -135,8 +144,11 @@ export default function Quiz() {
       if (results.correct > 0) {
         awardXp({ activity: "quiz_correct", amount: results.correct * 5 });
       }
+      if (wrongIdsRef.current.length > 0) {
+        addWeakWords([...new Set(wrongIdsRef.current)]);
+      }
     }
-  }, [done, scoreSaved, results, mode, level, loadHistory, awardXp]);
+  }, [done, scoreSaved, results, mode, level, loadHistory, awardXp, addWeakWords]);
 
   const pct = questions.length > 0 ? Math.round((currentIndex / questions.length) * 100) : 0;
 

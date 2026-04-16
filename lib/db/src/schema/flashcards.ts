@@ -128,3 +128,13 @@ export const xpEventsTable = pgTable("xp_events", {
 });
 
 export type XpEvent = typeof xpEventsTable.$inferSelect;
+
+export const weakWordsTable = pgTable("weak_words", {
+  id: serial("id").primaryKey(),
+  email: text("email").notNull(),
+  flashcardId: integer("flashcard_id").notNull().references(() => flashcardsTable.id, { onDelete: "cascade" }),
+  wrongCount: integer("wrong_count").notNull().default(1),
+  lastWrongAt: timestamp("last_wrong_at", { withTimezone: true }).notNull().defaultNow(),
+}, (t) => [unique().on(t.email, t.flashcardId)]);
+
+export type WeakWord = typeof weakWordsTable.$inferSelect;
