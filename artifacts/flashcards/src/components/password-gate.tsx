@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import { Mail, Lock, Eye, EyeOff, Loader2, Clock, CalendarX, MessageCircle, LogIn, ChevronRight, Sparkles, Brain, Mic, PenTool, BookOpen, ArrowLeftRight, ArrowUpDown, BarChart3, Flame, Zap, CheckCircle2, Star, Quote } from "lucide-react";
+import { Mail, Lock, Eye, EyeOff, Loader2, Clock, CalendarX, MessageCircle, LogIn, ChevronRight, Sparkles, Brain, Mic, PenTool, BookOpen, ArrowLeftRight, ArrowUpDown, BarChart3, Flame, Zap, CheckCircle2, Star, Quote, Headphones } from "lucide-react";
 
 const STORAGE_KEY = "4ielts_email";
 const WHATSAPP_URL = "https://wa.me/message/KMWPDZOBBNAAB1";
@@ -55,6 +55,7 @@ const landingFeatures = [
   { icon: BookOpen, text: "3,000 words from A2 to C1", color: "text-teal-400" },
   { icon: Sparkles, text: "Interactive flashcards + word pronunciation", color: "text-sky-400" },
   { icon: Brain, text: "Smart quizzes", color: "text-violet-400" },
+  { icon: Headphones, text: "🎧 Listening and Reading Practice", color: "text-blue-400" },
   { icon: Mic, text: "Churchill AI (Speaking)", color: "text-rose-400" },
   { icon: PenTool, text: "Orwell AI (Writing Task 1 / Task 2)", color: "text-amber-400" },
   { icon: CheckCircle2, text: "Quiz Mode", color: "text-emerald-400" },
