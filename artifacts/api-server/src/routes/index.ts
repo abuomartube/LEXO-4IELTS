@@ -6,6 +6,7 @@ import authRouter from "./auth";
 import essayCheckRouter from "./essay-check";
 import storiesRouter from "./stories";
 import speakingRouter from "./speaking";
+import notificationsRouter from "./notifications";
 
 const router: IRouter = Router();
 
@@ -16,5 +17,6 @@ router.use(vocabPdfRouter);
 router.use(essayCheckRouter);
 router.use(storiesRouter);
 router.use(speakingRouter);
+router.use(notificationsRouter);
 
 export default router;

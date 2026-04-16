@@ -138,3 +138,13 @@ export const weakWordsTable = pgTable("weak_words", {
 }, (t) => [unique().on(t.email, t.flashcardId)]);
 
 export type WeakWord = typeof weakWordsTable.$inferSelect;
+
+export const pushSubscriptionsTable = pgTable("push_subscriptions", {
+  id: serial("id").primaryKey(),
+  email: text("email").notNull(),
+  endpoint: text("endpoint").notNull(),
+  keys: text("keys").notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+}, (t) => [unique().on(t.email, t.endpoint)]);
+
+export type PushSubscription = typeof pushSubscriptionsTable.$inferSelect;

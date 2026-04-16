@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef, type ReactNode } from "react";
 import { Mail, Lock, Eye, EyeOff, Loader2, Clock, CalendarX, MessageCircle, LogIn, ChevronRight, Sparkles, Brain, Mic, PenTool, BookOpen, ArrowLeftRight, ArrowUpDown, BarChart3, Flame, Zap, CheckCircle2, Star, Quote, Headphones } from "lucide-react";
 import { Onboarding, useOnboardingCheck } from "./onboarding";
+import { NotificationPrompt } from "./notification-prompt";
 
 const STORAGE_KEY = "4ielts_email";
 const WHATSAPP_URL = "https://wa.me/message/KMWPDZOBBNAAB1";
@@ -232,6 +233,7 @@ function PasswordGateUnlocked({ children }: { children: ReactNode }) {
         <Onboarding onComplete={() => setNeedsOnboarding(false)} />
       ) : null}
       {children}
+      <NotificationPrompt />
     </>
   );
 }

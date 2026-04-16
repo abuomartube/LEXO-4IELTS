@@ -27,3 +27,10 @@ timeoutMs = 20000
 
 [nix]
 channel = "stable-25_05"
+
+[userenv]
+
+[userenv.shared]
+VAPID_PUBLIC_KEY = "BHKoqQl-9OEkMkE0AJJTWTEba7nBZERoYHZuyEsEcTrv2RPqm8z9KKx08T9O6gixdhk4VQiupoBLY7jy2rlfFfk"
+VAPID_PRIVATE_KEY = "pWLu1E-UKYpbRNDcUfpeR-4CtVnwjRUb8C4x0ozoaeY"
+VAPID_EMAIL = "mailto:askabuomar@gmail.com"
