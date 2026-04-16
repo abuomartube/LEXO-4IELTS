@@ -18,10 +18,11 @@ interface StudentRow {
   weakWordsCount: number;
   wordsKnown: number;
   quizzesTaken: number;
+  assignmentsCompleted: number;
   lastActivity: string | null;
 }
 
-type SortKey = "email" | "xp" | "streak" | "weakWordsCount" | "wordsKnown" | "quizzesTaken" | "level" | "lastActivity";
+type SortKey = "email" | "xp" | "streak" | "weakWordsCount" | "wordsKnown" | "quizzesTaken" | "assignmentsCompleted" | "level" | "lastActivity";
 
 function formatDate(d: string | null): string {
   if (!d) return "—";
@@ -272,6 +273,7 @@ export default function TeacherDashboard() {
                       ["wordsKnown", "Words Known"],
                       ["weakWordsCount", "Weak Words"],
                       ["quizzesTaken", "Quizzes"],
+                      ["assignmentsCompleted", "Assignments"],
                       ["lastActivity", "Last Active"],
                     ] as [SortKey, string][]).map(([key, label]) => (
                       <th
@@ -290,7 +292,7 @@ export default function TeacherDashboard() {
                 <tbody>
                   {filtered.length === 0 ? (
                     <tr>
-                      <td colSpan={8} className="px-4 py-12 text-center text-muted-foreground">
+                      <td colSpan={9} className="px-4 py-12 text-center text-muted-foreground">
                         {students.length === 0 ? "No approved students yet" : `No students match "${search}"`}
                       </td>
                     </tr>
@@ -336,6 +338,12 @@ export default function TeacherDashboard() {
                           <div className="flex items-center gap-1 font-medium text-foreground">
                             <Trophy className="w-3.5 h-3.5 text-purple-500" />
                             {s.quizzesTaken}
+                          </div>
+                        </td>
+                        <td className="px-3 py-3">
+                          <div className={cn("flex items-center gap-1 font-bold", (s.assignmentsCompleted ?? 0) > 0 ? "text-foreground" : "text-muted-foreground")}>
+                            <span className="text-base">✍️</span>
+                            {s.assignmentsCompleted ?? 0}
                           </div>
                         </td>
                         <td className="px-3 py-3 text-muted-foreground whitespace-nowrap">

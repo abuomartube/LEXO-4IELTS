@@ -1,133 +1,80 @@
-# Workspace
+# Overview
 
-## Overview
+This is a pnpm workspace monorepo using TypeScript, designed to build a comprehensive English Flashcards App. The primary purpose is to provide an educational platform for students preparing for the IELTS exam, offering a rich set of learning tools including flashcards, quizzes, spaced repetition, AI-powered writing feedback, and mock tests. The application aims to deliver a personalized and effective learning experience, focusing on vocabulary, grammar, and exam-specific skills.
 
-pnpm workspace monorepo using TypeScript. Each package manages its own dependencies.
+The project utilizes a modern web stack, emphasizing a performant and scalable architecture. It targets a global audience of IELTS aspirants, particularly those seeking bilingual English-Arabic learning resources. Key capabilities include:
 
-## Stack
+-   **Extensive Flashcard System**: 2,198 unique CEFR-corrected flashcards with Arabic translations and bilingual example sentences.
+-   **Interactive Study Modes**: Study, Quiz, Browse, and Spaced Repetition (SM-2 algorithm) for effective vocabulary acquisition.
+-   **AI-Powered Tools**: Orwell AI for IELTS essay checking with Band 7 grading anchors and LEXO AI Chat Assistant for IELTS-specific queries.
+-   **Comprehensive Testing**: Full IELTS Listening, Reading, and Mock Tests with auto-grading and detailed feedback.
+-   **Personalized Learning**: Daily streaks, weak-word decks, progress tracking, and an onboarding flow for customized study plans.
+-   **Teacher Dashboard**: Admin interface to monitor student progress and activity.
+-   **Rich Content**: Phrasal verbs, grammar topics, writing templates, and speaking topic banks.
 
-- **Monorepo tool**: pnpm workspaces
-- **Node.js version**: 24
-- **Package manager**: pnpm
-- **TypeScript version**: 5.9
-- **API framework**: Express 5
-- **Database**: PostgreSQL + Drizzle ORM
-- **Validation**: Zod (`zod/v4`), `drizzle-zod`
-- **API codegen**: Orval (from OpenAPI spec)
-- **Build**: esbuild (CJS bundle)
+## User Preferences
 
-## Key Commands
+I prefer iterative development, with a focus on delivering small, testable increments.
+When making significant changes, please ask for confirmation before proceeding.
+I like to see clear, well-structured code with good comments where necessary.
+I prefer detailed explanations for complex logic or architectural decisions.
+Do not make changes to the folder `artifacts/flashcards/public`.
+Do not make changes to the file `artifacts/flashcards/src/data/phrasal-verbs-data.json`.
 
-- `pnpm run typecheck` — full typecheck across all packages
-- `pnpm run build` — typecheck + build all packages
-- `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from OpenAPI spec
-- `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
-- `pnpm --filter @workspace/api-server run dev` — run API server locally
+## System Architecture
 
-See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and package details.
+The project is structured as a pnpm workspace monorepo, facilitating the management of multiple packages (e.g., API server, UI, shared libraries) within a single repository.
 
-## Artifacts
+**Core Technologies**:
+-   **Node.js**: v24
+-   **TypeScript**: v5.9
+-   **Package Manager**: pnpm
+-   **API Framework**: Express 5
+-   **Database**: PostgreSQL with Drizzle ORM
+-   **Validation**: Zod (v4)
+-   **UI Framework**: React with Vite
+-   **Build Tool**: esbuild
 
-### English Flashcards App (`artifacts/flashcards`)
-- React + Vite frontend at `/` (previewPath)
-- **2,198 unique flashcards** across A1 (378), A2 (520), B1 (313), B2 (261), C1 (726) — CEFR-corrected, deduplicated
-- Arabic translations with Cairo font, RTL layout; bilingual example sentences
-- Branding: 4IELTS teal/navy, Abu Omar photo, logo, 4ielts.com link
-- **Access control**: students enter email + access code (`ielts2025` default); admin panel at `/admin`
+**Key Architectural Decisions**:
+-   **Monorepo Structure**: Uses pnpm workspaces for managing inter-dependent packages and consistent tooling.
+-   **Type Safety**: End-to-end type safety enforced by TypeScript and Zod for API schemas.
+-   **API Codegen**: Orval is used to generate API hooks and Zod schemas from an OpenAPI specification, ensuring client-server contract consistency.
+-   **Data Persistence**: PostgreSQL with Drizzle ORM manages all application data, including user progress, flashcards, SRS data, and quiz scores.
+-   **Frontend Design**: The UI features a clean, educational-focused design with branding elements (4IELTS teal/navy). It includes persistent login, dark mode, and a responsive layout.
+-   **Spaced Repetition System (SRS)**: Implements the SM-2 algorithm for optimizing flashcard review intervals, stored in the `card_srs` table.
+-   **User Authentication/Authorization**: Access control based on email and access codes, with an admin panel protected by `requireAdmin` middleware. Persistent login sessions are stored in the database.
+-   **Activity Position Persistence**: User's last-viewed card position and filters are saved for each activity, allowing seamless resumption of study sessions.
+-   **AI Integration**: Seamlessly integrates with external AI services for writing evaluation (Orwell AI) and conversational assistance (LEXO AI), using dedicated API routes and environment variables for configuration.
+-   **Background Processes**: PDF generation is handled on-demand with caching. Web push notifications are managed via VAPID and a cron scheduler for daily reminders.
+-   **UI/UX Features**:
+    -   **Branding**: 4IELTS teal/navy color scheme, specific logo, and footer link.
+    -   **Theming**: Dark mode support with persistence.
+    -   **Notifications**: Toast notifications for user feedback.
+    -   **Interactivity**: 3D flip cards, interactive quizzes, and guided onboarding tours.
+    -   **Accessibility**: Arabic translations, RTL layout where appropriate, and browser TTS for speaking topics.
+-   **PDF Generation**: Utilizes puppeteer-core and a system Chromium instance to generate bilingual vocabulary PDFs, with caching for performance.
 
-#### Pages
-- **Dashboard** — Hero, streak counter, Word of the Day, feature grid, progress summary, instructor section
-- **Study Mode** — 3D flip cards; tabs: All / Due (SRS) / Still Learning / Bookmarked; session summary modal
-- **Quiz Mode** — Multiple choice (pick Arabic translation) + Fill-in-the-blank; start screen + score summary
-- **Browse Cards** — Grid view with search/filter; bookmark toggle; bookmarks-only view
-- **Progress** — Full learning journey dashboard: vocabulary mastery by level, synonyms/antonyms/phrasal verbs session stats (known/unknown), stories completion tracking
+**Database Schema Highlights**:
+-   `flashcards`: Stores core flashcard data.
+-   `progress`: Tracks individual card mastery for each user.
+-   `bookmarks`: User-specific bookmarked flashcards.
+-   `card_srs`: Stores SM-2 algorithm state for each user's cards.
+-   `activity_positions`: Saves user's progress within various activities.
+-   `quiz_scores`: Records results of quizzes.
+-   `user_data`: Generic key-value store for diverse user preferences and states (e.g., target IELTS band, exam date).
+-   `weak_words`: Manages a personalized deck of words missed in quizzes.
+-   `xp_events`: Logs experience points for gamification.
+-   `push_subscriptions`: Stores web push notification subscription details.
 
-#### API Routes
-- `GET /api/flashcards` — list/search/filter cards
-- `GET /api/flashcards/levels` — level stats
-- `GET /api/flashcards/categories` — all categories
-- `GET /api/progress` — all progress records
-- `POST /api/progress` — record review result
-- `GET /api/progress/summary` — totals per level
-- `GET /api/bookmarks` — list bookmarked card IDs
-- `POST /api/bookmarks/:id` — toggle bookmark
-- `GET /api/word-of-day` — deterministic daily word
-- `GET /api/streak` — consecutive study day count
-- `GET /api/quiz` — multiple-choice questions (4 Arabic options)
-- `GET /api/fill-blank` — fill-in-the-blank questions
-- `GET /api/srs/due` — cards due for spaced-repetition review
-- `POST /api/srs/:id` — update SM-2 SRS record (known/unknown)
-- `GET /api/vocab-pdf` — download full 3000-word vocabulary PDF (generates on first request; streams cached file thereafter)
-- `GET /api/vocab-pdf/status` — check PDF generation status (not_started | generating | ready | error)
-- `GET /api/activity-position/:activity` — get saved card position + filters for an activity
-- `PUT /api/activity-position/:activity` — save card position + filters (auto-saves as user navigates)
-- `GET /api/weak-words` — list all weak words for the user (joined with flashcard data)
-- `POST /api/weak-words/add` — add flashcard IDs to weak-word deck (body: `{ flashcardIds: number[] }`)
-- `POST /api/weak-words/:id/master` — mark a weak word as mastered (deletes it from deck)
-- `GET /api/quiz-scores` — recent quiz scores for user (last 20)
-- `POST /api/quiz-scores` — save a quiz result (mode, level, total, correct, wrong)
-- `GET /api/user-data-prefix/:prefix` — get all user data keys matching a prefix (used for story completions)
-- `GET /api/user-data/:key` — get a user data value by key (generic key-value store)
-- `PUT /api/user-data/:key` — save a user data value by key
-- `DELETE /api/progress/reset` — reset all progress, bookmarks, SRS, activity positions, quiz scores, and user data
+## External Dependencies
 
-#### Phrasal Verbs
-- **200 IELTS phrasal verbs** — 50 per CEFR level (A2 / B1 / B2 / C1)
-- Data file: `artifacts/flashcards/src/data/phrasal-verbs-data.json`
-- Page: `artifacts/flashcards/src/pages/phrasal-verbs.tsx`
-- Each entry: phrasal verb, English meaning, IELTS example sentence, Arabic verb translation, Arabic meaning, Arabic example
-- Level filter dropdown (All Levels / A2 / B1 / B2 / C1)
-- Flip-card interface with session stats (known/unknown), progress bar, session-done summary
-- Position persistence via `useActivityPosition("phrasal-verbs", levelFilter)`
-
-#### Features
-- **Persistent Login** — Session saved to DB on login; returning students skip login and go straight to dashboard; logout clears DB session via sendBeacon; session respects expiry dates
-- **Dark mode** — ThemeContext, persists in localStorage, toggle in sidebar/mobile nav
-- **Spaced Repetition (SRS)** — SM-2 algorithm stored in `card_srs` table
-- **Bookmarks** — Toggle per card; filter study/browse to bookmarked only
-- **Daily Streak** — Derived from progress records, shown on homepage
-- **Word of the Day** — Deterministic date-based pick, shown on homepage with audio
-- **Session Summary** — Modal after completing a study session
-- **Toast Notifications** — "Got it!" / "Keep learning!" toasts on card mark in study, synonyms, antonyms, and phrasal verbs
-- **Session Stats Persistence** — Known/unknown counts saved/restored in activity_position filters JSON for all flip-card features
-- **Story Completion Tracking** — "Mark as Read" button in story reader; completed stories show green checkmark on story cards; tracked via user_data API
-- **Quiz Mode** — Multiple choice + fill-in-the-blank with score tracking; quiz scores persisted to DB with history display; wrong answers automatically added to weak-word deck
-- **Weak-Word Deck** — Words missed in quizzes collected into a review deck; flashcard review with mastering flow; XP awarded on mastery; accessible via sidebar nav
-- **Listening IELTS Tests** — 4 full listening tests (Tests 1–4), each with 4 parts and 40 questions; question types: fill-in-the-blank, multiple choice, multi-select; audio playback per part; auto-grading with IELTS band score; bilingual feedback; audio files: `/listeningX-partY.mp3`
-- **Reading IELTS Tests** — 5 full reading tests (Tests 1–5), each with 3 academic passages and 40 questions; question types: fill-in-the-blank, TRUE/FALSE/NOT GIVEN, YES/NO/NOT GIVEN, paragraph matching, person/researcher matching, multi-select, summary completion; 60-minute countdown timer; auto-grading with IELTS band score (2–9); per-passage breakdown; English + Arabic recommendations; full answer review with correct/incorrect indicators
-- **Welcome Back Dialog** — Study page shows resume prompt when returning with saved position
-- **Orwell AI (Writing)** — IELTS essay checker with calibrated Band 7 grading anchors (4 reference essays: Task 2 Opinion, Task 2 Advantages/Disadvantages, Task 1 Line Graph, Band 5 contrast); Arabic-specific error detection (articles, SVA, literal translations); bilingual feedback with Arabic tips; grammar rule explanations; Task 1 & Task 2 + paragraph/email mode
-- **Teacher Dashboard** — Admin-protected dashboard at `/teacher` showing all approved students' progress in a sortable table; columns: email, level, XP, streak, words known, weak words count, quizzes taken, last active date; summary stat cards (total students, avg XP, avg streak, active today); search by email; session-persisted admin login; API endpoint `GET /api/teacher/students` behind `requireAdmin`
-- **Writing Templates Library** — 6 essay templates (Opinion, Discussion, Problem-Solution, Advantages/Disadvantages, Line/Bar Graph, Process Diagram) covering Task 1 and Task 2; each template has step-by-step structure with sentence starters and Band 7-8 sample paragraphs with highlighted phrases and commentary; Do's & Don'ts checklists; 7 linking phrase categories (50+ phrases) with usage notes and example sentences; search, copy-to-clipboard; accessible via sidebar "Writing Templates" nav item
-- **Speaking Topic Bank** — 10 themed topics (Hometown, Education, Technology, Health, Travel, Work, Environment, Food, Family, Media, Culture, Hobbies) with 50+ questions covering IELTS Speaking Parts 1, 2, and 3; Band 7-8 model answers, key vocabulary with definitions, and examiner tips; search functionality; browser TTS "Listen" button; accessible via sidebar "Topic Bank" nav item
-- **Full Mock IELTS Test** — Complete mock test at `/mock-test` combining all 4 skills with official timing: Listening (30 min, random test from bank), Reading (60 min, random test from bank), Writing (60 min, Task 1 + Task 2 with AI grading via Orwell API), Speaking (14 min, Parts 1-3 with self-assessment); auto-submits when timer expires; 3 mock test sets with different Writing prompts and Speaking questions; break screens between sections; results page with individual band scores + overall band (average rounded to nearest 0.5)
-- **Onboarding Flow** — 3-step onboarding for new students after first login: (1) target IELTS band score selection (5.0–9.0), (2) exam date picker, (3) personalized study plan with weekly schedule, milestones, daily hours, words/day, and vocab focus level; data saved to `user_data` table (`target_band`, `exam_date`); skipped for returning users; intensity adapts based on days until exam (intensive/focused/balanced/steady)
-- **LEXO AI Chat Assistant** — Floating chat bubble on every authenticated page (bottom-right corner) that students can open to ask any IELTS question; powered by Anthropic Claude (`claude-sonnet-4-6`) via existing AI integrations env vars; backend route `POST /api/lexo-ai/chat` accepts a rolling message history (capped at last 20 messages, 4000 chars each); system prompt scopes LEXO AI strictly to IELTS + English tutoring and redirects off-topic questions; conversation history persisted to localStorage (`lexo_ai_chat_history`, last 40 messages); component `lexo-ai-chat.tsx` mounted in `PasswordGateUnlocked`; suggested starter questions; bilingual welcome message; mobile full-screen + desktop floating panel; minimal inline markdown rendering (**bold**, bullet lists); Clear chat + Close buttons in header; hint badge on bubble for first-time users
-- **Grammar Section** — 5 IELTS grammar topics (Articles, Tense Consistency, Passive Voice, Conditionals, Relative Clauses) at `/grammar`; each topic has a bilingual description (English + Arabic), 5 key rules with examples, and 5 interactive multiple-choice exercises with bilingual explanations; topic list → rules → practice → results flow; score feedback with emoji; Try Again / All Topics buttons; sidebar nav item with BookText icon; data file: `data/grammar-data.ts`
-- **Guided Onboarding Tour** — 5-step interactive product tour that auto-triggers after first login (after band/exam onboarding): Word of the Day, Your Streak, Weak Words, Churchill & Orwell AI, Tests & Mock IELTS; each step highlights the relevant dashboard section with a spotlight overlay, custom icon, and gradient background; smooth slide transitions between steps; Next and Skip buttons; dot progress indicator; completion persisted via `user_data` table (`tour_completed` key) + localStorage; component: `guided-tour.tsx`
-- **Web Push Notifications** — Daily study reminders at 8 PM UTC for inactive students; service worker at `public/sw.js`; VAPID-based web push via `web-push` library; subscription stored in `push_subscriptions` DB table; cron scheduler via `node-cron`; auto-cleans expired subscriptions; notification prompt appears 3s after login for students who haven't granted/denied permission; test endpoint at `POST /api/notifications/test`
-- **Speaking Topics** — Used topics stored in DB per user (with localStorage fallback for migration)
-- **PDF Download** — `GET /api/vocab-pdf` generates and serves a PDF of all 2,198 words; uses puppeteer-core + system chromium; cached in `.local/pdf-cache/`; `/api/vocab-pdf/status` for polling
-
-#### Vocabulary PDF
-- **Source**: `artifacts/flashcards/public/vocabulary-bilingual.html` — 2,198-word bilingual HTML (A1×378, A2×520, B1×313, B2×261, C1×726)
-- **PDF generation**: puppeteer-core renders the HTML; chromium discovered via `which chromium`
-- **Caching**: PDF cached at `.local/pdf-cache/ielts-vocabulary-2198.pdf`; on-demand generation with async polling
-
-## Database Schema
-
-- `flashcards` — id, english, arabic, level (A1/A2/B1/B2), category, example_sentence, example_sentence_arabic
-- `progress` — id, flashcard_id (FK), known, reviewed_at, **email** (per-user isolation)
-- `bookmarks` — id, flashcard_id (FK), created_at, **email** (unique on flashcard_id+email)
-- `card_srs` — id, flashcard_id (FK), next_review_at, interval_days, ease_factor, review_count, updated_at, **email** (unique on flashcard_id+email)
-- `activity_positions` — id, email, activity, position (int), filters (JSON string), updated_at (unique on email+activity) — stores last card index per activity per user for resume-where-you-left-off
-- `quiz_scores` — id, email, mode, level, total, correct, wrong, completed_at — persisted quiz results
-- `user_data` — id, email, key, value, updated_at (unique on email+key) — generic per-user key-value store (e.g. speaking used topics)
-- `weak_words` — id, email, flashcard_id (FK), wrong_count, last_wrong_at — tracks words answered incorrectly in quizzes for targeted review
-- `xp_events` — id, email, activity, amount, awarded_at — XP event log for gamification (daily caps per activity)
-- `push_subscriptions` — id, email, endpoint, keys (JSON string), created_at (unique on email+endpoint) — web push notification subscriptions
-
-## API Client Architecture
-- `lib/api-zod` — Zod validators (generated by orval from openapi.yaml; custom extras via manual edits)
-- `lib/api-client-react` — React Query hooks (generated); extra hooks in `src/extra-hooks.ts`
-- New endpoints added manually to `extra-hooks.ts` (bookmarks, SRS, word-of-day, streak, quiz, fill-blank)
+-   **Database**: PostgreSQL
+-   **ORM**: Drizzle ORM
+-   **API Codegen**: Orval (generates from OpenAPI spec)
+-   **AI Services**:
+    -   Anthropic Claude (`claude-sonnet-4-6`) for LEXO AI Chat Assistant.
+    -   Custom AI integration for Orwell AI (IELTS essay checker).
+-   **PDF Generation**: Puppeteer-core (requires system Chromium)
+-   **Web Push Notifications**: `web-push` library for VAPID-based push, `node-cron` for scheduling.
+-   **Frontend Libraries**: React, Vite
+-   **Validation**: Zod

@@ -1,4 +1,12 @@
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
+import { ChartRenderer } from "@/data/orwell-charts";
+import {
+  ASSIGNMENTS_BY_CATEGORY,
+  CATEGORY_META,
+  type Category,
+  type OrwellAssignment,
+} from "@/data/orwell-assignments";
+import { SkipForward } from "lucide-react";
 import { useAwardXp } from "@workspace/api-client-react";
 import { Layout } from "@/components/layout";
 import { Button } from "@/components/ui/button";
@@ -528,17 +536,6 @@ function AnnotatedParagraph({ text, corrections }: { text: string; corrections: 
 }
 
 
-import { useEffect } from "react";
-import { ChartRenderer } from "@/data/orwell-charts";
-import {
-  ASSIGNMENTS_BY_CATEGORY,
-  CATEGORY_META,
-  getAssignmentById,
-  type Category,
-  type OrwellAssignment,
-} from "@/data/orwell-assignments";
-import { SkipForward } from "lucide-react";
-
 const EMAIL_STORAGE_KEY = "4ielts_email";
 
 function getStudentAuthHeaders(): Record<string, string> {
@@ -569,8 +566,6 @@ function pickNextAssignment(category: Category, progress: CategoryProgress | nul
   if (onlySkipped.length) return onlySkipped[Math.floor(Math.random() * onlySkipped.length)];
   return null;
 }
-
-type Screen = "intro" | "select" | "writing" | "result";
 
 export default function EssayChecker() {
   const [screen, setScreen] = useState<Screen>("intro");
@@ -1196,4 +1191,3 @@ export default function EssayChecker() {
   );
 }
 
-void getAssignmentById;
