@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
-import { BookOpen, Home, Layers, PieChart, ExternalLink, Sun, Moon, HelpCircle, Sparkles, Shuffle, ArrowUpDown, FileText, BookMarked, Mic, LogOut, GraduationCap, Headphones, Menu, X, AlertTriangle, NotebookPen } from "lucide-react";
+import { BookOpen, Home, Layers, PieChart, ExternalLink, Sun, Moon, HelpCircle, Sparkles, Shuffle, ArrowUpDown, FileText, BookMarked, Mic, LogOut, GraduationCap, Headphones, Menu, X, AlertTriangle, NotebookPen, Trophy } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTheme } from "@/context/theme-context";
 import { Button } from "@/components/ui/button";
@@ -52,6 +52,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
     { href: "/reading-test", label: "Reading Practice", icon: GraduationCap },
     { href: "/stories", label: "Short Stories", icon: BookMarked },
     { href: "/browse", label: "Browse Cards", icon: Layers },
+    { href: "/mock-test", label: "Mock Test", icon: Trophy },
     { href: "/progress", label: "Progress", icon: PieChart },
   ];
 

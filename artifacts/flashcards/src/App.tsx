@@ -24,6 +24,7 @@ import WeakWords from "@/pages/weak-words";
 import SpeakingTopics from "@/pages/speaking-topics";
 import WritingTemplates from "@/pages/writing-templates";
 import TeacherDashboard from "@/pages/teacher-dashboard";
+import MockTest from "@/pages/mock-test";
 import { ExitCommentPopup } from "@/components/exit-comment-popup";
 
 setStudentEmailGetter(() => {
@@ -71,6 +72,7 @@ function Router() {
             <Route path="/speaking-topics" component={SpeakingTopics} />
             <Route path="/writing-templates" component={WritingTemplates} />
             <Route path="/weak-words" component={WeakWords} />
+            <Route path="/mock-test" component={MockTest} />
             <Route component={NotFound} />
           </Switch>
         </PasswordGate>
