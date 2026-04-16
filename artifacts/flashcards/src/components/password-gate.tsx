@@ -56,7 +56,7 @@ const landingFeatures = [
   { icon: Sparkles, text: "Interactive flashcards + word pronunciation", color: "text-sky-400" },
   { icon: Brain, text: "Smart quizzes", color: "text-violet-400" },
   { icon: Headphones, text: "🎧 Listening and Reading Practice", color: "text-blue-400" },
-  { icon: Mic, text: "Churchill AI (Speaking)", color: "text-rose-400" },
+  { icon: Mic, text: "Churchill AI (Speaking) + Topic Bank", color: "text-rose-400" },
   { icon: PenTool, text: "Orwell AI (Writing Task 1 / Task 2)", color: "text-amber-400" },
   { icon: CheckCircle2, text: "Quiz Mode", color: "text-emerald-400" },
   { icon: ArrowLeftRight, text: "Synonyms", color: "text-purple-400" },
