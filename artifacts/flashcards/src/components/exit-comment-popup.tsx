@@ -1,27 +1,58 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { MessageCircle, X } from "lucide-react";
+
+const SESSION_KEY = "exitCommentDismissed";
 
 export function ExitCommentPopup() {
   const [open, setOpen] = useState(false);
+  const [comment, setComment] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const dismissedRef = useRef<boolean>(false);
 
   useEffect(() => {
-    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
-      event.preventDefault();
-      event.returnValue = "";
-    };
+    try {
+      if (sessionStorage.getItem(SESSION_KEY) === "1") {
+        dismissedRef.current = true;
+        return;
+      }
+    } catch {
+      // sessionStorage may be unavailable; fall through and use the in-memory ref only.
+    }
 
     const handleMouseLeave = (event: MouseEvent) => {
-      if (event.clientY <= 0) setOpen(true);
+      if (dismissedRef.current) return;
+      if (event.clientY <= 0) {
+        setOpen(true);
+        // Mark dismissed immediately so it never re-triggers, even if the
+        // user closes without clicking a button.
+        dismissedRef.current = true;
+        try { sessionStorage.setItem(SESSION_KEY, "1"); } catch { /* ignore */ }
+        document.removeEventListener("mouseout", handleMouseLeave);
+      }
     };
 
-    window.addEventListener("beforeunload", handleBeforeUnload);
     document.addEventListener("mouseout", handleMouseLeave);
-
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-      document.removeEventListener("mouseout", handleMouseLeave);
-    };
+    return () => document.removeEventListener("mouseout", handleMouseLeave);
   }, []);
+
+  const close = () => setOpen(false);
+
+  const send = async () => {
+    if (!comment.trim() || submitting) { close(); return; }
+    setSubmitting(true);
+    try {
+      await fetch("/api/feedback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ comment: comment.trim() }),
+      });
+    } catch {
+      // Best-effort — even if it fails we still don't pester the user again.
+    } finally {
+      setSubmitting(false);
+      close();
+    }
+  };
 
   if (!open) return null;
 
@@ -41,7 +72,7 @@ export function ExitCommentPopup() {
             </div>
           </div>
           <button
-            onClick={() => setOpen(false)}
+            onClick={close}
             className="rounded-lg p-2 text-muted-foreground hover:bg-muted hover:text-foreground"
             aria-label="Close"
           >
@@ -50,19 +81,25 @@ export function ExitCommentPopup() {
         </div>
 
         <textarea
+          value={comment}
+          onChange={(e) => setComment(e.target.value)}
           className="mt-4 min-h-28 w-full rounded-2xl border border-border bg-background px-4 py-3 text-sm text-foreground outline-none focus:ring-2 focus:ring-teal-500"
           placeholder="Tell us what you liked or what we should improve..."
         />
 
         <div className="mt-4 flex items-center justify-end gap-3">
           <button
-            onClick={() => setOpen(false)}
+            onClick={close}
             className="rounded-full px-4 py-2 text-sm font-medium text-muted-foreground hover:bg-muted"
           >
             Maybe later
           </button>
-          <button className="rounded-full bg-teal-500 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-400">
-            Send feedback
+          <button
+            onClick={send}
+            disabled={submitting}
+            className="rounded-full bg-teal-500 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-400 disabled:opacity-60"
+          >
+            {submitting ? "Sending..." : "Send feedback"}
           </button>
         </div>
       </div>
