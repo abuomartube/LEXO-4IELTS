@@ -1634,6 +1634,28 @@ export default function SpeakingPage() {
               {streamingContent !== null && (
                 <AIChatBubble content={streamingContent || "…"} />
               )}
+
+              {/* Friendly placeholder while we wait for Churchill's first
+                  token (or for the report transition). Shown ONLY when we're
+                  awaiting an AI response and nothing has streamed back yet. */}
+              {isLoading && streamingContent === null && session.phase !== "idle" && session.phase !== "report-loading" && (
+                <div className="flex items-start gap-2.5">
+                  <div className="shrink-0 w-9 h-9 rounded-full overflow-hidden border-2 border-primary/30">
+                    <img src="/churchill.png" alt="Churchill AI" className="w-full h-full object-cover object-top" />
+                  </div>
+                  <div className="bg-card border border-border rounded-2xl rounded-tl-sm px-4 py-3 max-w-[85%]">
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <span className="flex gap-1">
+                        <span className="w-1.5 h-1.5 rounded-full bg-primary/70 animate-bounce" style={{ animationDelay: "0ms" }} />
+                        <span className="w-1.5 h-1.5 rounded-full bg-primary/70 animate-bounce" style={{ animationDelay: "150ms" }} />
+                        <span className="w-1.5 h-1.5 rounded-full bg-primary/70 animate-bounce" style={{ animationDelay: "300ms" }} />
+                      </span>
+                      <span className="font-medium">Churchill is reviewing your answer…</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               <div ref={chatEndRef} />
             </div>
 

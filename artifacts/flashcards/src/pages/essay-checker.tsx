@@ -572,6 +572,7 @@ export default function EssayChecker() {
   const [assignment, setAssignment] = useState<OrwellAssignment | null>(null);
   const [essay, setEssay] = useState("");
   const [loading, setLoading] = useState(false);
+  const [streamingPreview, setStreamingPreview] = useState<string>("");
   const [result, setResult] = useState<EssayResult | null>(null);
   const [paragraphResult, setParagraphResult] = useState<ParagraphResult | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -659,6 +660,7 @@ export default function EssayChecker() {
   const handleSubmit = useCallback(async () => {
     if (!canSubmit || !assignment) return;
     setLoading(true);
+    setStreamingPreview("");
     setError(null);
     setResult(null);
     setParagraphResult(null);
@@ -666,7 +668,11 @@ export default function EssayChecker() {
     try {
       const res = await fetch("/api/orwell/submit", {
         method: "POST",
-        headers: { "Content-Type": "application/json", ...getStudentAuthHeaders() },
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "text/event-stream",
+          ...getStudentAuthHeaders(),
+        },
         body: JSON.stringify({
           assignmentId: assignment.id,
           category: assignment.category,
@@ -675,15 +681,60 @@ export default function EssayChecker() {
           taskType: taskType === "Paragraph" ? undefined : taskType,
         }),
       });
+
+      // Non-streaming error responses (auth, validation, lock conflicts) come
+      // back as JSON with a non-2xx status code BEFORE the stream starts.
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
         throw new Error((data as { error?: string }).error ?? "Analysis failed.");
       }
-      const data = await res.json();
+      if (!res.body) throw new Error("Streaming not supported in this browser.");
+
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
+      let accumulated = "";
+      let finalResult: Record<string, unknown> | null = null;
+      let streamError: string | null = null;
+
+      // Parse incoming Server-Sent-Events frames. Each event is "data: {...}\n\n".
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+
+        let sepIdx;
+        while ((sepIdx = buffer.indexOf("\n\n")) !== -1) {
+          const frame = buffer.slice(0, sepIdx);
+          buffer = buffer.slice(sepIdx + 2);
+          for (const line of frame.split("\n")) {
+            if (!line.startsWith("data:")) continue;
+            const payload = line.slice(5).trim();
+            if (!payload) continue;
+            try {
+              const evt = JSON.parse(payload) as { delta?: string; done?: Record<string, unknown>; error?: string };
+              if (typeof evt.delta === "string") {
+                accumulated += evt.delta;
+                setStreamingPreview(accumulated);
+              } else if (evt.done) {
+                finalResult = evt.done;
+              } else if (evt.error) {
+                streamError = evt.error;
+              }
+            } catch {
+              // ignore malformed frame
+            }
+          }
+        }
+      }
+
+      if (streamError) throw new Error(streamError);
+      if (!finalResult) throw new Error("Grading ended unexpectedly. Please try again.");
+
       if (assignment.category === "paragraph") {
-        setParagraphResult(data as ParagraphResult);
+        setParagraphResult(finalResult as ParagraphResult);
       } else {
-        setResult(data as EssayResult);
+        setResult(finalResult as EssayResult);
       }
       // Track that this assignment is now submitted (not just skipped)
       setCategoryProgress((prev) => {
@@ -697,6 +748,7 @@ export default function EssayChecker() {
       setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
     } finally {
       setLoading(false);
+      setStreamingPreview("");
     }
   }, [canSubmit, assignment, essay, taskType]);
 
@@ -959,6 +1011,25 @@ export default function EssayChecker() {
                   <p className="text-center text-xs text-muted-foreground">
                     Recommended at least {minWords} words — you have {wordCount}
                   </p>
+                )}
+
+                {loading && (
+                  <div className="rounded-2xl border border-primary/30 bg-primary/5 p-4 space-y-2">
+                    <div className="flex items-center gap-2 text-sm font-semibold text-primary">
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      Orwell AI is writing your feedback…
+                    </div>
+                    {streamingPreview ? (
+                      <pre className="whitespace-pre-wrap break-words text-xs text-muted-foreground font-mono max-h-64 overflow-y-auto leading-relaxed">
+                        {streamingPreview}
+                        <span className="inline-block w-2 h-3 bg-primary/60 ml-0.5 animate-pulse align-baseline" />
+                      </pre>
+                    ) : (
+                      <p className="text-xs text-muted-foreground italic">
+                        Reviewing your essay against the official IELTS band descriptors…
+                      </p>
+                    )}
+                  </div>
                 )}
 
                 {error && (

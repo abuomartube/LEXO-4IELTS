@@ -243,46 +243,23 @@ router.post("/orwell/submit", async (req, res): Promise<void> => {
     return;
   }
 
-  let parsed: Record<string, unknown>;
-  try {
-    const anthropic = getAnthropicClient();
-    if (category === "paragraph") {
-      const message = await anthropic.messages.create({
-        model: "claude-sonnet-4-6",
-        max_tokens: 4096,
-        system: PARAGRAPH_SYSTEM_PROMPT,
-        messages: [{ role: "user", content: `Assignment:\n${prompt}\n\nStudent's response:\n${text}` }],
-      });
-      const block = message.content[0];
-      if (block.type !== "text") throw new Error("Unexpected AI response");
-      try { parsed = JSON.parse(block.text); }
-      catch {
-        const m = block.text.match(/\{[\s\S]*\}/);
-        if (!m) throw new Error("Could not parse AI response");
-        parsed = JSON.parse(m[0]);
-      }
-    } else {
-      const taskLabel = taskType || (category === "task1" ? "Task 1" : "Task 2");
-      const userMessage = `Assignment:\n${prompt}\n\nStudent's ${taskLabel} response:\n${text}`;
-      const message = await anthropic.messages.create({
-        model: "claude-sonnet-4-6",
-        max_tokens: 8192,
-        system: ESSAY_SYSTEM_PROMPT,
-        messages: [{ role: "user", content: userMessage }],
-      });
-      const block = message.content[0];
-      if (block.type !== "text") throw new Error("Unexpected AI response");
-      try { parsed = JSON.parse(block.text); }
-      catch {
-        const m = block.text.match(/\{[\s\S]*\}/);
-        if (!m) throw new Error("Could not parse AI response");
-        parsed = JSON.parse(m[0]);
-      }
-    }
-  } catch (err) {
-    console.error("Orwell submit error:", err);
-    // Release our grading lock so the user can retry. Roll the row back to
-    // "skipped" if it existed, or delete the freshly-inserted lock row.
+  // ── Stream the AI response back to the client via SSE ──────────────────
+  // We accumulate the full text server-side (we still need it to extract JSON
+  // for parsing/XP/persistence), but we forward each delta to the client so
+  // the UI can render the response as it's generated, instead of waiting for
+  // the full payload.
+  res.setHeader("Content-Type", "text/event-stream");
+  res.setHeader("Cache-Control", "no-cache");
+  res.setHeader("Connection", "keep-alive");
+  res.setHeader("X-Accel-Buffering", "no"); // disable proxy buffering
+  res.flushHeaders?.();
+
+  const sseSend = (payload: Record<string, unknown>) => {
+    res.write(`data: ${JSON.stringify(payload)}\n\n`);
+  };
+
+  // Releases the grading lock so the student can retry. Best-effort.
+  const releaseLock = async () => {
     try {
       await db
         .delete(orwellSubmissionsTable)
@@ -294,7 +271,56 @@ router.post("/orwell/submit", async (req, res): Promise<void> => {
     } catch (cleanupErr) {
       console.error("Failed to release Orwell grading lock:", cleanupErr);
     }
-    res.status(500).json({ error: "AI grading failed. Please try again." });
+  };
+
+  // If the client disconnects mid-stream, abort the AI call and release lock.
+  let clientGone = false;
+  req.on("close", () => { clientGone = true; });
+
+  let fullText = "";
+  let parsed: Record<string, unknown>;
+  try {
+    const anthropic = getAnthropicClient();
+    const isParagraph = category === "paragraph";
+    const taskLabel = taskType || (category === "task1" ? "Task 1" : "Task 2");
+    const systemPrompt = isParagraph ? PARAGRAPH_SYSTEM_PROMPT : ESSAY_SYSTEM_PROMPT;
+    const userMessage = isParagraph
+      ? `Assignment:\n${prompt}\n\nStudent's response:\n${text}`
+      : `Assignment:\n${prompt}\n\nStudent's ${taskLabel} response:\n${text}`;
+
+    const stream = anthropic.messages.stream({
+      model: "claude-sonnet-4-6",
+      max_tokens: isParagraph ? 4096 : 8192,
+      system: systemPrompt,
+      messages: [{ role: "user", content: userMessage }],
+    });
+
+    for await (const event of stream) {
+      if (clientGone) break;
+      if (event.type === "content_block_delta" && event.delta.type === "text_delta") {
+        const chunk = event.delta.text;
+        fullText += chunk;
+        sseSend({ delta: chunk });
+      }
+    }
+
+    if (clientGone) {
+      await releaseLock();
+      try { res.end(); } catch { /* already closed */ }
+      return;
+    }
+
+    try { parsed = JSON.parse(fullText); }
+    catch {
+      const m = fullText.match(/\{[\s\S]*\}/);
+      if (!m) throw new Error("Could not parse AI response");
+      parsed = JSON.parse(m[0]);
+    }
+  } catch (err) {
+    console.error("Orwell submit error:", err);
+    await releaseLock();
+    sseSend({ error: "AI grading failed. Please try again." });
+    res.end();
     return;
   }
 
@@ -319,7 +345,8 @@ router.post("/orwell/submit", async (req, res): Promise<void> => {
 
   if (finalize.length === 0) {
     // Lock was stolen by a stale-takeover or already finalized; don't double-award XP.
-    res.json({ ...parsed, wordCount });
+    sseSend({ done: { ...parsed, wordCount } });
+    res.end();
     return;
   }
 
@@ -344,7 +371,8 @@ router.post("/orwell/submit", async (req, res): Promise<void> => {
     console.error("XP award failed:", err);
   }
 
-  res.json({ ...parsed, wordCount });
+  sseSend({ done: { ...parsed, wordCount } });
+  res.end();
 });
 
 // ── Progress ─────────────────────────────────────────────────────────────
