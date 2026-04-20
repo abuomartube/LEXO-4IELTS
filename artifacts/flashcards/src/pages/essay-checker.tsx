@@ -17,7 +17,7 @@ import {
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
-type Screen = "intro" | "select" | "writing" | "result" | "freewriting" | "freeresult";
+type Screen = "intro" | "select" | "writing" | "result" | "freechoose" | "freewriting" | "freeresult";
 type TaskType = "Task 1" | "Task 2" | "Paragraph" | "Free Check";
 
 interface GrammarError {
@@ -583,10 +583,19 @@ export default function EssayChecker() {
     paragraph: { submitted: 0, skipped: 0 },
   });
   // Free Check is independent of the assignment-driven categories.
+  type FreeMode = "task1" | "task2" | "paragraph";
   const [freeText, setFreeText] = useState("");
+  const [freeMode, setFreeMode] = useState<FreeMode>("task2");
   const [freeResult, setFreeResult] = useState<EssayResult | null>(null);
+  const [freeParagraphResult, setFreeParagraphResult] = useState<ParagraphResult | null>(null);
   const freeWordCount = freeText.trim().split(/\s+/).filter(Boolean).length;
   const canSubmitFree = freeText.trim().length >= 10 && !loading;
+
+  const FREE_MODE_META: Record<FreeMode, { label: string; emoji: string; sub: string }> = {
+    task1: { label: "Task 1", emoji: "📊", sub: "Report / letter (≥150 words)" },
+    task2: { label: "Task 2", emoji: "📝", sub: "Opinion essay (≥250 words)" },
+    paragraph: { label: "Paragraph", emoji: "💬", sub: "Letter, email, or paragraph" },
+  };
   const [categoryProgress, setCategoryProgress] = useState<CategoryProgress | null>(null);
   const resultRef = useRef<HTMLDivElement>(null);
   // Abort the in-flight grading stream when the user navigates away or
@@ -780,6 +789,8 @@ export default function EssayChecker() {
     setStreamingPreview("");
     setError(null);
     setFreeResult(null);
+    setFreeParagraphResult(null);
+    const submittedMode = freeMode;
 
     try {
       const res = await fetch("/api/orwell/submit", {
@@ -791,8 +802,8 @@ export default function EssayChecker() {
         },
         body: JSON.stringify({
           category: "freecheck",
+          mode: submittedMode,
           text: freeText,
-          taskType: "Free Check",
         }),
         signal: controller.signal,
       });
@@ -844,7 +855,11 @@ export default function EssayChecker() {
       if (!finalResult) throw new Error("Grading ended unexpectedly. Please try again.");
 
       if (controller.signal.aborted) return;
-      setFreeResult(finalResult as EssayResult);
+      if (submittedMode === "paragraph") {
+        setFreeParagraphResult(finalResult as ParagraphResult);
+      } else {
+        setFreeResult(finalResult as EssayResult);
+      }
       setScreen("freeresult");
       setTimeout(() => resultRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 100);
     } catch (err) {
@@ -857,7 +872,7 @@ export default function EssayChecker() {
         setStreamingPreview("");
       }
     }
-  }, [canSubmitFree, freeText]);
+  }, [canSubmitFree, freeText, freeMode]);
 
   const handleCopyFreeReport = () => {
     if (!freeResult) return;
@@ -1039,8 +1054,9 @@ export default function EssayChecker() {
                 onClick={() => {
                   setFreeText("");
                   setFreeResult(null);
+                  setFreeParagraphResult(null);
                   setError(null);
-                  setScreen("freewriting");
+                  setScreen("freechoose");
                 }}
                 className="flex items-center gap-4 p-5 rounded-2xl border-2 border-dashed border-primary/40 bg-primary/5 hover:border-primary hover:bg-primary/10 transition-all text-left group"
               >
@@ -1415,6 +1431,59 @@ export default function EssayChecker() {
           </div>
         )}
 
+        {/* ── FREE CHECK — CHOOSE ASSIGNMENT TYPE ── */}
+        {screen === "freechoose" && (
+          <div className="space-y-5">
+            <div className="flex items-center gap-3">
+              <button
+                onClick={handleBackToCategories}
+                className="w-9 h-9 rounded-xl border border-border flex items-center justify-center text-muted-foreground hover:bg-accent transition-colors"
+                aria-label="Back to categories"
+              >
+                ←
+              </button>
+              <div className="flex items-center gap-2 min-w-0">
+                <span className="text-2xl">✨</span>
+                <div className="min-w-0">
+                  <h2 className="font-extrabold text-foreground truncate">Free Check</h2>
+                  <p className="text-xs text-muted-foreground">Step 1 of 2 — choose what you want graded.</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-card border border-border rounded-2xl p-5">
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Tell Orwell AI what kind of writing you're submitting so it can use the right rubric.
+              </p>
+            </div>
+
+            <div className="space-y-3">
+              {(Object.keys(FREE_MODE_META) as FreeMode[]).map((m) => {
+                const meta = FREE_MODE_META[m];
+                return (
+                  <button
+                    key={m}
+                    type="button"
+                    onClick={() => {
+                      setFreeMode(m);
+                      setError(null);
+                      setScreen("freewriting");
+                    }}
+                    className="w-full flex items-center gap-4 p-5 rounded-2xl border border-border bg-card hover:border-primary hover:bg-primary/5 transition-all text-left group"
+                  >
+                    <span className="text-4xl shrink-0">{meta.emoji}</span>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-bold text-foreground group-hover:text-primary transition-colors">{meta.label}</p>
+                      <p className="text-sm text-muted-foreground">{meta.sub}</p>
+                    </div>
+                    <ArrowRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors shrink-0" />
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
         {/* ── FREE CHECK — WRITING ── */}
         {screen === "freewriting" && (
           <div className="space-y-4">
@@ -1436,17 +1505,28 @@ export default function EssayChecker() {
             </div>
 
             <div className="bg-card border border-border rounded-2xl p-5 space-y-3">
-              <div className="flex items-center gap-2 flex-wrap">
-                <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-primary/10 text-primary">
-                  No assignment
-                </span>
-                <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-muted text-muted-foreground">
-                  IELTS Band Analysis
-                </span>
+              <div className="flex items-center justify-between gap-2 flex-wrap">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-primary/10 text-primary">
+                    {FREE_MODE_META[freeMode].emoji} {FREE_MODE_META[freeMode].label}
+                  </span>
+                  <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-muted text-muted-foreground">
+                    {freeMode === "paragraph" ? "Writing Coach" : "IELTS Band Analysis"}
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => !loading && setScreen("freechoose")}
+                  disabled={loading}
+                  className="text-[11px] font-semibold text-primary hover:underline disabled:opacity-50"
+                >
+                  Change
+                </button>
               </div>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                Paste an essay, paragraph, letter, story — anything you want feedback on. Orwell AI will grade it
-                using IELTS Task 2 band descriptors and highlight grammar, vocabulary, and coherence issues.
+                {freeMode === "task1" && "Paste your IELTS Task 1 response (report or letter). Orwell AI will grade it using the official Task 1 rubric."}
+                {freeMode === "task2" && "Paste your IELTS Task 2 essay. Orwell AI will grade it using the official Task 2 band descriptors."}
+                {freeMode === "paragraph" && "Paste your paragraph, letter, or email. Orwell AI will give you grammar, vocabulary, and improved-version feedback."}
               </p>
             </div>
 
@@ -1509,11 +1589,62 @@ export default function EssayChecker() {
           </div>
         )}
 
-        {/* ── FREE CHECK — RESULT ── */}
+        {/* ── FREE CHECK — PARAGRAPH RESULT ── */}
+        {screen === "freeresult" && freeParagraphResult && (
+          <div ref={resultRef} className="space-y-5">
+            <div className="flex items-center gap-3">
+              <button
+                onClick={handleBackToCategories}
+                className="w-9 h-9 rounded-xl border border-border flex items-center justify-center text-muted-foreground hover:bg-accent transition-colors"
+                aria-label="Back to categories"
+              >
+                ←
+              </button>
+              <div>
+                <h2 className="font-extrabold text-foreground">Free Check · Paragraph</h2>
+                <p className="text-xs text-muted-foreground">{freeWordCount} words analysed</p>
+              </div>
+            </div>
+
+            <ParagraphCard emoji="✅" title="Strengths" content={freeParagraphResult.strengths}
+              accentClass="bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800" />
+            <ParagraphCard emoji="⚠️" title="Areas for Improvement" content={freeParagraphResult.improvements}
+              accentClass="bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800" />
+            <AnnotatedParagraph text={freeText} corrections={freeParagraphResult.corrections ?? []} />
+            <ParagraphCard emoji="📄" title="Corrected Version" content={freeParagraphResult.corrected}
+              accentClass="bg-card border-border" />
+            <ParagraphCard emoji="⭐" title="Better Version" content={freeParagraphResult.better}
+              accentClass="bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800" />
+            <ParagraphCard emoji="🎩" title="Formal Version" content={freeParagraphResult.formal}
+              accentClass="bg-purple-50 dark:bg-purple-900/20 border-purple-200 dark:border-purple-800" />
+
+            <div className="flex gap-3 flex-wrap pb-6">
+              <Button
+                onClick={() => {
+                  setFreeText("");
+                  setFreeParagraphResult(null);
+                  setError(null);
+                  setScreen("freewriting");
+                }}
+                variant="outline"
+                className="rounded-full flex-1"
+              >
+                <RotateCcw className="w-4 h-4 mr-2" />
+                Check another piece
+              </Button>
+              <Button onClick={handleBackToCategories} className="rounded-full flex-1">
+                <ArrowRight className="w-4 h-4 mr-2" />
+                Back to categories
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {/* ── FREE CHECK — IELTS RESULT (Task 1 / Task 2) ── */}
         {screen === "freeresult" && freeResult && (
           <div ref={resultRef} className="space-y-6">
             <div className="bg-muted/30 border border-border rounded-2xl px-4 py-3 text-xs text-muted-foreground">
-              <span className="font-semibold text-foreground">Free Check</span>
+              <span className="font-semibold text-foreground">Free Check · {freeResult.taskType ?? "IELTS"}</span>
               <span className="mx-2">·</span>
               No assignment — your own writing
             </div>

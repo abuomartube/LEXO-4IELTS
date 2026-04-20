@@ -211,17 +211,18 @@ function freeCheckRelease(email: string): void {
   else freeCheckActive.set(email, active - 1);
 }
 
-// ── Free Check system prompt ─────────────────────────────────────────────
-// No fixed assignment — the student pasted their own writing. We still grade
-// against IELTS Task 2 band descriptors (Task Response / Coherence / Lexical
-// Resource / Grammatical Range), since that's the broadest essay rubric and
-// works for any free-form essay-style writing the student supplies.
-const FREECHECK_SYSTEM_PROMPT = `You are Orwell AI, a strict certified IELTS examiner following British Council official band descriptors.
+// ── Free Check system prompts ────────────────────────────────────────────
+// No fixed assignment — the student pasted their own writing. The student
+// chooses which rubric to grade against: Task 1, Task 2, or Paragraph.
+
+const FREECHECK_TASK2_PROMPT = `You are Orwell AI, a strict certified IELTS examiner following British Council official band descriptors.
 
 NEVER inflate scores. Most intermediate students score between 4.5 and 6.0 — this is normal. Be honest and strict.
 
-The student has NOT been given a specific assignment. They have pasted a piece of their own writing — it could be an essay, a paragraph, a letter, a story, or any English text. Your job is to evaluate it on its own merits using IELTS Task 2 band descriptors:
-- Task Response (TR) — does the writing have a clear position/purpose, develop ideas, and stay on topic?
+The student has NOT been given a specific assignment. They have pasted a piece of their own writing and asked you to grade it as an IELTS Task 2 essay (opinion / discussion / problem-solution).
+
+EVALUATE using official IELTS Task 2 criteria:
+- Task Response (TR) — does the writing have a clear position, develop ideas, and stay on topic?
 - Coherence & Cohesion (CC)
 - Lexical Resource (LR)
 - Grammatical Range & Accuracy (GRA)
@@ -233,13 +234,13 @@ STRICT PENALTIES:
 - Overall band = average of 4 criteria, rounded to nearest 0.5
 
 Word-count guidance:
-- If the writing is under ~150 words, set wordCountWarning to a short note ("This piece is quite short — for a full IELTS Task 2 essay, aim for at least 250 words.")
+- If under ~250 words, set wordCountWarning to a short note ("This piece is shorter than a full IELTS Task 2 essay — aim for at least 250 words.")
 - Otherwise wordCountWarning = null
 - Do NOT deduct band marks for length in Free Check mode (the student chose what to submit).
 
 Return ONLY a valid JSON object, no markdown:
 {
-  "taskType": "Free Check",
+  "taskType": "Task 2",
   "wordCount": 187,
   "wordCountWarning": null,
   "overallBand": 5.5,
@@ -254,7 +255,7 @@ Return ONLY a valid JSON object, no markdown:
   "coherenceIssues": [{"original": "...", "correction": "...", "explanation": "..."}],
   "strengths": ["..."],
   "improvements": ["..."],
-  "revisedIntroduction": "A rewritten opening sentence/paragraph that demonstrates a stronger version of the same idea.",
+  "revisedIntroduction": "A rewritten opening that demonstrates a stronger version of the same idea.",
   "exampleEssayBand6": "A version of the SAME piece rewritten at Band 5.5–6 level, preserving the student's topic and intent.",
   "exampleEssayBand8": "A version of the SAME piece rewritten at Band 7–8 level, preserving the student's topic and intent."
 }
@@ -265,13 +266,85 @@ IMPORTANT:
 - Grammar explanations must include the underlying rule.
 - After each criterion feedback, add one short Arabic tip in parentheses.`;
 
+const FREECHECK_TASK1_PROMPT = `You are Orwell AI, a strict certified IELTS examiner following British Council official band descriptors.
+
+NEVER inflate scores. Most intermediate students score between 4.5 and 6.0 — this is normal. Be honest and strict.
+
+The student has NOT been given a specific assignment or a chart. They have pasted a piece of their own writing and asked you to grade it as an IELTS Task 1 (academic report or general training letter).
+
+EVALUATE using official IELTS Task 1 criteria. Use the SAME JSON keys as Task 2 grading so the client can render results consistently:
+- Task Achievement (TA) — report this in the "taskResponse" key
+- Coherence & Cohesion (CC) — "coherenceCohesion"
+- Lexical Resource (LR) — "lexicalResource"
+- Grammatical Range & Accuracy (GRA) — "grammaticalRange"
+
+STRICT PENALTIES:
+- No clear overview / no clear purpose = MAX Band 5 for Task Achievement
+- Simple/basic vocabulary only = MAX Band 5 for LR
+- Only simple sentences = MAX Band 5 for GRA
+- Overall band = average of 4 criteria, rounded to nearest 0.5
+
+Free Check note: because no chart or letter scenario was provided, do NOT penalise the student for missing data references — judge their writing on what they produced, the structure, the language, and the inferred purpose.
+
+Word-count guidance:
+- If under ~150 words, set wordCountWarning to a short note ("This piece is shorter than a full IELTS Task 1 — aim for at least 150 words.")
+- Otherwise wordCountWarning = null
+- Do NOT deduct band marks for length in Free Check mode.
+
+Return ONLY a valid JSON object, no markdown:
+{
+  "taskType": "Task 1",
+  "wordCount": 152,
+  "wordCountWarning": null,
+  "overallBand": 5.5,
+  "scores": {
+    "taskResponse": { "band": 5.5, "feedback": "Task Achievement feedback…" },
+    "coherenceCohesion": { "band": 5.5, "feedback": "..." },
+    "lexicalResource": { "band": 5.0, "feedback": "..." },
+    "grammaticalRange": { "band": 5.5, "feedback": "..." }
+  },
+  "grammarErrors": [{"original": "...", "correction": "...", "explanation": "...", "type": "grammar"}],
+  "vocabularyUpgrades": [{"original": "...", "better": "...", "example": "...", "reason": "..."}],
+  "coherenceIssues": [{"original": "...", "correction": "...", "explanation": "..."}],
+  "strengths": ["..."],
+  "improvements": ["..."],
+  "revisedIntroduction": "A rewritten opening that demonstrates a stronger version of the same idea.",
+  "exampleEssayBand6": "A version of the SAME piece rewritten at Band 5.5–6 level (Task 1 style), preserving the student's topic and intent.",
+  "exampleEssayBand8": "A version of the SAME piece rewritten at Band 7–8 level (Task 1 style), preserving the student's topic and intent."
+}
+
+IMPORTANT:
+- grammarErrors/vocabularyUpgrades/coherenceIssues.original must be EXACT phrase from the writing so it can be highlighted.
+- exampleEssayBand6 and exampleEssayBand8 must be COMPLETE rewrites of the student's piece in IELTS Task 1 style.
+- Grammar explanations must include the underlying rule.
+- After each criterion feedback, add one short Arabic tip in parentheses.`;
+
+const FREECHECK_PARAGRAPH_PROMPT = `You are an expert English writing coach.
+
+The student has NOT been given a specific assignment. They have pasted a paragraph, letter, email, or short text and asked for general writing feedback. Do NOT apply IELTS band score criteria. Evaluate on Grammar, Punctuation, Vocabulary, and Coherence.
+
+Return ONLY a valid JSON object:
+{
+  "strengths": "Clear list with • bullets of what the student did well.",
+  "improvements": "Clear list using ❌ original → ✅ correction format.",
+  "corrections": [{"original": "...", "correction": "...", "explanation": "...", "type": "Grammar"}],
+  "corrected": "Original text fully corrected, student's voice preserved.",
+  "better": "Improved version with richer vocabulary and varied structures.",
+  "formal": "Professional/formal version."
+}
+- type must be exactly Grammar, Vocabulary or Coherence.
+- original must be the EXACT phrase as it appears in the student's text so it can be highlighted.
+- No markdown, no extra text.`;
+
+type FreeCheckMode = "task1" | "task2" | "paragraph";
+
 // Stream a Free Check grading directly back to the client over SSE. No DB
 // persistence, no concurrency lock, no XP — each request is independent.
 async function streamFreeCheck(
   res: import("express").Response,
   req: import("express").Request,
   text: string,
-  taskType?: string,
+  mode: FreeCheckMode,
 ): Promise<void> {
   res.setHeader("Content-Type", "text/event-stream");
   res.setHeader("Cache-Control", "no-cache");
@@ -290,11 +363,28 @@ async function streamFreeCheck(
   let parsed: Record<string, unknown>;
   try {
     const anthropic = getAnthropicClient();
-    const userMessage = `The student has pasted the following piece of writing and would like Orwell AI feedback. There is no fixed assignment — evaluate it on its own merits.\n\nStudent's writing:\n${text}`;
+
+    let systemPrompt: string;
+    let userMessage: string;
+    let maxTokens: number;
+    if (mode === "paragraph") {
+      systemPrompt = FREECHECK_PARAGRAPH_PROMPT;
+      userMessage = `The student has pasted the following text and would like writing feedback. There is no fixed assignment.\n\nStudent's writing:\n${text}`;
+      maxTokens = 4096;
+    } else if (mode === "task1") {
+      systemPrompt = FREECHECK_TASK1_PROMPT;
+      userMessage = `The student has pasted the following piece of writing and would like Orwell AI to grade it as an IELTS Task 1 response. There is no fixed assignment or chart — judge their writing on its own merits.\n\nStudent's writing:\n${text}`;
+      maxTokens = 8192;
+    } else {
+      systemPrompt = FREECHECK_TASK2_PROMPT;
+      userMessage = `The student has pasted the following piece of writing and would like Orwell AI to grade it as an IELTS Task 2 essay. There is no fixed assignment — evaluate it on its own merits.\n\nStudent's writing:\n${text}`;
+      maxTokens = 8192;
+    }
+
     const stream = anthropic.messages.stream({
       model: "claude-sonnet-4-6",
-      max_tokens: 8192,
-      system: FREECHECK_SYSTEM_PROMPT,
+      max_tokens: maxTokens,
+      system: systemPrompt,
       messages: [{ role: "user", content: userMessage }],
     });
 
@@ -325,14 +415,12 @@ async function streamFreeCheck(
     return;
   }
 
-  // Always honour the Free Check label client-side regardless of model output.
-  if (taskType) {
-    (parsed as { taskType?: string }).taskType = taskType;
-  } else {
-    (parsed as { taskType?: string }).taskType = "Free Check";
-  }
+  // Stamp a deterministic taskType label so the client can route to the right
+  // result layout without trusting the model's free-text output.
+  const stampLabel = mode === "task1" ? "Task 1" : mode === "task2" ? "Task 2" : "Paragraph";
+  (parsed as { taskType?: string }).taskType = stampLabel;
   const wordCount = text.trim().split(/\s+/).filter(Boolean).length;
-  sseSend({ done: { ...parsed, wordCount } });
+  sseSend({ done: { ...parsed, wordCount, mode } });
   res.end();
 }
 
@@ -344,11 +432,12 @@ router.post("/orwell/submit", async (req, res): Promise<void> => {
   const email = await verifyStudentEmail(req);
   if (!email) { res.status(401).json({ error: "Unauthorized" }); return; }
 
-  const { assignmentId, text, taskType, category: bodyCategory } = req.body as {
+  const { assignmentId, text, taskType, category: bodyCategory, mode: bodyMode } = req.body as {
     assignmentId?: string;
     text?: string;
     taskType?: string;
     category?: string;
+    mode?: string;
   };
 
   if (!text || typeof text !== "string" || text.trim().length < 10) {
@@ -368,6 +457,12 @@ router.post("/orwell/submit", async (req, res): Promise<void> => {
       });
       return;
     }
+    // Validate the chosen rubric. Default to Task 2 if missing/invalid for
+    // backward compatibility with the very first Free Check release.
+    const allowedModes: FreeCheckMode[] = ["task1", "task2", "paragraph"];
+    const mode: FreeCheckMode = (allowedModes as string[]).includes(bodyMode ?? "")
+      ? (bodyMode as FreeCheckMode)
+      : "task2";
     const slot = freeCheckTryAcquire(email);
     if (!slot.ok) {
       if (slot.retryAfterMs) res.setHeader("Retry-After", String(Math.ceil(slot.retryAfterMs / 1000)));
@@ -375,12 +470,14 @@ router.post("/orwell/submit", async (req, res): Promise<void> => {
       return;
     }
     try {
-      await streamFreeCheck(res, req, text, taskType);
+      await streamFreeCheck(res, req, text, mode);
     } finally {
       freeCheckRelease(email);
     }
     return;
   }
+  // Silence unused-var warning when bodyMode is only consumed in freecheck branch
+  void taskType;
 
   if (!assignmentId || typeof assignmentId !== "string") {
     res.status(400).json({ error: "Missing or invalid payload." });
