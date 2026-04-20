@@ -57,7 +57,7 @@ function getAnthropicClient() {
   return new Anthropic({ apiKey, baseURL });
 }
 
-const CATEGORIES = new Set(["task1", "task2", "paragraph"]);
+const CATEGORIES = new Set(["task1", "task2", "paragraph", "freecheck"]);
 
 const router: IRouter = Router();
 
@@ -173,6 +173,169 @@ Return ONLY a valid JSON object:
 - original must be the EXACT phrase as it appears in the student's text so it can be highlighted.
 - No markdown, no extra text.`;
 
+// ── Free Check abuse guards ──────────────────────────────────────────────
+// Free Check has no DB lock or XP, so each request is a free pass to call
+// Anthropic. Without a guard, an approved student could hammer concurrent
+// streams and amplify our cost. We enforce two in-process limits per email:
+//   - max 1 concurrent active stream (any further request → 429)
+//   - max 5 completed/started requests per rolling 60s window (→ 429)
+//   - max ~6000 chars of input text (avoids huge prompt-token bills)
+const FREECHECK_MAX_CONCURRENT_PER_EMAIL = 1;
+const FREECHECK_RATE_WINDOW_MS = 60_000;
+const FREECHECK_RATE_MAX = 5;
+const FREECHECK_MAX_INPUT_CHARS = 6000;
+const freeCheckActive = new Map<string, number>(); // email → in-flight count
+const freeCheckRecent = new Map<string, number[]>(); // email → request start timestamps
+
+function freeCheckTryAcquire(email: string): { ok: true } | { ok: false; reason: string; retryAfterMs?: number } {
+  const now = Date.now();
+  const recent = (freeCheckRecent.get(email) ?? []).filter((t) => now - t < FREECHECK_RATE_WINDOW_MS);
+  if (recent.length >= FREECHECK_RATE_MAX) {
+    const retryAfterMs = FREECHECK_RATE_WINDOW_MS - (now - recent[0]!);
+    freeCheckRecent.set(email, recent);
+    return { ok: false, reason: "Free Check is rate-limited. Please wait a moment and try again.", retryAfterMs };
+  }
+  const active = freeCheckActive.get(email) ?? 0;
+  if (active >= FREECHECK_MAX_CONCURRENT_PER_EMAIL) {
+    return { ok: false, reason: "You already have a Free Check in progress. Please wait for it to finish." };
+  }
+  recent.push(now);
+  freeCheckRecent.set(email, recent);
+  freeCheckActive.set(email, active + 1);
+  return { ok: true };
+}
+
+function freeCheckRelease(email: string): void {
+  const active = freeCheckActive.get(email) ?? 0;
+  if (active <= 1) freeCheckActive.delete(email);
+  else freeCheckActive.set(email, active - 1);
+}
+
+// ── Free Check system prompt ─────────────────────────────────────────────
+// No fixed assignment — the student pasted their own writing. We still grade
+// against IELTS Task 2 band descriptors (Task Response / Coherence / Lexical
+// Resource / Grammatical Range), since that's the broadest essay rubric and
+// works for any free-form essay-style writing the student supplies.
+const FREECHECK_SYSTEM_PROMPT = `You are Orwell AI, a strict certified IELTS examiner following British Council official band descriptors.
+
+NEVER inflate scores. Most intermediate students score between 4.5 and 6.0 — this is normal. Be honest and strict.
+
+The student has NOT been given a specific assignment. They have pasted a piece of their own writing — it could be an essay, a paragraph, a letter, a story, or any English text. Your job is to evaluate it on its own merits using IELTS Task 2 band descriptors:
+- Task Response (TR) — does the writing have a clear position/purpose, develop ideas, and stay on topic?
+- Coherence & Cohesion (CC)
+- Lexical Resource (LR)
+- Grammatical Range & Accuracy (GRA)
+
+STRICT PENALTIES:
+- No clear position or purpose = MAX Band 5 for TR
+- Simple/basic vocabulary only = MAX Band 5 for LR
+- Only simple sentences = MAX Band 5 for GRA
+- Overall band = average of 4 criteria, rounded to nearest 0.5
+
+Word-count guidance:
+- If the writing is under ~150 words, set wordCountWarning to a short note ("This piece is quite short — for a full IELTS Task 2 essay, aim for at least 250 words.")
+- Otherwise wordCountWarning = null
+- Do NOT deduct band marks for length in Free Check mode (the student chose what to submit).
+
+Return ONLY a valid JSON object, no markdown:
+{
+  "taskType": "Free Check",
+  "wordCount": 187,
+  "wordCountWarning": null,
+  "overallBand": 5.5,
+  "scores": {
+    "taskResponse": { "band": 5.5, "feedback": "..." },
+    "coherenceCohesion": { "band": 5.5, "feedback": "..." },
+    "lexicalResource": { "band": 5.0, "feedback": "..." },
+    "grammaticalRange": { "band": 5.5, "feedback": "..." }
+  },
+  "grammarErrors": [{"original": "...", "correction": "...", "explanation": "...", "type": "grammar"}],
+  "vocabularyUpgrades": [{"original": "...", "better": "...", "example": "...", "reason": "..."}],
+  "coherenceIssues": [{"original": "...", "correction": "...", "explanation": "..."}],
+  "strengths": ["..."],
+  "improvements": ["..."],
+  "revisedIntroduction": "A rewritten opening sentence/paragraph that demonstrates a stronger version of the same idea.",
+  "exampleEssayBand6": "A version of the SAME piece rewritten at Band 5.5–6 level, preserving the student's topic and intent.",
+  "exampleEssayBand8": "A version of the SAME piece rewritten at Band 7–8 level, preserving the student's topic and intent."
+}
+
+IMPORTANT:
+- grammarErrors/vocabularyUpgrades/coherenceIssues.original must be EXACT phrase from the writing so it can be highlighted.
+- exampleEssayBand6 and exampleEssayBand8 must be COMPLETE rewrites of the student's piece.
+- Grammar explanations must include the underlying rule.
+- After each criterion feedback, add one short Arabic tip in parentheses.`;
+
+// Stream a Free Check grading directly back to the client over SSE. No DB
+// persistence, no concurrency lock, no XP — each request is independent.
+async function streamFreeCheck(
+  res: import("express").Response,
+  req: import("express").Request,
+  text: string,
+  taskType?: string,
+): Promise<void> {
+  res.setHeader("Content-Type", "text/event-stream");
+  res.setHeader("Cache-Control", "no-cache");
+  res.setHeader("Connection", "keep-alive");
+  res.setHeader("X-Accel-Buffering", "no");
+  res.flushHeaders?.();
+
+  const sseSend = (payload: Record<string, unknown>) => {
+    res.write(`data: ${JSON.stringify(payload)}\n\n`);
+  };
+
+  let clientGone = false;
+  req.on("close", () => { clientGone = true; });
+
+  let fullText = "";
+  let parsed: Record<string, unknown>;
+  try {
+    const anthropic = getAnthropicClient();
+    const userMessage = `The student has pasted the following piece of writing and would like Orwell AI feedback. There is no fixed assignment — evaluate it on its own merits.\n\nStudent's writing:\n${text}`;
+    const stream = anthropic.messages.stream({
+      model: "claude-sonnet-4-6",
+      max_tokens: 8192,
+      system: FREECHECK_SYSTEM_PROMPT,
+      messages: [{ role: "user", content: userMessage }],
+    });
+
+    for await (const event of stream) {
+      if (clientGone) break;
+      if (event.type === "content_block_delta" && event.delta.type === "text_delta") {
+        const chunk = event.delta.text;
+        fullText += chunk;
+        sseSend({ delta: chunk });
+      }
+    }
+
+    if (clientGone) {
+      try { res.end(); } catch { /* already closed */ }
+      return;
+    }
+
+    try { parsed = JSON.parse(fullText); }
+    catch {
+      const m = fullText.match(/\{[\s\S]*\}/);
+      if (!m) throw new Error("Could not parse AI response");
+      parsed = JSON.parse(m[0]);
+    }
+  } catch (err) {
+    console.error("Orwell free-check error:", err);
+    sseSend({ error: "AI grading failed. Please try again." });
+    res.end();
+    return;
+  }
+
+  // Always honour the Free Check label client-side regardless of model output.
+  if (taskType) {
+    (parsed as { taskType?: string }).taskType = taskType;
+  } else {
+    (parsed as { taskType?: string }).taskType = "Free Check";
+  }
+  const wordCount = text.trim().split(/\s+/).filter(Boolean).length;
+  sseSend({ done: { ...parsed, wordCount } });
+  res.end();
+}
+
 // How long a "grading" lock is allowed to stay before another request can take it over.
 // Anthropic calls typically finish in <30s; 5 minutes is a generous safety net.
 const GRADING_LOCK_TIMEOUT_MS = 5 * 60 * 1000;
@@ -181,14 +344,45 @@ router.post("/orwell/submit", async (req, res): Promise<void> => {
   const email = await verifyStudentEmail(req);
   if (!email) { res.status(401).json({ error: "Unauthorized" }); return; }
 
-  const { assignmentId, text, taskType } = req.body as {
+  const { assignmentId, text, taskType, category: bodyCategory } = req.body as {
     assignmentId?: string;
     text?: string;
     taskType?: string;
+    category?: string;
   };
 
-  if (!assignmentId || typeof assignmentId !== "string" ||
-      !text || typeof text !== "string" || text.trim().length < 10) {
+  if (!text || typeof text !== "string" || text.trim().length < 10) {
+    res.status(400).json({ error: "Missing or invalid payload." });
+    return;
+  }
+
+  // ── Free Check mode ────────────────────────────────────────────────────
+  // Student pasted arbitrary writing — no assignmentId, no canonical prompt,
+  // no DB persistence (so it can't be tracked/farmed for XP) and no concurrency
+  // lock (each request is independent). We still stream feedback the same way.
+  const isFreeCheck = bodyCategory === "freecheck";
+  if (isFreeCheck) {
+    if (text.length > FREECHECK_MAX_INPUT_CHARS) {
+      res.status(413).json({
+        error: `Free Check input is too long (${text.length} chars). Maximum is ${FREECHECK_MAX_INPUT_CHARS}.`,
+      });
+      return;
+    }
+    const slot = freeCheckTryAcquire(email);
+    if (!slot.ok) {
+      if (slot.retryAfterMs) res.setHeader("Retry-After", String(Math.ceil(slot.retryAfterMs / 1000)));
+      res.status(429).json({ error: slot.reason });
+      return;
+    }
+    try {
+      await streamFreeCheck(res, req, text, taskType);
+    } finally {
+      freeCheckRelease(email);
+    }
+    return;
+  }
+
+  if (!assignmentId || typeof assignmentId !== "string") {
     res.status(400).json({ error: "Missing or invalid payload." });
     return;
   }

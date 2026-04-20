@@ -17,8 +17,8 @@ import {
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
-type Screen = "intro" | "select" | "writing" | "result";
-type TaskType = "Task 1" | "Task 2" | "Paragraph";
+type Screen = "intro" | "select" | "writing" | "result" | "freewriting" | "freeresult";
+type TaskType = "Task 1" | "Task 2" | "Paragraph" | "Free Check";
 
 interface GrammarError {
   original: string;
@@ -582,8 +582,18 @@ export default function EssayChecker() {
     task2: { submitted: 0, skipped: 0 },
     paragraph: { submitted: 0, skipped: 0 },
   });
+  // Free Check is independent of the assignment-driven categories.
+  const [freeText, setFreeText] = useState("");
+  const [freeResult, setFreeResult] = useState<EssayResult | null>(null);
+  const freeWordCount = freeText.trim().split(/\s+/).filter(Boolean).length;
+  const canSubmitFree = freeText.trim().length >= 10 && !loading;
   const [categoryProgress, setCategoryProgress] = useState<CategoryProgress | null>(null);
   const resultRef = useRef<HTMLDivElement>(null);
+  // Abort the in-flight grading stream when the user navigates away or
+  // submits again. Prevents stale streams from setting screen state out
+  // from under the user.
+  const abortRef = useRef<AbortController | null>(null);
+  useEffect(() => () => { abortRef.current?.abort(); }, []);
 
   const wordCount = essay.trim().split(/\s+/).filter(Boolean).length;
   const minWords = assignment?.minWords ?? 250;
@@ -659,6 +669,9 @@ export default function EssayChecker() {
 
   const handleSubmit = useCallback(async () => {
     if (!canSubmit || !assignment) return;
+    abortRef.current?.abort();
+    const controller = new AbortController();
+    abortRef.current = controller;
     setLoading(true);
     setStreamingPreview("");
     setError(null);
@@ -680,6 +693,7 @@ export default function EssayChecker() {
           text: essay,
           taskType: taskType === "Paragraph" ? undefined : taskType,
         }),
+        signal: controller.signal,
       });
 
       // Non-streaming error responses (auth, validation, lock conflicts) come
@@ -742,15 +756,140 @@ export default function EssayChecker() {
         const skippedIds = (prev?.skippedIds ?? []).filter((id) => id !== assignment.id);
         return { submittedIds, skippedIds };
       });
+      if (controller.signal.aborted) return;
       setScreen("result");
       setTimeout(() => resultRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 100);
     } catch (err) {
+      if (controller.signal.aborted) return;
       setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
     } finally {
-      setLoading(false);
-      setStreamingPreview("");
+      if (abortRef.current === controller) abortRef.current = null;
+      if (!controller.signal.aborted) {
+        setLoading(false);
+        setStreamingPreview("");
+      }
     }
   }, [canSubmit, assignment, essay, taskType]);
+
+  const handleSubmitFreeCheck = useCallback(async () => {
+    if (!canSubmitFree) return;
+    abortRef.current?.abort();
+    const controller = new AbortController();
+    abortRef.current = controller;
+    setLoading(true);
+    setStreamingPreview("");
+    setError(null);
+    setFreeResult(null);
+
+    try {
+      const res = await fetch("/api/orwell/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "text/event-stream",
+          ...getStudentAuthHeaders(),
+        },
+        body: JSON.stringify({
+          category: "freecheck",
+          text: freeText,
+          taskType: "Free Check",
+        }),
+        signal: controller.signal,
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error((data as { error?: string }).error ?? "Analysis failed.");
+      }
+      if (!res.body) throw new Error("Streaming not supported in this browser.");
+
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
+      let accumulated = "";
+      let finalResult: Record<string, unknown> | null = null;
+      let streamError: string | null = null;
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+
+        let sepIdx;
+        while ((sepIdx = buffer.indexOf("\n\n")) !== -1) {
+          const frame = buffer.slice(0, sepIdx);
+          buffer = buffer.slice(sepIdx + 2);
+          for (const line of frame.split("\n")) {
+            if (!line.startsWith("data:")) continue;
+            const payload = line.slice(5).trim();
+            if (!payload) continue;
+            try {
+              const evt = JSON.parse(payload) as { delta?: string; done?: Record<string, unknown>; error?: string };
+              if (typeof evt.delta === "string") {
+                accumulated += evt.delta;
+                setStreamingPreview(accumulated);
+              } else if (evt.done) {
+                finalResult = evt.done;
+              } else if (evt.error) {
+                streamError = evt.error;
+              }
+            } catch {
+              // ignore malformed frame
+            }
+          }
+        }
+      }
+
+      if (streamError) throw new Error(streamError);
+      if (!finalResult) throw new Error("Grading ended unexpectedly. Please try again.");
+
+      if (controller.signal.aborted) return;
+      setFreeResult(finalResult as EssayResult);
+      setScreen("freeresult");
+      setTimeout(() => resultRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 100);
+    } catch (err) {
+      if (controller.signal.aborted) return;
+      setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+    } finally {
+      if (abortRef.current === controller) abortRef.current = null;
+      if (!controller.signal.aborted) {
+        setLoading(false);
+        setStreamingPreview("");
+      }
+    }
+  }, [canSubmitFree, freeText]);
+
+  const handleCopyFreeReport = () => {
+    if (!freeResult) return;
+    const lines = [
+      `Orwell AI — Free Check Feedback`,
+      `Overall Band: ${freeResult.overallBand}`,
+      "",
+      `Task Response: ${freeResult.scores.taskResponse.band} — ${freeResult.scores.taskResponse.feedback}`,
+      `Coherence & Cohesion: ${freeResult.scores.coherenceCohesion.band} — ${freeResult.scores.coherenceCohesion.feedback}`,
+      `Lexical Resource: ${freeResult.scores.lexicalResource.band} — ${freeResult.scores.lexicalResource.feedback}`,
+      `Grammatical Range & Accuracy: ${freeResult.scores.grammaticalRange.band} — ${freeResult.scores.grammaticalRange.feedback}`,
+      "",
+      "GRAMMAR ERRORS",
+      ...freeResult.grammarErrors.map(e => `• "${e.original}" → "${e.correction}" — ${e.explanation}`),
+      "",
+      "VOCABULARY UPGRADES",
+      ...freeResult.vocabularyUpgrades.map(v => `• "${v.original}" → "${v.better}" — ${v.reason}`),
+      "",
+      "COHERENCE ISSUES",
+      ...freeResult.coherenceIssues.map(c => `• "${c.original}" → "${c.correction}" — ${c.explanation}`),
+      "",
+      "STRENGTHS",
+      ...freeResult.strengths.map(s => `✓ ${s}`),
+      "",
+      "AREAS FOR IMPROVEMENT",
+      ...freeResult.improvements.map(i => `→ ${i}`),
+    ];
+    navigator.clipboard.writeText(lines.join("\n")).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  };
 
   const handleNextAssignment = async () => {
     if (!assignment) { setScreen("select"); return; }
@@ -894,6 +1033,27 @@ export default function EssayChecker() {
                   </button>
                 );
               })}
+
+              {/* Free Check — 4th card. No assignment, no progress tracking. */}
+              <button
+                onClick={() => {
+                  setFreeText("");
+                  setFreeResult(null);
+                  setError(null);
+                  setScreen("freewriting");
+                }}
+                className="flex items-center gap-4 p-5 rounded-2xl border-2 border-dashed border-primary/40 bg-primary/5 hover:border-primary hover:bg-primary/10 transition-all text-left group"
+              >
+                <span className="text-4xl shrink-0">✨</span>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <p className="font-bold text-foreground group-hover:text-primary transition-colors">Free Check</p>
+                    <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-primary text-primary-foreground">New</span>
+                  </div>
+                  <p className="text-sm text-muted-foreground">Paste any essay, paragraph, or writing — get instant Orwell AI feedback &amp; band score.</p>
+                </div>
+                <ArrowRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors shrink-0" />
+              </button>
             </div>
 
             <div className="bg-muted/30 border border-border rounded-2xl p-4 text-xs text-muted-foreground leading-relaxed">
@@ -1092,7 +1252,7 @@ export default function EssayChecker() {
               </>
             )}
 
-            {/* IELTS ESSAY RESULTS */}
+            {/* IELTS ESSAY RESULTS (Task 1 / Task 2) */}
             {(taskType === "Task 1" || taskType === "Task 2") && result && (
               <>
                 <div className="bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20 rounded-3xl p-6 text-center">
@@ -1252,6 +1412,280 @@ export default function EssayChecker() {
                 </div>
               </>
             )}
+          </div>
+        )}
+
+        {/* ── FREE CHECK — WRITING ── */}
+        {screen === "freewriting" && (
+          <div className="space-y-4">
+            <div className="flex items-center gap-3">
+              <button
+                onClick={handleBackToCategories}
+                className="w-9 h-9 rounded-xl border border-border flex items-center justify-center text-muted-foreground hover:bg-accent transition-colors"
+                aria-label="Back to categories"
+              >
+                ←
+              </button>
+              <div className="flex items-center gap-2 min-w-0">
+                <span className="text-2xl">✨</span>
+                <div className="min-w-0">
+                  <h2 className="font-extrabold text-foreground truncate">Free Check</h2>
+                  <p className="text-xs text-muted-foreground">Paste any writing — Orwell AI will give feedback &amp; an IELTS band score.</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-card border border-border rounded-2xl p-5 space-y-3">
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-primary/10 text-primary">
+                  No assignment
+                </span>
+                <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-muted text-muted-foreground">
+                  IELTS Band Analysis
+                </span>
+              </div>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Paste an essay, paragraph, letter, story — anything you want feedback on. Orwell AI will grade it
+                using IELTS Task 2 band descriptors and highlight grammar, vocabulary, and coherence issues.
+              </p>
+            </div>
+
+            <div className="relative">
+              <textarea
+                className="w-full h-72 p-4 rounded-2xl border border-border bg-card text-foreground text-sm leading-relaxed resize-none focus:outline-none focus:ring-2 focus:ring-primary/40 transition-shadow"
+                placeholder="Paste or type your writing here…"
+                value={freeText}
+                onChange={(e) => setFreeText(e.target.value)}
+                disabled={loading}
+              />
+              <div className="absolute bottom-3 right-4 text-xs font-semibold text-muted-foreground">
+                {freeWordCount} words
+              </div>
+            </div>
+
+            <Button
+              onClick={handleSubmitFreeCheck}
+              disabled={!canSubmitFree}
+              className="w-full rounded-full h-12 text-base font-semibold"
+            >
+              {loading ? (
+                <>
+                  <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                  Orwell AI is grading…
+                </>
+              ) : (
+                <>
+                  <Sparkles className="w-5 h-5 mr-2" />
+                  Submit for grading
+                </>
+              )}
+            </Button>
+
+            {loading && (
+              <div className="rounded-2xl border border-primary/30 bg-primary/5 p-4 space-y-2">
+                <div className="flex items-center gap-2 text-sm font-semibold text-primary">
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Orwell AI is writing your feedback…
+                </div>
+                {streamingPreview ? (
+                  <pre className="whitespace-pre-wrap break-words text-xs text-muted-foreground font-mono max-h-64 overflow-y-auto leading-relaxed">
+                    {streamingPreview}
+                    <span className="inline-block w-2 h-3 bg-primary/60 ml-0.5 animate-pulse align-baseline" />
+                  </pre>
+                ) : (
+                  <p className="text-xs text-muted-foreground italic">
+                    Reviewing your writing against the official IELTS band descriptors…
+                  </p>
+                )}
+              </div>
+            )}
+
+            {error && (
+              <div className="flex items-start gap-3 p-4 rounded-2xl bg-destructive/10 border border-destructive/30 text-destructive text-sm">
+                <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
+                <p>{error}</p>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* ── FREE CHECK — RESULT ── */}
+        {screen === "freeresult" && freeResult && (
+          <div ref={resultRef} className="space-y-6">
+            <div className="bg-muted/30 border border-border rounded-2xl px-4 py-3 text-xs text-muted-foreground">
+              <span className="font-semibold text-foreground">Free Check</span>
+              <span className="mx-2">·</span>
+              No assignment — your own writing
+            </div>
+
+            <div className="bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20 rounded-3xl p-6 text-center">
+              <p className="text-sm font-semibold text-muted-foreground uppercase tracking-widest mb-1">Overall Band Score</p>
+              <div className="text-8xl font-extrabold text-primary mb-1">{freeResult.overallBand}</div>
+              <p className="text-sm text-muted-foreground">Free Check · {freeResult.wordCount ?? freeWordCount} words analysed</p>
+            </div>
+
+            {freeResult.wordCountWarning && (
+              <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-300 dark:border-amber-700 rounded-2xl px-5 py-3 text-sm text-amber-800 dark:text-amber-300 font-medium">
+                {freeResult.wordCountWarning}
+              </div>
+            )}
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <BandCard label="Task Response" band={freeResult.scores.taskResponse.band} feedback={freeResult.scores.taskResponse.feedback} />
+              <BandCard label="Coherence & Cohesion" band={freeResult.scores.coherenceCohesion.band} feedback={freeResult.scores.coherenceCohesion.feedback} />
+              <BandCard label="Lexical Resource" band={freeResult.scores.lexicalResource.band} feedback={freeResult.scores.lexicalResource.feedback} />
+              <BandCard label="Grammatical Range & Accuracy" band={freeResult.scores.grammaticalRange.band} feedback={freeResult.scores.grammaticalRange.feedback} />
+            </div>
+
+            <div>
+              <h2 className="text-base font-bold mb-3 flex items-center gap-2">
+                <FileText className="w-4 h-4 text-primary" />
+                Your Writing — Annotated
+              </h2>
+              <HighlightedEssay essay={freeText} result={freeResult} />
+            </div>
+
+            {freeResult.grammarErrors.length > 0 && (
+              <div>
+                <h2 className="text-base font-bold mb-3 flex items-center gap-2">
+                  <span className="w-3 h-3 rounded-full bg-red-400 inline-block" />
+                  Grammar Errors ({freeResult.grammarErrors.length})
+                </h2>
+                <div className="space-y-2">
+                  {freeResult.grammarErrors.map((e, i) => (
+                    <div key={i} className="bg-card border border-border rounded-xl p-4 text-sm">
+                      <div className="flex flex-wrap gap-2 items-center mb-1">
+                        <span className="line-through text-muted-foreground">"{e.original}"</span>
+                        <span className="text-muted-foreground">→</span>
+                        <span className="font-semibold text-foreground">"{e.correction}"</span>
+                        <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded-full bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300">{e.type}</span>
+                      </div>
+                      <p className="text-xs text-muted-foreground leading-relaxed">{e.explanation}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {freeResult.vocabularyUpgrades.length > 0 && (
+              <div>
+                <h2 className="text-base font-bold mb-3 flex items-center gap-2">
+                  <span className="w-3 h-3 rounded-full bg-yellow-400 inline-block" />
+                  Vocabulary Upgrades ({freeResult.vocabularyUpgrades.length})
+                </h2>
+                <div className="space-y-2">
+                  {freeResult.vocabularyUpgrades.map((v, i) => (
+                    <div key={i} className="bg-card border border-border rounded-xl p-4 text-sm">
+                      <div className="flex flex-wrap gap-2 items-center mb-1">
+                        <span className="line-through text-muted-foreground">"{v.original}"</span>
+                        <span className="text-muted-foreground">→</span>
+                        <span className="font-semibold text-foreground">"{v.better}"</span>
+                      </div>
+                      <p className="text-xs text-muted-foreground italic mb-1">"{v.example}"</p>
+                      <p className="text-xs text-muted-foreground leading-relaxed">{v.reason}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {freeResult.coherenceIssues.length > 0 && (
+              <div>
+                <h2 className="text-base font-bold mb-3 flex items-center gap-2">
+                  <span className="w-3 h-3 rounded-full bg-blue-400 inline-block" />
+                  Coherence Issues ({freeResult.coherenceIssues.length})
+                </h2>
+                <div className="space-y-2">
+                  {freeResult.coherenceIssues.map((c, i) => (
+                    <div key={i} className="bg-card border border-border rounded-xl p-4 text-sm">
+                      <div className="flex flex-wrap gap-2 items-center mb-1">
+                        <span className="line-through text-muted-foreground">"{c.original}"</span>
+                        <span className="text-muted-foreground">→</span>
+                        <span className="font-semibold text-foreground">"{c.correction}"</span>
+                      </div>
+                      <p className="text-xs text-muted-foreground leading-relaxed">{c.explanation}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-2xl p-5">
+                <h3 className="text-sm font-bold text-green-700 dark:text-green-400 mb-3 flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4" /> Strengths
+                </h3>
+                <ul className="space-y-1.5">
+                  {freeResult.strengths.map((s, i) => (
+                    <li key={i} className="text-xs text-green-800 dark:text-green-300 leading-relaxed flex gap-2">
+                      <span className="shrink-0">✓</span>{s}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-2xl p-5">
+                <h3 className="text-sm font-bold text-amber-700 dark:text-amber-400 mb-3 flex items-center gap-2">
+                  <AlertCircle className="w-4 h-4" /> To Improve
+                </h3>
+                <ul className="space-y-1.5">
+                  {freeResult.improvements.map((item, i) => (
+                    <li key={i} className="text-xs text-amber-800 dark:text-amber-300 leading-relaxed flex gap-2">
+                      <span className="shrink-0">→</span>{item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            {(freeResult.exampleEssayBand6 || freeResult.exampleEssayBand8) && (
+              <div>
+                <h2 className="text-base font-bold mb-1 flex items-center gap-2">
+                  <Sparkles className="w-4 h-4 text-primary" />
+                  Improved Versions
+                </h2>
+                <p className="text-xs text-muted-foreground mb-4">
+                  Orwell AI rewrote your piece at two stronger levels — use them as a study guide, not to copy.
+                </p>
+                <div className="space-y-4">
+                  <EssayExampleBox label="Your Original Writing" band="—" text={freeText}
+                    accentClass="bg-card border-border" badgeClass="bg-muted text-muted-foreground" />
+                  {freeResult.exampleEssayBand6 && (
+                    <EssayExampleBox label="Improved — Intermediate" band="5.5 – 6" text={freeResult.exampleEssayBand6}
+                      accentClass="bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800"
+                      badgeClass="bg-amber-100 text-amber-700 dark:bg-amber-900/60 dark:text-amber-300" />
+                  )}
+                  {freeResult.exampleEssayBand8 && (
+                    <EssayExampleBox label="Improved — Advanced" band="7 – 8" text={freeResult.exampleEssayBand8}
+                      accentClass="bg-teal-50 dark:bg-teal-900/20 border-teal-200 dark:border-teal-800"
+                      badgeClass="bg-teal-100 text-teal-700 dark:bg-teal-900/60 dark:text-teal-300" />
+                  )}
+                </div>
+              </div>
+            )}
+
+            <div className="flex gap-3 flex-wrap pb-6">
+              <Button onClick={handleCopyFreeReport} variant="outline" className="rounded-full flex-1">
+                {copied ? <CheckCircle2 className="w-4 h-4 mr-2 text-green-500" /> : <Copy className="w-4 h-4 mr-2" />}
+                {copied ? "Copied!" : "Copy feedback"}
+              </Button>
+              <Button
+                onClick={() => {
+                  setFreeText("");
+                  setFreeResult(null);
+                  setError(null);
+                  setScreen("freewriting");
+                }}
+                variant="outline"
+                className="rounded-full flex-1"
+              >
+                <RotateCcw className="w-4 h-4 mr-2" />
+                Check another piece
+              </Button>
+              <Button onClick={handleBackToCategories} className="rounded-full flex-1">
+                <ArrowRight className="w-4 h-4 mr-2" />
+                Back to categories
+              </Button>
+            </div>
           </div>
         )}
       </div>
