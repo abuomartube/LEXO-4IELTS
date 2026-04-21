@@ -1006,6 +1006,13 @@ export default function EssayChecker() {
                 ✍️ ابدأ التدريب
                 <ArrowRight className="w-5 h-5" />
               </button>
+              <a
+                href={`${import.meta.env.BASE_URL}writing-history`}
+                className="flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm border-2 transition-all hover:bg-white/10 active:scale-95"
+                style={{ borderColor: "#C9A84C", color: "#C9A84C" }}
+              >
+                📚 Writing History
+              </a>
             </div>
           </div>
         )}

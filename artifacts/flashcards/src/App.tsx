@@ -15,6 +15,7 @@ import AdminPage from "@/pages/admin";
 import Synonyms from "@/pages/synonyms";
 import Antonyms from "@/pages/antonyms";
 import EssayChecker from "@/pages/essay-checker";
+import WritingHistory from "@/pages/writing-history";
 import Stories from "@/pages/stories";
 import Speaking from "@/pages/speaking";
 import PhrasalVerbs from "@/pages/phrasal-verbs";
@@ -67,6 +68,7 @@ function Router() {
             <Route path="/antonyms" component={Antonyms} />
             <Route path="/phrasal-verbs" component={PhrasalVerbs} />
             <Route path="/essay-checker" component={EssayChecker} />
+            <Route path="/writing-history" component={WritingHistory} />
             <Route path="/listening-test" component={ListeningTest} />
             <Route path="/reading-test" component={ReadingTest} />
             <Route path="/stories" component={Stories} />

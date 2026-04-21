@@ -1,8 +1,8 @@
 import { Router, type IRouter } from "express";
 import crypto from "node:crypto";
 import Anthropic from "@anthropic-ai/sdk";
-import { eq, and, sql, or, lt, inArray } from "drizzle-orm";
-import { db, orwellSubmissionsTable, xpEventsTable, accessRequestsTable } from "@workspace/db";
+import { eq, and, sql, or, lt, gt, inArray, desc, ne } from "drizzle-orm";
+import { db, orwellSubmissionsTable, orwellCoachSummariesTable, xpEventsTable, accessRequestsTable } from "@workspace/db";
 import { getOrwellEntry } from "../data/orwell-catalog.js";
 
 const SESSION_SECRET = process.env["SESSION_SECRET"] ?? "fallback-secret";
@@ -345,6 +345,7 @@ async function streamFreeCheck(
   req: import("express").Request,
   text: string,
   mode: FreeCheckMode,
+  email: string,
 ): Promise<void> {
   res.setHeader("Content-Type", "text/event-stream");
   res.setHeader("Cache-Control", "no-cache");
@@ -420,6 +421,28 @@ async function streamFreeCheck(
   const stampLabel = mode === "task1" ? "Task 1" : mode === "task2" ? "Task 2" : "Paragraph";
   (parsed as { taskType?: string }).taskType = stampLabel;
   const wordCount = text.trim().split(/\s+/).filter(Boolean).length;
+
+  // Persist this Free Check as a history row so the student can see it later.
+  // Use a unique random assignmentId since Free Check has no canonical assignment.
+  try {
+    const overall = (parsed as { overallBand?: number }).overallBand ?? null;
+    const assignmentId = `freecheck-${Date.now()}-${crypto.randomBytes(6).toString("hex")}`;
+    await db.insert(orwellSubmissionsTable).values({
+      email,
+      assignmentId,
+      category: "freecheck",
+      status: "submitted",
+      band: typeof overall === "number" ? overall : null,
+      wordCount,
+      text,
+      feedback: JSON.stringify(parsed),
+      taskTypeLabel: `Free Check (${stampLabel})`,
+      prompt: null,
+    });
+  } catch (err) {
+    console.error("Failed to persist free-check submission:", err);
+  }
+
   sseSend({ done: { ...parsed, wordCount, mode } });
   res.end();
 }
@@ -470,7 +493,7 @@ router.post("/orwell/submit", async (req, res): Promise<void> => {
       return;
     }
     try {
-      await streamFreeCheck(res, req, text, mode);
+      await streamFreeCheck(res, req, text, mode, email);
     } finally {
       freeCheckRelease(email);
     }
@@ -624,9 +647,21 @@ router.post("/orwell/submit", async (req, res): Promise<void> => {
 
   // Promote our grading lock to a finalized submission. Only update rows we own
   // (status='grading') so a concurrent finalize from elsewhere can't be clobbered.
+  const taskLabelForRow = category === "task1" ? "Task 1"
+    : category === "task2" ? "Task 2"
+    : "Paragraph";
   const finalize = await db
     .update(orwellSubmissionsTable)
-    .set({ status: "submitted", band: overallBand ?? null, wordCount, createdAt: new Date() })
+    .set({
+      status: "submitted",
+      band: overallBand ?? null,
+      wordCount,
+      text,
+      feedback: JSON.stringify(parsed),
+      taskTypeLabel: taskLabelForRow,
+      prompt,
+      createdAt: new Date(),
+    })
     .where(and(
       eq(orwellSubmissionsTable.email, email),
       eq(orwellSubmissionsTable.assignmentId, assignmentId),
@@ -692,5 +727,504 @@ router.get("/orwell/progress", async (req, res): Promise<void> => {
   }
   res.json(progress);
 });
+
+// ── Writing History ─────────────────────────────────────────────────────
+// Helpers used by both student-facing and admin-facing history endpoints.
+
+const HISTORY_CATEGORIES = ["task1", "task2", "paragraph", "freecheck"] as const;
+type HistoryCategory = typeof HISTORY_CATEGORIES[number];
+
+interface HistoryListItem {
+  id: number;
+  category: string;
+  taskTypeLabel: string | null;
+  band: number | null;
+  wordCount: number | null;
+  createdAt: string;
+  preview: string;
+  hasFeedback: boolean;
+}
+
+async function fetchHistoryList(emailParam: string): Promise<HistoryListItem[]> {
+  const rows = await db
+    .select({
+      id: orwellSubmissionsTable.id,
+      category: orwellSubmissionsTable.category,
+      taskTypeLabel: orwellSubmissionsTable.taskTypeLabel,
+      band: orwellSubmissionsTable.band,
+      wordCount: orwellSubmissionsTable.wordCount,
+      text: orwellSubmissionsTable.text,
+      feedback: orwellSubmissionsTable.feedback,
+      createdAt: orwellSubmissionsTable.createdAt,
+    })
+    .from(orwellSubmissionsTable)
+    .where(and(
+      eq(orwellSubmissionsTable.email, emailParam),
+      eq(orwellSubmissionsTable.status, "submitted"),
+    ))
+    .orderBy(desc(orwellSubmissionsTable.createdAt))
+    .limit(500);
+
+  return rows.map((r) => ({
+    id: r.id,
+    category: r.category,
+    taskTypeLabel: r.taskTypeLabel,
+    band: r.band,
+    wordCount: r.wordCount,
+    createdAt: r.createdAt.toISOString(),
+    preview: (r.text ?? "").slice(0, 140).trim(),
+    hasFeedback: !!r.feedback,
+  }));
+}
+
+interface ChartPoint { date: string; band: number; }
+interface ChartSeries {
+  task1: ChartPoint[];
+  task2: ChartPoint[];
+  paragraph: ChartPoint[];
+  freecheck: ChartPoint[];
+}
+
+async function fetchHistoryChart(emailParam: string): Promise<ChartSeries> {
+  const rows = await db
+    .select({
+      category: orwellSubmissionsTable.category,
+      band: orwellSubmissionsTable.band,
+      createdAt: orwellSubmissionsTable.createdAt,
+    })
+    .from(orwellSubmissionsTable)
+    .where(and(
+      eq(orwellSubmissionsTable.email, emailParam),
+      eq(orwellSubmissionsTable.status, "submitted"),
+    ))
+    .orderBy(orwellSubmissionsTable.createdAt);
+
+  const out: ChartSeries = { task1: [], task2: [], paragraph: [], freecheck: [] };
+  for (const r of rows) {
+    if (typeof r.band !== "number") continue;
+    const bucket = (out as Record<string, ChartPoint[]>)[r.category];
+    if (!bucket) continue;
+    bucket.push({ date: r.createdAt.toISOString(), band: r.band });
+  }
+  return out;
+}
+
+async function fetchHistoryDetail(emailParam: string, id: number) {
+  const [row] = await db
+    .select()
+    .from(orwellSubmissionsTable)
+    .where(and(
+      eq(orwellSubmissionsTable.id, id),
+      eq(orwellSubmissionsTable.email, emailParam),
+      eq(orwellSubmissionsTable.status, "submitted"),
+    ))
+    .limit(1);
+  if (!row) return null;
+  let feedback: unknown = null;
+  if (row.feedback) {
+    try { feedback = JSON.parse(row.feedback); } catch { feedback = null; }
+  }
+  let compareReport: unknown = null;
+  if (row.compareReport) {
+    try { compareReport = JSON.parse(row.compareReport); } catch { compareReport = null; }
+  }
+  return {
+    id: row.id,
+    category: row.category,
+    taskTypeLabel: row.taskTypeLabel,
+    band: row.band,
+    wordCount: row.wordCount,
+    text: row.text,
+    prompt: row.prompt,
+    feedback,
+    compareReport,
+    createdAt: row.createdAt.toISOString(),
+  };
+}
+
+router.get("/orwell/history", async (req, res): Promise<void> => {
+  const email = await verifyStudentEmail(req);
+  if (!email) { res.status(401).json({ error: "Unauthorized" }); return; }
+  const items = await fetchHistoryList(email);
+  res.json({ items });
+});
+
+router.get("/orwell/history/chart", async (req, res): Promise<void> => {
+  const email = await verifyStudentEmail(req);
+  if (!email) { res.status(401).json({ error: "Unauthorized" }); return; }
+  const series = await fetchHistoryChart(email);
+  res.json(series);
+});
+
+router.get("/orwell/history/:id", async (req, res): Promise<void> => {
+  const email = await verifyStudentEmail(req);
+  if (!email) { res.status(401).json({ error: "Unauthorized" }); return; }
+  const id = Number(req.params.id);
+  if (!Number.isInteger(id) || id <= 0) { res.status(400).json({ error: "Bad id" }); return; }
+  const detail = await fetchHistoryDetail(email, id);
+  if (!detail) { res.status(404).json({ error: "Not found" }); return; }
+  res.json(detail);
+});
+
+// ── Comparison report ─────────────────────────────────────────────────────
+// Compare a past submission against the most recent submission of the same
+// category. The result is cached on the past submission row to avoid hitting
+// the model on repeat reads.
+const COMPARE_PROMPT = `You are an IELTS writing coach. Compare two pieces of writing by the same student, both of the same task type. The "older" piece was written earlier; the "newer" piece is the student's most recent submission of that type. Be honest, specific, and warm.
+
+Return ONLY a valid JSON object, no markdown, no extra text:
+{
+  "bandChange": "higher" | "lower" | "same",
+  "bandDelta": 0.5,
+  "summary": "1-2 sentence overview comparing the two pieces.",
+  "improvedStrengths": ["Concrete strength now visible in the newer piece that was weaker before"],
+  "remainingWeaknesses": ["Specific issue that is still present"],
+  "newMistakes": ["Specific mistake that appears in the newer piece but not the older one"],
+  "focusNext": ["Concrete area to work on next"],
+  "motivation": "1-2 sentence encouraging message in English."
+}
+
+Rules:
+- Use 0 for bandDelta if either band is missing.
+- Each list should have 1-4 short items.
+- Quote short snippets from the writing where useful, in double quotes.`;
+
+async function generateCompareReport(opts: {
+  older: { text: string; band: number | null; date: Date; taskTypeLabel: string | null };
+  newer: { text: string; band: number | null; date: Date };
+}): Promise<Record<string, unknown>> {
+  const anthropic = getAnthropicClient();
+  const userMessage = `Task type: ${opts.older.taskTypeLabel ?? "Writing"}
+
+OLDER submission (date: ${opts.older.date.toISOString()}, band: ${opts.older.band ?? "N/A"}):
+"""
+${opts.older.text}
+"""
+
+NEWER submission (date: ${opts.newer.date.toISOString()}, band: ${opts.newer.band ?? "N/A"}):
+"""
+${opts.newer.text}
+"""
+
+Produce the JSON progress report comparing OLDER → NEWER.`;
+  const message = await anthropic.messages.create({
+    model: "claude-sonnet-4-6",
+    max_tokens: 2048,
+    system: COMPARE_PROMPT,
+    messages: [{ role: "user", content: userMessage }],
+  });
+  const block = message.content[0];
+  if (!block || block.type !== "text") throw new Error("Unexpected AI response");
+  let parsed: Record<string, unknown>;
+  try { parsed = JSON.parse(block.text); }
+  catch {
+    const m = block.text.match(/\{[\s\S]*\}/);
+    if (!m) throw new Error("Could not parse AI response");
+    parsed = JSON.parse(m[0]);
+  }
+  return parsed;
+}
+
+async function buildCompareForId(emailParam: string, id: number, force: boolean) {
+  const [older] = await db
+    .select()
+    .from(orwellSubmissionsTable)
+    .where(and(
+      eq(orwellSubmissionsTable.id, id),
+      eq(orwellSubmissionsTable.email, emailParam),
+      eq(orwellSubmissionsTable.status, "submitted"),
+    ))
+    .limit(1);
+  if (!older) return { error: "Submission not found", status: 404 } as const;
+  if (!older.text) return { error: "This submission has no saved writing to compare.", status: 400 } as const;
+
+  // Find the most recent submission of the same category that is strictly NEWER than this one.
+  const [newer] = await db
+    .select()
+    .from(orwellSubmissionsTable)
+    .where(and(
+      eq(orwellSubmissionsTable.email, emailParam),
+      eq(orwellSubmissionsTable.category, older.category),
+      eq(orwellSubmissionsTable.status, "submitted"),
+      ne(orwellSubmissionsTable.id, older.id),
+      gt(orwellSubmissionsTable.createdAt, older.createdAt),
+    ))
+    .orderBy(desc(orwellSubmissionsTable.createdAt))
+    .limit(1);
+
+  if (!newer || !newer.text) {
+    return {
+      error: "You haven't submitted a newer piece of this type yet — once you do, you'll be able to compare progress.",
+      status: 409,
+    } as const;
+  }
+
+  // Cache hit?
+  if (!force && older.compareReport) {
+    try {
+      const cached = JSON.parse(older.compareReport);
+      if (cached && typeof cached === "object" && (cached as { _newerId?: number })._newerId === newer.id) {
+        return { ok: true, report: cached } as const;
+      }
+    } catch { /* fall through and regenerate */ }
+  }
+
+  try {
+    const report = await generateCompareReport({
+      older: { text: older.text, band: older.band, date: older.createdAt, taskTypeLabel: older.taskTypeLabel },
+      newer: { text: newer.text, band: newer.band, date: newer.createdAt },
+    });
+    const stamped = {
+      ...report,
+      _newerId: newer.id,
+      _olderBand: older.band,
+      _newerBand: newer.band,
+      _olderDate: older.createdAt.toISOString(),
+      _newerDate: newer.createdAt.toISOString(),
+      _generatedAt: new Date().toISOString(),
+    };
+    await db
+      .update(orwellSubmissionsTable)
+      .set({ compareReport: JSON.stringify(stamped) })
+      .where(eq(orwellSubmissionsTable.id, older.id));
+    return { ok: true, report: stamped } as const;
+  } catch (err) {
+    console.error("Compare report generation failed:", err);
+    return { error: "AI comparison failed. Please try again.", status: 500 } as const;
+  }
+}
+
+router.post("/orwell/history/:id/compare", async (req, res): Promise<void> => {
+  const email = await verifyStudentEmail(req);
+  if (!email) { res.status(401).json({ error: "Unauthorized" }); return; }
+  const id = Number(req.params.id);
+  if (!Number.isInteger(id) || id <= 0) { res.status(400).json({ error: "Bad id" }); return; }
+  const force = req.query.force === "1" || (req.body && (req.body as { force?: boolean }).force === true);
+  const result = await buildCompareForId(email, id, !!force);
+  if ("error" in result) { res.status(result.status).json({ error: result.error }); return; }
+  res.json({ report: result.report });
+});
+
+// ── Personal Writing Coach Summary ────────────────────────────────────────
+const COACH_PROMPT = `You are a personal IELTS writing coach. The student has just completed a milestone of submissions. Look across their full writing journey (most recent first) and produce a warm, honest, actionable summary.
+
+Return ONLY a valid JSON object, no markdown, no extra text:
+{
+  "overallTrend": "improving" | "plateau" | "declining" | "mixed",
+  "averageBand": 5.5,
+  "topStrengths": ["Strength 1", "Strength 2", "Strength 3"],
+  "topImprovements": ["Improvement 1", "Improvement 2", "Improvement 3"],
+  "studyRecommendation": "A specific, multi-step plan tailored to the student's pattern of mistakes (3-6 sentences).",
+  "motivation": "1-2 sentence encouraging message."
+}
+
+Rules:
+- topStrengths and topImprovements MUST each contain exactly 3 items.
+- Be specific: reference recurring mistake types or skill gaps when relevant.
+- Average band is the mean of all available overall bands rounded to nearest 0.5.`;
+
+interface CoachInputItem {
+  taskTypeLabel: string | null;
+  band: number | null;
+  wordCount: number | null;
+  date: Date;
+  textExcerpt: string;
+  feedbackExcerpt: string;
+}
+
+async function generateCoachSummary(items: CoachInputItem[]): Promise<Record<string, unknown>> {
+  const anthropic = getAnthropicClient();
+  const lines = items.map((it, i) => {
+    return `--- Submission #${i + 1} (${it.taskTypeLabel ?? "Writing"}, ${it.date.toISOString()}, band ${it.band ?? "N/A"}, ${it.wordCount ?? "?"} words) ---
+WRITING (excerpt):
+${it.textExcerpt}
+
+FEEDBACK (excerpt):
+${it.feedbackExcerpt}
+`;
+  }).join("\n");
+  const userMessage = `Here are this student's last ${items.length} submissions, most recent first:\n\n${lines}\n\nProduce the JSON personal writing coach summary.`;
+  const message = await anthropic.messages.create({
+    model: "claude-sonnet-4-6",
+    max_tokens: 2048,
+    system: COACH_PROMPT,
+    messages: [{ role: "user", content: userMessage }],
+  });
+  const block = message.content[0];
+  if (!block || block.type !== "text") throw new Error("Unexpected AI response");
+  let parsed: Record<string, unknown>;
+  try { parsed = JSON.parse(block.text); }
+  catch {
+    const m = block.text.match(/\{[\s\S]*\}/);
+    if (!m) throw new Error("Could not parse AI response");
+    parsed = JSON.parse(m[0]);
+  }
+  return parsed;
+}
+
+async function buildCoachSummary(emailParam: string, force: boolean) {
+  const rows = await db
+    .select({
+      taskTypeLabel: orwellSubmissionsTable.taskTypeLabel,
+      band: orwellSubmissionsTable.band,
+      wordCount: orwellSubmissionsTable.wordCount,
+      text: orwellSubmissionsTable.text,
+      feedback: orwellSubmissionsTable.feedback,
+      createdAt: orwellSubmissionsTable.createdAt,
+    })
+    .from(orwellSubmissionsTable)
+    .where(and(
+      eq(orwellSubmissionsTable.email, emailParam),
+      eq(orwellSubmissionsTable.status, "submitted"),
+    ))
+    .orderBy(desc(orwellSubmissionsTable.createdAt));
+
+  const total = rows.length;
+  if (total < 5) {
+    return {
+      ok: true,
+      summary: null,
+      submissionCount: total,
+      nextMilestone: 5,
+      message: `Submit ${5 - total} more piece${5 - total === 1 ? "" : "s"} of writing to unlock your first Personal Writing Coach Summary.`,
+    } as const;
+  }
+
+  // Round down to nearest milestone (every 5 submissions)
+  const milestone = Math.floor(total / 5) * 5;
+
+  if (!force) {
+    const [cached] = await db
+      .select()
+      .from(orwellCoachSummariesTable)
+      .where(and(
+        eq(orwellCoachSummariesTable.email, emailParam),
+        eq(orwellCoachSummariesTable.atSubmissionCount, milestone),
+      ))
+      .limit(1);
+    if (cached) {
+      let parsed: unknown = null;
+      try { parsed = JSON.parse(cached.summary); } catch { /* corrupt; regenerate */ }
+      if (parsed) {
+        return {
+          ok: true,
+          summary: parsed,
+          submissionCount: total,
+          milestone,
+          generatedAt: cached.createdAt.toISOString(),
+          nextMilestone: milestone + 5,
+        } as const;
+      }
+    }
+  }
+
+  // Build a cost-bounded payload — keep the most recent 15 submissions, with
+  // truncated excerpts of the writing and feedback.
+  const recent = rows.slice(0, 15);
+  const items: CoachInputItem[] = recent.map((r) => {
+    let feedbackExcerpt = "";
+    if (r.feedback) {
+      try {
+        const f = JSON.parse(r.feedback) as Record<string, unknown>;
+        const strengths = Array.isArray(f.strengths) ? f.strengths.join(" • ") : (typeof f.strengths === "string" ? f.strengths : "");
+        const improvements = Array.isArray(f.improvements) ? f.improvements.join(" • ") : (typeof f.improvements === "string" ? f.improvements : "");
+        feedbackExcerpt = `Strengths: ${strengths}\nImprovements: ${improvements}`.slice(0, 500);
+      } catch {
+        feedbackExcerpt = r.feedback.slice(0, 500);
+      }
+    }
+    return {
+      taskTypeLabel: r.taskTypeLabel,
+      band: r.band,
+      wordCount: r.wordCount,
+      date: r.createdAt,
+      textExcerpt: (r.text ?? "").slice(0, 500),
+      feedbackExcerpt,
+    };
+  });
+
+  try {
+    const summary = await generateCoachSummary(items);
+    await db
+      .insert(orwellCoachSummariesTable)
+      .values({ email: emailParam, atSubmissionCount: milestone, summary: JSON.stringify(summary) })
+      .onConflictDoUpdate({
+        target: [orwellCoachSummariesTable.email, orwellCoachSummariesTable.atSubmissionCount],
+        set: { summary: JSON.stringify(summary), createdAt: new Date() },
+      });
+    return {
+      ok: true,
+      summary,
+      submissionCount: total,
+      milestone,
+      generatedAt: new Date().toISOString(),
+      nextMilestone: milestone + 5,
+    } as const;
+  } catch (err) {
+    console.error("Coach summary generation failed:", err);
+    return { error: "AI summary failed. Please try again.", status: 500 } as const;
+  }
+}
+
+router.post("/orwell/coach-summary", async (req, res): Promise<void> => {
+  const email = await verifyStudentEmail(req);
+  if (!email) { res.status(401).json({ error: "Unauthorized" }); return; }
+  const force = req.query.force === "1" || (req.body && (req.body as { force?: boolean }).force === true);
+  const result = await buildCoachSummary(email, !!force);
+  if ("error" in result) { res.status(result.status).json({ error: result.error }); return; }
+  res.json(result);
+});
+
+router.get("/orwell/coach-summary", async (req, res): Promise<void> => {
+  const email = await verifyStudentEmail(req);
+  if (!email) { res.status(401).json({ error: "Unauthorized" }); return; }
+  const result = await buildCoachSummary(email, false);
+  if ("error" in result) { res.status(result.status).json({ error: result.error }); return; }
+  res.json(result);
+});
+
+// ── Admin: per-student writing history ────────────────────────────────────
+function verifyAdmin(req: import("express").Request): boolean {
+  const provided = (req.headers["x-admin-password"] as string || "").trim();
+  const expected = (process.env["ADMIN_PASSWORD"] || "Target8").trim();
+  if (!provided || !expected) return false;
+  const a = Buffer.from(provided);
+  const b = Buffer.from(expected);
+  if (a.length !== b.length) return false;
+  return crypto.timingSafeEqual(a, b);
+}
+
+router.get("/admin/students/:email/orwell-history", async (req, res): Promise<void> => {
+  if (!verifyAdmin(req)) { res.status(401).json({ error: "Unauthorized" }); return; }
+  const studentEmail = req.params.email.trim().toLowerCase();
+  if (!studentEmail) { res.status(400).json({ error: "Bad email" }); return; }
+  const [items, chart] = await Promise.all([
+    fetchHistoryList(studentEmail),
+    fetchHistoryChart(studentEmail),
+  ]);
+  res.json({ items, chart });
+});
+
+router.get("/admin/students/:email/orwell-history/:id", async (req, res): Promise<void> => {
+  if (!verifyAdmin(req)) { res.status(401).json({ error: "Unauthorized" }); return; }
+  const studentEmail = req.params.email.trim().toLowerCase();
+  const id = Number(req.params.id);
+  if (!studentEmail || !Number.isInteger(id) || id <= 0) { res.status(400).json({ error: "Bad request" }); return; }
+  const detail = await fetchHistoryDetail(studentEmail, id);
+  if (!detail) { res.status(404).json({ error: "Not found" }); return; }
+  res.json(detail);
+});
+
+router.get("/admin/students/:email/orwell-coach-summary", async (req, res): Promise<void> => {
+  if (!verifyAdmin(req)) { res.status(401).json({ error: "Unauthorized" }); return; }
+  const studentEmail = req.params.email.trim().toLowerCase();
+  if (!studentEmail) { res.status(400).json({ error: "Bad email" }); return; }
+  const result = await buildCoachSummary(studentEmail, false);
+  if ("error" in result) { res.status(result.status).json({ error: result.error }); return; }
+  res.json(result);
+});
+
+void HISTORY_CATEGORIES;
+void (null as unknown as HistoryCategory);
 
 export default router;

@@ -6,6 +6,9 @@ import {
   UserCheck, UserX, KeyRound, Copy, Check, Bell, Mail, Clock,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import {
+  ResponsiveContainer, LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend,
+} from "recharts";
 
 const API = import.meta.env.VITE_API_URL || "";
 
@@ -117,7 +120,10 @@ export default function TeacherDashboard() {
   const [newCodeCount, setNewCodeCount] = useState(1);
   const [generating, setGenerating] = useState(false);
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
+
   const [deletingCodeId, setDeletingCodeId] = useState<number | null>(null);
+  // Per-student writing history modal
+  const [historyEmail, setHistoryEmail] = useState<string | null>(null);
   const [showOnlyUnused, setShowOnlyUnused] = useState(true);
 
   const savedPass = typeof sessionStorage !== "undefined" ? sessionStorage.getItem("teacher_pass") : null;
@@ -846,12 +852,13 @@ export default function TeacherDashboard() {
                         </span>
                       </th>
                     ))}
+                    <th className="px-3 py-3 text-left font-bold text-muted-foreground text-xs uppercase tracking-wider whitespace-nowrap">Writing</th>
                   </tr>
                 </thead>
                 <tbody>
                   {filtered.length === 0 ? (
                     <tr>
-                      <td colSpan={10} className="px-4 py-12 text-center text-muted-foreground">
+                      <td colSpan={11} className="px-4 py-12 text-center text-muted-foreground">
                         {students.length === 0 ? "No approved students yet" : `No students match "${search}"`}
                       </td>
                     </tr>
@@ -914,11 +921,307 @@ export default function TeacherDashboard() {
                         <td className="px-3 py-3 text-muted-foreground whitespace-nowrap">
                           {formatDate(s.lastActivity)}
                         </td>
+                        <td className="px-3 py-3">
+                          <button
+                            onClick={() => setHistoryEmail(s.email)}
+                            className="text-xs font-bold px-2 py-1 rounded-lg bg-primary/10 hover:bg-primary/20 text-primary transition-colors"
+                          >
+                            View →
+                          </button>
+                        </td>
                       </tr>
                     ))
                   )}
                 </tbody>
               </table>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {historyEmail && (
+        <AdminWritingHistoryModal
+          email={historyEmail}
+          adminPassword={password}
+          onClose={() => setHistoryEmail(null)}
+        />
+      )}
+    </div>
+  );
+}
+
+// ── Admin Writing History modal ──────────────────────────────────────────
+
+interface AdminHistoryItem {
+  id: number;
+  category: string;
+  taskTypeLabel: string | null;
+  band: number | null;
+  wordCount: number | null;
+  createdAt: string;
+  preview: string;
+}
+
+interface AdminChartSeries {
+  task1: { date: string; band: number }[];
+  task2: { date: string; band: number }[];
+  paragraph: { date: string; band: number }[];
+  freecheck: { date: string; band: number }[];
+}
+
+interface AdminCoach {
+  ok: true;
+  summary: null | {
+    overallTrend: string;
+    averageBand: number;
+    topStrengths: string[];
+    topImprovements: string[];
+    studyRecommendation: string;
+    motivation: string;
+  };
+  submissionCount: number;
+  milestone?: number;
+  message?: string;
+}
+
+interface AdminDetail {
+  id: number;
+  taskTypeLabel: string | null;
+  band: number | null;
+  wordCount: number | null;
+  createdAt: string;
+  text: string | null;
+  prompt: string | null;
+  feedback: Record<string, unknown> | null;
+}
+
+const ADMIN_CAT_COLOR: Record<string, string> = {
+  task1: "#3b82f6", task2: "#8b5cf6", paragraph: "#10b981", freecheck: "#f59e0b",
+};
+
+function AdminWritingHistoryModal({ email, adminPassword, onClose }: {
+  email: string; adminPassword: string; onClose: () => void;
+}) {
+  const [items, setItems] = useState<AdminHistoryItem[] | null>(null);
+  const [chart, setChart] = useState<AdminChartSeries | null>(null);
+  const [coach, setCoach] = useState<AdminCoach | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [openId, setOpenId] = useState<number | null>(null);
+  const [openDetail, setOpenDetail] = useState<AdminDetail | null>(null);
+  const [detailLoading, setDetailLoading] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const headers = { "x-admin-password": adminPassword };
+        const [hRes, cRes] = await Promise.all([
+          fetch(`${API}/api/admin/students/${encodeURIComponent(email)}/orwell-history`, { headers }),
+          fetch(`${API}/api/admin/students/${encodeURIComponent(email)}/orwell-coach-summary`, { headers }),
+        ]);
+        if (!hRes.ok) throw new Error("Failed to load history");
+        const hData = await hRes.json();
+        if (cancelled) return;
+        setItems(hData.items ?? []);
+        setChart(hData.chart ?? null);
+        if (cRes.ok) setCoach(await cRes.json());
+      } catch (e) {
+        if (!cancelled) setError(e instanceof Error ? e.message : "Failed");
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [email, adminPassword]);
+
+  useEffect(() => {
+    if (openId === null) { setOpenDetail(null); return; }
+    let cancelled = false;
+    (async () => {
+      setDetailLoading(true);
+      try {
+        const res = await fetch(`/api/admin/students/${encodeURIComponent(email)}/orwell-history/${openId}`, {
+          headers: { "x-admin-password": adminPassword },
+        });
+        if (!res.ok) throw new Error("Failed");
+        const data = await res.json();
+        if (!cancelled) setOpenDetail(data);
+      } catch {
+        if (!cancelled) setOpenDetail(null);
+      } finally {
+        if (!cancelled) setDetailLoading(false);
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [openId, email, adminPassword]);
+
+  const chartData = useMemo(() => {
+    if (!chart) return [] as Array<Record<string, number | string>>;
+    const merged = new Map<string, Record<string, number | string>>();
+    (["task1", "task2", "paragraph", "freecheck"] as const).forEach((k) => {
+      for (const p of chart[k]) {
+        const day = p.date.slice(0, 10);
+        const row = merged.get(day) ?? { date: day };
+        row[k] = p.band;
+        merged.set(day, row);
+      }
+    });
+    return Array.from(merged.values()).sort((a, b) => String(a.date).localeCompare(String(b.date)));
+  }, [chart]);
+
+  return (
+    <div className="fixed inset-0 z-50 bg-black/60 flex items-end sm:items-center justify-center p-0 sm:p-4 overflow-y-auto" onClick={onClose}>
+      <div
+        className="bg-background w-full sm:max-w-4xl max-h-[95vh] overflow-y-auto rounded-t-2xl sm:rounded-2xl border border-border shadow-xl"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="sticky top-0 bg-background border-b border-border p-4 flex items-center justify-between z-10">
+          <div className="min-w-0">
+            <h3 className="font-bold truncate">Writing History</h3>
+            <p className="text-xs text-muted-foreground truncate">{email}</p>
+          </div>
+          <button onClick={onClose} className="w-8 h-8 rounded-lg hover:bg-accent flex items-center justify-center">
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+
+        {loading ? (
+          <div className="flex items-center justify-center py-16">
+            <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
+          </div>
+        ) : error ? (
+          <div className="p-4 text-sm text-rose-600">{error}</div>
+        ) : (
+          <div className="p-4 space-y-5">
+            {coach?.summary ? (
+              <div className="rounded-xl border-2 border-primary/30 bg-primary/5 p-4 space-y-3">
+                <div className="flex items-center gap-2">
+                  <TrendingUp className="w-4 h-4 text-primary" />
+                  <h4 className="font-bold text-sm">Personal Coach Summary</h4>
+                  <span className="text-xs text-muted-foreground ml-auto">
+                    Avg band {typeof coach.summary.averageBand === "number" ? coach.summary.averageBand.toFixed(1) : "—"} • Trend: {coach.summary.overallTrend}
+                  </span>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <div>
+                    <p className="text-xs font-bold text-emerald-700 dark:text-emerald-300 mb-1">🌟 Strengths</p>
+                    <ol className="text-xs space-y-0.5 list-decimal list-inside">
+                      {coach.summary.topStrengths.map((s, i) => <li key={i}>{s}</li>)}
+                    </ol>
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold text-amber-700 dark:text-amber-300 mb-1">🎯 Areas to improve</p>
+                    <ol className="text-xs space-y-0.5 list-decimal list-inside">
+                      {coach.summary.topImprovements.map((s, i) => <li key={i}>{s}</li>)}
+                    </ol>
+                  </div>
+                </div>
+                <div>
+                  <p className="text-xs font-bold text-blue-700 dark:text-blue-300 mb-1">📚 Study plan</p>
+                  <p className="text-xs whitespace-pre-wrap">{coach.summary.studyRecommendation}</p>
+                </div>
+              </div>
+            ) : (
+              <div className="rounded-xl border border-border bg-muted/30 p-3 text-xs text-muted-foreground">
+                {coach?.message ?? `Coach summary unlocks after 5 submissions (${coach?.submissionCount ?? 0} so far).`}
+              </div>
+            )}
+
+            <div className="rounded-xl border border-border bg-card p-3">
+              <p className="text-xs font-bold text-muted-foreground mb-2">Band score over time</p>
+              {chartData.length === 0 ? (
+                <p className="text-xs text-muted-foreground py-6 text-center">No graded submissions yet.</p>
+              ) : (
+                <div className="w-full h-56">
+                  <ResponsiveContainer>
+                    <LineChart data={chartData} margin={{ top: 5, right: 10, left: 0, bottom: 0 }}>
+                      <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
+                      <XAxis dataKey="date" tick={{ fontSize: 10 }} />
+                      <YAxis domain={[0, 9]} tick={{ fontSize: 10 }} />
+                      <Tooltip />
+                      <Legend wrapperStyle={{ fontSize: 11 }} />
+                      <Line type="monotone" dataKey="task1" stroke={ADMIN_CAT_COLOR.task1} strokeWidth={2} connectNulls dot />
+                      <Line type="monotone" dataKey="task2" stroke={ADMIN_CAT_COLOR.task2} strokeWidth={2} connectNulls dot />
+                      <Line type="monotone" dataKey="paragraph" stroke={ADMIN_CAT_COLOR.paragraph} strokeWidth={2} connectNulls dot />
+                      <Line type="monotone" dataKey="freecheck" stroke={ADMIN_CAT_COLOR.freecheck} strokeWidth={2} connectNulls dot />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
+              )}
+            </div>
+
+            <div className="space-y-1.5">
+              <p className="text-xs font-bold text-muted-foreground">{items?.length ?? 0} submissions</p>
+              {items?.length === 0 ? (
+                <p className="text-xs text-muted-foreground py-4 text-center">No submissions yet.</p>
+              ) : (
+                items?.map((it) => (
+                  <button
+                    key={it.id}
+                    onClick={() => setOpenId(it.id)}
+                    className="w-full text-left rounded-lg border border-border bg-card hover:border-primary hover:bg-primary/5 transition-all p-3 flex items-start gap-2"
+                  >
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap text-xs">
+                        <span className="font-bold">{it.taskTypeLabel ?? it.category}</span>
+                        {it.band !== null && (
+                          <span className="font-bold px-1.5 py-0.5 rounded-full bg-primary/10 text-primary">Band {it.band.toFixed(1)}</span>
+                        )}
+                        <span className="text-muted-foreground">{formatDate(it.createdAt)}</span>
+                        {it.wordCount !== null && <span className="text-muted-foreground">{it.wordCount} w</span>}
+                      </div>
+                      {it.preview && <p className="text-xs text-muted-foreground truncate mt-0.5">{it.preview}</p>}
+                    </div>
+                  </button>
+                ))
+              )}
+            </div>
+          </div>
+        )}
+
+        {openId !== null && (
+          <div className="fixed inset-0 z-[60] bg-black/60 flex items-end sm:items-center justify-center p-0 sm:p-4 overflow-y-auto" onClick={() => setOpenId(null)}>
+            <div className="bg-background w-full sm:max-w-2xl max-h-[95vh] overflow-y-auto rounded-t-2xl sm:rounded-2xl border border-border shadow-xl" onClick={(e) => e.stopPropagation()}>
+              <div className="sticky top-0 bg-background border-b border-border p-4 flex items-center justify-between">
+                <h3 className="font-bold text-sm truncate">{openDetail?.taskTypeLabel ?? "Submission"}</h3>
+                <button onClick={() => setOpenId(null)} className="w-8 h-8 rounded-lg hover:bg-accent flex items-center justify-center">
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+              {detailLoading || !openDetail ? (
+                <div className="flex items-center justify-center py-16">
+                  <Loader2 className="w-5 h-5 animate-spin text-muted-foreground" />
+                </div>
+              ) : (
+                <div className="p-4 space-y-3 text-sm">
+                  <p className="text-xs text-muted-foreground">
+                    {new Date(openDetail.createdAt).toLocaleString("en-GB")}
+                    {openDetail.band !== null && <> • <span className="font-bold">Band {openDetail.band.toFixed(1)}</span></>}
+                    {openDetail.wordCount !== null && <> • {openDetail.wordCount} words</>}
+                  </p>
+                  {openDetail.prompt && (
+                    <div>
+                      <p className="text-xs font-bold text-muted-foreground mb-1">Assignment</p>
+                      <div className="rounded-lg border border-border bg-muted/30 p-2 text-xs whitespace-pre-wrap">{openDetail.prompt}</div>
+                    </div>
+                  )}
+                  <div>
+                    <p className="text-xs font-bold text-muted-foreground mb-1">Student writing</p>
+                    <div className="rounded-lg border border-border bg-card p-2 text-xs whitespace-pre-wrap">{openDetail.text || <span className="italic text-muted-foreground">(no writing)</span>}</div>
+                  </div>
+                  {openDetail.feedback && (
+                    <div>
+                      <p className="text-xs font-bold text-muted-foreground mb-1">AI feedback</p>
+                      <pre className="rounded-lg border border-border bg-muted/30 p-2 text-[10px] whitespace-pre-wrap leading-relaxed overflow-x-auto">
+                        {JSON.stringify(openDetail.feedback, null, 2)}
+                      </pre>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         )}

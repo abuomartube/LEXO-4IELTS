@@ -171,10 +171,25 @@ export const orwellSubmissionsTable = pgTable("orwell_submissions", {
   status: text("status").notNull().default("submitted"),
   band: real("band"),
   wordCount: integer("word_count"),
+  text: text("text"),
+  feedback: text("feedback"),
+  taskTypeLabel: text("task_type_label"),
+  prompt: text("prompt"),
+  compareReport: text("compare_report"),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 }, (t) => [unique().on(t.email, t.assignmentId)]);
 
 export type OrwellSubmission = typeof orwellSubmissionsTable.$inferSelect;
+
+export const orwellCoachSummariesTable = pgTable("orwell_coach_summaries", {
+  id: serial("id").primaryKey(),
+  email: text("email").notNull(),
+  atSubmissionCount: integer("at_submission_count").notNull(),
+  summary: text("summary").notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+}, (t) => [unique().on(t.email, t.atSubmissionCount)]);
+
+export type OrwellCoachSummary = typeof orwellCoachSummariesTable.$inferSelect;
 
 // ── Lessons (admin-curated video lessons grouped into 2 courses) ─────────
 // course = "intro"     → "المدخل للايلتس" (A1, A2)
