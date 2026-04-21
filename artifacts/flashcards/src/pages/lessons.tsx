@@ -14,10 +14,7 @@ interface LessonItem {
 }
 
 interface LessonsResponse {
-  course: "intro" | "advanced";
-  courseTitleAr: string;
-  courseTitleEn: string;
-  courseSubtitle: string;
+  libraryTitle: string;
   lessons: LessonItem[];
 }
 
@@ -100,13 +97,11 @@ export default function Lessons() {
             </div>
             <div className="min-w-0">
               <h1 className="text-2xl font-extrabold text-foreground truncate">
-                {data ? data.courseTitleAr : "Lessons"}
+                Pro Tips
               </h1>
-              {data && (
-                <p className="text-sm text-muted-foreground">
-                  {data.courseTitleEn} · {data.courseSubtitle}
-                </p>
-              )}
+              <p className="text-sm text-muted-foreground">
+                Watch the lessons in order to get the most out of your prep.
+              </p>
             </div>
           </div>
           <Button variant="outline" size="sm" onClick={() => void fetchLessons()} disabled={loading} className="rounded-full shrink-0">

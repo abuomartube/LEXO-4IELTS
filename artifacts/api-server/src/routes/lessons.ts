@@ -3,12 +3,13 @@ import crypto from "node:crypto";
 import {
   db,
   accessRequestsTable,
-  userDataTable,
   settingsTable,
   lessonsTable,
   lessonCompletionsTable,
 } from "@workspace/db";
 import { and, asc, desc, eq, sql } from "drizzle-orm";
+
+const LIBRARY_TITLE = "Pro Tips";
 
 const router: IRouter = Router();
 
@@ -50,20 +51,6 @@ async function requireAdmin(req: import("express").Request, res: import("express
   return true;
 }
 
-// ── Course mapping ────────────────────────────────────────────────────────
-type Course = "intro" | "advanced";
-
-const COURSES: Record<Course, { titleAr: string; titleEn: string; subtitle: string }> = {
-  intro: { titleAr: "المدخل للايلتس", titleEn: "IELTS Foundation", subtitle: "A2 → B1" },
-  advanced: { titleAr: "المتقدمة", titleEn: "Advanced IELTS", subtitle: "B1 → C1" },
-};
-
-function levelToCourse(level: string | null | undefined): Course {
-  const v = (level ?? "").trim().toUpperCase();
-  if (v === "A1" || v === "A2") return "intro";
-  return "advanced";
-}
-
 function isValidVimeoUrl(s: string): boolean {
   // Accept any URL containing vimeo.com or player.vimeo.com (also numeric ID alone).
   if (typeof s !== "string") return false;
@@ -94,23 +81,14 @@ function toEmbedUrl(input: string): string {
 
 // ── Student endpoints ─────────────────────────────────────────────────────
 
-// GET /api/lessons → returns the course matching the student's level + completion flags.
+// GET /api/lessons → returns the single shared library + completion flags.
 router.get("/lessons", async (req, res): Promise<void> => {
   const email = await verifyStudentEmail(req);
   if (!email) { res.status(401).json({ error: "Unauthorized" }); return; }
 
-  const [levelRow] = await db
-    .select()
-    .from(userDataTable)
-    .where(and(eq(userDataTable.email, email), eq(userDataTable.key, "current_level")))
-    .limit(1);
-
-  const course = levelToCourse(levelRow?.value ?? "");
-
   const lessons = await db
     .select()
     .from(lessonsTable)
-    .where(eq(lessonsTable.course, course))
     .orderBy(asc(lessonsTable.orderIndex), asc(lessonsTable.id));
 
   const completed = await db
@@ -120,10 +98,7 @@ router.get("/lessons", async (req, res): Promise<void> => {
   const completedSet = new Set(completed.map((c) => c.lessonId));
 
   res.json({
-    course,
-    courseTitleAr: COURSES[course].titleAr,
-    courseTitleEn: COURSES[course].titleEn,
-    courseSubtitle: COURSES[course].subtitle,
+    libraryTitle: LIBRARY_TITLE,
     lessons: lessons.map((l) => ({
       id: l.id,
       title: l.title,
@@ -169,39 +144,25 @@ router.delete("/lessons/:id/complete", async (req, res): Promise<void> => {
 
 // ── Admin endpoints ───────────────────────────────────────────────────────
 
-// GET /api/admin/lessons → all lessons grouped by course.
+// GET /api/admin/lessons → flat list of all lessons.
 router.get("/admin/lessons", async (req, res): Promise<void> => {
   if (!await requireAdmin(req, res)) return;
   const all = await db
     .select()
     .from(lessonsTable)
-    .orderBy(asc(lessonsTable.course), asc(lessonsTable.orderIndex), asc(lessonsTable.id));
-
-  const grouped: Record<Course, Array<typeof all[number] & { embedUrl: string }>> = {
-    intro: [],
-    advanced: [],
-  };
-  for (const l of all) {
-    const course = (l.course === "intro" ? "intro" : "advanced") as Course;
-    grouped[course].push({ ...l, embedUrl: toEmbedUrl(l.vimeoUrl) });
-  }
+    .orderBy(asc(lessonsTable.orderIndex), asc(lessonsTable.id));
 
   res.json({
-    courses: COURSES,
-    intro: grouped.intro,
-    advanced: grouped.advanced,
+    libraryTitle: LIBRARY_TITLE,
+    lessons: all.map((l) => ({ ...l, embedUrl: toEmbedUrl(l.vimeoUrl) })),
   });
 });
 
 // POST /api/admin/lessons → create a new lesson.
 router.post("/admin/lessons", async (req, res): Promise<void> => {
   if (!await requireAdmin(req, res)) return;
-  const { course, title, vimeoUrl } = req.body ?? {};
+  const { title, vimeoUrl } = req.body ?? {};
 
-  if (course !== "intro" && course !== "advanced") {
-    res.status(400).json({ error: "Invalid course (must be 'intro' or 'advanced')" });
-    return;
-  }
   if (!title || typeof title !== "string" || !title.trim()) {
     res.status(400).json({ error: "Title is required" });
     return;
@@ -213,13 +174,12 @@ router.post("/admin/lessons", async (req, res): Promise<void> => {
 
   const [maxRow] = await db
     .select({ max: sql<number>`coalesce(max(${lessonsTable.orderIndex}), 0)::int` })
-    .from(lessonsTable)
-    .where(eq(lessonsTable.course, course));
+    .from(lessonsTable);
   const nextIndex = (maxRow?.max ?? 0) + 1;
 
   const [created] = await db
     .insert(lessonsTable)
-    .values({ course, title: title.trim(), vimeoUrl: vimeoUrl.trim(), orderIndex: nextIndex })
+    .values({ course: "intro", title: title.trim(), vimeoUrl: vimeoUrl.trim(), orderIndex: nextIndex })
     .returning();
 
   res.json({ ...created, embedUrl: toEmbedUrl(created.vimeoUrl) });

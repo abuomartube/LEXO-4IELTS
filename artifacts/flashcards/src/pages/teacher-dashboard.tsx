@@ -25,7 +25,6 @@ interface StudentRow {
 
 interface AdminLesson {
   id: number;
-  course: "intro" | "advanced";
   title: string;
   vimeoUrl: string;
   embedUrl: string;
@@ -33,9 +32,8 @@ interface AdminLesson {
 }
 
 interface AdminLessonsResponse {
-  courses: Record<"intro" | "advanced", { titleAr: string; titleEn: string; subtitle: string }>;
-  intro: AdminLesson[];
-  advanced: AdminLesson[];
+  libraryTitle: string;
+  lessons: AdminLesson[];
 }
 
 type SortKey = "email" | "xp" | "streak" | "weakWordsCount" | "wordsKnown" | "quizzesTaken" | "assignmentsCompleted" | "lessonsCompleted" | "level" | "lastActivity";
@@ -80,7 +78,6 @@ export default function TeacherDashboard() {
   const [lessonsData, setLessonsData] = useState<AdminLessonsResponse | null>(null);
   const [lessonsLoading, setLessonsLoading] = useState(false);
   const [lessonsError, setLessonsError] = useState("");
-  const [activeCourse, setActiveCourse] = useState<"intro" | "advanced">("intro");
   const [newTitle, setNewTitle] = useState("");
   const [newUrl, setNewUrl] = useState("");
   const [creating, setCreating] = useState(false);
@@ -141,7 +138,7 @@ export default function TeacherDashboard() {
       const res = await fetch(`${API}/api/admin/lessons`, {
         method: "POST",
         headers: { "Content-Type": "application/json", "x-admin-password": password },
-        body: JSON.stringify({ course: activeCourse, title: newTitle.trim(), vimeoUrl: newUrl.trim() }),
+        body: JSON.stringify({ title: newTitle.trim(), vimeoUrl: newUrl.trim() }),
       });
       if (!res.ok) {
         const j = await res.json().catch(() => ({}));
@@ -361,8 +358,8 @@ export default function TeacherDashboard() {
               <PlayCircle className="w-5 h-5 text-emerald-500" />
             </div>
             <div className="flex-1 min-w-0">
-              <h2 className="text-base font-extrabold text-foreground">Lessons Manager</h2>
-              <p className="text-xs text-muted-foreground">Add Vimeo videos to either course. Students see only the course matching their level.</p>
+              <h2 className="text-base font-extrabold text-foreground">Pro Tips — Lessons Manager</h2>
+              <p className="text-xs text-muted-foreground">Add Vimeo videos. All approved students see the same library, in the order they're added.</p>
             </div>
             <button
               onClick={fetchLessons}
@@ -372,32 +369,6 @@ export default function TeacherDashboard() {
               <RefreshCw className={cn("w-3.5 h-3.5", lessonsLoading && "animate-spin")} />
               Refresh
             </button>
-          </div>
-
-          {/* Course tabs */}
-          <div className="px-5 pt-4 flex gap-2 flex-wrap">
-            {(["intro", "advanced"] as const).map((c) => {
-              const meta = lessonsData?.courses[c];
-              const count = lessonsData ? lessonsData[c].length : 0;
-              const active = activeCourse === c;
-              return (
-                <button
-                  key={c}
-                  onClick={() => setActiveCourse(c)}
-                  className={cn(
-                    "px-4 py-2 rounded-xl text-sm font-bold transition-colors border",
-                    active
-                      ? "bg-primary text-primary-foreground border-primary"
-                      : "bg-muted/40 text-foreground border-transparent hover:bg-muted",
-                  )}
-                >
-                  {meta?.titleAr ?? (c === "intro" ? "المدخل" : "المتقدمة")}
-                  <span className={cn("ml-2 text-xs font-normal", active ? "text-primary-foreground/80" : "text-muted-foreground")}>
-                    ({count})
-                  </span>
-                </button>
-              );
-            })}
           </div>
 
           {/* Add lesson form */}
@@ -439,13 +410,13 @@ export default function TeacherDashboard() {
                 <Loader2 className="w-5 h-5 mx-auto mb-2 animate-spin" />
                 Loading lessons…
               </div>
-            ) : !lessonsData || lessonsData[activeCourse].length === 0 ? (
+            ) : !lessonsData || lessonsData.lessons.length === 0 ? (
               <div className="px-5 py-8 text-center text-sm text-muted-foreground">
-                No lessons in this course yet. Add one above to get started.
+                No lessons yet. Add one above to get started.
               </div>
             ) : (
               <ul className="divide-y divide-border">
-                {lessonsData[activeCourse].map((l, idx) => (
+                {lessonsData.lessons.map((l, idx) => (
                   <li key={l.id} className="px-5 py-3 flex items-center gap-3">
                     <span className="w-7 h-7 rounded-full bg-muted text-xs font-bold text-muted-foreground flex items-center justify-center shrink-0">
                       {idx + 1}
