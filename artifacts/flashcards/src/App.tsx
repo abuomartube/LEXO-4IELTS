@@ -26,6 +26,7 @@ import WritingTemplates from "@/pages/writing-templates";
 import TeacherDashboard from "@/pages/teacher-dashboard";
 import MockTest from "@/pages/mock-test";
 import Grammar from "@/pages/grammar";
+import Lessons from "@/pages/lessons";
 
 setStudentEmailGetter(() => {
   try {
@@ -57,6 +58,7 @@ function Router() {
         <PasswordGate>
           <Switch>
             <Route path="/" component={Home} />
+            <Route path="/lessons" component={Lessons} />
             <Route path="/study" component={Study} />
             <Route path="/quiz" component={Quiz} />
             <Route path="/browse" component={Browse} />

@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import {
   GraduationCap, Flame, Star, AlertTriangle, BookOpen,
   Trophy, ArrowUpDown, Search, X, LogIn, Eye, EyeOff,
-  RefreshCw, Users, TrendingUp,
+  RefreshCw, Users, TrendingUp, PlayCircle, Plus, Trash2, Loader2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -19,10 +19,26 @@ interface StudentRow {
   wordsKnown: number;
   quizzesTaken: number;
   assignmentsCompleted: number;
+  lessonsCompleted: number;
   lastActivity: string | null;
 }
 
-type SortKey = "email" | "xp" | "streak" | "weakWordsCount" | "wordsKnown" | "quizzesTaken" | "assignmentsCompleted" | "level" | "lastActivity";
+interface AdminLesson {
+  id: number;
+  course: "intro" | "advanced";
+  title: string;
+  vimeoUrl: string;
+  embedUrl: string;
+  orderIndex: number;
+}
+
+interface AdminLessonsResponse {
+  courses: Record<"intro" | "advanced", { titleAr: string; titleEn: string; subtitle: string }>;
+  intro: AdminLesson[];
+  advanced: AdminLesson[];
+}
+
+type SortKey = "email" | "xp" | "streak" | "weakWordsCount" | "wordsKnown" | "quizzesTaken" | "assignmentsCompleted" | "lessonsCompleted" | "level" | "lastActivity";
 
 function formatDate(d: string | null): string {
   if (!d) return "—";
@@ -58,6 +74,17 @@ export default function TeacherDashboard() {
   const [search, setSearch] = useState("");
   const [sortKey, setSortKey] = useState<SortKey>("xp");
   const [sortDesc, setSortDesc] = useState(true);
+  const [lessonCounts, setLessonCounts] = useState<Record<string, number>>({});
+
+  // Lessons manager state
+  const [lessonsData, setLessonsData] = useState<AdminLessonsResponse | null>(null);
+  const [lessonsLoading, setLessonsLoading] = useState(false);
+  const [lessonsError, setLessonsError] = useState("");
+  const [activeCourse, setActiveCourse] = useState<"intro" | "advanced">("intro");
+  const [newTitle, setNewTitle] = useState("");
+  const [newUrl, setNewUrl] = useState("");
+  const [creating, setCreating] = useState(false);
+  const [deletingId, setDeletingId] = useState<number | null>(null);
 
   const savedPass = typeof sessionStorage !== "undefined" ? sessionStorage.getItem("teacher_pass") : null;
 
@@ -69,8 +96,81 @@ export default function TeacherDashboard() {
   }, []);
 
   useEffect(() => {
-    if (authed) fetchStudents();
+    if (authed) {
+      fetchStudents();
+      fetchLessonCounts();
+      fetchLessons();
+    }
   }, [authed]);
+
+  async function fetchLessonCounts() {
+    try {
+      const res = await fetch(`${API}/api/admin/lesson-completion-counts`, {
+        headers: { "x-admin-password": password },
+      });
+      if (!res.ok) return;
+      const data: Array<{ email: string; completed: number }> = await res.json();
+      const map: Record<string, number> = {};
+      for (const r of data) map[r.email] = r.completed;
+      setLessonCounts(map);
+    } catch { /* ignore */ }
+  }
+
+  async function fetchLessons() {
+    setLessonsLoading(true);
+    setLessonsError("");
+    try {
+      const res = await fetch(`${API}/api/admin/lessons`, {
+        headers: { "x-admin-password": password },
+      });
+      if (!res.ok) { setLessonsError("Failed to load lessons"); return; }
+      setLessonsData(await res.json());
+    } catch {
+      setLessonsError("Network error");
+    } finally {
+      setLessonsLoading(false);
+    }
+  }
+
+  async function createLesson(e: React.FormEvent) {
+    e.preventDefault();
+    if (!newTitle.trim() || !newUrl.trim()) return;
+    setCreating(true);
+    setLessonsError("");
+    try {
+      const res = await fetch(`${API}/api/admin/lessons`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-admin-password": password },
+        body: JSON.stringify({ course: activeCourse, title: newTitle.trim(), vimeoUrl: newUrl.trim() }),
+      });
+      if (!res.ok) {
+        const j = await res.json().catch(() => ({}));
+        setLessonsError(j.error || "Could not add lesson");
+        return;
+      }
+      setNewTitle("");
+      setNewUrl("");
+      await fetchLessons();
+    } catch {
+      setLessonsError("Network error");
+    } finally {
+      setCreating(false);
+    }
+  }
+
+  async function deleteLesson(id: number) {
+    if (!confirm("Delete this lesson? Students will lose access immediately.")) return;
+    setDeletingId(id);
+    try {
+      const res = await fetch(`${API}/api/admin/lessons/${id}`, {
+        method: "DELETE",
+        headers: { "x-admin-password": password },
+      });
+      if (res.ok) await fetchLessons();
+    } finally {
+      setDeletingId(null);
+    }
+  }
 
   async function fetchStudents() {
     setLoading(true);
@@ -112,7 +212,7 @@ export default function TeacherDashboard() {
   }
 
   const filtered = useMemo(() => {
-    let list = students;
+    let list = students.map((s) => ({ ...s, lessonsCompleted: lessonCounts[s.email] ?? 0 }));
     if (search.trim()) {
       const q = search.toLowerCase();
       list = list.filter((s) => s.email.toLowerCase().includes(q));
@@ -254,6 +354,129 @@ export default function TeacherDashboard() {
           </div>
         )}
 
+        {/* ── Lessons Manager ─────────────────────────────────────────── */}
+        <section className="bg-card border border-border rounded-2xl overflow-hidden">
+          <div className="px-5 py-4 border-b border-border flex items-center gap-3 flex-wrap">
+            <div className="w-9 h-9 rounded-xl bg-emerald-500/10 flex items-center justify-center">
+              <PlayCircle className="w-5 h-5 text-emerald-500" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <h2 className="text-base font-extrabold text-foreground">Lessons Manager</h2>
+              <p className="text-xs text-muted-foreground">Add Vimeo videos to either course. Students see only the course matching their level.</p>
+            </div>
+            <button
+              onClick={fetchLessons}
+              disabled={lessonsLoading}
+              className="text-xs font-medium text-muted-foreground hover:text-foreground bg-muted/50 px-3 py-1.5 rounded-lg flex items-center gap-1.5 disabled:opacity-50"
+            >
+              <RefreshCw className={cn("w-3.5 h-3.5", lessonsLoading && "animate-spin")} />
+              Refresh
+            </button>
+          </div>
+
+          {/* Course tabs */}
+          <div className="px-5 pt-4 flex gap-2 flex-wrap">
+            {(["intro", "advanced"] as const).map((c) => {
+              const meta = lessonsData?.courses[c];
+              const count = lessonsData ? lessonsData[c].length : 0;
+              const active = activeCourse === c;
+              return (
+                <button
+                  key={c}
+                  onClick={() => setActiveCourse(c)}
+                  className={cn(
+                    "px-4 py-2 rounded-xl text-sm font-bold transition-colors border",
+                    active
+                      ? "bg-primary text-primary-foreground border-primary"
+                      : "bg-muted/40 text-foreground border-transparent hover:bg-muted",
+                  )}
+                >
+                  {meta?.titleAr ?? (c === "intro" ? "المدخل" : "المتقدمة")}
+                  <span className={cn("ml-2 text-xs font-normal", active ? "text-primary-foreground/80" : "text-muted-foreground")}>
+                    ({count})
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Add lesson form */}
+          <form onSubmit={createLesson} className="p-5 grid grid-cols-1 md:grid-cols-[1fr_1fr_auto] gap-3">
+            <input
+              type="text"
+              value={newTitle}
+              onChange={(e) => setNewTitle(e.target.value)}
+              placeholder="Lesson title (e.g. Introduction to Task 1)"
+              className="px-4 py-2.5 bg-muted/40 border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+            />
+            <input
+              type="text"
+              value={newUrl}
+              onChange={(e) => setNewUrl(e.target.value)}
+              placeholder="Vimeo URL or video ID"
+              className="px-4 py-2.5 bg-muted/40 border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+            />
+            <button
+              type="submit"
+              disabled={creating || !newTitle.trim() || !newUrl.trim()}
+              className="px-4 py-2.5 bg-primary text-primary-foreground font-bold rounded-xl hover:opacity-90 transition-opacity disabled:opacity-50 flex items-center justify-center gap-2"
+            >
+              {creating ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
+              Add Lesson
+            </button>
+          </form>
+
+          {lessonsError && (
+            <div className="mx-5 mb-4 bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-800 rounded-xl px-3 py-2 text-xs text-red-700 dark:text-red-400">
+              {lessonsError}
+            </div>
+          )}
+
+          {/* Lesson list for active course */}
+          <div className="border-t border-border">
+            {lessonsLoading && !lessonsData ? (
+              <div className="px-5 py-10 text-center text-sm text-muted-foreground">
+                <Loader2 className="w-5 h-5 mx-auto mb-2 animate-spin" />
+                Loading lessons…
+              </div>
+            ) : !lessonsData || lessonsData[activeCourse].length === 0 ? (
+              <div className="px-5 py-8 text-center text-sm text-muted-foreground">
+                No lessons in this course yet. Add one above to get started.
+              </div>
+            ) : (
+              <ul className="divide-y divide-border">
+                {lessonsData[activeCourse].map((l, idx) => (
+                  <li key={l.id} className="px-5 py-3 flex items-center gap-3">
+                    <span className="w-7 h-7 rounded-full bg-muted text-xs font-bold text-muted-foreground flex items-center justify-center shrink-0">
+                      {idx + 1}
+                    </span>
+                    <div className="flex-1 min-w-0">
+                      <div className="font-bold text-sm text-foreground truncate">{l.title}</div>
+                      <a
+                        href={l.embedUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-xs text-muted-foreground truncate block hover:text-primary"
+                        title={l.vimeoUrl}
+                      >
+                        {l.vimeoUrl}
+                      </a>
+                    </div>
+                    <button
+                      onClick={() => deleteLesson(l.id)}
+                      disabled={deletingId === l.id}
+                      className="text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/20 p-2 rounded-lg transition-colors disabled:opacity-50"
+                      title="Delete lesson"
+                    >
+                      {deletingId === l.id ? <Loader2 className="w-4 h-4 animate-spin" /> : <Trash2 className="w-4 h-4" />}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </section>
+
         {loading ? (
           <div className="text-center py-20 text-muted-foreground">
             <RefreshCw className="w-8 h-8 mx-auto mb-3 animate-spin opacity-50" />
@@ -274,6 +497,7 @@ export default function TeacherDashboard() {
                       ["weakWordsCount", "Weak Words"],
                       ["quizzesTaken", "Quizzes"],
                       ["assignmentsCompleted", "Assignments"],
+                      ["lessonsCompleted", "Lessons"],
                       ["lastActivity", "Last Active"],
                     ] as [SortKey, string][]).map(([key, label]) => (
                       <th
@@ -292,13 +516,13 @@ export default function TeacherDashboard() {
                 <tbody>
                   {filtered.length === 0 ? (
                     <tr>
-                      <td colSpan={9} className="px-4 py-12 text-center text-muted-foreground">
+                      <td colSpan={10} className="px-4 py-12 text-center text-muted-foreground">
                         {students.length === 0 ? "No approved students yet" : `No students match "${search}"`}
                       </td>
                     </tr>
                   ) : (
                     filtered.map((s) => (
-                      <tr key={s.email} className="border-b border-border/50 hover:bg-muted/20 transition-colors">
+                      <tr key={s.email} className="border-b border-border/50 hover:bg-muted/20 transition-colors" data-row-completed={s.lessonsCompleted}>
                         <td className="px-3 py-3">
                           <div className="font-medium text-foreground truncate max-w-[200px]" title={s.email}>
                             {s.email}
@@ -344,6 +568,12 @@ export default function TeacherDashboard() {
                           <div className={cn("flex items-center gap-1 font-bold", (s.assignmentsCompleted ?? 0) > 0 ? "text-foreground" : "text-muted-foreground")}>
                             <span className="text-base">✍️</span>
                             {s.assignmentsCompleted ?? 0}
+                          </div>
+                        </td>
+                        <td className="px-3 py-3">
+                          <div className={cn("flex items-center gap-1 font-bold", (lessonCounts[s.email] ?? 0) > 0 ? "text-emerald-600 dark:text-emerald-400" : "text-muted-foreground")}>
+                            <PlayCircle className={cn("w-3.5 h-3.5", (lessonCounts[s.email] ?? 0) > 0 ? "text-emerald-500" : "text-muted-foreground/30")} />
+                            {lessonCounts[s.email] ?? 0}
                           </div>
                         </td>
                         <td className="px-3 py-3 text-muted-foreground whitespace-nowrap">

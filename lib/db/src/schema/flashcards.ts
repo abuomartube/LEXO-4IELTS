@@ -161,3 +161,26 @@ export const orwellSubmissionsTable = pgTable("orwell_submissions", {
 }, (t) => [unique().on(t.email, t.assignmentId)]);
 
 export type OrwellSubmission = typeof orwellSubmissionsTable.$inferSelect;
+
+// ── Lessons (admin-curated video lessons grouped into 2 courses) ─────────
+// course = "intro"     → "المدخل للايلتس" (A1, A2)
+// course = "advanced"  → "المتقدمة"        (B1, B2, C1)
+export const lessonsTable = pgTable("lessons", {
+  id: serial("id").primaryKey(),
+  course: text("course").notNull(),
+  title: text("title").notNull(),
+  vimeoUrl: text("vimeo_url").notNull(),
+  orderIndex: integer("order_index").notNull().default(0),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export type Lesson = typeof lessonsTable.$inferSelect;
+
+export const lessonCompletionsTable = pgTable("lesson_completions", {
+  id: serial("id").primaryKey(),
+  email: text("email").notNull(),
+  lessonId: integer("lesson_id").notNull().references(() => lessonsTable.id, { onDelete: "cascade" }),
+  completedAt: timestamp("completed_at", { withTimezone: true }).notNull().defaultNow(),
+}, (t) => [unique().on(t.email, t.lessonId)]);
+
+export type LessonCompletion = typeof lessonCompletionsTable.$inferSelect;

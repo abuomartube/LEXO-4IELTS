@@ -10,7 +10,7 @@ import {
   Volume2, Globe, Layers, Award, ExternalLink,
   Flame, Star, HelpCircle, Sparkles, MessageCircle,
   FileText, ArrowLeftRight, ArrowUpDown, BookMarked, Mic, Send, CheckCircle2, Loader2,
-  TrendingUp
+  TrendingUp, PlayCircle
 } from "lucide-react";
 import { Layout } from "@/components/layout";
 
@@ -159,6 +159,31 @@ export default function Home() {
           </div>
           <Zap className="absolute -bottom-8 -right-8 w-52 h-52 text-primary-foreground/8 rotate-12" />
           <div className="absolute top-0 right-0 w-64 h-64 rounded-full bg-white/5 -translate-y-1/3 translate-x-1/3" />
+        </section>
+
+        {/* ── The Course Lessons (prominent CTA) ── */}
+        <section>
+          <Link href="/lessons">
+            <a className="group block rounded-3xl overflow-hidden bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-600 p-6 sm:p-7 shadow-lg hover:shadow-xl transition-all hover:scale-[1.01]">
+              <div className="flex items-center gap-5">
+                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-white/20 backdrop-blur flex items-center justify-center shrink-0">
+                  <PlayCircle className="w-8 h-8 sm:w-9 sm:h-9 text-white" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <span className="inline-block text-[10px] font-bold tracking-widest uppercase text-white/80 mb-1">
+                    Video Course
+                  </span>
+                  <h2 className="text-xl sm:text-2xl font-extrabold text-white leading-tight">
+                    the course lessons
+                  </h2>
+                  <p className="text-white/85 text-sm mt-1">
+                    Watch your level's full IELTS course — learn at your own pace.
+                  </p>
+                </div>
+                <ExternalLink className="w-5 h-5 text-white/80 group-hover:translate-x-1 transition-transform shrink-0 hidden sm:block" />
+              </div>
+            </a>
+          </Link>
         </section>
 
         {/* ── Streak + XP + Word of the Day ── */}
