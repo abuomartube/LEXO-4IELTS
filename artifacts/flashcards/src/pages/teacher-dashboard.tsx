@@ -3,6 +3,7 @@ import {
   GraduationCap, Flame, Star, AlertTriangle, BookOpen,
   Trophy, ArrowUpDown, Search, X, LogIn, Eye, EyeOff,
   RefreshCw, Users, TrendingUp, PlayCircle, Plus, Trash2, Loader2,
+  UserCheck, UserX, KeyRound, Copy, Check, Bell, Mail, Clock,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -34,6 +35,25 @@ interface AdminLesson {
 interface AdminLessonsResponse {
   libraryTitle: string;
   lessons: AdminLesson[];
+}
+
+interface AccessRequest {
+  id: number;
+  email: string;
+  status: string;
+  requestedAt: string;
+  reviewedAt: string | null;
+  expiresAt: string | null;
+  accessCodeId: number | null;
+}
+
+interface AccessCodeRow {
+  id: number;
+  code: string;
+  note: string | null;
+  createdAt: string;
+  usedByEmail: string | null;
+  usedAt: string | null;
 }
 
 type SortKey = "email" | "xp" | "streak" | "weakWordsCount" | "wordsKnown" | "quizzesTaken" | "assignmentsCompleted" | "lessonsCompleted" | "level" | "lastActivity";
@@ -83,6 +103,23 @@ export default function TeacherDashboard() {
   const [creating, setCreating] = useState(false);
   const [deletingId, setDeletingId] = useState<number | null>(null);
 
+  // Approval queue state
+  const [pendingRequests, setPendingRequests] = useState<AccessRequest[]>([]);
+  const [requestsLoading, setRequestsLoading] = useState(false);
+  const [actingOnId, setActingOnId] = useState<number | null>(null);
+
+  // Access codes state
+  const [accessCodes, setAccessCodes] = useState<AccessCodeRow[]>([]);
+  const [unusedCount, setUnusedCount] = useState(0);
+  const [codesLoading, setCodesLoading] = useState(false);
+  const [codesError, setCodesError] = useState("");
+  const [newCodeNote, setNewCodeNote] = useState("");
+  const [newCodeCount, setNewCodeCount] = useState(1);
+  const [generating, setGenerating] = useState(false);
+  const [copiedCode, setCopiedCode] = useState<string | null>(null);
+  const [deletingCodeId, setDeletingCodeId] = useState<number | null>(null);
+  const [showOnlyUnused, setShowOnlyUnused] = useState(true);
+
   const savedPass = typeof sessionStorage !== "undefined" ? sessionStorage.getItem("teacher_pass") : null;
 
   useEffect(() => {
@@ -97,8 +134,114 @@ export default function TeacherDashboard() {
       fetchStudents();
       fetchLessonCounts();
       fetchLessons();
+      fetchPendingRequests();
+      fetchAccessCodes();
     }
   }, [authed]);
+
+  // Auto-poll the approval queue every 20s so admins see new signups quickly.
+  useEffect(() => {
+    if (!authed) return;
+    const t = setInterval(() => { fetchPendingRequests(); }, 20000);
+    return () => clearInterval(t);
+  }, [authed, password]);
+
+  async function fetchPendingRequests() {
+    setRequestsLoading(true);
+    try {
+      const res = await fetch(`${API}/api/admin/requests`, {
+        headers: { "x-admin-password": password },
+      });
+      if (!res.ok) return;
+      const all: AccessRequest[] = await res.json();
+      setPendingRequests(all.filter((r) => r.status === "pending"));
+    } catch { /* ignore */ }
+    finally { setRequestsLoading(false); }
+  }
+
+  async function approveRequest(id: number) {
+    setActingOnId(id);
+    try {
+      // Default expiry: 1 year from now
+      const expiresAt = new Date(Date.now() + 365 * 86400000).toISOString();
+      const res = await fetch(`${API}/api/admin/requests/${id}/approve`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-admin-password": password },
+        body: JSON.stringify({ expiresAt }),
+      });
+      if (res.ok) {
+        await Promise.all([fetchPendingRequests(), fetchStudents()]);
+      }
+    } finally { setActingOnId(null); }
+  }
+
+  async function rejectRequest(id: number, email: string) {
+    if (!confirm(`Reject access request from ${email}?`)) return;
+    setActingOnId(id);
+    try {
+      const res = await fetch(`${API}/api/admin/requests/${id}/reject`, {
+        method: "POST",
+        headers: { "x-admin-password": password },
+      });
+      if (res.ok) await fetchPendingRequests();
+    } finally { setActingOnId(null); }
+  }
+
+  async function fetchAccessCodes() {
+    setCodesLoading(true);
+    setCodesError("");
+    try {
+      const res = await fetch(`${API}/api/admin/access-codes`, {
+        headers: { "x-admin-password": password },
+      });
+      if (!res.ok) { setCodesError("Failed to load codes"); return; }
+      const data = await res.json();
+      setAccessCodes(data.codes ?? []);
+      setUnusedCount(data.unusedCount ?? 0);
+    } catch { setCodesError("Network error"); }
+    finally { setCodesLoading(false); }
+  }
+
+  async function generateCodes(e: React.FormEvent) {
+    e.preventDefault();
+    setGenerating(true);
+    setCodesError("");
+    try {
+      const res = await fetch(`${API}/api/admin/access-codes`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-admin-password": password },
+        body: JSON.stringify({ count: newCodeCount, note: newCodeNote.trim() || null }),
+      });
+      if (!res.ok) {
+        const j = await res.json().catch(() => ({}));
+        setCodesError(j.error || "Could not generate codes");
+        return;
+      }
+      setNewCodeNote("");
+      setNewCodeCount(1);
+      await fetchAccessCodes();
+    } catch { setCodesError("Network error"); }
+    finally { setGenerating(false); }
+  }
+
+  async function deleteCode(id: number, code: string) {
+    if (!confirm(`Delete access code ${code}? This cannot be undone.`)) return;
+    setDeletingCodeId(id);
+    try {
+      const res = await fetch(`${API}/api/admin/access-codes/${id}`, {
+        method: "DELETE",
+        headers: { "x-admin-password": password },
+      });
+      if (res.ok) await fetchAccessCodes();
+    } finally { setDeletingCodeId(null); }
+  }
+
+  function copyCode(code: string) {
+    navigator.clipboard?.writeText(code).then(() => {
+      setCopiedCode(code);
+      setTimeout(() => setCopiedCode((c) => (c === code ? null : c)), 1500);
+    }).catch(() => {});
+  }
 
   async function fetchLessonCounts() {
     try {
@@ -283,8 +426,19 @@ export default function TeacherDashboard() {
               <GraduationCap className="w-5 h-5 text-primary" />
             </div>
             <div>
-              <h1 className="text-2xl font-extrabold text-foreground">Teacher Dashboard</h1>
-              <p className="text-sm text-muted-foreground">{students.length} student{students.length !== 1 ? "s" : ""} enrolled</p>
+              <h1 className="text-2xl font-extrabold text-foreground flex items-center gap-2 flex-wrap">
+                Teacher Dashboard
+                {pendingRequests.length > 0 && (
+                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-500 text-white text-xs font-bold animate-pulse">
+                    <Bell className="w-3 h-3" />
+                    {pendingRequests.length} pending
+                  </span>
+                )}
+              </h1>
+              <p className="text-sm text-muted-foreground">
+                {students.length} student{students.length !== 1 ? "s" : ""} enrolled
+                {" · "}{unusedCount} unused code{unusedCount !== 1 ? "s" : ""}
+              </p>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -350,6 +504,216 @@ export default function TeacherDashboard() {
             {error}
           </div>
         )}
+
+        {/* ── Pending Approvals ──────────────────────────────────────── */}
+        <section className={cn(
+          "bg-card border rounded-2xl overflow-hidden",
+          pendingRequests.length > 0 ? "border-amber-400 dark:border-amber-600 shadow-lg shadow-amber-500/10" : "border-border"
+        )}>
+          <div className="px-5 py-4 border-b border-border flex items-center gap-3 flex-wrap">
+            <div className={cn(
+              "w-9 h-9 rounded-xl flex items-center justify-center",
+              pendingRequests.length > 0 ? "bg-amber-500/20" : "bg-muted"
+            )}>
+              <UserCheck className={cn("w-5 h-5", pendingRequests.length > 0 ? "text-amber-600 dark:text-amber-400" : "text-muted-foreground")} />
+            </div>
+            <div className="flex-1 min-w-0">
+              <h2 className="text-base font-extrabold text-foreground flex items-center gap-2">
+                Pending Approvals
+                {pendingRequests.length > 0 && (
+                  <span className="px-2 py-0.5 rounded-full bg-amber-500 text-white text-xs font-bold">
+                    {pendingRequests.length}
+                  </span>
+                )}
+              </h2>
+              <p className="text-xs text-muted-foreground">
+                Students who registered with a valid code and are waiting for your approval.
+              </p>
+            </div>
+            <button
+              onClick={fetchPendingRequests}
+              disabled={requestsLoading}
+              className="text-xs font-medium text-muted-foreground hover:text-foreground bg-muted/50 px-3 py-1.5 rounded-lg flex items-center gap-1.5 disabled:opacity-50"
+            >
+              <RefreshCw className={cn("w-3.5 h-3.5", requestsLoading && "animate-spin")} />
+              Refresh
+            </button>
+          </div>
+          {pendingRequests.length === 0 ? (
+            <div className="px-5 py-8 text-center text-sm text-muted-foreground">
+              No pending requests. New signups will show up here.
+            </div>
+          ) : (
+            <ul className="divide-y divide-border">
+              {pendingRequests.map((r) => (
+                <li key={r.id} className="px-5 py-3 flex items-center gap-3 flex-wrap">
+                  <div className="w-9 h-9 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center shrink-0">
+                    <Mail className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="font-bold text-sm text-foreground truncate" title={r.email}>{r.email}</div>
+                    <div className="text-xs text-muted-foreground flex items-center gap-1">
+                      <Clock className="w-3 h-3" />
+                      Requested {formatDate(r.requestedAt)}
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => approveRequest(r.id)}
+                      disabled={actingOnId === r.id}
+                      className="px-3 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-lg transition-colors disabled:opacity-50 flex items-center gap-1.5"
+                    >
+                      {actingOnId === r.id ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Check className="w-3.5 h-3.5" />}
+                      Approve
+                    </button>
+                    <button
+                      onClick={() => rejectRequest(r.id, r.email)}
+                      disabled={actingOnId === r.id}
+                      className="px-3 py-2 bg-red-50 hover:bg-red-100 dark:bg-red-950/30 dark:hover:bg-red-950/50 text-red-700 dark:text-red-400 text-xs font-bold rounded-lg transition-colors disabled:opacity-50 flex items-center gap-1.5"
+                    >
+                      <UserX className="w-3.5 h-3.5" />
+                      Reject
+                    </button>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+
+        {/* ── Access Codes ───────────────────────────────────────────── */}
+        <section className="bg-card border border-border rounded-2xl overflow-hidden">
+          <div className="px-5 py-4 border-b border-border flex items-center gap-3 flex-wrap">
+            <div className="w-9 h-9 rounded-xl bg-violet-500/10 flex items-center justify-center">
+              <KeyRound className="w-5 h-5 text-violet-500" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <h2 className="text-base font-extrabold text-foreground">Access Codes</h2>
+              <p className="text-xs text-muted-foreground">
+                Generate single-use codes. Share each code with one student — it expires when they register.
+              </p>
+            </div>
+            <div className="text-xs font-bold text-violet-600 dark:text-violet-400 bg-violet-500/10 px-3 py-1.5 rounded-lg">
+              {unusedCount} unused
+            </div>
+            <button
+              onClick={fetchAccessCodes}
+              disabled={codesLoading}
+              className="text-xs font-medium text-muted-foreground hover:text-foreground bg-muted/50 px-3 py-1.5 rounded-lg flex items-center gap-1.5 disabled:opacity-50"
+            >
+              <RefreshCw className={cn("w-3.5 h-3.5", codesLoading && "animate-spin")} />
+              Refresh
+            </button>
+          </div>
+
+          <form onSubmit={generateCodes} className="p-5 grid grid-cols-1 md:grid-cols-[2fr_1fr_auto] gap-3">
+            <input
+              type="text"
+              value={newCodeNote}
+              onChange={(e) => setNewCodeNote(e.target.value)}
+              placeholder="Note (optional, e.g. student name or batch)"
+              maxLength={200}
+              className="px-4 py-2.5 bg-muted/40 border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+            />
+            <input
+              type="number"
+              min={1}
+              max={50}
+              value={newCodeCount}
+              onChange={(e) => setNewCodeCount(Math.max(1, Math.min(50, Number(e.target.value) || 1)))}
+              className="px-4 py-2.5 bg-muted/40 border border-border rounded-xl text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+              title="How many codes to generate (1–50)"
+            />
+            <button
+              type="submit"
+              disabled={generating}
+              className="px-4 py-2.5 bg-violet-600 hover:bg-violet-700 text-white font-bold rounded-xl transition-opacity disabled:opacity-50 flex items-center justify-center gap-2"
+            >
+              {generating ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
+              Generate
+            </button>
+          </form>
+
+          {codesError && (
+            <div className="mx-5 mb-3 bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-800 rounded-xl px-3 py-2 text-xs text-red-700 dark:text-red-400">
+              {codesError}
+            </div>
+          )}
+
+          <div className="px-5 pb-3 flex items-center gap-3">
+            <label className="flex items-center gap-2 text-xs text-muted-foreground cursor-pointer">
+              <input
+                type="checkbox"
+                checked={showOnlyUnused}
+                onChange={(e) => setShowOnlyUnused(e.target.checked)}
+                className="rounded"
+              />
+              Show only unused codes
+            </label>
+          </div>
+
+          <div className="border-t border-border max-h-96 overflow-y-auto">
+            {codesLoading && accessCodes.length === 0 ? (
+              <div className="px-5 py-10 text-center text-sm text-muted-foreground">
+                <Loader2 className="w-5 h-5 mx-auto mb-2 animate-spin" />
+                Loading codes…
+              </div>
+            ) : accessCodes.length === 0 ? (
+              <div className="px-5 py-8 text-center text-sm text-muted-foreground">
+                No codes yet. Generate some above to start inviting students.
+              </div>
+            ) : (
+              <ul className="divide-y divide-border">
+                {accessCodes
+                  .filter((c) => !showOnlyUnused || !c.usedByEmail)
+                  .map((c) => {
+                    const used = !!c.usedByEmail;
+                    return (
+                      <li key={c.id} className="px-5 py-3 flex items-center gap-3 flex-wrap">
+                        <button
+                          onClick={() => copyCode(c.code)}
+                          disabled={used}
+                          className={cn(
+                            "font-mono font-bold text-sm tracking-widest px-3 py-1.5 rounded-lg flex items-center gap-2 transition-colors",
+                            used
+                              ? "bg-muted text-muted-foreground line-through cursor-not-allowed"
+                              : "bg-violet-500/10 text-violet-700 dark:text-violet-300 hover:bg-violet-500/20"
+                          )}
+                          title={used ? "Already used" : "Click to copy"}
+                        >
+                          {c.code}
+                          {!used && (copiedCode === c.code ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5 opacity-60" />)}
+                        </button>
+                        <div className="flex-1 min-w-0 text-xs text-muted-foreground">
+                          {c.note && <div className="font-medium text-foreground/80 truncate" title={c.note}>{c.note}</div>}
+                          {used ? (
+                            <div className="truncate" title={c.usedByEmail ?? ""}>
+                              Used by <span className="font-semibold">{c.usedByEmail}</span> on {formatDate(c.usedAt)}
+                            </div>
+                          ) : (
+                            <div>Created {formatDate(c.createdAt)}</div>
+                          )}
+                        </div>
+                        <button
+                          onClick={() => deleteCode(c.id, c.code)}
+                          disabled={deletingCodeId === c.id}
+                          className="text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/20 p-2 rounded-lg transition-colors disabled:opacity-50"
+                          title="Delete code"
+                        >
+                          {deletingCodeId === c.id ? <Loader2 className="w-4 h-4 animate-spin" /> : <Trash2 className="w-4 h-4" />}
+                        </button>
+                      </li>
+                    );
+                  })}
+                {accessCodes.filter((c) => !showOnlyUnused || !c.usedByEmail).length === 0 && (
+                  <li className="px-5 py-6 text-center text-sm text-muted-foreground">
+                    All generated codes have been used. Generate more above.
+                  </li>
+                )}
+              </ul>
+            )}
+          </div>
+        </section>
 
         {/* ── Lessons Manager ─────────────────────────────────────────── */}
         <section className="bg-card border border-border rounded-2xl overflow-hidden">

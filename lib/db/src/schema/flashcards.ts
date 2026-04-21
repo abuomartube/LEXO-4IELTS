@@ -60,10 +60,24 @@ export const accessRequestsTable = pgTable("access_requests", {
   id: serial("id").primaryKey(),
   email: text("email").notNull().unique(),
   status: text("status").notNull().default("pending"),
+  passwordHash: text("password_hash"),
+  accessCodeId: integer("access_code_id"),
   requestedAt: timestamp("requested_at", { withTimezone: true }).notNull().defaultNow(),
   reviewedAt: timestamp("reviewed_at", { withTimezone: true }),
   expiresAt: timestamp("expires_at", { withTimezone: true }),
 });
+
+// ── Single-use access codes (admin-generated invites) ────────────────────
+export const accessCodesTable = pgTable("access_codes", {
+  id: serial("id").primaryKey(),
+  code: text("code").notNull().unique(),
+  note: text("note"),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  usedByEmail: text("used_by_email"),
+  usedAt: timestamp("used_at", { withTimezone: true }),
+});
+
+export type AccessCode = typeof accessCodesTable.$inferSelect;
 
 export const storiesTable = pgTable("stories", {
   id: serial("id").primaryKey(),

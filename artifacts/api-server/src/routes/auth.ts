@@ -1,20 +1,13 @@
 import { Router, type IRouter } from "express";
 import crypto from "node:crypto";
-import { db, settingsTable, accessRequestsTable, reviewsTable, userDataTable, xpEventsTable, weakWordsTable, progressTable, quizScoresTable, orwellSubmissionsTable } from "@workspace/db";
-import { eq, desc, and, sql } from "drizzle-orm";
+import bcrypt from "bcryptjs";
+import { db, settingsTable, accessRequestsTable, accessCodesTable, reviewsTable, userDataTable, xpEventsTable, weakWordsTable, progressTable, quizScoresTable, orwellSubmissionsTable } from "@workspace/db";
+import { eq, desc, and, isNull, sql } from "drizzle-orm";
 
 const router: IRouter = Router();
 
 const SESSION_SECRET = process.env["SESSION_SECRET"] ?? "fallback-secret";
 const ENV_ADMIN_PASSWORD = process.env["ADMIN_PASSWORD"] ?? "";
-const DEFAULT_ACCESS_CODE = "ielts2025";
-
-async function getAccessCode(): Promise<string> {
-  const rows = await db.select().from(settingsTable).where(eq(settingsTable.key, "site_password"));
-  if (rows.length > 0) return rows[0].value;
-  await db.insert(settingsTable).values({ key: "site_password", value: DEFAULT_ACCESS_CODE }).onConflictDoNothing();
-  return DEFAULT_ACCESS_CODE;
-}
 
 async function getAdminPassword(): Promise<string> {
   try {
@@ -28,10 +21,23 @@ function makeToken(email: string): string {
   return crypto.createHmac("sha256", SESSION_SECRET).update(email + ":approved").digest("hex");
 }
 
+function safeEqual(a: string, b: string): boolean {
+  try {
+    const ab = Buffer.from(a, "hex");
+    const bb = Buffer.from(b, "hex");
+    if (ab.length !== bb.length) return false;
+    return crypto.timingSafeEqual(ab, bb);
+  } catch { return false; }
+}
+
 async function requireAdmin(req: import("express").Request, res: import("express").Response): Promise<boolean> {
-  const ap = (req.headers["x-admin-password"] as string) ?? (req.body?.adminPassword ?? "");
+  const ap = String((req.headers["x-admin-password"] as string) ?? (req.body?.adminPassword ?? ""));
   const correctPassword = await getAdminPassword();
-  if (!correctPassword || ap !== correctPassword) {
+  if (!correctPassword) { res.status(403).json({ error: "Forbidden" }); return false; }
+  // Constant-time comparison to avoid timing leaks.
+  const a = Buffer.from(ap);
+  const b = Buffer.from(correctPassword);
+  if (a.length !== b.length || !crypto.timingSafeEqual(a, b)) {
     res.status(403).json({ error: "Forbidden" });
     return false;
   }
@@ -42,43 +48,181 @@ function isExpired(row: { expiresAt: Date | null }): boolean {
   return row.expiresAt !== null && row.expiresAt < new Date();
 }
 
-// ── Access request & check ───────────────────────────────────────────────────
+function generateCode(): string {
+  // 10-char uppercase alphanumeric, no confusing chars (0/O, 1/I, etc.)
+  const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  let out = "";
+  const bytes = crypto.randomBytes(10);
+  for (let i = 0; i < 10; i++) out += alphabet[bytes[i] % alphabet.length];
+  return out;
+}
+
+// ── Registration: validate single-use code, create pending account ───────
 
 router.post("/access/request", async (req, res): Promise<void> => {
-  const { email, accessCode } = req.body ?? {};
+  const { email, accessCode, password } = req.body ?? {};
   if (!email || typeof email !== "string" || !email.includes("@")) {
     res.status(400).json({ error: "Valid email is required" });
+    return;
+  }
+  if (!password || typeof password !== "string" || password.length < 6) {
+    res.status(400).json({ error: "Password must be at least 6 characters" });
     return;
   }
   if (!accessCode || typeof accessCode !== "string") {
     res.status(400).json({ error: "Access code is required" });
     return;
   }
-  const correctCode = await getAccessCode();
-  if (accessCode.trim() !== correctCode) {
-    res.status(401).json({ error: "Incorrect access code. Please check with your instructor." });
+  const normalizedEmail = email.trim().toLowerCase();
+  const codeValue = accessCode.trim().toUpperCase();
+
+  // Already-registered email? Tell them to log in instead.
+  const existing = await db.select().from(accessRequestsTable).where(eq(accessRequestsTable.email, normalizedEmail));
+  if (existing.length > 0) {
+    res.status(409).json({
+      error: "This email is already registered. Please log in instead.",
+      status: existing[0].status,
+    });
+    return;
+  }
+
+  // Look up the code; must exist.
+  const [codeRow] = await db.select().from(accessCodesTable).where(eq(accessCodesTable.code, codeValue));
+  if (!codeRow) {
+    res.status(401).json({ error: "Invalid access code. Please check with your instructor." });
+    return;
+  }
+  if (codeRow.usedByEmail) {
+    res.status(401).json({ error: "This access code has already been used." });
+    return;
+  }
+
+  const passwordHash = await bcrypt.hash(password, 10);
+
+  // Atomically consume the code FIRST with a conditional update; only proceed
+  // if our update actually claimed the row (defends against concurrent requests).
+  const claimed = await db.update(accessCodesTable)
+    .set({ usedByEmail: normalizedEmail, usedAt: new Date() })
+    .where(and(eq(accessCodesTable.id, codeRow.id), isNull(accessCodesTable.usedByEmail)))
+    .returning({ id: accessCodesTable.id });
+  if (claimed.length === 0) {
+    res.status(401).json({ error: "This access code has already been used." });
+    return;
+  }
+
+  try {
+    await db.insert(accessRequestsTable).values({
+      email: normalizedEmail,
+      status: "pending",
+      passwordHash,
+      accessCodeId: codeRow.id,
+    });
+  } catch (e) {
+    // Rollback the code consumption if account creation failed (e.g. unique email collision).
+    await db.update(accessCodesTable)
+      .set({ usedByEmail: null, usedAt: null })
+      .where(eq(accessCodesTable.id, codeRow.id));
+    throw e;
+  }
+
+  res.json({ status: "pending" });
+});
+
+// ── Login: email + password (after admin approval) ───────────────────────
+
+router.post("/access/login", async (req, res): Promise<void> => {
+  const { email, password } = req.body ?? {};
+  if (!email || typeof email !== "string" || !email.includes("@")) {
+    res.status(400).json({ error: "Valid email is required" });
+    return;
+  }
+  if (!password || typeof password !== "string") {
+    res.status(400).json({ error: "Password is required" });
     return;
   }
   const normalizedEmail = email.trim().toLowerCase();
-  const existing = await db.select().from(accessRequestsTable).where(eq(accessRequestsTable.email, normalizedEmail));
-  if (existing.length > 0) {
-    const row = existing[0];
-    if (row.status === "approved") {
-      if (isExpired(row)) {
-        res.json({ status: "expired" });
-      } else {
-        res.json({ status: "approved", token: makeToken(normalizedEmail) });
-      }
-    } else if (row.status === "rejected") {
-      res.status(403).json({ error: "Your request was not approved. Please contact your instructor." });
-    } else {
-      res.json({ status: "pending" });
-    }
+  const [row] = await db.select().from(accessRequestsTable).where(eq(accessRequestsTable.email, normalizedEmail));
+  if (!row) {
+    res.status(404).json({ error: "No account found for this email. Please register with an access code first." });
     return;
   }
-  await db.insert(accessRequestsTable).values({ email: normalizedEmail, status: "pending" });
-  res.json({ status: "pending" });
+  if (row.status === "pending") {
+    res.status(403).json({ status: "pending", error: "Your account is awaiting admin approval." });
+    return;
+  }
+  if (row.status === "rejected") {
+    res.status(403).json({ status: "rejected", error: "Your request was not approved. Please contact your instructor." });
+    return;
+  }
+  if (row.status === "approved" && isExpired(row)) {
+    res.status(403).json({ status: "expired", error: "Your subscription has expired." });
+    return;
+  }
+  if (row.status !== "approved") {
+    res.status(403).json({ error: "Account not active." });
+    return;
+  }
+
+  // Legacy account with no password yet. We do NOT issue a setup token here:
+  // doing so would let anyone who knows an approved email take over the account.
+  // Setup is only authorised by proving possession of the existing browser
+  // session (the legacy localStorage HMAC), enforced in /access/setup-password.
+  if (!row.passwordHash) {
+    res.status(403).json({
+      status: "needs_password_setup",
+      error: "Your account is from a previous version of LEXO. Please reopen the app on the device where you originally signed in, or contact your instructor.",
+    });
+    return;
+  }
+
+  const ok = await bcrypt.compare(password, row.passwordHash);
+  if (!ok) {
+    res.status(401).json({ error: "Incorrect password." });
+    return;
+  }
+  res.json({ status: "approved", token: makeToken(normalizedEmail) });
 });
+
+// ── First-time password setup for legacy approved students ───────────────
+
+router.post("/access/setup-password", async (req, res): Promise<void> => {
+  const { email, setupToken, password } = req.body ?? {};
+  if (!email || typeof email !== "string") { res.status(400).json({ error: "Email is required" }); return; }
+  if (!setupToken || typeof setupToken !== "string") { res.status(400).json({ error: "Authentication required" }); return; }
+  if (!password || typeof password !== "string" || password.length < 6) {
+    res.status(400).json({ error: "Password must be at least 6 characters" });
+    return;
+  }
+  const normalizedEmail = email.trim().toLowerCase();
+
+  // Only accept the existing legacy session HMAC as proof of identity.
+  // (We deliberately do NOT issue setup tokens via any public endpoint, to
+  // prevent account takeover for legacy passwordless accounts.)
+  const expectedSession = makeToken(normalizedEmail);
+  if (!safeEqual(setupToken, expectedSession)) {
+    res.status(401).json({ error: "Authentication failed. Please reopen LEXO from your usual device." });
+    return;
+  }
+
+  const [row] = await db.select().from(accessRequestsTable).where(eq(accessRequestsTable.email, normalizedEmail));
+  if (!row) { res.status(404).json({ error: "Account not found" }); return; }
+  if (row.status !== "approved") { res.status(403).json({ error: "Account not active" }); return; }
+  if (isExpired(row)) { res.status(403).json({ error: "Subscription expired" }); return; }
+  // True one-time: once a password is set, this endpoint will not overwrite it.
+  if (row.passwordHash) {
+    res.status(403).json({ error: "Password is already set. Please log in instead." });
+    return;
+  }
+
+  const passwordHash = await bcrypt.hash(password, 10);
+  await db.update(accessRequestsTable)
+    .set({ passwordHash })
+    .where(eq(accessRequestsTable.id, row.id));
+
+  res.json({ status: "approved", token: makeToken(normalizedEmail) });
+});
+
+// ── Polling endpoint (used by the pending screen) ────────────────────────
 
 router.post("/access/check", async (req, res): Promise<void> => {
   const { email } = req.body ?? {};
@@ -91,19 +235,35 @@ router.post("/access/check", async (req, res): Promise<void> => {
     if (isExpired(row)) {
       res.json({ status: "expired" });
     } else {
-      res.json({ status: "approved", token: makeToken(normalizedEmail) });
+      // Never auto-issue a session token or setup token over a public endpoint.
+      // Students must log in with their password (or, for legacy passwordless
+      // users, prove possession of their existing browser session).
+      res.json({
+        status: "approved",
+        needsPasswordSetup: row.passwordHash ? false : true,
+      });
     }
   } else {
     res.json({ status: row.status });
   }
 });
 
-// ── Admin: requests ───────────────────────────────────────────────────────────
+// ── Admin: approval queue ────────────────────────────────────────────────
 
 router.get("/admin/requests", async (req, res): Promise<void> => {
   if (!await requireAdmin(req, res)) return;
   const rows = await db.select().from(accessRequestsTable).orderBy(desc(accessRequestsTable.requestedAt));
-  res.json(rows);
+  // Strip password hashes from admin view
+  res.json(rows.map(({ passwordHash: _ph, ...r }) => r));
+});
+
+router.get("/admin/requests/pending-count", async (req, res): Promise<void> => {
+  if (!await requireAdmin(req, res)) return;
+  const [row] = await db
+    .select({ count: sql<number>`count(*)::int` })
+    .from(accessRequestsTable)
+    .where(eq(accessRequestsTable.status, "pending"));
+  res.json({ count: row?.count ?? 0 });
 });
 
 router.post("/admin/requests/:id/approve", async (req, res): Promise<void> => {
@@ -146,7 +306,54 @@ router.delete("/admin/requests/:id", async (req, res): Promise<void> => {
   res.json({ success: true });
 });
 
-// ── Admin: access code & admin password ──────────────────────────────────────
+// ── Admin: single-use access codes ───────────────────────────────────────
+
+router.get("/admin/access-codes", async (req, res): Promise<void> => {
+  if (!await requireAdmin(req, res)) return;
+  const rows = await db.select().from(accessCodesTable).orderBy(desc(accessCodesTable.createdAt));
+  const [unusedRow] = await db
+    .select({ count: sql<number>`count(*)::int` })
+    .from(accessCodesTable)
+    .where(isNull(accessCodesTable.usedByEmail));
+  res.json({ codes: rows, unusedCount: unusedRow?.count ?? 0 });
+});
+
+router.post("/admin/access-codes", async (req, res): Promise<void> => {
+  if (!await requireAdmin(req, res)) return;
+  const { count, note } = req.body ?? {};
+  const n = Math.max(1, Math.min(50, Number(count) || 1));
+  const cleanNote = note && typeof note === "string" ? note.trim().slice(0, 200) : null;
+
+  const created: Array<typeof accessCodesTable.$inferSelect> = [];
+  for (let i = 0; i < n; i++) {
+    // Retry up to 3 times in case of unique collision (very unlikely with 10 chars)
+    for (let attempt = 0; attempt < 3; attempt++) {
+      try {
+        const code = generateCode();
+        const [row] = await db.insert(accessCodesTable)
+          .values({ code, note: cleanNote })
+          .returning();
+        created.push(row);
+        break;
+      } catch (e) {
+        if (attempt === 2) throw e;
+      }
+    }
+  }
+  res.json({ created });
+});
+
+router.delete("/admin/access-codes/:id", async (req, res): Promise<void> => {
+  if (!await requireAdmin(req, res)) return;
+  const id = Number(req.params.id);
+  if (!Number.isFinite(id)) { res.status(400).json({ error: "Bad id" }); return; }
+  await db.delete(accessCodesTable).where(eq(accessCodesTable.id, id));
+  res.json({ success: true });
+});
+
+// Legacy endpoints kept for backwards compat with the existing /admin page
+// (they now read/manage the global "site_password" setting, which is no
+// longer used for registration but is still surfaced in the admin UI).
 
 router.post("/admin/change-access-code", async (req, res): Promise<void> => {
   if (!await requireAdmin(req, res)) return;
@@ -163,8 +370,8 @@ router.post("/admin/change-access-code", async (req, res): Promise<void> => {
 
 router.get("/admin/access-code", async (req, res): Promise<void> => {
   if (!await requireAdmin(req, res)) return;
-  const code = await getAccessCode();
-  res.json({ code });
+  const rows = await db.select().from(settingsTable).where(eq(settingsTable.key, "site_password"));
+  res.json({ code: rows[0]?.value ?? "" });
 });
 
 router.post("/admin/change-password", async (req, res): Promise<void> => {
