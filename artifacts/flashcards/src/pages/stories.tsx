@@ -1,9 +1,10 @@
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import { Layout } from "@/components/layout";
 import {
   BookOpen, ChevronLeft, EyeOff, Eye, Loader2, BookMarked,
-  Play, Pause, Square, Volume2, Mic, CheckCircle2,
+  Play, Pause, Square, Volume2, Mic, CheckCircle2, Highlighter,
 } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { customFetch } from "@workspace/api-client-react";
 import { useToast } from "@/hooks/use-toast";
@@ -69,6 +70,390 @@ function LevelBadge({ level }: { level: string }) {
 }
 
 type PlayerState = "idle" | "loading" | "playing" | "paused";
+
+// ── Word-by-word highlighted reader ───────────────────────────────────────
+// Uses Web Speech API SpeechSynthesisUtterance with onboundary for
+// frame-perfect word timing, with a char-proportional timer fallback for
+// browsers that don't fire boundary events reliably (Safari, some mobile).
+
+type WordToken = { text: string; isWord: boolean; start: number; end: number; wordIndex: number };
+
+function tokenizeForHighlight(text: string): { tokens: WordToken[]; wordSpans: Array<{ start: number; end: number; idx: number }>; wordCount: number } {
+  const tokens: WordToken[] = [];
+  const wordSpans: Array<{ start: number; end: number; idx: number }> = [];
+  const re = /\S+|\s+/g;
+  let m: RegExpExecArray | null;
+  let wIdx = 0;
+  while ((m = re.exec(text)) !== null) {
+    const isWord = !/^\s+$/.test(m[0]);
+    const tok: WordToken = {
+      text: m[0],
+      isWord,
+      start: m.index,
+      end: m.index + m[0].length,
+      wordIndex: isWord ? wIdx : -1,
+    };
+    tokens.push(tok);
+    if (isWord) {
+      wordSpans.push({ start: tok.start, end: tok.end, idx: wIdx });
+      wIdx++;
+    }
+  }
+  return { tokens, wordSpans, wordCount: wIdx };
+}
+
+const HIGHLIGHT_SPEEDS = [
+  { label: "0.75×", value: 0.75 },
+  { label: "1×", value: 1.0 },
+  { label: "1.25×", value: 1.25 },
+] as const;
+
+function pickEnglishVoice(): SpeechSynthesisVoice | null {
+  if (typeof window === "undefined" || !("speechSynthesis" in window)) return null;
+  const voices = window.speechSynthesis.getVoices();
+  if (!voices.length) return null;
+  const enGB = voices.find(v => /en[-_]GB/i.test(v.lang));
+  if (enGB) return enGB;
+  const enAny = voices.find(v => /^en/i.test(v.lang));
+  return enAny ?? null;
+}
+
+function HighlightedReader({ content }: { content: string }) {
+  const { tokens, wordSpans, wordCount } = useMemo(() => tokenizeForHighlight(content), [content]);
+
+  const [rate, setRate] = useState(1.0);
+  const [state, setState] = useState<"idle" | "playing" | "paused">("idle");
+  const [highlightIdx, setHighlightIdx] = useState(-1);
+  const [error, setError] = useState<string | null>(null);
+  const [voiceReady, setVoiceReady] = useState(false);
+
+  const supported = typeof window !== "undefined" && "speechSynthesis" in window;
+
+  // Refs for live values (avoid stale closures)
+  const rateRef = useRef(rate);
+  const utterRef = useRef<SpeechSynthesisUtterance | null>(null);
+  const voiceRef = useRef<SpeechSynthesisVoice | null>(null);
+  const wordIdxRef = useRef(-1);
+  const fallbackRafRef = useRef<number | null>(null);
+  const fallbackActiveRef = useRef(false);
+  const fallbackArmTimerRef = useRef<number | null>(null);
+  const boundaryFiredRef = useRef(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => { rateRef.current = rate; }, [rate]);
+
+  // Voices load asynchronously on most browsers
+  useEffect(() => {
+    if (!supported) return;
+    const sync = () => {
+      voiceRef.current = pickEnglishVoice();
+      setVoiceReady(true);
+    };
+    sync();
+    window.speechSynthesis.addEventListener("voiceschanged", sync);
+    return () => window.speechSynthesis.removeEventListener("voiceschanged", sync);
+  }, [supported]);
+
+  const cancelFallback = useCallback(() => {
+    if (fallbackRafRef.current !== null) {
+      cancelAnimationFrame(fallbackRafRef.current);
+      fallbackRafRef.current = null;
+    }
+    if (fallbackArmTimerRef.current !== null) {
+      window.clearTimeout(fallbackArmTimerRef.current);
+      fallbackArmTimerRef.current = null;
+    }
+    fallbackActiveRef.current = false;
+  }, []);
+
+  const stopAll = useCallback(() => {
+    cancelFallback();
+    if (supported) window.speechSynthesis.cancel();
+    utterRef.current = null;
+    wordIdxRef.current = -1;
+    setHighlightIdx(-1);
+    setState("idle");
+  }, [supported, cancelFallback]);
+
+  // Cleanup on unmount or content change
+  useEffect(() => () => { stopAll(); }, [stopAll]);
+  useEffect(() => { stopAll(); }, [content, stopAll]);
+
+  // Auto-scroll the highlighted word into view (nearest, no jump)
+  useEffect(() => {
+    if (highlightIdx < 0) return;
+    const el = containerRef.current?.querySelector<HTMLSpanElement>(`[data-w-idx="${highlightIdx}"]`);
+    if (el) el.scrollIntoView({ block: "nearest", behavior: "smooth" });
+  }, [highlightIdx]);
+
+  // Char-proportional fallback: schedule each word based on its char weight
+  // and the elapsed time, using rAF so we never drift.
+  const startFallback = useCallback((startWordIdx: number) => {
+    if (startWordIdx >= wordCount) return;
+    fallbackActiveRef.current = true;
+    const totalCharsRemaining = wordSpans
+      .slice(startWordIdx)
+      .reduce((s, w) => s + (w.end - w.start) + 1, 0);
+    // Empirically ~14 chars/sec at rate 1.0 for English speech synthesis
+    const charsPerSec = 14 * rateRef.current;
+    const totalDuration = totalCharsRemaining / charsPerSec; // seconds
+    // Build cumulative timeline: word i finishes at this cumulative time
+    const timeline: number[] = [];
+    let acc = 0;
+    for (let i = startWordIdx; i < wordCount; i++) {
+      const w = wordSpans[i];
+      const dur = ((w.end - w.start) + 1) / totalCharsRemaining * totalDuration;
+      acc += dur;
+      timeline.push(acc);
+    }
+    const startTs = performance.now();
+    const tick = () => {
+      if (!fallbackActiveRef.current) return;
+      // Don't advance highlight while synthesis is paused
+      if (window.speechSynthesis.paused) {
+        fallbackRafRef.current = requestAnimationFrame(tick);
+        return;
+      }
+      const elapsed = (performance.now() - startTs) / 1000;
+      // Find first word whose cumulative end-time is >= elapsed
+      let target = startWordIdx;
+      for (let i = 0; i < timeline.length; i++) {
+        if (timeline[i] >= elapsed) { target = startWordIdx + i; break; }
+        target = startWordIdx + i;
+      }
+      if (target !== wordIdxRef.current) {
+        wordIdxRef.current = target;
+        setHighlightIdx(target);
+      }
+      if (elapsed < timeline[timeline.length - 1]) {
+        fallbackRafRef.current = requestAnimationFrame(tick);
+      }
+    };
+    fallbackRafRef.current = requestAnimationFrame(tick);
+  }, [wordCount, wordSpans]);
+
+  const playFromWord = useCallback((startWordIdx: number, useRate: number) => {
+    if (!supported) { setError("This browser does not support speech synthesis."); return; }
+    cancelFallback();
+    window.speechSynthesis.cancel();
+
+    const safeStart = Math.max(0, Math.min(startWordIdx, wordCount - 1));
+    const startChar = wordCount === 0 ? 0 : (wordSpans[safeStart]?.start ?? 0);
+    const text = content.slice(startChar);
+    if (!text.trim()) { stopAll(); return; }
+
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.rate = useRate;
+    utter.pitch = 1;
+    utter.lang = "en-GB";
+    if (voiceRef.current) utter.voice = voiceRef.current;
+    utterRef.current = utter;
+    boundaryFiredRef.current = false;
+
+    utter.onstart = () => {
+      if (utterRef.current !== utter) return;
+      setState("playing");
+      // Activate fallback if no boundary event fires within 1.2s.
+      // Tracked so pause/stop can cancel before it fires.
+      if (fallbackArmTimerRef.current !== null) window.clearTimeout(fallbackArmTimerRef.current);
+      fallbackArmTimerRef.current = window.setTimeout(() => {
+        fallbackArmTimerRef.current = null;
+        // Gate on: still the active utterance, no real boundary yet, AND
+        // synthesis isn't paused (don't progress highlight while paused).
+        if (
+          utterRef.current === utter &&
+          !boundaryFiredRef.current &&
+          !window.speechSynthesis.paused
+        ) {
+          startFallback(safeStart);
+        }
+      }, 1200);
+    };
+
+    utter.onboundary = (ev) => {
+      if (utterRef.current !== utter) return;
+      // Some engines send "sentence" boundaries; we only care about words
+      if (ev.name && ev.name !== "word") return;
+      boundaryFiredRef.current = true;
+      // Boundary won — kill any fallback timer
+      if (fallbackActiveRef.current) cancelFallback();
+
+      const absChar = startChar + ev.charIndex;
+      // Binary search for word containing absChar
+      let lo = 0, hi = wordSpans.length - 1, found = -1;
+      while (lo <= hi) {
+        const mid = (lo + hi) >> 1;
+        const w = wordSpans[mid];
+        if (absChar < w.start) hi = mid - 1;
+        else if (absChar >= w.end) lo = mid + 1;
+        else { found = w.idx; break; }
+      }
+      if (found < 0) {
+        // charIndex landed on whitespace — pick the next word
+        for (let i = 0; i < wordSpans.length; i++) {
+          if (wordSpans[i].start >= absChar) { found = wordSpans[i].idx; break; }
+        }
+      }
+      if (found >= 0 && found !== wordIdxRef.current) {
+        wordIdxRef.current = found;
+        setHighlightIdx(found);
+      }
+    };
+
+    utter.onend = () => {
+      if (utterRef.current !== utter) return;
+      cancelFallback();
+      utterRef.current = null;
+      wordIdxRef.current = -1;
+      setHighlightIdx(-1);
+      setState("idle");
+    };
+
+    utter.onerror = (ev) => {
+      // canceled/interrupted are normal when restarting/stopping
+      const err = (ev as SpeechSynthesisErrorEvent).error;
+      if (err === "canceled" || err === "interrupted") return;
+      cancelFallback();
+      setError("Speech failed. Try again.");
+      setState("idle");
+    };
+
+    window.speechSynthesis.speak(utter);
+  }, [supported, content, wordCount, wordSpans, cancelFallback, startFallback, stopAll]);
+
+  const handlePlay = () => {
+    setError(null);
+    if (state === "paused") {
+      window.speechSynthesis.resume();
+      setState("playing");
+      // Restart fallback loop from current word if it was active
+      if (fallbackActiveRef.current === false && !boundaryFiredRef.current && wordIdxRef.current >= 0) {
+        startFallback(wordIdxRef.current);
+      }
+      return;
+    }
+    const from = wordIdxRef.current >= 0 ? wordIdxRef.current : 0;
+    playFromWord(from, rateRef.current);
+  };
+
+  const handlePause = () => {
+    if (state !== "playing") return;
+    window.speechSynthesis.pause();
+    cancelFallback();
+    setState("paused");
+  };
+
+  const handleStop = () => {
+    setError(null);
+    stopAll();
+  };
+
+  const handleRateChange = (newRate: number) => {
+    setRate(newRate);
+    rateRef.current = newRate;
+    if (state === "playing" || state === "paused") {
+      const from = wordIdxRef.current >= 0 ? wordIdxRef.current : 0;
+      // Cancel current speech and restart at new rate from current word
+      // (browsers don't support changing rate mid-utterance)
+      playFromWord(from, newRate);
+    }
+  };
+
+  if (!supported) {
+    // Graceful: just render plain text
+    return (
+      <div className="text-base leading-[2] text-foreground whitespace-pre-wrap" lang="en">
+        {content}
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      {/* Compact controls */}
+      <div className="mb-4 rounded-xl border border-border bg-muted/40 p-2.5 flex items-center gap-2 flex-wrap">
+        <div className="flex items-center gap-1.5 shrink-0 mr-1">
+          <Highlighter className="w-3.5 h-3.5 text-amber-500" />
+          <span className="text-xs font-bold text-foreground">Highlight Reader</span>
+        </div>
+
+        {state === "playing" ? (
+          <button
+            onClick={handlePause}
+            className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-primary text-primary-foreground text-xs font-semibold hover:bg-primary/90 transition-colors"
+          >
+            <Pause className="w-3 h-3" /> Pause
+          </button>
+        ) : (
+          <button
+            onClick={handlePlay}
+            disabled={!voiceReady && !window.speechSynthesis.getVoices().length}
+            className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-primary text-primary-foreground text-xs font-semibold hover:bg-primary/90 transition-colors disabled:opacity-50"
+          >
+            <Play className="w-3 h-3" /> {state === "paused" ? "Resume" : "Play"}
+          </button>
+        )}
+
+        {(state === "playing" || state === "paused") && (
+          <button
+            onClick={handleStop}
+            className="flex items-center gap-1 px-2.5 py-1 rounded-lg border border-border text-muted-foreground text-xs font-semibold hover:bg-accent hover:text-foreground transition-colors"
+          >
+            <Square className="w-3 h-3" /> Stop
+          </button>
+        )}
+
+        <div className="flex items-center gap-1 ml-auto">
+          <Volume2 className="w-3 h-3 text-muted-foreground" />
+          {HIGHLIGHT_SPEEDS.map(s => (
+            <button
+              key={s.label}
+              onClick={() => handleRateChange(s.value)}
+              className={cn(
+                "px-2 py-0.5 rounded-md text-[11px] font-semibold transition-colors",
+                rate === s.value
+                  ? "bg-amber-500 text-white"
+                  : "bg-background border border-border text-muted-foreground hover:text-foreground",
+              )}
+            >
+              {s.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {error && <p className="mb-2 text-xs text-destructive font-medium">{error}</p>}
+
+      {/* Tokenized text */}
+      <div
+        ref={containerRef}
+        className="text-base leading-[2] text-foreground whitespace-pre-wrap"
+        lang="en"
+      >
+        {tokens.map((t, i) =>
+          t.isWord ? (
+            <span
+              key={i}
+              data-w-idx={t.wordIndex}
+              className={cn(
+                "rounded px-0.5 -mx-0.5 transition-colors ease-out",
+                highlightIdx === t.wordIndex && "shadow-sm",
+              )}
+              style={{
+                transitionDuration: "50ms",
+                backgroundColor: highlightIdx === t.wordIndex ? "rgba(253, 224, 71, 0.55)" : "transparent",
+              }}
+            >
+              {t.text}
+            </span>
+          ) : (
+            <span key={i}>{t.text}</span>
+          ),
+        )}
+      </div>
+    </div>
+  );
+}
 
 function VoiceReader({ content }: { content: string }) {
   const [speed, setSpeed] = useState<SpeedValue>(1.0);
@@ -574,18 +959,13 @@ function StoryReader({ story, onBack, isCompleted, onMarkComplete }: { story: St
           </div>
         </div>
 
-        {/* English Content */}
+        {/* English Content with word-by-word highlight reader */}
         <div className="p-6 md:p-8">
           <div className="flex items-center gap-2 mb-4">
             <div className="w-1 h-5 rounded-full bg-primary" />
             <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground">English</span>
           </div>
-          <div
-            className="text-base leading-[2] text-foreground whitespace-pre-wrap"
-            lang="en"
-          >
-            {story.content}
-          </div>
+          <HighlightedReader content={story.content} />
         </div>
 
         {/* Arabic Translation */}
