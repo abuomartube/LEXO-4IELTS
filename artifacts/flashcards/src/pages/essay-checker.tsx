@@ -12,8 +12,10 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import {
   FileText, Loader2, RotateCcw, Copy, CheckCircle2,
-  AlertCircle, ChevronDown, ChevronUp, Sparkles, X, ArrowRight
+  AlertCircle, ChevronDown, ChevronUp, Sparkles, X, ArrowRight,
+  Camera, Upload, Image as ImageIcon,
 } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -596,6 +598,88 @@ export default function EssayChecker() {
     task2: { label: "Task 2", emoji: "📝", sub: "Opinion essay (≥250 words)" },
     paragraph: { label: "Paragraph", emoji: "💬", sub: "Letter, email, or paragraph" },
   };
+
+  // Free Check input mode: "text" = paste/type, "photo" = upload handwritten essay
+  type FreeInputMode = "text" | "photo";
+  const [freeInputMode, setFreeInputMode] = useState<FreeInputMode>("text");
+  const [photoFile, setPhotoFile] = useState<File | null>(null);
+  const [photoPreviewUrl, setPhotoPreviewUrl] = useState<string | null>(null);
+  const [extracting, setExtracting] = useState(false);
+  const [extractError, setExtractError] = useState<string | null>(null);
+  const [extracted, setExtracted] = useState(false); // true once OCR has populated freeText for confirmation
+  const photoInputRef = useRef<HTMLInputElement>(null);
+
+  // Revoke blob URLs to avoid memory leaks
+  useEffect(() => {
+    return () => {
+      if (photoPreviewUrl) URL.revokeObjectURL(photoPreviewUrl);
+    };
+  }, [photoPreviewUrl]);
+
+  const resetPhotoState = useCallback(() => {
+    if (photoPreviewUrl) URL.revokeObjectURL(photoPreviewUrl);
+    setPhotoFile(null);
+    setPhotoPreviewUrl(null);
+    setExtractError(null);
+    setExtracted(false);
+    if (photoInputRef.current) photoInputRef.current.value = "";
+  }, [photoPreviewUrl]);
+
+  const handlePhotoSelected = useCallback((file: File | null) => {
+    setExtractError(null);
+    setExtracted(false);
+    if (!file) return;
+
+    // Client-side validation (server enforces too)
+    const MAX = 10 * 1024 * 1024;
+    const ext = file.name.toLowerCase().split(".").pop() ?? "";
+    const okType =
+      ["image/jpeg", "image/jpg", "image/png", "image/heic", "image/heif"].includes(file.type) ||
+      ["jpg", "jpeg", "png", "heic", "heif"].includes(ext);
+    if (!okType) {
+      setExtractError("Unsupported format. Please upload JPG, JPEG, PNG, or HEIC.");
+      if (photoInputRef.current) photoInputRef.current.value = "";
+      return;
+    }
+    if (file.size > MAX) {
+      setExtractError("Image is too large. Maximum size is 10 MB.");
+      if (photoInputRef.current) photoInputRef.current.value = "";
+      return;
+    }
+
+    if (photoPreviewUrl) URL.revokeObjectURL(photoPreviewUrl);
+    setPhotoFile(file);
+    // HEIC can't be previewed in <img> on most browsers — we'll show a placeholder.
+    const isHeic = ["heic", "heif"].includes(ext) || file.type.includes("heic") || file.type.includes("heif");
+    setPhotoPreviewUrl(isHeic ? null : URL.createObjectURL(file));
+  }, [photoPreviewUrl]);
+
+  const handleExtractText = useCallback(async () => {
+    if (!photoFile || extracting) return;
+    setExtracting(true);
+    setExtractError(null);
+    try {
+      const fd = new FormData();
+      fd.append("image", photoFile);
+      const res = await fetch("/api/orwell/ocr", {
+        method: "POST",
+        headers: { ...getStudentAuthHeaders() },
+        body: fd,
+      });
+      const data = (await res.json().catch(() => ({}))) as { text?: string; error?: string };
+      if (!res.ok) {
+        throw new Error(data.error ?? "Could not extract text. Please try again.");
+      }
+      const txt = (data.text ?? "").trim();
+      if (!txt) throw new Error("No text was extracted from the photo.");
+      setFreeText(txt);
+      setExtracted(true);
+    } catch (err) {
+      setExtractError(err instanceof Error ? err.message : "Could not extract text. Please try again.");
+    } finally {
+      setExtracting(false);
+    }
+  }, [photoFile, extracting]);
   const [categoryProgress, setCategoryProgress] = useState<CategoryProgress | null>(null);
   const resultRef = useRef<HTMLDivElement>(null);
   // Abort the in-flight grading stream when the user navigates away or
@@ -1537,22 +1621,162 @@ export default function EssayChecker() {
               </p>
             </div>
 
-            <div className="relative">
-              <textarea
-                className="w-full h-72 p-4 rounded-2xl border border-border bg-card text-foreground text-sm leading-relaxed resize-none focus:outline-none focus:ring-2 focus:ring-primary/40 transition-shadow"
-                placeholder="Paste or type your writing here…"
-                value={freeText}
-                onChange={(e) => setFreeText(e.target.value)}
-                disabled={loading}
-              />
-              <div className="absolute bottom-3 right-4 text-xs font-semibold text-muted-foreground">
-                {freeWordCount} words
-              </div>
+            {/* Input mode tabs: type vs photo */}
+            <div className="grid grid-cols-2 gap-2 p-1 rounded-2xl bg-muted">
+              <button
+                type="button"
+                onClick={() => { setFreeInputMode("text"); setExtractError(null); }}
+                disabled={loading || extracting}
+                className={cn(
+                  "flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-semibold transition-all",
+                  freeInputMode === "text"
+                    ? "bg-card text-foreground shadow-sm border border-border"
+                    : "text-muted-foreground hover:text-foreground",
+                )}
+              >
+                <FileText className="w-4 h-4" /> Type / Paste
+              </button>
+              <button
+                type="button"
+                onClick={() => { setFreeInputMode("photo"); setExtractError(null); }}
+                disabled={loading || extracting}
+                className={cn(
+                  "flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-semibold transition-all",
+                  freeInputMode === "photo"
+                    ? "bg-card text-foreground shadow-sm border border-border"
+                    : "text-muted-foreground hover:text-foreground",
+                )}
+              >
+                <Camera className="w-4 h-4" /> Upload Photo
+              </button>
             </div>
+
+            {/* PHOTO upload panel — shown until OCR populates the text for confirmation */}
+            {freeInputMode === "photo" && !extracted && (
+              <div className="space-y-3">
+                <input
+                  ref={photoInputRef}
+                  type="file"
+                  accept="image/jpeg,image/jpg,image/png,image/heic,image/heif,.jpg,.jpeg,.png,.heic,.heif"
+                  className="hidden"
+                  onChange={(e) => handlePhotoSelected(e.target.files?.[0] ?? null)}
+                  disabled={extracting || loading}
+                />
+
+                {!photoFile ? (
+                  <button
+                    type="button"
+                    onClick={() => photoInputRef.current?.click()}
+                    className="w-full border-2 border-dashed border-border rounded-2xl p-8 flex flex-col items-center justify-center gap-3 hover:border-primary hover:bg-primary/5 transition-colors text-center"
+                  >
+                    <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center">
+                      <Upload className="w-7 h-7 text-primary" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-foreground">Upload a photo of your handwritten essay</p>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        JPG, JPEG, PNG, or HEIC · Max 10 MB
+                      </p>
+                    </div>
+                  </button>
+                ) : (
+                  <div className="rounded-2xl border border-border bg-card overflow-hidden">
+                    {photoPreviewUrl ? (
+                      <div className="bg-muted/40 max-h-80 overflow-hidden flex items-center justify-center">
+                        <img
+                          src={photoPreviewUrl}
+                          alt="Essay preview"
+                          className="max-h-80 w-auto object-contain"
+                        />
+                      </div>
+                    ) : (
+                      <div className="bg-muted/40 p-8 flex flex-col items-center justify-center gap-2">
+                        <ImageIcon className="w-10 h-10 text-muted-foreground" />
+                        <p className="text-xs text-muted-foreground">HEIC photo · preview not supported, but the file is ready.</p>
+                      </div>
+                    )}
+                    <div className="p-3 flex items-center justify-between gap-3 border-t border-border">
+                      <div className="text-xs text-muted-foreground truncate flex-1 min-w-0">
+                        <span className="font-semibold text-foreground">{photoFile.name}</span>
+                        <span className="ml-2">({(photoFile.size / 1024 / 1024).toFixed(2)} MB)</span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={resetPhotoState}
+                        disabled={extracting || loading}
+                        className="text-xs font-semibold text-muted-foreground hover:text-destructive disabled:opacity-50"
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {extractError && (
+                  <div className="flex items-start gap-3 p-4 rounded-2xl bg-destructive/10 border border-destructive/30 text-destructive text-sm">
+                    <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
+                    <p>{extractError}</p>
+                  </div>
+                )}
+
+                <Button
+                  onClick={handleExtractText}
+                  disabled={!photoFile || extracting || loading}
+                  className="w-full rounded-full h-12 text-base font-semibold"
+                  variant="secondary"
+                >
+                  {extracting ? (
+                    <>
+                      <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                      Extracting text from photo…
+                    </>
+                  ) : (
+                    <>
+                      <Sparkles className="w-5 h-5 mr-2" />
+                      Extract text
+                    </>
+                  )}
+                </Button>
+              </div>
+            )}
+
+            {/* TEXT input — shown for typing OR for confirming extracted OCR text */}
+            {(freeInputMode === "text" || extracted) && (
+              <div className="space-y-2">
+                {extracted && (
+                  <div className="flex items-start gap-2 p-3 rounded-xl bg-primary/5 border border-primary/20 text-xs text-foreground">
+                    <CheckCircle2 className="w-4 h-4 shrink-0 mt-0.5 text-primary" />
+                    <p>
+                      <span className="font-semibold">Text extracted from your photo.</span>{" "}
+                      Please review and edit if needed, then submit for grading.{" "}
+                      <button
+                        type="button"
+                        onClick={() => { resetPhotoState(); setFreeText(""); }}
+                        className="font-semibold text-primary hover:underline"
+                      >
+                        Upload a different photo
+                      </button>
+                    </p>
+                  </div>
+                )}
+                <div className="relative">
+                  <textarea
+                    className="w-full h-72 p-4 rounded-2xl border border-border bg-card text-foreground text-sm leading-relaxed resize-none focus:outline-none focus:ring-2 focus:ring-primary/40 transition-shadow"
+                    placeholder={extracted ? "Review the extracted text and edit if needed…" : "Paste or type your writing here…"}
+                    value={freeText}
+                    onChange={(e) => setFreeText(e.target.value)}
+                    disabled={loading}
+                  />
+                  <div className="absolute bottom-3 right-4 text-xs font-semibold text-muted-foreground">
+                    {freeWordCount} words
+                  </div>
+                </div>
+              </div>
+            )}
 
             <Button
               onClick={handleSubmitFreeCheck}
-              disabled={!canSubmitFree}
+              disabled={!canSubmitFree || (freeInputMode === "photo" && !extracted)}
               className="w-full rounded-full h-12 text-base font-semibold"
             >
               {loading ? (

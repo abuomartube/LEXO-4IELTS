@@ -1,6 +1,9 @@
 import { Router, type IRouter } from "express";
 import crypto from "node:crypto";
 import Anthropic from "@anthropic-ai/sdk";
+import OpenAI from "openai";
+import multer from "multer";
+import heicConvert from "heic-convert";
 import { eq, and, sql, or, lt, gt, inArray, desc, ne } from "drizzle-orm";
 import { db, orwellSubmissionsTable, orwellCoachSummariesTable, xpEventsTable, accessRequestsTable } from "@workspace/db";
 import { getOrwellEntry } from "../data/orwell-catalog.js";
@@ -446,6 +449,166 @@ async function streamFreeCheck(
   sseSend({ done: { ...parsed, wordCount, mode } });
   res.end();
 }
+
+// ── OCR for handwritten essays (Free Check photo upload) ──────────────────
+// Accepts JPG / JPEG / PNG / HEIC / HEIF up to 10 MB.
+// HEIC/HEIF (iPhone) is auto-converted to JPEG before sending to OpenAI Vision.
+const OCR_MAX_BYTES = 10 * 1024 * 1024; // 10 MB
+const OCR_ALLOWED_MIME = new Set([
+  "image/jpeg",
+  "image/jpg",
+  "image/png",
+  "image/heic",
+  "image/heif",
+]);
+
+const ocrUpload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: OCR_MAX_BYTES, files: 1 },
+  fileFilter: (_req, file, cb) => {
+    const m = (file.mimetype || "").toLowerCase();
+    const ext = (file.originalname || "").toLowerCase().split(".").pop() ?? "";
+    if (OCR_ALLOWED_MIME.has(m) || ["jpg", "jpeg", "png", "heic", "heif"].includes(ext)) {
+      cb(null, true);
+    } else {
+      cb(new Error("unsupported_format"));
+    }
+  },
+});
+
+// In-memory throttle so a single student can't burn unlimited Vision credits.
+const ocrInFlight = new Map<string, number>(); // email -> startedAt
+const OCR_LOCK_TIMEOUT_MS = 60_000;
+function ocrTryAcquire(email: string): boolean {
+  const now = Date.now();
+  const existing = ocrInFlight.get(email);
+  if (existing !== undefined && now - existing < OCR_LOCK_TIMEOUT_MS) return false;
+  ocrInFlight.set(email, now);
+  return true;
+}
+function ocrRelease(email: string) { ocrInFlight.delete(email); }
+
+router.post("/orwell/ocr", ocrUpload.single("image"), async (req, res): Promise<void> => {
+  const email = await verifyStudentEmail(req);
+  if (!email) { res.status(401).json({ error: "Unauthorized" }); return; }
+
+  const file = req.file;
+  if (!file || !file.buffer || file.buffer.length === 0) {
+    res.status(400).json({ error: "No image uploaded." });
+    return;
+  }
+
+  if (!ocrTryAcquire(email)) {
+    res.status(429).json({ error: "Another upload is still being processed. Please wait." });
+    return;
+  }
+
+  try {
+    const apiKey = process.env.OPENAI_API_KEY;
+    if (!apiKey) {
+      res.status(500).json({ error: "OpenAI API key not configured." });
+      return;
+    }
+
+    let imageBuffer = file.buffer;
+    let mimeType = (file.mimetype || "").toLowerCase();
+    const lowerName = (file.originalname || "").toLowerCase();
+    const isHeic =
+      mimeType === "image/heic" ||
+      mimeType === "image/heif" ||
+      lowerName.endsWith(".heic") ||
+      lowerName.endsWith(".heif");
+
+    if (isHeic) {
+      try {
+        const converted = await heicConvert({
+          // heic-convert accepts an ArrayBuffer-like — pass the underlying ArrayBuffer
+          buffer: imageBuffer as unknown as ArrayBufferLike,
+          format: "JPEG",
+          quality: 0.92,
+        });
+        imageBuffer = Buffer.from(converted);
+        mimeType = "image/jpeg";
+      } catch (err) {
+        console.error("HEIC conversion failed:", err);
+        res.status(400).json({ error: "Could not read this HEIC photo. Try saving it as JPEG and uploading again." });
+        return;
+      }
+    } else if (mimeType === "image/jpg") {
+      mimeType = "image/jpeg";
+    } else if (!mimeType.startsWith("image/")) {
+      // Best-effort fallback when browser didn't send a mime
+      mimeType = "image/jpeg";
+    }
+
+    const dataUrl = `data:${mimeType};base64,${imageBuffer.toString("base64")}`;
+
+    const openai = new OpenAI({ apiKey });
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4o-mini",
+      max_tokens: 4000,
+      temperature: 0,
+      messages: [
+        {
+          role: "system",
+          content:
+            "You are an OCR engine that transcribes handwritten English essays from photos. " +
+            "Output ONLY the transcribed text — no commentary, no explanations, no markdown. " +
+            "Preserve original line breaks between paragraphs. " +
+            "If a word is unreadable, write [?]. If the photo contains no readable English text, output exactly: NO_TEXT_FOUND",
+        },
+        {
+          role: "user",
+          content: [
+            { type: "text", text: "Transcribe the handwritten essay in this photo exactly as written." },
+            { type: "image_url", image_url: { url: dataUrl, detail: "high" } },
+          ],
+        },
+      ],
+    });
+
+    const raw = completion.choices[0]?.message?.content ?? "";
+    const text = (typeof raw === "string" ? raw : "").trim();
+
+    if (!text || text === "NO_TEXT_FOUND") {
+      res.status(422).json({ error: "Couldn't read any text from this photo. Try a clearer, better-lit picture." });
+      return;
+    }
+
+    const wordCount = text.split(/\s+/).filter(Boolean).length;
+    res.json({ text, wordCount });
+  } catch (err: unknown) {
+    const status = (err as { status?: number })?.status;
+    if (status === 429) {
+      res.status(429).json({ error: "Vision service is busy. Please try again in a moment." });
+      return;
+    }
+    if (status === 401 || status === 402) {
+      res.status(502).json({ error: "Vision service is unavailable right now." });
+      return;
+    }
+    console.error("OCR failed:", err);
+    res.status(500).json({ error: "Could not extract text from that photo. Please try again." });
+  } finally {
+    ocrRelease(email);
+  }
+});
+
+// Multer error handler — converts file-too-large / wrong-type into clean JSON.
+router.use("/orwell/ocr", (err: unknown, _req: import("express").Request, res: import("express").Response, next: import("express").NextFunction) => {
+  if (err && typeof err === "object" && "code" in err) {
+    const code = (err as { code?: string }).code;
+    if (code === "LIMIT_FILE_SIZE") {
+      res.status(413).json({ error: "Image is too large. Maximum size is 10 MB." });
+      return;
+    }
+  }
+  if (err instanceof Error && err.message === "unsupported_format") {
+    res.status(415).json({ error: "Unsupported file format. Please upload JPG, JPEG, PNG, or HEIC." });
+    return;
+  }
+  next(err);
+});
 
 // How long a "grading" lock is allowed to stay before another request can take it over.
 // Anthropic calls typically finish in <30s; 5 minutes is a generous safety net.
