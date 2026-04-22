@@ -348,23 +348,16 @@ router.post("/speaking/tts", async (req, res) => {
       voice,
       input: text.slice(0, 4096),
       speed,
+      response_format: "mp3",
     });
 
-    // Stream the response body directly — no full-buffer round-trip
+    // Buffer the full body before responding — avoids partial/empty streams
+    // some browsers reject when decoding via Web Audio API.
+    const audioBuffer = Buffer.from(await speech.arrayBuffer());
     res.setHeader("Content-Type", "audio/mpeg");
+    res.setHeader("Content-Length", String(audioBuffer.length));
     res.setHeader("Cache-Control", "no-cache");
-    const stream = speech.body as ReadableStream<Uint8Array>;
-    const reader = stream.getReader();
-    try {
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        res.write(Buffer.from(value));
-      }
-      res.end();
-    } finally {
-      reader.releaseLock();
-    }
+    res.end(audioBuffer);
   } catch (err: unknown) {
     console.error("TTS error:", err);
     if (!res.headersSent) {
