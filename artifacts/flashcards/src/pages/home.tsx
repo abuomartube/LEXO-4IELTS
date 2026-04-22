@@ -13,6 +13,7 @@ import {
   TrendingUp, PlayCircle
 } from "lucide-react";
 import { Layout } from "@/components/layout";
+import { DailyPlanSection } from "@/components/daily-plan-section";
 
 function VocabDownloadSection() {
   return (
@@ -128,6 +129,9 @@ export default function Home() {
   return (
     <Layout>
       <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
+
+        {/* ── Personalized Daily Study Plan ── */}
+        <DailyPlanSection />
 
         {/* ── Hero ── */}
         <section className="relative rounded-3xl overflow-hidden bg-primary px-8 py-12 shadow-lg">

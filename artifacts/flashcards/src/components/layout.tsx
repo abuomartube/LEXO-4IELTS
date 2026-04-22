@@ -4,6 +4,7 @@ import { BookOpen, Home, Layers, PieChart, ExternalLink, Sun, Moon, HelpCircle, 
 import { cn } from "@/lib/utils";
 import { useTheme } from "@/context/theme-context";
 import { Button } from "@/components/ui/button";
+import { MyPlanButton } from "@/components/my-plan-button";
 
 function handleLogout() {
   try {
@@ -205,11 +206,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
       )}
 
       <main className="flex-1 overflow-y-auto">
-        <div className="max-w-5xl mx-auto p-4 md:p-8">
+        <div className="max-w-5xl mx-auto p-4 md:p-8 pt-16 md:pt-8">
           {children}
         </div>
       </main>
 
+      <MyPlanButton />
     </div>
   );
 }
