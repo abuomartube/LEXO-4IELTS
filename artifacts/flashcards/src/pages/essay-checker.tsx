@@ -3,8 +3,10 @@ import { ChartRenderer } from "@/data/orwell-charts";
 import {
   ASSIGNMENTS_BY_CATEGORY,
   CATEGORY_META,
+  TASK2_SUBTYPES,
   type Category,
   type OrwellAssignment,
+  type Task2Subtype,
 } from "@/data/orwell-assignments";
 import { SkipForward } from "lucide-react";
 import { Layout } from "@/components/layout";
@@ -19,7 +21,7 @@ import { cn } from "@/lib/utils";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
-type Screen = "intro" | "select" | "writing" | "result" | "freechoose" | "freewriting" | "freeresult";
+type Screen = "intro" | "select" | "task2subtype" | "writing" | "result" | "freechoose" | "freewriting" | "freeresult";
 type TaskType = "Task 1" | "Task 2" | "Paragraph" | "Free Check";
 
 interface GrammarError {
@@ -556,8 +558,13 @@ interface CategoryProgress {
   skippedIds: string[];
 }
 
-function pickNextAssignment(category: Category, progress: CategoryProgress | null): OrwellAssignment | null {
-  const all = ASSIGNMENTS_BY_CATEGORY[category];
+function pickNextAssignment(
+  category: Category,
+  progress: CategoryProgress | null,
+  subtypeFilter?: string,
+): OrwellAssignment | null {
+  const base = ASSIGNMENTS_BY_CATEGORY[category];
+  const all = subtypeFilter ? base.filter((a) => a.subtype === subtypeFilter) : base;
   const submitted = new Set(progress?.submittedIds ?? []);
   const skipped = new Set(progress?.skippedIds ?? []);
   // Prefer never-touched, then skipped (but never re-show submitted)
@@ -571,6 +578,7 @@ function pickNextAssignment(category: Category, progress: CategoryProgress | nul
 export default function EssayChecker() {
   const [screen, setScreen] = useState<Screen>("intro");
   const [category, setCategory] = useState<Category>("task2");
+  const [task2Subtype, setTask2Subtype] = useState<Task2Subtype | null>(null);
   const [assignment, setAssignment] = useState<OrwellAssignment | null>(null);
   const [essay, setEssay] = useState("");
   const [loading, setLoading] = useState(false);
@@ -716,7 +724,7 @@ export default function EssayChecker() {
     return () => { cancelled = true; };
   }, [screen]);
 
-  const loadNextForCategory = useCallback(async (cat: Category) => {
+  const loadNextForCategory = useCallback(async (cat: Category, subtypeFilter?: string) => {
     setError(null);
     let prog: CategoryProgress | null = null;
     try {
@@ -726,7 +734,7 @@ export default function EssayChecker() {
       // ignore — pick from full list
     }
     setCategoryProgress(prog);
-    const next = pickNextAssignment(cat, prog);
+    const next = pickNextAssignment(cat, prog, subtypeFilter);
     setAssignment(next);
     setEssay("");
     setResult(null);
@@ -735,8 +743,22 @@ export default function EssayChecker() {
 
   const handleChooseCategory = async (cat: Category) => {
     setCategory(cat);
+    if (cat === "task2") {
+      // Task 2 goes through a subtype-selection step first.
+      setTask2Subtype(null);
+      setScreen("task2subtype");
+      return;
+    }
+    setTask2Subtype(null);
     setScreen("writing");
     await loadNextForCategory(cat);
+  };
+
+  const handleChooseTask2Subtype = async (sub: Task2Subtype) => {
+    setCategory("task2");
+    setTask2Subtype(sub);
+    setScreen("writing");
+    await loadNextForCategory("task2", sub);
   };
 
   const handleSkip = useCallback(async () => {
@@ -757,8 +779,8 @@ export default function EssayChecker() {
     setCategoryProgress(updated);
     setEssay("");
     setError(null);
-    setAssignment(pickNextAssignment(assignment.category, updated));
-  }, [assignment, categoryProgress]);
+    setAssignment(pickNextAssignment(assignment.category, updated, task2Subtype ?? undefined));
+  }, [assignment, categoryProgress, task2Subtype]);
 
   const handleSubmit = useCallback(async () => {
     if (!canSubmit || !assignment) return;
@@ -993,11 +1015,18 @@ export default function EssayChecker() {
   const handleNextAssignment = async () => {
     if (!assignment) { setScreen("select"); return; }
     setScreen("writing");
-    await loadNextForCategory(assignment.category);
+    await loadNextForCategory(assignment.category, task2Subtype ?? undefined);
   };
 
   const handleBackToCategories = () => {
-    setScreen("select");
+    // From Task 2 writing/result, "back" returns to the subtype picker;
+    // from there (or any other category), back returns to the main select.
+    if (category === "task2" && task2Subtype && (screen === "writing" || screen === "result")) {
+      setScreen("task2subtype");
+    } else {
+      setScreen("select");
+      setTask2Subtype(null);
+    }
     setEssay("");
     setResult(null);
     setParagraphResult(null);
@@ -1166,10 +1195,57 @@ export default function EssayChecker() {
             <div className="bg-muted/30 border border-border rounded-2xl p-4 text-xs text-muted-foreground leading-relaxed">
               <p className="font-semibold text-foreground mb-1">How it works</p>
               <ul className="space-y-1 list-disc list-inside">
-                <li>Each category has 15 assignments — you'll get one at a time.</li>
+                <li>Task 1 has 20 assignments across 6 chart types. Task 2 has 25 assignments across 5 essay types.</li>
                 <li>Hit <strong>Refresh</strong> to skip and get a new one.</li>
                 <li>Your teacher can see how many you've completed.</li>
               </ul>
+            </div>
+          </div>
+        )}
+
+        {/* ── TASK 2 SUBTYPE SELECT ── */}
+        {screen === "task2subtype" && (
+          <div className="space-y-6">
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => { setScreen("select"); setTask2Subtype(null); }}
+                className="w-9 h-9 rounded-xl border border-border flex items-center justify-center text-muted-foreground hover:bg-accent transition-colors"
+                aria-label="Back to categories"
+              >
+                ←
+              </button>
+              <div>
+                <h1 className="text-xl font-extrabold text-foreground">Task 2 — Choose Essay Type</h1>
+                <p className="text-sm text-muted-foreground">Each type uses a different IELTS essay structure</p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 gap-3">
+              {TASK2_SUBTYPES.map((sub) => {
+                const totalForSub = ASSIGNMENTS_BY_CATEGORY.task2.filter((a) => a.subtype === sub.id).length;
+                return (
+                  <button
+                    key={sub.id}
+                    onClick={() => handleChooseTask2Subtype(sub.id)}
+                    className="flex items-start gap-4 p-5 rounded-2xl border-2 border-border bg-card hover:border-primary hover:bg-primary/5 transition-all text-left group"
+                  >
+                    <span className="text-3xl shrink-0 mt-0.5">{sub.emoji}</span>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <p className="font-bold text-foreground group-hover:text-primary transition-colors">{sub.label}</p>
+                        <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-muted text-muted-foreground">
+                          {totalForSub} prompts
+                        </span>
+                      </div>
+                      <p className="text-sm text-muted-foreground mt-1">{sub.description}</p>
+                      <p className="text-xs text-foreground/80 mt-2 leading-relaxed">
+                        <span className="font-semibold">Structure:</span> {sub.structure}
+                      </p>
+                    </div>
+                    <ArrowRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors shrink-0 mt-2" />
+                  </button>
+                );
+              })}
             </div>
           </div>
         )}
@@ -1188,9 +1264,23 @@ export default function EssayChecker() {
               <div className="flex items-center gap-2 min-w-0">
                 <span className="text-2xl">{CATEGORY_META[category].emoji}</span>
                 <div className="min-w-0">
-                  <h2 className="font-extrabold text-foreground truncate">{CATEGORY_META[category].label}</h2>
+                  <h2 className="font-extrabold text-foreground truncate">
+                    {CATEGORY_META[category].label}
+                    {category === "task2" && task2Subtype && (
+                      <span className="text-muted-foreground font-semibold"> · {TASK2_SUBTYPES.find(s => s.id === task2Subtype)?.label}</span>
+                    )}
+                  </h2>
                   <p className="text-xs text-muted-foreground">
-                    {(categoryProgress?.submittedIds.length ?? 0)} of {totalForCat[category]} completed
+                    {(() => {
+                      const submitted = categoryProgress?.submittedIds ?? [];
+                      if (category === "task2" && task2Subtype) {
+                        const subAssignments = ASSIGNMENTS_BY_CATEGORY.task2.filter(a => a.subtype === task2Subtype);
+                        const subIds = new Set(subAssignments.map(a => a.id));
+                        const done = submitted.filter(id => subIds.has(id)).length;
+                        return `${done} of ${subAssignments.length} completed`;
+                      }
+                      return `${submitted.length} of ${totalForCat[category]} completed`;
+                    })()}
                   </p>
                 </div>
               </div>

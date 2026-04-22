@@ -1,11 +1,21 @@
 import type { ReactNode } from "react";
 
-export type ChartSpec =
+export type SingleChartSpec =
   | { type: "bar"; title: string; subtitle?: string; yLabel?: string; xLabel?: string; categories: string[]; series: { name: string; color: string; values: number[] }[] }
   | { type: "line"; title: string; subtitle?: string; yLabel?: string; xLabel?: string; xValues: (string | number)[]; series: { name: string; color: string; values: number[] }[] }
   | { type: "pie"; title: string; subtitle?: string; segments: { label: string; value: number; color: string }[] }
+  | { type: "table"; title: string; subtitle?: string; columns: string[]; rows: (string | number)[][] }
   | { type: "process"; title: string; subtitle?: string; render: "water-cycle" | "paper-recycling" | "honey-production" }
   | { type: "map"; title: string; subtitle?: string; render: "village-1990-2020" | "park-before-after" | "school-layout-change" };
+
+export type MultiChartSpec = {
+  type: "multi";
+  title?: string;
+  subtitle?: string;
+  charts: SingleChartSpec[];
+};
+
+export type ChartSpec = SingleChartSpec | MultiChartSpec;
 
 const PALETTE = {
   teal: "#0d9488",
@@ -438,10 +448,55 @@ function SchoolLayoutChange() {
   );
 }
 
+function TableChart({ spec }: { spec: Extract<SingleChartSpec, { type: "table" }> }) {
+  return (
+    <ChartFrame title={spec.title} subtitle={spec.subtitle}>
+      <div className="w-full overflow-x-auto">
+        <table className="min-w-full text-xs sm:text-sm border-collapse">
+          <thead>
+            <tr className="bg-slate-100 dark:bg-slate-800">
+              {spec.columns.map((c, i) => (
+                <th key={i} className="border border-slate-300 dark:border-slate-700 px-3 py-2 font-bold text-slate-800 dark:text-slate-100 text-left">
+                  {c}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {spec.rows.map((row, ri) => (
+              <tr key={ri} className={ri % 2 === 0 ? "bg-white dark:bg-slate-900" : "bg-slate-50 dark:bg-slate-800/50"}>
+                {row.map((cell, ci) => (
+                  <td key={ci} className={`border border-slate-300 dark:border-slate-700 px-3 py-2 text-slate-800 dark:text-slate-200 ${ci === 0 ? "font-semibold" : ""}`}>
+                    {cell}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </ChartFrame>
+  );
+}
+
 export function ChartRenderer({ spec }: { spec: ChartSpec }) {
+  if (spec.type === "multi") {
+    return (
+      <div className="space-y-4">
+        {(spec.title || spec.subtitle) && (
+          <div className="text-center">
+            {spec.title && <p className="text-sm font-bold text-foreground">{spec.title}</p>}
+            {spec.subtitle && <p className="text-xs text-muted-foreground mt-0.5">{spec.subtitle}</p>}
+          </div>
+        )}
+        {spec.charts.map((c, i) => <ChartRenderer key={i} spec={c} />)}
+      </div>
+    );
+  }
   if (spec.type === "bar") return <BarChart spec={spec} />;
   if (spec.type === "line") return <LineChart spec={spec} />;
   if (spec.type === "pie") return <PieChart spec={spec} />;
+  if (spec.type === "table") return <TableChart spec={spec} />;
   if (spec.type === "process") {
     const diagrams = {
       "water-cycle": <WaterCycleDiagram />,

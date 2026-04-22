@@ -284,9 +284,237 @@ export const TASK1_ASSIGNMENTS: OrwellAssignment[] = [
       render: "school-layout-change",
     },
   },
+
+  // ── Multiple Graphs (combined data) ──────────────────────────────────────
+  {
+    id: "task1-16",
+    category: "task1",
+    subtype: "Multiple Graphs",
+    title: "Task 1 — Multiple Graphs: Household waste & recycling",
+    minWords: 150,
+    prompt:
+      "The pie chart below shows the main components of household waste produced in a European country in 2022, and the bar chart shows the percentage of each component that was recycled in the same year.\n\nSummarise the information by selecting and reporting the main features, and make comparisons where relevant.\n\nWrite at least 150 words.",
+    chart: {
+      type: "multi",
+      charts: [
+        {
+          type: "pie",
+          title: "Composition of household waste, 2022",
+          segments: [
+            { label: "Food waste", value: 30, color: PALETTE.emerald },
+            { label: "Paper & card", value: 22, color: PALETTE.amber },
+            { label: "Plastic", value: 20, color: PALETTE.sky },
+            { label: "Glass", value: 10, color: PALETTE.violet },
+            { label: "Metal", value: 8, color: PALETTE.slate },
+            { label: "Other", value: 10, color: PALETTE.rose },
+          ],
+        },
+        {
+          type: "bar",
+          title: "Percentage of each waste type recycled, 2022",
+          yLabel: "% recycled",
+          categories: ["Food", "Paper", "Plastic", "Glass", "Metal", "Other"],
+          series: [
+            { name: "Recycled", color: PALETTE.teal, values: [25, 78, 35, 70, 82, 12] },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    id: "task1-17",
+    category: "task1",
+    subtype: "Multiple Graphs",
+    title: "Task 1 — Multiple Graphs: Internet users & online activities",
+    minWords: 150,
+    prompt:
+      "The line graph below shows the percentage of adults using the internet in three countries between 2000 and 2020. The pie chart shows the main online activities of these users in 2020.\n\nSummarise the information by selecting and reporting the main features, and make comparisons where relevant.\n\nWrite at least 150 words.",
+    chart: {
+      type: "multi",
+      charts: [
+        {
+          type: "line",
+          title: "Adults using the internet, 2000–2020",
+          yLabel: "% of adults",
+          xLabel: "Year",
+          xValues: ["2000", "2005", "2010", "2015", "2020"],
+          series: [
+            { name: "UK", color: PALETTE.teal, values: [26, 57, 80, 92, 96] },
+            { name: "China", color: PALETTE.rose, values: [2, 9, 34, 50, 70] },
+            { name: "India", color: PALETTE.amber, values: [1, 3, 8, 24, 50] },
+          ],
+        },
+        {
+          type: "pie",
+          title: "Main online activities of internet users, 2020",
+          segments: [
+            { label: "Social media", value: 32, color: PALETTE.sky },
+            { label: "Messaging & email", value: 22, color: PALETTE.teal },
+            { label: "Streaming video", value: 18, color: PALETTE.rose },
+            { label: "Shopping & banking", value: 14, color: PALETTE.amber },
+            { label: "News & reading", value: 8, color: PALETTE.violet },
+            { label: "Other", value: 6, color: PALETTE.slate },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    id: "task1-18",
+    category: "task1",
+    subtype: "Multiple Graphs",
+    title: "Task 1 — Multiple Graphs: University enrolments by gender",
+    minWords: 150,
+    prompt:
+      "The bar chart below shows the total number of students enrolled in five university subjects in one country in 2023, and the table shows the percentage of female students in each subject in 2003 and 2023.\n\nSummarise the information by selecting and reporting the main features, and make comparisons where relevant.\n\nWrite at least 150 words.",
+    chart: {
+      type: "multi",
+      charts: [
+        {
+          type: "bar",
+          title: "Total students enrolled by subject, 2023 (in thousands)",
+          yLabel: "Students (thousands)",
+          categories: ["Engineering", "Medicine", "Business", "Education", "Arts"],
+          series: [
+            { name: "Total students", color: PALETTE.sky, values: [50, 50, 56, 42, 40] },
+          ],
+        },
+        {
+          type: "table",
+          title: "Percentage of female students by subject, 2003 vs 2023",
+          columns: ["Subject", "Female % in 2003", "Female % in 2023"],
+          rows: [
+            ["Engineering", "12%", "24%"],
+            ["Medicine", "42%", "56%"],
+            ["Business", "38%", "46%"],
+            ["Education", "70%", "76%"],
+            ["Arts", "60%", "65%"],
+          ],
+        },
+      ],
+    },
+  },
+  {
+    id: "task1-19",
+    category: "task1",
+    subtype: "Multiple Graphs",
+    title: "Task 1 — Multiple Graphs: Population growth & GDP",
+    minWords: 150,
+    prompt:
+      "The two line graphs below show the population (in millions) and the gross domestic product per person (in US$) of a developing country between 1980 and 2020.\n\nSummarise the information by selecting and reporting the main features, and make comparisons where relevant.\n\nWrite at least 150 words.",
+    chart: {
+      type: "multi",
+      charts: [
+        {
+          type: "line",
+          title: "Total population, 1980–2020 (millions)",
+          yLabel: "Population (millions)",
+          xLabel: "Year",
+          xValues: ["1980", "1990", "2000", "2010", "2020"],
+          series: [
+            { name: "Population", color: PALETTE.teal, values: [22, 30, 40, 52, 65] },
+          ],
+        },
+        {
+          type: "line",
+          title: "GDP per person, 1980–2020 (US$)",
+          yLabel: "US$ per person",
+          xLabel: "Year",
+          xValues: ["1980", "1990", "2000", "2010", "2020"],
+          series: [
+            { name: "GDP per capita", color: PALETTE.amber, values: [400, 700, 1300, 3200, 6800] },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    id: "task1-20",
+    category: "task1",
+    subtype: "Multiple Graphs",
+    title: "Task 1 — Multiple Graphs: Energy production, 2000 vs 2020",
+    minWords: 150,
+    prompt:
+      "The two pie charts below show how electricity was produced in one country in 2000 and 2020.\n\nSummarise the information by selecting and reporting the main features, and make comparisons where relevant.\n\nWrite at least 150 words.",
+    chart: {
+      type: "multi",
+      charts: [
+        {
+          type: "pie",
+          title: "Electricity production by source, 2000",
+          segments: [
+            { label: "Coal", value: 52, color: PALETTE.slate },
+            { label: "Natural gas", value: 18, color: PALETTE.amber },
+            { label: "Nuclear", value: 16, color: PALETTE.violet },
+            { label: "Hydro", value: 10, color: PALETTE.sky },
+            { label: "Wind & solar", value: 2, color: PALETTE.emerald },
+            { label: "Other", value: 2, color: PALETTE.rose },
+          ],
+        },
+        {
+          type: "pie",
+          title: "Electricity production by source, 2020",
+          segments: [
+            { label: "Coal", value: 22, color: PALETTE.slate },
+            { label: "Natural gas", value: 24, color: PALETTE.amber },
+            { label: "Nuclear", value: 14, color: PALETTE.violet },
+            { label: "Hydro", value: 12, color: PALETTE.sky },
+            { label: "Wind & solar", value: 24, color: PALETTE.emerald },
+            { label: "Other", value: 4, color: PALETTE.rose },
+          ],
+        },
+      ],
+    },
+  },
+];
+
+export type Task2Subtype =
+  | "Opinion"
+  | "Discussion"
+  | "Advantages-Disadvantages"
+  | "Problem-Solution"
+  | "Two-Part Questions";
+
+export const TASK2_SUBTYPES: { id: Task2Subtype; label: string; emoji: string; description: string; structure: string }[] = [
+  {
+    id: "Opinion",
+    label: "Opinion (Agree/Disagree)",
+    emoji: "🎯",
+    description: "State your position and defend it with reasons and examples.",
+    structure: "Intro (paraphrase + clear opinion) → Body 1 (first reason + example) → Body 2 (second reason + example) → Conclusion (restate opinion).",
+  },
+  {
+    id: "Discussion",
+    label: "Discussion (Both Views)",
+    emoji: "⚖️",
+    description: "Discuss both sides of the argument and give your own opinion.",
+    structure: "Intro (paraphrase + your opinion) → Body 1 (view A + reasons) → Body 2 (view B + why you favour/reject it) → Conclusion (restate which view you support).",
+  },
+  {
+    id: "Advantages-Disadvantages",
+    label: "Advantages / Disadvantages",
+    emoji: "➕➖",
+    description: "Weigh the benefits and drawbacks; sometimes give your overall judgement.",
+    structure: "Intro (paraphrase + thesis: do advantages outweigh disadvantages?) → Body 1 (advantages + examples) → Body 2 (disadvantages + examples) → Conclusion (overall judgement).",
+  },
+  {
+    id: "Problem-Solution",
+    label: "Problem / Solution (Cause/Effect)",
+    emoji: "🛠️",
+    description: "Identify causes or problems and propose realistic solutions.",
+    structure: "Intro (paraphrase + outline) → Body 1 (causes/problems + examples) → Body 2 (solutions + how they work) → Conclusion (summary + outlook).",
+  },
+  {
+    id: "Two-Part Questions",
+    label: "Two-Part Questions",
+    emoji: "❓❓",
+    description: "Answer both questions fully and clearly in separate paragraphs.",
+    structure: "Intro (paraphrase + outline both answers) → Body 1 (answer Q1 fully) → Body 2 (answer Q2 fully) → Conclusion (brief summary of both answers).",
+  },
 ];
 
 export const TASK2_ASSIGNMENTS: OrwellAssignment[] = [
+  // ── Opinion (Agree/Disagree) ──
   {
     id: "task2-1",
     category: "task2",
@@ -300,22 +528,51 @@ export const TASK2_ASSIGNMENTS: OrwellAssignment[] = [
     id: "task2-2",
     category: "task2",
     subtype: "Opinion",
-    title: "Task 2 — Opinion: University for everyone",
+    title: "Task 2 — Opinion: Mobile phones in schools",
     minWords: 250,
     prompt:
-      "Some people think that a university education should be available to all students, while others believe it should be available only to good students.\n\nDiscuss both views and give your own opinion.\n\nGive reasons for your answer and include any relevant examples from your own knowledge or experience.\n\nWrite at least 250 words.",
+      "Some people believe that students should be allowed to bring mobile phones to school because they are useful for learning. Others argue that phones are a distraction and should be banned.\n\nTo what extent do you agree or disagree?\n\nGive reasons for your answer and include any relevant examples from your own knowledge or experience.\n\nWrite at least 250 words.",
   },
   {
     id: "task2-3",
     category: "task2",
     subtype: "Opinion",
-    title: "Task 2 — Opinion: Public transport funding",
+    title: "Task 2 — Opinion: Tax on unhealthy food",
     minWords: 250,
     prompt:
-      "Some people think that governments should spend more money on public transport, while others believe that investing in new roads is more important.\n\nDiscuss both views and give your own opinion.\n\nGive reasons for your answer and include any relevant examples from your own knowledge or experience.\n\nWrite at least 250 words.",
+      "Some people think that governments should impose a higher tax on producers of unhealthy food in order to reduce the consumption of such products.\n\nTo what extent do you agree or disagree?\n\nGive reasons for your answer and include any relevant examples from your own knowledge or experience.\n\nWrite at least 250 words.",
   },
   {
     id: "task2-4",
+    category: "task2",
+    subtype: "Opinion",
+    title: "Task 2 — Opinion: Compulsory military service",
+    minWords: 250,
+    prompt:
+      "It is sometimes said that all young adults should be required to spend a fixed period of time doing military or community service.\n\nTo what extent do you agree or disagree with this statement?\n\nGive reasons for your answer and include any relevant examples from your own knowledge or experience.\n\nWrite at least 250 words.",
+  },
+  {
+    id: "task2-5",
+    category: "task2",
+    subtype: "Opinion",
+    title: "Task 2 — Opinion: Famous people in advertising",
+    minWords: 250,
+    prompt:
+      "Some people think that using famous people, such as actors or athletes, to advertise products is an effective marketing strategy. Others believe it has a negative effect on consumers and society.\n\nTo what extent do you agree or disagree?\n\nGive reasons for your answer and include any relevant examples from your own knowledge or experience.\n\nWrite at least 250 words.",
+  },
+
+  // ── Discussion (Both Views + Opinion) ──
+  {
+    id: "task2-6",
+    category: "task2",
+    subtype: "Discussion",
+    title: "Task 2 — Discussion: University for all vs only top students",
+    minWords: 250,
+    prompt:
+      "Some people think that a university education should be available to all students, while others believe it should be available only to those with the strongest academic results.\n\nDiscuss both views and give your own opinion.\n\nGive reasons for your answer and include any relevant examples from your own knowledge or experience.\n\nWrite at least 250 words.",
+  },
+  {
+    id: "task2-7",
     category: "task2",
     subtype: "Discussion",
     title: "Task 2 — Discussion: Print books vs e-books",
@@ -324,59 +581,34 @@ export const TASK2_ASSIGNMENTS: OrwellAssignment[] = [
       "Some people believe that printed books will always be more valuable than electronic books, while others argue that e-books are more practical and will eventually replace them.\n\nDiscuss both views and give your own opinion.\n\nGive reasons for your answer and include any relevant examples from your own knowledge or experience.\n\nWrite at least 250 words.",
   },
   {
-    id: "task2-5",
+    id: "task2-8",
     category: "task2",
     subtype: "Discussion",
-    title: "Task 2 — Discussion: Single vs mixed schools",
+    title: "Task 2 — Discussion: Single-sex vs mixed schools",
     minWords: 250,
     prompt:
       "Some people think that children should be educated in single-sex schools, while others believe that boys and girls should learn together in mixed schools.\n\nDiscuss both views and give your own opinion.\n\nGive reasons for your answer and include any relevant examples from your own knowledge or experience.\n\nWrite at least 250 words.",
   },
   {
-    id: "task2-6",
-    category: "task2",
-    subtype: "Discussion",
-    title: "Task 2 — Discussion: Tourism impact",
-    minWords: 250,
-    prompt:
-      "Some people believe that international tourism brings economic benefits to host countries, while others argue that it causes more harm than good to local communities.\n\nDiscuss both views and give your own opinion.\n\nGive reasons for your answer and include any relevant examples from your own knowledge or experience.\n\nWrite at least 250 words.",
-  },
-  {
-    id: "task2-7",
-    category: "task2",
-    subtype: "Problem-Solution",
-    title: "Task 2 — Problem-Solution: Traffic congestion",
-    minWords: 250,
-    prompt:
-      "Many large cities around the world are facing serious problems with traffic congestion.\n\nWhat are the main causes of this problem, and what measures can be taken to solve it?\n\nGive reasons for your answer and include any relevant examples from your own knowledge or experience.\n\nWrite at least 250 words.",
-  },
-  {
-    id: "task2-8",
-    category: "task2",
-    subtype: "Problem-Solution",
-    title: "Task 2 — Problem-Solution: Youth unemployment",
-    minWords: 250,
-    prompt:
-      "In many countries, young people find it increasingly difficult to get their first job after finishing their studies.\n\nWhat are the reasons for this, and what can be done to address the issue?\n\nGive reasons for your answer and include any relevant examples from your own knowledge or experience.\n\nWrite at least 250 words.",
-  },
-  {
     id: "task2-9",
     category: "task2",
-    subtype: "Problem-Solution",
-    title: "Task 2 — Problem-Solution: Childhood obesity",
+    subtype: "Discussion",
+    title: "Task 2 — Discussion: Public transport vs new roads",
     minWords: 250,
     prompt:
-      "Childhood obesity has become a serious issue in many countries around the world.\n\nWhat are the main causes of this problem, and what measures could governments and families take to reduce it?\n\nGive reasons for your answer and include any relevant examples from your own knowledge or experience.\n\nWrite at least 250 words.",
+      "Some people think that governments should spend more money on improving public transport, while others believe that investing in new roads is more important.\n\nDiscuss both views and give your own opinion.\n\nGive reasons for your answer and include any relevant examples from your own knowledge or experience.\n\nWrite at least 250 words.",
   },
   {
     id: "task2-10",
     category: "task2",
-    subtype: "Problem-Solution",
-    title: "Task 2 — Problem-Solution: Plastic pollution",
+    subtype: "Discussion",
+    title: "Task 2 — Discussion: Saving languages vs global English",
     minWords: 250,
     prompt:
-      "Plastic waste is causing serious damage to the environment, particularly to oceans and wildlife.\n\nWhat are the causes of this problem, and what can individuals and governments do to reduce plastic pollution?\n\nGive reasons for your answer and include any relevant examples from your own knowledge or experience.\n\nWrite at least 250 words.",
+      "Some people believe that governments should spend money on protecting endangered local languages, while others argue that resources should be used to promote a single global language such as English.\n\nDiscuss both views and give your own opinion.\n\nGive reasons for your answer and include any relevant examples from your own knowledge or experience.\n\nWrite at least 250 words.",
   },
+
+  // ── Advantages / Disadvantages ──
   {
     id: "task2-11",
     category: "task2",
@@ -384,7 +616,7 @@ export const TASK2_ASSIGNMENTS: OrwellAssignment[] = [
     title: "Task 2 — Adv/Disadv: Living in a big city",
     minWords: 250,
     prompt:
-      "More and more people today are choosing to live in big cities rather than in the countryside.\n\nWhat are the advantages and disadvantages of living in a large city?\n\nGive reasons for your answer and include any relevant examples from your own knowledge or experience.\n\nWrite at least 250 words.",
+      "More and more people today are choosing to live in large cities rather than in the countryside.\n\nDo the advantages of living in a big city outweigh the disadvantages?\n\nGive reasons for your answer and include any relevant examples from your own knowledge or experience.\n\nWrite at least 250 words.",
   },
   {
     id: "task2-12",
@@ -393,7 +625,7 @@ export const TASK2_ASSIGNMENTS: OrwellAssignment[] = [
     title: "Task 2 — Adv/Disadv: Studying abroad",
     minWords: 250,
     prompt:
-      "Nowadays, an increasing number of students choose to study abroad rather than at a university in their own country.\n\nWhat are the advantages and disadvantages of studying in a foreign country? Do the advantages outweigh the disadvantages?\n\nGive reasons for your answer and include any relevant examples from your own knowledge or experience.\n\nWrite at least 250 words.",
+      "Nowadays, an increasing number of students choose to study at a university in a foreign country rather than at home.\n\nDo the advantages of studying abroad outweigh the disadvantages?\n\nGive reasons for your answer and include any relevant examples from your own knowledge or experience.\n\nWrite at least 250 words.",
   },
   {
     id: "task2-13",
@@ -402,25 +634,119 @@ export const TASK2_ASSIGNMENTS: OrwellAssignment[] = [
     title: "Task 2 — Adv/Disadv: Social media",
     minWords: 250,
     prompt:
-      "Social media has become an essential part of many people's daily lives.\n\nWhat are the advantages and disadvantages of social media? Do you think the benefits outweigh the drawbacks?\n\nGive reasons for your answer and include any relevant examples from your own knowledge or experience.\n\nWrite at least 250 words.",
+      "Social media has become an essential part of daily life for billions of people around the world.\n\nWhat are the advantages and disadvantages of social media? Do you think the benefits outweigh the drawbacks?\n\nGive reasons for your answer and include any relevant examples from your own knowledge or experience.\n\nWrite at least 250 words.",
   },
   {
     id: "task2-14",
     category: "task2",
-    subtype: "Opinion",
-    title: "Task 2 — Opinion: Learning a second language",
+    subtype: "Advantages-Disadvantages",
+    title: "Task 2 — Adv/Disadv: Working for the same company for life",
     minWords: 250,
     prompt:
-      "Some people believe that every child should learn a foreign language from the first year of primary school, while others think it is better to wait until they are teenagers.\n\nDiscuss both views and give your own opinion.\n\nGive reasons for your answer and include any relevant examples from your own knowledge or experience.\n\nWrite at least 250 words.",
+      "In some countries, it is common for people to remain with the same employer for their entire working life. In other countries, people change jobs frequently.\n\nWhat are the advantages and disadvantages of staying with the same employer throughout one's career?\n\nGive reasons for your answer and include any relevant examples from your own knowledge or experience.\n\nWrite at least 250 words.",
   },
   {
     id: "task2-15",
+    category: "task2",
+    subtype: "Advantages-Disadvantages",
+    title: "Task 2 — Adv/Disadv: Cashless society",
+    minWords: 250,
+    prompt:
+      "In many countries, people are increasingly using credit cards, mobile payments and online transfers instead of cash.\n\nDo the advantages of a cashless society outweigh the disadvantages?\n\nGive reasons for your answer and include any relevant examples from your own knowledge or experience.\n\nWrite at least 250 words.",
+  },
+
+  // ── Problem / Solution (Cause / Effect) ──
+  {
+    id: "task2-16",
+    category: "task2",
+    subtype: "Problem-Solution",
+    title: "Task 2 — Problem-Solution: Traffic congestion",
+    minWords: 250,
+    prompt:
+      "Many large cities around the world are facing serious problems with traffic congestion.\n\nWhat are the main causes of this problem, and what measures can be taken to solve it?\n\nGive reasons for your answer and include any relevant examples from your own knowledge or experience.\n\nWrite at least 250 words.",
+  },
+  {
+    id: "task2-17",
+    category: "task2",
+    subtype: "Problem-Solution",
+    title: "Task 2 — Problem-Solution: Youth unemployment",
+    minWords: 250,
+    prompt:
+      "In many countries, young people find it increasingly difficult to get their first job after finishing their studies.\n\nWhat are the reasons for this, and what can governments and businesses do to address the issue?\n\nGive reasons for your answer and include any relevant examples from your own knowledge or experience.\n\nWrite at least 250 words.",
+  },
+  {
+    id: "task2-18",
+    category: "task2",
+    subtype: "Problem-Solution",
+    title: "Task 2 — Problem-Solution: Childhood obesity",
+    minWords: 250,
+    prompt:
+      "Childhood obesity has become a serious issue in many countries around the world.\n\nWhat are the main causes of this problem, and what measures could governments and families take to reduce it?\n\nGive reasons for your answer and include any relevant examples from your own knowledge or experience.\n\nWrite at least 250 words.",
+  },
+  {
+    id: "task2-19",
+    category: "task2",
+    subtype: "Problem-Solution",
+    title: "Task 2 — Problem-Solution: Plastic pollution",
+    minWords: 250,
+    prompt:
+      "Plastic waste is causing serious damage to the environment, particularly to oceans and wildlife.\n\nWhat are the causes of this problem, and what can individuals and governments do to reduce plastic pollution?\n\nGive reasons for your answer and include any relevant examples from your own knowledge or experience.\n\nWrite at least 250 words.",
+  },
+  {
+    id: "task2-20",
     category: "task2",
     subtype: "Problem-Solution",
     title: "Task 2 — Problem-Solution: Falling reading habits",
     minWords: 250,
     prompt:
       "In many countries, fewer and fewer young people are reading books in their free time.\n\nWhat are the reasons for this decline, and what can schools and parents do to encourage young people to read more?\n\nGive reasons for your answer and include any relevant examples from your own knowledge or experience.\n\nWrite at least 250 words.",
+  },
+
+  // ── Two-Part Questions ──
+  {
+    id: "task2-21",
+    category: "task2",
+    subtype: "Two-Part Questions",
+    title: "Task 2 — Two-Part: Migration to cities",
+    minWords: 250,
+    prompt:
+      "More and more people are migrating from rural areas to cities in search of a better life.\n\nWhy do people leave the countryside? What problems does this movement cause for cities?\n\nGive reasons for your answer and include any relevant examples from your own knowledge or experience.\n\nWrite at least 250 words.",
+  },
+  {
+    id: "task2-22",
+    category: "task2",
+    subtype: "Two-Part Questions",
+    title: "Task 2 — Two-Part: Free public museums",
+    minWords: 250,
+    prompt:
+      "In some countries, museums and art galleries are free to enter, while in others people must pay an entrance fee.\n\nWhy do you think this is? Should museums and galleries be free for the public to visit?\n\nGive reasons for your answer and include any relevant examples from your own knowledge or experience.\n\nWrite at least 250 words.",
+  },
+  {
+    id: "task2-23",
+    category: "task2",
+    subtype: "Two-Part Questions",
+    title: "Task 2 — Two-Part: Decline in physical activity",
+    minWords: 250,
+    prompt:
+      "In many countries today, people are doing less and less physical exercise.\n\nWhat are the reasons for this trend? What can be done to encourage people to be more active?\n\nGive reasons for your answer and include any relevant examples from your own knowledge or experience.\n\nWrite at least 250 words.",
+  },
+  {
+    id: "task2-24",
+    category: "task2",
+    subtype: "Two-Part Questions",
+    title: "Task 2 — Two-Part: Working long hours",
+    minWords: 250,
+    prompt:
+      "In many parts of the world, people are now working much longer hours than ever before.\n\nWhy is this happening? What effects does this have on individuals and society?\n\nGive reasons for your answer and include any relevant examples from your own knowledge or experience.\n\nWrite at least 250 words.",
+  },
+  {
+    id: "task2-25",
+    category: "task2",
+    subtype: "Two-Part Questions",
+    title: "Task 2 — Two-Part: Influence of celebrities on young people",
+    minWords: 250,
+    prompt:
+      "Many young people today are strongly influenced by the lifestyles and opinions of celebrities they follow online.\n\nWhy are celebrities so influential among young people? Is this influence a positive or negative development?\n\nGive reasons for your answer and include any relevant examples from your own knowledge or experience.\n\nWrite at least 250 words.",
   },
 ];
 
