@@ -1390,6 +1390,1282 @@ The amplified vibrations then enter the cochlea, a fluid-filled spiral structure
 (2) → cochlea. "The cochlea, a fluid-filled spiral structure in the inner ear."
 (3) → auditory. "Travel along the auditory nerve to the brain."`,
   },
+
+  // ═════════════════════ ROUND 3 (4 more per type → 7 per type total) ═════════════════════
+
+  // ───────── 1. Matching Headings ─────────
+  {
+    id: "mh-004", type: "matching_headings", title: "Plastic in the Ocean", topic: "Environment",
+    passage:
+`[A] Around 8 million tonnes of plastic enter the world's oceans each year. Most of it originates not at sea but on land, washed down rivers from poorly managed waste in coastal cities. The five rivers responsible for the largest share of this flow are all in Asia.
+
+[B] Once in the ocean, plastic does not biodegrade. Instead, sunlight and waves break larger pieces into microplastics smaller than five millimetres. These tiny fragments are now found in every part of the ocean, from tropical reefs to deep Arctic ice cores.
+
+[C] The damage to wildlife is well documented. Seabirds and turtles mistake floating plastic for food, and tiny zooplankton ingest microplastics that pass on through the food chain. Researchers warn that the long-term effects on human health, who sit at the top of that chain, are still poorly understood.`,
+    instructions: "Choose the most suitable heading for each paragraph A–C from the list i–v. There are more headings than paragraphs.",
+    options: [
+      { label: "i",   text: "Where most ocean plastic comes from" },
+      { label: "ii",  text: "How plastic breaks down at sea" },
+      { label: "iii", text: "Recent fishing-net technology" },
+      { label: "iv",  text: "Effects on animals and possibly people" },
+      { label: "v",   text: "Government recycling targets" },
+    ],
+    items: [
+      { prompt: "Paragraph A", answer: "i" },
+      { prompt: "Paragraph B", answer: "ii" },
+      { prompt: "Paragraph C", answer: "iv" },
+    ],
+    analysis:
+`A → i (sources: rivers, coastal cities, Asian rivers).
+B → ii (sunlight/waves break plastic into microplastics).
+C → iv (effects on wildlife and possibly humans).
+iii and v don't appear in the passage.`,
+  },
+  {
+    id: "mh-005", type: "matching_headings", title: "Antarctic Exploration", topic: "History",
+    passage:
+`[A] For most of human history, Antarctica was unknown. Although ancient Greek geographers had speculated about a great southern continent, the first confirmed sighting was made by a Russian naval expedition in 1820.
+
+[B] The early decades of the twentieth century became the so-called "Heroic Age" of Antarctic exploration. Teams led by Robert Falcon Scott of Britain, Roald Amundsen of Norway and Ernest Shackleton of Ireland competed to reach the South Pole and to map the continent's coast.
+
+[C] Modern Antarctic activity is governed by the 1959 Antarctic Treaty, which set the continent aside for peaceful science. Forty-six nations now operate research bases there, studying everything from climate change to extreme biology.`,
+    instructions: "Choose the most suitable heading for each paragraph A–C from the list i–v.",
+    options: [
+      { label: "i", text: "An age of competing expeditions" },
+      { label: "ii", text: "Tourism on the continent" },
+      { label: "iii", text: "From speculation to discovery" },
+      { label: "iv", text: "International cooperation today" },
+      { label: "v", text: "Wildlife of the polar seas" },
+    ],
+    items: [
+      { prompt: "Paragraph A", answer: "iii" },
+      { prompt: "Paragraph B", answer: "i" },
+      { prompt: "Paragraph C", answer: "iv" },
+    ],
+    analysis:
+`A → iii (ancient speculation → first confirmed sighting in 1820).
+B → i (Scott vs Amundsen vs Shackleton — competing expeditions).
+C → iv (the 1959 treaty and 46 nations cooperating).`,
+  },
+  {
+    id: "mh-006", type: "matching_headings", title: "The Origins of Writing", topic: "History · Linguistics",
+    passage:
+`[A] Writing was invented independently in only a handful of places. The earliest known system, cuneiform, appeared in Mesopotamia around 3200 BCE and used wedge-shaped marks pressed into wet clay. Egyptian hieroglyphs and Chinese script developed later but probably without contact with cuneiform.
+
+[B] Most early writing was developed not for literature but for administration. The first cuneiform tablets are records of grain, livestock and taxes — the bookkeeping of expanding cities that could no longer rely on memory alone.
+
+[C] As writing spread, simpler systems gradually replaced the elaborate originals. Around 1500 BCE, traders in the eastern Mediterranean developed the first true alphabet, in which a small set of signs represented sounds rather than whole words. Almost every modern alphabet descends from that single innovation.`,
+    instructions: "Choose the most suitable heading for each paragraph A–C from i–v.",
+    options: [
+      { label: "i", text: "Why people first started writing" },
+      { label: "ii", text: "The independent birth of several scripts" },
+      { label: "iii", text: "How books are printed today" },
+      { label: "iv", text: "From complex symbols to the alphabet" },
+      { label: "v", text: "The art of calligraphy" },
+    ],
+    items: [
+      { prompt: "Paragraph A", answer: "ii" },
+      { prompt: "Paragraph B", answer: "i" },
+      { prompt: "Paragraph C", answer: "iv" },
+    ],
+    analysis:
+`A → ii (cuneiform, hieroglyphs, Chinese all invented independently).
+B → i (administration, taxes — the first reasons people wrote).
+C → iv (the move from elaborate scripts to a small-sign alphabet around 1500 BCE).`,
+  },
+  {
+    id: "mh-007", type: "matching_headings", title: "Storing Renewable Energy", topic: "Engineering · Environment",
+    passage:
+`[A] Wind and solar power share an awkward feature: they generate electricity only when the wind blows or the sun shines. To match supply with demand, modern grids must store surplus energy and release it later. Without storage, much renewable generation is simply lost.
+
+[B] The dominant technology today is the lithium-ion battery. Falling costs over the past decade have made battery farms commercially viable in many countries, and they can deliver bursts of power within milliseconds — useful for stabilising the grid.
+
+[C] For longer-duration storage, engineers are returning to older ideas. Pumped hydroelectric schemes use surplus electricity to lift water into a high reservoir, then release it through turbines when demand peaks. Some new designs use compressed air or molten salt instead of water.`,
+    instructions: "Choose the most suitable heading for each paragraph A–C.",
+    options: [
+      { label: "i", text: "Why storage matters for renewables" },
+      { label: "ii", text: "The leading short-term technology" },
+      { label: "iii", text: "Older methods adapted for long durations" },
+      { label: "iv", text: "Public opposition to wind farms" },
+      { label: "v", text: "How nuclear plants are decommissioned" },
+    ],
+    items: [
+      { prompt: "Paragraph A", answer: "i" },
+      { prompt: "Paragraph B", answer: "ii" },
+      { prompt: "Paragraph C", answer: "iii" },
+    ],
+    analysis:
+`A → i (without storage renewable generation is lost).
+B → ii (lithium-ion is the leading current technology).
+C → iii (pumped hydro, compressed air, molten salt — older ideas reused for longer-duration storage).`,
+  },
+
+  // ───────── 2. Matching Information ─────────
+  {
+    id: "mi-004", type: "matching_information", title: "A Brief History of Vaccination", topic: "Medicine",
+    passage:
+`[A] Long before modern medicine, observers in China and Turkey noticed that people who had survived smallpox never caught it again. By the seventeenth century, parents in both regions were deliberately exposing children to mild cases of the disease in the hope of protecting them — a practice known as variolation.
+
+[B] In 1796, the English country doctor Edward Jenner replaced this risky procedure with a safer alternative. He noticed that milkmaids who had caught the much milder cowpox seemed immune to smallpox, and showed that deliberately infecting people with cowpox produced the same protection without the same danger. The Latin word for cow, vacca, gave the new practice its name.
+
+[C] In the late nineteenth century, the French chemist Louis Pasteur extended the principle to other diseases. By weakening or killing the microbes responsible for rabies, anthrax and chicken cholera, he produced vaccines that could be made in a laboratory rather than relying on a natural infection.
+
+[D] Smallpox, the disease that started it all, was finally declared eradicated by the World Health Organization in 1980 after a global vaccination campaign — the only human disease so far entirely wiped out.`,
+    instructions: "Which paragraph (A, B, C or D) contains the following information?",
+    items: [
+      { prompt: "1. The year a major disease was declared eradicated",   answer: "D" },
+      { prompt: "2. The Latin origin of the word 'vaccine'",              answer: "B" },
+      { prompt: "3. A risky technique called variolation",                answer: "A" },
+      { prompt: "4. Vaccines made by weakening microbes in a laboratory", answer: "C" },
+    ],
+    analysis:
+`1 → D (smallpox eradicated 1980).
+2 → B (vacca = cow).
+3 → A (variolation in China and Turkey).
+4 → C (Pasteur weakening microbes).`,
+  },
+  {
+    id: "mi-005", type: "matching_information", title: "Exploring Mars", topic: "Science · Space",
+    passage:
+`[A] The first successful flyby of Mars was carried out by NASA's Mariner 4 in 1965. The mission returned 21 grainy photographs that showed a cratered, dry surface and put an end to popular speculation about Martian canals.
+
+[B] The first soft landing on the Martian surface came in 1971 with the Soviet Union's Mars 3 probe, although it transmitted for only fifteen seconds before failing. Five years later, NASA's Viking 1 became the first lander to operate successfully for an extended period.
+
+[C] Modern rover missions, beginning with Sojourner in 1997 and continuing through Spirit, Opportunity, Curiosity and Perseverance, have shifted the focus from photography to chemistry. Their on-board laboratories test rocks and soil for evidence that liquid water and possibly microbial life once existed on the planet.
+
+[D] Future plans involve returning samples to Earth. Rock cores collected by Perseverance have been carefully sealed in tubes and left on the surface for a future mission, perhaps in the 2030s, to retrieve and bring home for detailed analysis.`,
+    instructions: "Which paragraph (A, B, C or D) contains the following information?",
+    items: [
+      { prompt: "1. The first successful long-duration lander on Mars", answer: "B" },
+      { prompt: "2. Plans to bring Martian rocks back to Earth",         answer: "D" },
+      { prompt: "3. The end of speculation about Martian canals",         answer: "A" },
+      { prompt: "4. The shift from photography to chemical analysis",     answer: "C" },
+    ],
+    analysis:
+`1 → B (Viking 1 first long-duration lander).
+2 → D (Perseverance samples for future return).
+3 → A (Mariner 4 photographs ended canal speculation).
+4 → C (rover labs test for water and life).`,
+  },
+  {
+    id: "mi-006", type: "matching_information", title: "The Mediterranean Diet", topic: "Nutrition",
+    passage:
+`[A] In the 1950s, the American physiologist Ancel Keys noticed that men in southern Italy and Greece had unusually low rates of heart disease compared with their counterparts in the United States. His Seven Countries Study, launched in 1958, was the first large research programme to link diet directly with cardiovascular health.
+
+[B] The traditional Mediterranean diet is characterised more by what it includes than by what it forbids. It is rich in vegetables, fruit, whole grains, beans, nuts, fish and olive oil, while red meat and processed foods appear only occasionally. Wine is consumed in small amounts with meals.
+
+[C] Modern clinical trials have largely confirmed Keys's observations. A landmark Spanish study published in 2013 found that a Mediterranean-style diet reduced the risk of heart attack and stroke by around 30 per cent in high-risk patients, even compared with a standard low-fat regime.
+
+[D] Researchers caution that simply eating more olive oil while otherwise following a typical Western diet does not produce the same results. The benefits appear to come from the overall pattern, not from any single food.`,
+    instructions: "Which paragraph (A, B, C or D) contains the following information?",
+    items: [
+      { prompt: "1. A 30% reduction in cardiovascular risk",             answer: "C" },
+      { prompt: "2. The role of wine in the diet",                        answer: "B" },
+      { prompt: "3. A warning that one food alone is not enough",         answer: "D" },
+      { prompt: "4. The first major study linking diet to heart disease", answer: "A" },
+    ],
+    analysis:
+`1 → C (2013 Spanish study).
+2 → B (wine in small amounts with meals).
+3 → D (single-food approach doesn't work).
+4 → A (Keys's Seven Countries Study).`,
+  },
+  {
+    id: "mi-007", type: "matching_information", title: "The Birth of the Internet", topic: "Technology",
+    passage:
+`[A] The internet's earliest ancestor, ARPANET, was funded by the US Department of Defense in the late 1960s. Its goal was practical: to allow computers at different research universities to share data without constantly being routed through a single central machine.
+
+[B] A crucial design choice was packet switching, in which messages are broken into small, independently routed pieces that are reassembled at the destination. This made the network unusually robust — data could find its way around damaged links rather than failing completely.
+
+[C] The transition from a research tool to a public service began in the 1990s. The British computer scientist Tim Berners-Lee, working at the CERN laboratory in Switzerland, designed the World Wide Web — a system of linked documents accessible through a "browser" — and released it free of charge in 1991.
+
+[D] Commercial growth then accelerated rapidly. By 2000, more than 400 million people were online. Today, more than five billion people use the internet, and roughly half the world's population accesses it primarily through a mobile phone.`,
+    instructions: "Which paragraph (A, B, C or D) contains the following information?",
+    items: [
+      { prompt: "1. The fact that the Web was released free of charge", answer: "C" },
+      { prompt: "2. Statistics about modern internet use",               answer: "D" },
+      { prompt: "3. The original military funding source",                answer: "A" },
+      { prompt: "4. A design that made the network resilient",            answer: "B" },
+    ],
+    analysis:
+`1 → C (Berners-Lee released the Web free in 1991).
+2 → D (5 billion users, ~half via mobile).
+3 → A (US Department of Defense funded ARPANET).
+4 → B (packet switching).`,
+  },
+
+  // ───────── 3. Matching Features ─────────
+  {
+    id: "mf-004", type: "matching_features", title: "Three Great Composers", topic: "Music · History",
+    passage:
+`Johann Sebastian Bach, born in 1685 in the small German town of Eisenach, spent most of his career as a church organist and choirmaster. His enormous output of religious music, including the St Matthew Passion and hundreds of cantatas, was largely forgotten for almost a century after his death until Mendelssohn revived it in 1829.
+
+Wolfgang Amadeus Mozart, born seventy years later in Salzburg, was a child prodigy who performed for European royalty by the age of six. He composed prolifically in every genre of his time but is perhaps best known for his operas, including The Marriage of Figaro and The Magic Flute.
+
+Ludwig van Beethoven, born in Bonn in 1770, bridged the Classical and Romantic eras. Famously, he continued composing major works after going almost entirely deaf — a tragedy that did not prevent the creation of his Ninth Symphony, with its choral final movement that has since been adopted as the anthem of the European Union.`,
+    instructions: "Match each composer (1–3) with the description (A–E). There are more descriptions than composers.",
+    options: [
+      { label: "A", text: "Famous for operas including The Magic Flute" },
+      { label: "B", text: "Largely forgotten until revived in 1829" },
+      { label: "C", text: "Composed major works after losing his hearing" },
+      { label: "D", text: "Wrote the world's first symphony" },
+      { label: "E", text: "Invented the modern piano" },
+    ],
+    items: [
+      { prompt: "1. Bach",      answer: "B" },
+      { prompt: "2. Mozart",    answer: "A" },
+      { prompt: "3. Beethoven", answer: "C" },
+    ],
+    analysis:
+`Bach → B (forgotten until Mendelssohn revived in 1829).
+Mozart → A (operas including The Magic Flute).
+Beethoven → C (Ninth Symphony composed while deaf).
+D and E aren't supported by the passage.`,
+  },
+  {
+    id: "mf-005", type: "matching_features", title: "Founders of Modern Economics", topic: "Economics · History",
+    passage:
+`The Scottish philosopher Adam Smith published The Wealth of Nations in 1776. In it he argued that an "invisible hand" of self-interested exchange in free markets tended to produce outcomes that benefited the whole of society — provided that markets were not distorted by monopoly or unjust laws.
+
+In the nineteenth century, the German thinker Karl Marx took a sharply different view. In his three-volume Das Kapital, he argued that industrial capitalism inevitably exploited labour and would ultimately collapse under its own contradictions, to be replaced by a workers' state.
+
+The British economist John Maynard Keynes, writing in the wake of the 1929 stock-market crash, defended capitalism but rejected the idea that it was self-correcting. In times of severe recession, he argued, governments should borrow and spend in order to restore demand and employment.`,
+    instructions: "Match each economist (1–3) with the idea (A–E).",
+    options: [
+      { label: "A", text: "Free markets, guided by self-interest, benefit society" },
+      { label: "B", text: "Capitalism would inevitably collapse" },
+      { label: "C", text: "Governments should spend during recessions" },
+      { label: "D", text: "All international trade should be banned" },
+      { label: "E", text: "Money should be replaced by gold" },
+    ],
+    items: [
+      { prompt: "1. Adam Smith",      answer: "A" },
+      { prompt: "2. Karl Marx",       answer: "B" },
+      { prompt: "3. John Maynard Keynes", answer: "C" },
+    ],
+    analysis:
+`Smith → A (invisible hand, self-interest benefits society).
+Marx → B (capitalism's contradictions, eventual collapse).
+Keynes → C (government spending during recessions).`,
+  },
+  {
+    id: "mf-006", type: "matching_features", title: "Inventors of Communication", topic: "Technology",
+    passage:
+`Samuel Morse, an American painter turned inventor, demonstrated his electric telegraph in 1844 with the famous message "What hath God wrought?" sent from Washington to Baltimore. Within decades, Morse code and the telegraph had connected continents through undersea cables.
+
+The Scottish-born Alexander Graham Bell patented the telephone in 1876, narrowly ahead of his rival Elisha Gray. Within ten years, telephone exchanges were operating in major cities, beginning the slow shift from written telegrams to live voice communication.
+
+The Italian engineer Guglielmo Marconi sent the first transatlantic radio signal — the letter S in Morse code — across the ocean from Cornwall to Newfoundland in 1901. His success demonstrated that information could travel without wires at all and laid the foundation for modern broadcasting.`,
+    instructions: "Match each inventor (1–3) with the achievement (A–E).",
+    options: [
+      { label: "A", text: "Patented the telephone" },
+      { label: "B", text: "Sent the first transatlantic radio signal" },
+      { label: "C", text: "Demonstrated the electric telegraph in 1844" },
+      { label: "D", text: "Built the first computer" },
+      { label: "E", text: "Invented the printing press" },
+    ],
+    items: [
+      { prompt: "1. Samuel Morse",          answer: "C" },
+      { prompt: "2. Alexander Graham Bell", answer: "A" },
+      { prompt: "3. Guglielmo Marconi",     answer: "B" },
+    ],
+    analysis:
+`Morse → C (telegraph 1844).
+Bell → A (telephone patent 1876).
+Marconi → B (transatlantic radio 1901).`,
+  },
+  {
+    id: "mf-007", type: "matching_features", title: "Pioneers of Climate Science", topic: "Science",
+    passage:
+`As early as 1824, the French mathematician Joseph Fourier suggested that the Earth's atmosphere acts like a glass enclosure, trapping heat from the Sun. He was the first to describe what we now call the greenhouse effect, although he could not measure it.
+
+Several decades later, the Irish physicist John Tyndall demonstrated experimentally that water vapour and carbon dioxide absorb infrared radiation more strongly than the main components of air. His 1859 measurements identified the specific gases responsible for Fourier's effect.
+
+In 1896, the Swedish chemist Svante Arrhenius took the next step. He calculated that doubling the carbon-dioxide concentration of the atmosphere would warm the planet by several degrees — the first numerical estimate of human-caused climate change.`,
+    instructions: "Match each scientist (1–3) with the contribution (A–E).",
+    options: [
+      { label: "A", text: "Calculated how much CO₂ doubling would warm the planet" },
+      { label: "B", text: "First proposed that the atmosphere traps heat" },
+      { label: "C", text: "Identified specific greenhouse gases experimentally" },
+      { label: "D", text: "Discovered the ozone layer" },
+      { label: "E", text: "Mapped ocean currents" },
+    ],
+    items: [
+      { prompt: "1. Joseph Fourier",   answer: "B" },
+      { prompt: "2. John Tyndall",     answer: "C" },
+      { prompt: "3. Svante Arrhenius", answer: "A" },
+    ],
+    analysis:
+`Fourier → B (1824, atmosphere as a glass enclosure).
+Tyndall → C (1859 lab measurements identifying CO₂ and water vapour).
+Arrhenius → A (1896 calculation of warming from CO₂ doubling).`,
+  },
+
+  // ───────── 4. Matching Sentence Endings ─────────
+  {
+    id: "mse-004", type: "matching_sentence_endings", title: "How Birds Migrate", topic: "Biology",
+    passage:
+`Each year, billions of birds undertake long migrations between breeding and wintering grounds, sometimes covering more than ten thousand kilometres. How they navigate has fascinated biologists for over a century.
+
+Daytime migrants such as storks rely partly on the position of the sun, adjusting for its movement across the sky as the hours pass. Night-flying songbirds appear to use the pattern of stars, particularly those near the celestial pole that rotate the least. Recent experiments have also demonstrated that many species can sense the Earth's magnetic field, possibly through specialised molecules in their eyes that respond to magnetism in the presence of light.
+
+Migration is not entirely instinctive. Young birds raised in captivity often start out in roughly the right direction but cannot complete the journey accurately without experience. Travelling with adults appears to be essential for fine-tuning the route.`,
+    instructions: "Complete each sentence (1–3) with the correct ending (A–E).",
+    options: [
+      { label: "A", text: "use the position of the sun, adjusted for time of day." },
+      { label: "B", text: "navigate using the pattern of stars near the celestial pole." },
+      { label: "C", text: "rely entirely on instinct and need no experience." },
+      { label: "D", text: "appears to involve magnetism sensed through the eyes." },
+      { label: "E", text: "is now thought to be controlled by the Moon." },
+    ],
+    items: [
+      { prompt: "1. Daytime migrants such as storks",          answer: "A" },
+      { prompt: "2. Night-flying songbirds",                    answer: "B" },
+      { prompt: "3. The Earth's magnetic field",                answer: "D" },
+    ],
+    analysis:
+`1 → A (storks use the sun, adjusting for time).
+2 → B (songbirds use stars near celestial pole).
+3 → D (magnetism sensed through molecules in the eyes).
+C is wrong because young birds need experience; E isn't mentioned.`,
+  },
+  {
+    id: "mse-005", type: "matching_sentence_endings", title: "What Coffee Does to the Brain", topic: "Biology",
+    passage:
+`The active ingredient in coffee, caffeine, works by blocking the brain's adenosine receptors. Adenosine normally accumulates throughout the day and produces a feeling of drowsiness; blocking it makes us feel more alert. Caffeine reaches peak concentration in the blood about 45 minutes after consumption and is broken down by enzymes in the liver over the following four to six hours.
+
+Regular drinkers develop tolerance, producing more receptors so that the same dose has less effect. They may also experience withdrawal headaches when caffeine is suddenly stopped. Despite these effects, moderate consumption — around three to four cups a day — has been linked in large studies to a slightly lower risk of several diseases, including type 2 diabetes and Parkinson's.`,
+    instructions: "Complete each sentence (1–3) with the correct ending (A–E).",
+    options: [
+      { label: "A", text: "by blocking adenosine receptors in the brain." },
+      { label: "B", text: "between four and six hours after drinking." },
+      { label: "C", text: "may produce more receptors over time." },
+      { label: "D", text: "is mostly stored in the bones." },
+      { label: "E", text: "removes vitamins from the body." },
+    ],
+    items: [
+      { prompt: "1. Caffeine produces alertness",     answer: "A" },
+      { prompt: "2. Caffeine is broken down",         answer: "B" },
+      { prompt: "3. The brain of a regular drinker",  answer: "C" },
+    ],
+    analysis:
+`1 → A (blocking adenosine).
+2 → B (4–6 hours by liver enzymes).
+3 → C (tolerance: more receptors).`,
+  },
+  {
+    id: "mse-006", type: "matching_sentence_endings", title: "Stages of Sleep", topic: "Neuroscience",
+    passage:
+`A typical adult passes through four or five sleep cycles each night, with each cycle lasting roughly 90 minutes. The first stages of every cycle are known as non-REM sleep and are dominated by slow brain waves. During the deepest non-REM stage the body releases growth hormone, repairs tissues and consolidates factual memories.
+
+REM sleep, which usually appears toward the end of each cycle, is associated with vivid dreaming and rapid eye movements beneath closed eyelids. The brain is highly active during REM, but most muscles are temporarily paralysed — a safety mechanism that prevents the sleeper from acting out dreams.
+
+Both kinds of sleep are essential. Subjects deprived of REM in laboratory studies show poor performance on tasks requiring creativity, while those deprived of deep non-REM struggle with simple recall the next day.`,
+    instructions: "Complete each sentence (1–3) with the correct ending (A–E).",
+    options: [
+      { label: "A", text: "the body releases growth hormone and repairs tissue." },
+      { label: "B", text: "most muscles are temporarily paralysed." },
+      { label: "C", text: "are usually only twenty minutes long." },
+      { label: "D", text: "show poor performance on creative tasks." },
+      { label: "E", text: "remember every dream perfectly the next morning." },
+    ],
+    items: [
+      { prompt: "1. During the deepest non-REM stage",   answer: "A" },
+      { prompt: "2. During REM sleep",                    answer: "B" },
+      { prompt: "3. Subjects deprived of REM",            answer: "D" },
+    ],
+    analysis:
+`1 → A (deep non-REM: hormone, tissue repair).
+2 → B (REM: muscles paralysed).
+3 → D (REM-deprived: weaker creativity).`,
+  },
+  {
+    id: "mse-007", type: "matching_sentence_endings", title: "The Ancient Olympics", topic: "History",
+    passage:
+`The original Olympic Games were held at Olympia in southern Greece every four years from 776 BCE for nearly twelve centuries. They began as a religious festival in honour of Zeus and only gradually expanded into the multi-event athletics competition recorded by later Greek writers.
+
+Married women were forbidden to attend on pain of death, although unmarried girls were allowed in the stadium. The athletes competed naked and were exclusively male; the only winners' prizes were olive wreaths, although victorious cities often rewarded their champions with money and honours on their return home.
+
+The Roman emperor Theodosius I banned the games in 393 CE as part of a wider campaign against pagan festivals. They were not revived until 1896, when the modern Olympics opened in Athens with athletes from fourteen nations.`,
+    instructions: "Complete each sentence (1–3) with the correct ending (A–E).",
+    options: [
+      { label: "A", text: "were prizes given to victorious athletes." },
+      { label: "B", text: "were forbidden to attend on pain of death." },
+      { label: "C", text: "took place every two years." },
+      { label: "D", text: "ended the games in 393 CE." },
+      { label: "E", text: "introduced women's events for the first time." },
+    ],
+    items: [
+      { prompt: "1. Married women",                          answer: "B" },
+      { prompt: "2. Olive wreaths",                           answer: "A" },
+      { prompt: "3. The emperor Theodosius I",                answer: "D" },
+    ],
+    analysis:
+`1 → B (forbidden on pain of death).
+2 → A (only prizes were olive wreaths).
+3 → D (banned the games in 393 CE).`,
+  },
+
+  // ───────── 5. True / False / Not Given ─────────
+  {
+    id: "tfng-004", type: "true_false_not_given", title: "Stonehenge", topic: "Archaeology",
+    passage:
+`The stone circle at Stonehenge, on Salisbury Plain in southern England, was built in several phases between roughly 3000 and 1500 BCE. Its largest stones, called sarsens, weigh up to 25 tonnes and were dragged from a quarry about 30 kilometres away. The smaller "bluestones" set inside the circle are far more remarkable: geological analysis has shown they came from quarries in west Wales, more than 200 kilometres distant.
+
+The exact purpose of the monument remains uncertain. Its main axis is aligned with the rising sun on the summer solstice and the setting sun on the winter solstice, which strongly suggests an astronomical or ritual function. Older theories that the circle was a calendar capable of predicting eclipses are no longer widely accepted.`,
+    instructions: "Choose TRUE, FALSE or NOT GIVEN.",
+    items: [
+      { prompt: "1. Stonehenge was built in a single phase.",                                    answer: "FALSE" },
+      { prompt: "2. The bluestones come from quarries in west Wales.",                            answer: "TRUE" },
+      { prompt: "3. The monument's main axis aligns with the sunrise on the summer solstice.",   answer: "TRUE" },
+      { prompt: "4. Most archaeologists now believe Stonehenge predicted eclipses.",              answer: "FALSE" },
+      { prompt: "5. Tickets to visit Stonehenge today must be booked online.",                    answer: "NOT GIVEN" },
+    ],
+    analysis:
+`1 → FALSE (built in several phases).
+2 → TRUE (bluestones from west Wales).
+3 → TRUE (axis aligned with summer-solstice sunrise).
+4 → FALSE (eclipse-prediction theory "no longer widely accepted").
+5 → NOT GIVEN (no information about modern tickets).`,
+  },
+  {
+    id: "tfng-005", type: "true_false_not_given", title: "The Industrial Revolution", topic: "History",
+    passage:
+`The Industrial Revolution began in the British Midlands in the second half of the eighteenth century and spread across Europe and North America over the following hundred years. James Watt's improved steam engine of 1769 transformed mining, manufacturing and, eventually, transport, by replacing animal and water power with a movable source of mechanical energy.
+
+Cities grew rapidly as workers moved from countryside to factory. London's population trebled between 1800 and 1850, while smaller industrial towns such as Manchester grew even faster. Living conditions in these new cities were often appalling: contemporary observers described overcrowded housing, polluted water and child labour as routine.
+
+Wages, however, gradually rose. By 1900, a British factory worker earned roughly four times what an agricultural labourer of 1800 had received in real terms.`,
+    instructions: "Choose TRUE, FALSE or NOT GIVEN.",
+    items: [
+      { prompt: "1. The Industrial Revolution began in the British Midlands.",        answer: "TRUE" },
+      { prompt: "2. James Watt invented the steam engine in 1769.",                    answer: "FALSE" },
+      { prompt: "3. London's population doubled between 1800 and 1850.",               answer: "FALSE" },
+      { prompt: "4. Manchester was the most polluted city in Europe.",                 answer: "NOT GIVEN" },
+      { prompt: "5. Real wages of British factory workers rose substantially by 1900.", answer: "TRUE" },
+    ],
+    analysis:
+`1 → TRUE.
+2 → FALSE (Watt IMPROVED the steam engine; he didn't invent it).
+3 → FALSE (it TREBLED, not doubled).
+4 → NOT GIVEN (the passage never compares Manchester with other cities for pollution).
+5 → TRUE (four times an 1800 labourer's pay).`,
+  },
+  {
+    id: "tfng-006", type: "true_false_not_given", title: "Photosynthesis", topic: "Biology",
+    passage:
+`All green plants produce their own food through photosynthesis, a chemical reaction that takes place mainly in their leaves. Tiny structures called chloroplasts capture energy from sunlight using a green pigment, chlorophyll. The captured energy is used to convert water drawn up by the roots and carbon dioxide absorbed from the air into glucose, releasing oxygen as a by-product.
+
+The rate at which a plant photosynthesises depends on three main factors: light intensity, temperature and the concentration of carbon dioxide in the air. Inside greenhouses, growers often deliberately raise the carbon-dioxide level to accelerate plant growth. Without photosynthesis, the oxygen on which animals depend would not be replenished, and the energy stored in plants would not exist to power the rest of the food chain.`,
+    instructions: "Choose TRUE, FALSE or NOT GIVEN.",
+    items: [
+      { prompt: "1. Photosynthesis takes place mainly in plant leaves.",            answer: "TRUE" },
+      { prompt: "2. Chlorophyll is found in chloroplasts.",                          answer: "TRUE" },
+      { prompt: "3. Higher CO₂ levels always slow plant growth.",                    answer: "FALSE" },
+      { prompt: "4. Photosynthesis was first described by Aristotle.",               answer: "NOT GIVEN" },
+      { prompt: "5. Oxygen is a product of photosynthesis.",                         answer: "TRUE" },
+    ],
+    analysis:
+`1 → TRUE.
+2 → TRUE (chlorophyll is the pigment in chloroplasts).
+3 → FALSE (greenhouses RAISE CO₂ to accelerate growth — opposite).
+4 → NOT GIVEN.
+5 → TRUE ("releasing oxygen as a by-product").`,
+  },
+  {
+    id: "tfng-007", type: "true_false_not_given", title: "Antarctic Ice", topic: "Earth science",
+    passage:
+`Antarctica holds about 90 per cent of the world's fresh water, locked up in an ice sheet that averages two kilometres in thickness. Despite the ice's vast size, satellite measurements taken since the 1990s show that it is losing mass at an accelerating rate, particularly along the western coast.
+
+The greatest concern is the West Antarctic ice sheet, parts of which sit on bedrock below sea level. Warming ocean water can flow underneath the floating edges and melt them from below, allowing the inland ice to slide more rapidly toward the sea. Some glaciologists believe that long-term collapse of West Antarctica is now inevitable, although the process is likely to take centuries rather than decades.
+
+If all the ice on the continent were to melt, global sea level would rise by approximately 58 metres — submerging most of the world's largest cities.`,
+    instructions: "Choose TRUE, FALSE or NOT GIVEN.",
+    items: [
+      { prompt: "1. Antarctica contains about 90% of Earth's fresh water.",                  answer: "TRUE" },
+      { prompt: "2. The Antarctic ice sheet is gaining mass overall.",                        answer: "FALSE" },
+      { prompt: "3. Most West Antarctic bedrock lies above sea level.",                       answer: "FALSE" },
+      { prompt: "4. The full collapse of West Antarctica would happen within fifty years.",   answer: "FALSE" },
+      { prompt: "5. Penguin populations have declined sharply in recent years.",              answer: "NOT GIVEN" },
+    ],
+    analysis:
+`1 → TRUE.
+2 → FALSE (it is LOSING mass at an accelerating rate).
+3 → FALSE (bedrock is BELOW sea level).
+4 → FALSE (centuries, not decades).
+5 → NOT GIVEN (no mention of penguins).`,
+  },
+
+  // ───────── 6. Multiple Choice ─────────
+  {
+    id: "mc-004", type: "multiple_choice", title: "Why Sharks Don't Get Cancer", topic: "Biology",
+    passage:
+`A persistent popular belief, particularly common in the 1990s, claims that sharks "do not get cancer" and that powdered shark cartilage may therefore prevent or treat the disease in humans. Researchers have investigated both halves of this claim, and both turn out to be wrong.
+
+Sharks do, in fact, develop tumours: more than forty cases have been documented in different species, including malignant cancers in great whites and dogfish. The misconception arose partly because cancers in fish are simply less often noticed than in mammals, and partly because the cartilage industry deliberately promoted the myth to sell supplements.
+
+Clinical trials of shark-cartilage supplements as cancer treatments have shown no benefit and have been blamed for delaying patients from accessing effective therapies. The trade has also driven sharp declines in some shark populations, contributing to over-fishing of species already vulnerable.`,
+    instructions: "Choose the correct letter, A, B, C or D.",
+    options: [
+      { label: "A", text: "Sharks have a complete natural immunity to cancer." },
+      { label: "B", text: "Shark-cartilage supplements have been shown to cure tumours." },
+      { label: "C", text: "The cancer-free shark myth has been disproved by documented tumours." },
+      { label: "D", text: "Demand for shark cartilage has helped shark populations recover." },
+    ],
+    items: [
+      { prompt: "Which statement is supported by the passage?", answer: "C" },
+    ],
+    analysis:
+`C is correct (40+ documented tumours in sharks). A is the myth being debunked. B is contradicted ("no benefit"). D is the opposite of the truth.`,
+  },
+  {
+    id: "mc-005", type: "multiple_choice", title: "DNA: The Double Helix", topic: "Science",
+    passage:
+`In April 1953 the journal Nature published a one-page paper by James Watson and Francis Crick, then both at the University of Cambridge, proposing that the molecule of inheritance — DNA — has the shape of a double helix. The model elegantly explained how genetic information could be both stored and copied: each strand carries a sequence of four chemical bases, and the rules by which the bases pair up mean that one strand can act as a template for replicating the other.
+
+Crick and Watson did not work in isolation. The X-ray photographs of crystallised DNA taken by Rosalind Franklin at King's College London were essential to their discovery, although her contribution was not formally credited until decades later. Franklin died of cancer in 1958, four years before Watson, Crick and her former colleague Maurice Wilkins shared the 1962 Nobel Prize for the discovery.`,
+    instructions: "Choose the correct letter, A, B, C or D.",
+    options: [
+      { label: "A", text: "Watson and Crick worked entirely without help from other scientists." },
+      { label: "B", text: "Rosalind Franklin received the 1962 Nobel Prize for the discovery of DNA." },
+      { label: "C", text: "Each DNA strand can serve as a template for copying the other." },
+      { label: "D", text: "The double-helix model was published in Science magazine." },
+    ],
+    items: [
+      { prompt: "Which statement is supported by the passage?", answer: "C" },
+    ],
+    analysis:
+`C is correct (template replication is exactly what the passage describes).
+A wrong: Franklin's X-ray photos were essential.
+B wrong: Franklin died in 1958, before the prize.
+D wrong: published in Nature, not Science.`,
+  },
+  {
+    id: "mc-006", type: "multiple_choice", title: "Honeybee Colony Collapse", topic: "Biology",
+    passage:
+`Since around 2006, beekeepers across North America and Europe have reported sudden, unexplained losses of entire honeybee colonies — a phenomenon labelled colony collapse disorder. Affected hives are typically empty of adult workers, although the queen and brood are left behind, suggesting that the workers fly off and fail to return.
+
+Researchers have not identified a single cause. The most plausible explanation is a combination of factors: parasitic varroa mites that weaken bees and spread viruses, exposure to certain pesticides such as neonicotinoids, loss of varied wildflower habitat as monoculture agriculture expands, and the stress of being trucked long distances for commercial pollination work. Each factor on its own may be tolerable; in combination, they appear to overwhelm the colony.
+
+Practical responses have included tighter rules on pesticide use, diversified planting and selective breeding for mite-resistant bees.`,
+    instructions: "Choose the correct letter, A, B, C or D.",
+    options: [
+      { label: "A", text: "Colony collapse is now believed to have a single, well-identified cause." },
+      { label: "B", text: "Affected hives are usually full of dead adult bees." },
+      { label: "C", text: "Multiple stresses combined appear to overwhelm honeybee colonies." },
+      { label: "D", text: "Beekeepers have stopped transporting bees for pollination." },
+    ],
+    items: [
+      { prompt: "Which statement is supported by the passage?", answer: "C" },
+    ],
+    analysis:
+`C is correct (passage explicitly says factors COMBINE).
+A wrong: no single cause.
+B wrong: hives are EMPTY of workers, not full of dead bees.
+D wrong: passage says trucking is one of the stresses, not that it has stopped.`,
+  },
+  {
+    id: "mc-007", type: "multiple_choice", title: "Quantum Computing", topic: "Technology",
+    passage:
+`Conventional computers store information as bits — switches that are either 0 or 1. A quantum computer, by contrast, uses qubits that can occupy a combination of the two states simultaneously, a property known as superposition. When a quantum algorithm is run, the machine in effect explores many possible solutions in parallel before "collapsing" to a single answer when measured.
+
+The technology is still in its infancy. Today's largest experimental machines have only a few hundred working qubits, and they must be cooled to within a fraction of a degree of absolute zero to keep their quantum states stable. They cannot yet outperform conventional computers on most everyday tasks.
+
+For specific problems, however, quantum machines hold extraordinary promise. They could in theory crack the encryption that currently protects most of the world's online communications, simulate the behaviour of complex molecules and accelerate certain searches that would take conventional computers thousands of years.`,
+    instructions: "Choose the correct letter, A, B, C or D.",
+    options: [
+      { label: "A", text: "Quantum computers have already replaced conventional computers in everyday use." },
+      { label: "B", text: "Qubits can hold a combination of 0 and 1 at the same time." },
+      { label: "C", text: "Quantum computers operate best at very high temperatures." },
+      { label: "D", text: "Modern encryption is impossible to crack on any machine." },
+    ],
+    items: [
+      { prompt: "Which statement is supported by the passage?", answer: "B" },
+    ],
+    analysis:
+`B is correct (superposition).
+A wrong: technology still in infancy.
+C wrong: must be cooled near absolute zero.
+D wrong: passage says quantum machines could in theory crack current encryption.`,
+  },
+
+  // ───────── 7. List Selection ─────────
+  {
+    id: "ls-004", type: "list_selection", title: "What Makes a Tree Useful for Cities", topic: "Urban planning",
+    passage:
+`Urban foresters select street trees with care, because not every species thrives among traffic and pavement. Researchers consistently rank a few qualities at the top of their list. A useful city tree should tolerate compacted, polluted soil; have a deep root system that does not damage drains; offer a broad canopy that shades pavements in summer; and be tough enough to resist common pests and diseases.
+
+A few tempting features actually make species unsuitable. Trees that drop large quantities of fruit can stain vehicles and cause slips. Species with shallow, spreading roots commonly crack pavements and pipes. And tree forms that need extensive pruning every year are expensive for cities to maintain.
+
+Beauty matters less than people often assume. Surveys of residents show that overall canopy COVERAGE — total shade — affects perceived quality of life far more than individual leaf colour or flower display.`,
+    instructions: "Which THREE features are listed as DESIRABLE in a city street tree? Choose THREE answers (A–F).",
+    options: [
+      { label: "A", text: "Tolerance of compacted, polluted soil" },
+      { label: "B", text: "Heavy fruit production" },
+      { label: "C", text: "A broad canopy for shading pavements" },
+      { label: "D", text: "Shallow, spreading roots" },
+      { label: "E", text: "Resistance to common pests and diseases" },
+      { label: "F", text: "A need for annual heavy pruning" },
+    ],
+    items: [
+      { prompt: "Choose THREE letters.", answer: ["A", "C", "E"] },
+    ],
+    analysis:
+`A, C, E are listed as desirable. B (heavy fruit), D (shallow roots) and F (heavy pruning) are explicitly listed as unsuitable.`,
+  },
+  {
+    id: "ls-005", type: "list_selection", title: "What Helps Children Learn to Read", topic: "Education",
+    passage:
+`Decades of research into early literacy have identified several practices that reliably help young children become confident readers. Daily shared reading at home, even just twenty minutes, dramatically expands a child's vocabulary. Systematic phonics teaching — explicit, structured instruction in the relationship between letters and sounds — produces especially strong gains for early readers. Access to a wide range of books, fiction and non-fiction alike, sustains motivation and broadens background knowledge.
+
+Other widely tried approaches show little or no benefit. Forcing children to memorise long lists of sight words in isolation, without phonics instruction, has poor outcomes for most learners. Punishing slow readers in the classroom is associated with reduced motivation. And paid commercial "speed-reading" courses for under-tens have not been shown to improve comprehension at all.`,
+    instructions: "Which THREE practices are described as effective in helping children learn to read? Choose THREE answers (A–F).",
+    options: [
+      { label: "A", text: "Daily shared reading at home" },
+      { label: "B", text: "Memorising long sight-word lists in isolation" },
+      { label: "C", text: "Systematic phonics instruction" },
+      { label: "D", text: "Punishing slow readers in class" },
+      { label: "E", text: "Access to a wide range of books" },
+      { label: "F", text: "Paid commercial speed-reading courses for under-tens" },
+    ],
+    items: [
+      { prompt: "Choose THREE letters.", answer: ["A", "C", "E"] },
+    ],
+    analysis:
+`A, C, E are the effective practices. B, D, F are listed under "little or no benefit".`,
+  },
+  {
+    id: "ls-006", type: "list_selection", title: "What Improves Workplace Productivity", topic: "Business",
+    passage:
+`Researchers studying workplace performance have repeatedly identified several conditions that boost productivity in office work. Predictable, uninterrupted blocks of focused time — usually called "deep work" — are strongly associated with higher output. Adequate natural daylight in the workspace measurably reduces fatigue and errors. And clear, measurable goals, agreed in advance, help employees set sensible priorities.
+
+Some commonly tried interventions show little effect. Rearranging an office into an open plan, despite its popularity, often INCREASES distraction and reduces concentrated work. Lengthy weekly status meetings frequently consume more time than they save. And providing free snacks may improve morale slightly but has no measurable impact on productivity itself.`,
+    instructions: "Which THREE conditions are described as effective for improving productivity? Choose THREE answers (A–F).",
+    options: [
+      { label: "A", text: "Long uninterrupted blocks of focused time" },
+      { label: "B", text: "Open-plan office layouts" },
+      { label: "C", text: "Adequate natural daylight" },
+      { label: "D", text: "Lengthy weekly status meetings" },
+      { label: "E", text: "Clear, measurable goals agreed in advance" },
+      { label: "F", text: "Free office snacks" },
+    ],
+    items: [
+      { prompt: "Choose THREE letters.", answer: ["A", "C", "E"] },
+    ],
+    analysis:
+`A, C, E are described as effective. B, D, F are listed under "little effect" or even counterproductive.`,
+  },
+  {
+    id: "ls-007", type: "list_selection", title: "Reducing Household Food Waste", topic: "Environment",
+    passage:
+`Roughly a third of all food produced for human consumption is thrown away, and a significant share of that waste happens in homes. Studies of households that successfully reduce their waste have identified several practical habits. Planning meals in advance for the week dramatically reduces over-buying. Storing fruit and vegetables correctly extends their useful life by days or even weeks. And using a "first in, first out" rule when filling the refrigerator helps ensure older items are eaten before they spoil.
+
+A few popular tactics are less effective. Buying in bulk to "save money" routinely leads to MORE waste in small households. Shopping while hungry tends to encourage impulse purchases that go uneaten. And relying on the printed "best before" date — rather than smell or appearance — causes households to discard food that is still perfectly safe.`,
+    instructions: "Which THREE habits are described as effective in reducing household food waste? Choose THREE answers (A–F).",
+    options: [
+      { label: "A", text: "Planning meals in advance for the week" },
+      { label: "B", text: "Buying food in bulk to save money" },
+      { label: "C", text: "Storing fruit and vegetables correctly" },
+      { label: "D", text: "Shopping while hungry" },
+      { label: "E", text: "Using a 'first in, first out' rule for the fridge" },
+      { label: "F", text: "Strictly throwing away food on its 'best before' date" },
+    ],
+    items: [
+      { prompt: "Choose THREE letters.", answer: ["A", "C", "E"] },
+    ],
+    analysis:
+`A, C, E are the effective practices. B, D, F are explicitly described as counterproductive or unhelpful.`,
+  },
+
+  // ───────── 8. Choose a Title ─────────
+  {
+    id: "ct-004", type: "choose_title", title: "(See passage)", topic: "Cryptozoology",
+    passage:
+`The story of the Loch Ness Monster, said to inhabit a long, deep lake in the Scottish Highlands, has become one of the world's most enduring modern legends. The first widely reported "sighting" appeared in a local newspaper in 1933, and within months the loch had drawn hundreds of curious visitors, photographers and amateur monster-hunters.
+
+Since then, multiple scientific surveys — using sonar, underwater cameras and, most recently, environmental DNA sampling — have failed to find evidence of any large unknown animal in the loch. The 2019 eDNA project, which sampled water at numerous depths, identified plenty of eel DNA but nothing resembling a plesiosaur or other prehistoric creature.
+
+Despite the negative results, tourism around the loch flourishes. Local businesses estimate that "Nessie" attracts more than a million visitors a year and supports a substantial part of the regional economy.`,
+    instructions: "Choose the most appropriate title for the whole passage.",
+    options: [
+      { label: "A", text: "How the eel population of Loch Ness was discovered" },
+      { label: "B", text: "A myth that survives despite the science" },
+      { label: "C", text: "Rules for protecting endangered freshwater species" },
+      { label: "D", text: "Why tourism in the Scottish Highlands has declined" },
+    ],
+    items: [
+      { prompt: "Choose A, B, C or D.", answer: "B" },
+    ],
+    analysis:
+`B captures both halves: science finds nothing, yet the legend (and its tourism) thrives.
+A is a detail. C and D are contradicted by the passage.`,
+  },
+  {
+    id: "ct-005", type: "choose_title", title: "(See passage)", topic: "Science · History",
+    passage:
+`Before the late eighteenth century, almost every region of Europe used its own units of length, weight and volume — and even within a single country these often varied between cities. A bushel of grain in one French town might be twenty per cent larger than a bushel in another, making trade slow and prone to dispute.
+
+The metric system, introduced in revolutionary France in 1795, set out to replace this patchwork with a single, decimal-based set of units derived from features of the natural world. The metre, originally defined as one ten-millionth of the distance from the equator to the North Pole along the meridian through Paris, was the foundation of the entire system.
+
+Adoption was uneven. France itself reverted briefly to older units under Napoleon, and Britain still uses miles for road distances today. Even so, by the late twentieth century the metric system had been adopted as the official basis of measurement in almost every country in the world, and it underpins virtually all modern science.`,
+    instructions: "Choose the most appropriate title for the whole passage.",
+    options: [
+      { label: "A", text: "The history and global spread of the metric system" },
+      { label: "B", text: "Why Britain still uses miles" },
+      { label: "C", text: "The revolutionary politics of eighteenth-century France" },
+      { label: "D", text: "How the speed of light is measured" },
+    ],
+    items: [
+      { prompt: "Choose A, B, C or D.", answer: "A" },
+    ],
+    analysis:
+`A covers the whole passage (origin, definition, uneven adoption, eventual global use).
+B is a single detail. C is background, not the topic. D isn't discussed.`,
+  },
+  {
+    id: "ct-006", type: "choose_title", title: "(See passage)", topic: "Environment",
+    passage:
+`Microplastics are tiny fragments of plastic, typically smaller than five millimetres, that have appeared in alarming quantities in oceans, rivers, soils and even the atmosphere. They come from many sources: the breakdown of larger plastic litter, the abrasion of tyres on roads, fibres released when synthetic clothes are washed, and microbeads added to some cosmetics until recent bans.
+
+Studies have detected microplastic particles in tap water, table salt, the lungs of city dwellers and the placentas of newborn babies. The long-term health consequences for humans are still poorly understood; researchers are particularly concerned about the chemicals — both from the plastic itself and substances it absorbs from the environment — that may leach out inside the body.
+
+Mitigation strategies include filters on washing machines, cleaner alternatives to synthetic fabrics, road designs that capture tyre dust, and bans on microbeads in cosmetics.`,
+    instructions: "Choose the most appropriate title for the whole passage.",
+    options: [
+      { label: "A", text: "Microplastics: sources, presence and possible solutions" },
+      { label: "B", text: "Recycling household plastics at home" },
+      { label: "C", text: "Banning all plastic packaging by 2030" },
+      { label: "D", text: "Why ocean fish are declining" },
+    ],
+    items: [
+      { prompt: "Choose A, B, C or D.", answer: "A" },
+    ],
+    analysis:
+`A best summarises the whole text (sources, where they're found, mitigation).
+B, C, D are off-topic for this passage.`,
+  },
+  {
+    id: "ct-007", type: "choose_title", title: "(See passage)", topic: "History · Engineering",
+    passage:
+`At its height in the second century CE, the Roman road network covered more than 80,000 kilometres and connected every part of an empire that stretched from the Atlantic coast of Spain to the deserts of modern Iraq. The roads were built primarily for the rapid movement of legions and government couriers; trade and tourism benefited as a side-effect.
+
+Roman engineers used a remarkably consistent technique. They first dug a trench, packed the bottom with large stones for drainage, added layers of gravel and concrete, and finished with a slightly cambered surface of fitted paving stones to shed rain. Many roads ran in long, almost dead-straight sections, slicing through hills and across valleys rather than detouring around them.
+
+Some Roman roads remain in use today, often as the foundations of modern motorways across France, Italy and Britain.`,
+    instructions: "Choose the most appropriate title for the whole passage.",
+    options: [
+      { label: "A", text: "How the Roman road network was built and used" },
+      { label: "B", text: "The decline of the Roman army" },
+      { label: "C", text: "Modern motorway construction techniques" },
+      { label: "D", text: "Tourism in the modern Mediterranean" },
+    ],
+    items: [
+      { prompt: "Choose A, B, C or D.", answer: "A" },
+    ],
+    analysis:
+`A captures the whole passage (network, technique, lasting use).`,
+  },
+
+  // ───────── 9. Short Answer ─────────
+  {
+    id: "sa-004", type: "short_answer", title: "Inventing the Telephone", topic: "Technology · History",
+    passage:
+`Alexander Graham Bell, born in Scotland in 1847, emigrated first to Canada and later to the United States to teach the deaf. His interest in the mechanics of speech led him to experiment with sending vibrations along an electric wire. On 10 March 1876, in his Boston laboratory, he transmitted the first intelligible telephone message — "Mr Watson, come here, I want to see you" — to his assistant in the next room.
+
+Bell narrowly beat the rival inventor Elisha Gray to the patent office; Gray filed a similar design only hours later. By 1885, Bell's company, AT&T, was operating the first long-distance telephone line, between New York and Philadelphia.`,
+    instructions: "Answer the questions below using NO MORE THAN THREE WORDS for each answer.",
+    items: [
+      { prompt: "1. In which city did Bell make his first call?", answer: "Boston" },
+      { prompt: "2. Who was the rival who filed a similar patent hours later?", answer: "Elisha Gray", acceptable: ["Gray"] },
+      { prompt: "3. By what year did Bell's company operate a long-distance line?", answer: "1885" },
+    ],
+    analysis:
+`1 → Boston. 2 → Elisha Gray. 3 → 1885.`,
+  },
+  {
+    id: "sa-005", type: "short_answer", title: "Discovery of the South Pole", topic: "History",
+    passage:
+`The first person confirmed to have reached the geographic South Pole was the Norwegian explorer Roald Amundsen, who arrived with a small team of dog sledges on 14 December 1911. Amundsen's expedition had carefully studied earlier polar journeys and prioritised speed, equipment that worked in extreme cold, and reliance on dog teams.
+
+The British party led by Robert Falcon Scott reached the same spot just over a month later, on 17 January 1912, only to find Amundsen's tent and a letter waiting for them. Demoralised, exhausted and short of supplies, Scott and his four companions died on the return journey, less than twenty kilometres from a depot of food and fuel.`,
+    instructions: "Answer the questions below using NO MORE THAN THREE WORDS OR A NUMBER for each answer.",
+    items: [
+      { prompt: "1. Who was the first person to reach the South Pole?", answer: "Roald Amundsen", acceptable: ["Amundsen"] },
+      { prompt: "2. What kind of animals did Amundsen's expedition rely on?", answer: "dogs", acceptable: ["dog teams", "sledge dogs"] },
+      { prompt: "3. How many companions of Scott died on the return journey?", answer: "four" },
+    ],
+    analysis:
+`1 → Roald Amundsen. 2 → dogs / dog teams. 3 → four ("Scott and his four companions died").`,
+  },
+  {
+    id: "sa-006", type: "short_answer", title: "The Black Death", topic: "History",
+    passage:
+`The Black Death, the most devastating pandemic in European history, swept through the continent between 1347 and 1351. Modern genetic analysis of skeletons buried in mass graves has confirmed that the disease was bubonic plague, caused by the bacterium Yersinia pestis and spread mainly by fleas living on rats.
+
+Estimates of the death toll vary, but most historians now accept that between one third and one half of the European population died within just four years. The labour shortage that followed gave surviving peasants greater bargaining power and is widely thought to have weakened the feudal system across western Europe.`,
+    instructions: "Answer the questions below using NO MORE THAN THREE WORDS for each answer.",
+    items: [
+      { prompt: "1. What is the name of the bacterium that caused the Black Death?", answer: "Yersinia pestis" },
+      { prompt: "2. Which animals carried the fleas that spread the disease?", answer: "rats" },
+      { prompt: "3. Which social system was weakened by the labour shortage?", answer: "feudal system", acceptable: ["the feudal system", "feudalism"] },
+    ],
+    analysis:
+`1 → Yersinia pestis. 2 → rats. 3 → feudal system / feudalism.`,
+  },
+  {
+    id: "sa-007", type: "short_answer", title: "The Suez Canal", topic: "Engineering · History",
+    passage:
+`The Suez Canal, an artificial waterway cutting through the Egyptian desert to link the Mediterranean and Red Seas, was opened in November 1869 after a decade of construction supervised by the French engineer Ferdinand de Lesseps. Although Egyptian and French interests had financed it, control passed to Britain in 1875 when the Egyptian government, near bankruptcy, sold its shares.
+
+The canal transformed global shipping by removing the need to sail around Africa to reach Asia. A modern oil tanker travelling from the Persian Gulf to Europe can now save more than 6,000 nautical miles by using the canal.`,
+    instructions: "Answer the questions below using NO MORE THAN THREE WORDS OR A NUMBER for each answer.",
+    items: [
+      { prompt: "1. Which French engineer supervised construction of the canal?", answer: "Ferdinand de Lesseps", acceptable: ["de Lesseps", "Lesseps"] },
+      { prompt: "2. In which year did Britain gain control of the canal?", answer: "1875" },
+      { prompt: "3. How many nautical miles can a modern tanker save?", answer: "6,000", acceptable: ["6000", "more than 6,000", "more than 6000"] },
+    ],
+    analysis:
+`1 → Ferdinand de Lesseps. 2 → 1875. 3 → 6,000.`,
+  },
+
+  // ───────── 10. Sentence Completion ─────────
+  {
+    id: "sc-004", type: "sentence_completion", title: "The Eiffel Tower", topic: "History · Engineering",
+    passage:
+`The Eiffel Tower was built between 1887 and 1889 as the centrepiece of the World Fair held in Paris to mark the centenary of the French Revolution. Designed by the engineer Gustave Eiffel and his team, it was originally intended to stand for only twenty years before being dismantled. At 300 metres tall, it remained the world's tallest structure for over four decades, until the completion of New York's Chrysler Building in 1930.
+
+Many Parisians initially hated the tower, signing a petition that called it a "useless and monstrous" iron column. It was saved from demolition because it proved to be unexpectedly useful as a radio antenna — a function that has continued ever since.`,
+    instructions: "Complete the sentences below using NO MORE THAN TWO WORDS OR A NUMBER from the passage for each gap.",
+    items: [
+      { prompt: "1. The tower was built for the ___ in Paris.",                     answer: "World Fair", acceptable: ["the World Fair"] },
+      { prompt: "2. The tower stands ___ metres tall.",                              answer: "300" },
+      { prompt: "3. It was saved from demolition by becoming a useful ___.",         answer: "radio antenna", acceptable: ["antenna"] },
+    ],
+    analysis:
+`1 → World Fair. 2 → 300. 3 → radio antenna.`,
+  },
+  {
+    id: "sc-005", type: "sentence_completion", title: "Marie Curie", topic: "Science",
+    passage:
+`Born Maria Skłodowska in Warsaw in 1867, Marie Curie moved to Paris as a young woman to study physics and chemistry. With her husband Pierre she discovered two new radioactive elements — polonium, named after her native Poland, and radium — and shared the 1903 Nobel Prize in Physics with him and Henri Becquerel.
+
+After Pierre's accidental death in 1906, Marie continued the research alone and in 1911 became the first person to receive a second Nobel Prize, this time in Chemistry, for her work on the chemical properties of radium. She remains the only person to have won Nobel Prizes in two different sciences.`,
+    instructions: "Complete the sentences below using NO MORE THAN TWO WORDS OR A NUMBER from the passage for each gap.",
+    items: [
+      { prompt: "1. Marie Curie was born in ___.",                          answer: "Warsaw" },
+      { prompt: "2. Polonium was named after her native country, ___.",      answer: "Poland" },
+      { prompt: "3. She received her second Nobel Prize in ___.",            answer: "1911" },
+    ],
+    analysis:
+`1 → Warsaw. 2 → Poland. 3 → 1911.`,
+  },
+  {
+    id: "sc-006", type: "sentence_completion", title: "The Great Wall of China", topic: "History",
+    passage:
+`The structure popularly called the Great Wall is in fact a series of fortifications built and rebuilt over more than two thousand years. The earliest sections were constructed in the seventh century BCE, but most of what tourists visit today dates from the Ming dynasty in the fourteenth to seventeenth centuries.
+
+Together, the walls stretch for an estimated 21,000 kilometres across northern China, making the entire system the longest defensive structure ever built. Its primary purpose was to slow rather than stop attacks from nomadic peoples to the north — defenders needed time to gather their forces, and the wall provided it.`,
+    instructions: "Complete the sentences below using NO MORE THAN TWO WORDS OR A NUMBER from the passage for each gap.",
+    items: [
+      { prompt: "1. Most surviving sections were built during the ___ dynasty.",   answer: "Ming" },
+      { prompt: "2. The walls stretch for an estimated ___ kilometres.",            answer: "21,000", acceptable: ["21000"] },
+      { prompt: "3. The wall's main purpose was to slow attacks from ___ to the north.", answer: "nomadic peoples", acceptable: ["nomads"] },
+    ],
+    analysis:
+`1 → Ming. 2 → 21,000. 3 → nomadic peoples.`,
+  },
+  {
+    id: "sc-007", type: "sentence_completion", title: "How Solar Panels Work", topic: "Science · Energy",
+    passage:
+`A solar panel converts sunlight directly into electricity using the photovoltaic effect, first observed by the French physicist Edmond Becquerel in 1839. A modern panel consists of dozens of silicon cells, each treated with chemical impurities that create a layer with extra electrons and a layer that is short of them. When sunlight strikes the cell, the energy frees electrons from the silicon atoms; the chemical layout pushes them through an external circuit, producing an electric current.
+
+The efficiency of commercial silicon panels is currently around 22 per cent, meaning that just over a fifth of the sunlight hitting the panel is converted into electricity. The rest is reflected or lost as heat. Researchers are testing newer materials such as perovskite that may push efficiency above 30 per cent in the next decade.`,
+    instructions: "Complete the sentences below using NO MORE THAN TWO WORDS OR A NUMBER from the passage for each gap.",
+    items: [
+      { prompt: "1. The photovoltaic effect was first observed by ___ in 1839.",     answer: "Edmond Becquerel", acceptable: ["Becquerel"] },
+      { prompt: "2. Modern solar panels are made from cells of ___.",                  answer: "silicon" },
+      { prompt: "3. Commercial silicon panels currently have an efficiency of around ___ per cent.", answer: "22" },
+    ],
+    analysis:
+`1 → Edmond Becquerel. 2 → silicon. 3 → 22.`,
+  },
+
+  // ───────── 11. Summary Completion ─────────
+  {
+    id: "smc-004", type: "summary_completion", title: "Why Bee Numbers Are Falling", topic: "Ecology",
+    passage:
+`Honeybees and many wild bee species have suffered sharp population declines in recent decades. Researchers point to several converging causes: parasitic mites that weaken individual bees and spread viruses through colonies; widespread use of pesticides, particularly the family known as neonicotinoids; loss of varied wildflower habitat as agriculture turns to large monoculture fields; and warmer winters that disrupt natural cycles of overwintering.
+
+Practical responses are spreading. Several European countries have restricted neonicotinoid use, farmers are being paid to leave wildflower strips at field edges, and beekeepers are breeding bees that are naturally resistant to varroa mites. The combined effect is modest but encouraging.`,
+    instructions: "Complete the summary using NO MORE THAN TWO WORDS from the passage for each gap.",
+    items: [
+      { prompt: "1. Bee colonies are weakened by parasitic ___.",                    answer: "mites", acceptable: ["varroa mites"] },
+      { prompt: "2. The pesticide family of greatest concern is the ___.",            answer: "neonicotinoids" },
+      { prompt: "3. Modern farming reduces wildflower habitat by relying on ___.",   answer: "monoculture", acceptable: ["monoculture fields"] },
+      { prompt: "4. Farmers are being paid to leave wildflower ___ at field edges.", answer: "strips" },
+    ],
+    analysis:
+`1 → mites. 2 → neonicotinoids. 3 → monoculture. 4 → strips.`,
+  },
+  {
+    id: "smc-005", type: "summary_completion", title: "The Amazon Rainforest", topic: "Environment",
+    passage:
+`The Amazon rainforest covers around 5.5 million square kilometres of South America, almost two thirds of which lies within Brazil. It contains an estimated 10 per cent of the world's known plant and animal species and stores billions of tonnes of carbon in its trees and soils. The forest also generates much of its own rainfall, recycling moisture released by transpiration from leaves.
+
+Deforestation, primarily for cattle ranching and soybean farming, has cleared roughly a fifth of the original area. Scientists warn that further loss could push the system past a "tipping point" beyond which large parts of the Amazon would convert to drier savanna, releasing the carbon they had stored and worsening climate change.`,
+    instructions: "Complete the summary using NO MORE THAN TWO WORDS OR A NUMBER from the passage for each gap.",
+    items: [
+      { prompt: "1. The Amazon contains roughly ___ per cent of known species.", answer: "10" },
+      { prompt: "2. The forest recycles moisture released by ___ from leaves.",   answer: "transpiration" },
+      { prompt: "3. The main drivers of deforestation are cattle ranching and ___ farming.", answer: "soybean", acceptable: ["soy"] },
+      { prompt: "4. Beyond a tipping point, parts of the Amazon could become ___.", answer: "savanna", acceptable: ["drier savanna"] },
+    ],
+    analysis:
+`1 → 10. 2 → transpiration. 3 → soybean. 4 → savanna.`,
+  },
+  {
+    id: "smc-006", type: "summary_completion", title: "Kelp Forests", topic: "Marine ecology",
+    passage:
+`Kelp forests are dense underwater stands of large brown algae that grow along temperate coastlines around the world. They thrive in cool, nutrient-rich water and can grow more than 30 centimetres in a single day, forming towering canopies that shelter fish, sea otters, urchins and many other species.
+
+In recent decades, several kelp forests have been damaged or destroyed by warming ocean temperatures and population explosions of sea urchins, which graze the kelp down to bare rock. The loss of natural predators such as sea otters has worsened these urchin outbreaks. Conservation projects in California and Tasmania are now reintroducing predators and even harvesting urchins by hand to allow the kelp to recover.`,
+    instructions: "Complete the summary using NO MORE THAN TWO WORDS OR A NUMBER from the passage for each gap.",
+    items: [
+      { prompt: "1. Kelp can grow more than ___ centimetres in a single day.", answer: "30" },
+      { prompt: "2. Population explosions of ___ have damaged many kelp forests.", answer: "sea urchins", acceptable: ["urchins"] },
+      { prompt: "3. The loss of natural predators such as ___ has worsened the problem.", answer: "sea otters", acceptable: ["otters"] },
+      { prompt: "4. Conservation projects are even ___ urchins by hand.",      answer: "harvesting" },
+    ],
+    analysis:
+`1 → 30. 2 → sea urchins. 3 → sea otters. 4 → harvesting.`,
+  },
+  {
+    id: "smc-007", type: "summary_completion", title: "The Rise of Renewable Electricity", topic: "Energy",
+    passage:
+`Worldwide, the share of electricity coming from renewable sources has more than doubled since 2000. Solar and wind power, in particular, have benefited from rapid falls in cost: a unit of solar electricity now costs around a tenth of what it cost in 2010. Many countries now generate more than half of their electricity from low-carbon sources, although progress varies sharply by region.
+
+Two challenges remain. The intermittent nature of solar and wind requires investment in storage and grid upgrades, while the rapid expansion of renewables has not yet fully displaced fossil fuels. Total global emissions from electricity generation continue to fall, but more slowly than climate scientists had hoped.`,
+    instructions: "Complete the summary using NO MORE THAN TWO WORDS from the passage for each gap.",
+    items: [
+      { prompt: "1. The share of renewable electricity has more than ___ since 2000.", answer: "doubled" },
+      { prompt: "2. Solar electricity now costs about ___ of its 2010 price.",          answer: "a tenth" },
+      { prompt: "3. The intermittent nature of solar and wind requires investment in ___.", answer: "storage" },
+      { prompt: "4. Renewables have not yet fully displaced ___.",                       answer: "fossil fuels" },
+    ],
+    analysis:
+`1 → doubled. 2 → a tenth. 3 → storage. 4 → fossil fuels.`,
+  },
+
+  // ───────── 12. Table Completion ─────────
+  {
+    id: "tc-004", type: "table_completion", title: "Three Great Rivers", topic: "Geography",
+    passage:
+`The world's longest rivers flow across continents and shape the cultures along their banks. The Nile, traditionally regarded as the longest, runs roughly 6,650 kilometres from sources in East Africa to its delta on the Mediterranean. It supports more than 250 million people in eleven countries.
+
+The Amazon, in South America, is shorter at about 6,400 kilometres but discharges by far the largest volume of water — roughly one fifth of all river water flowing into the world's oceans. It is fed by more than a thousand tributaries.
+
+The Yangtze in China, at around 6,300 kilometres, is the longest river entirely within a single country. The Three Gorges Dam, completed on the Yangtze in 2006, is the world's largest hydroelectric power station by capacity.`,
+    instructions: "Complete the table using NO MORE THAN TWO WORDS OR A NUMBER for each gap.",
+    visual:
+`┌─────────┬─────────────────────┬──────────┬──────────────────────────────────┐
+│ River   │ Continent           │ Length   │ Notable feature                  │
+├─────────┼─────────────────────┼──────────┼──────────────────────────────────┤
+│ Nile    │ Africa              │ (1) ___ km│ supports 11 countries            │
+│ Amazon  │ South America       │ 6,400 km │ largest (2) ___ of any river     │
+│ Yangtze │ Asia                │ 6,300 km │ Three Gorges (3) ___ completed 2006│
+└─────────┴─────────────────────┴──────────┴──────────────────────────────────┘`,
+    items: [
+      { prompt: "Cell (1)", answer: "6,650", acceptable: ["6650"] },
+      { prompt: "Cell (2)", answer: "volume", acceptable: ["water volume", "discharge"] },
+      { prompt: "Cell (3)", answer: "Dam", acceptable: ["dam"] },
+    ],
+    analysis:
+`(1) → 6,650. (2) → volume (or discharge). (3) → Dam.`,
+  },
+  {
+    id: "tc-005", type: "table_completion", title: "Three Major World Religions", topic: "History · Religion",
+    passage:
+`Three of the world's largest religions trace their origins to specific regions and individuals. Christianity emerged in the first century CE in Roman-controlled Judea, founded on the teachings of Jesus of Nazareth, and now claims around 2.4 billion followers worldwide. Islam was founded in the seventh century in the Arabian city of Mecca by the prophet Muhammad and has approximately 1.9 billion adherents today. Buddhism began in northern India in the fifth century BCE through the teachings of the Buddha, Siddhartha Gautama, and counts roughly 500 million followers, mostly in Asia.
+
+The three traditions also share certain characteristics: scriptures considered authoritative by their followers, regular communal worship, and ethical teachings that have shaped law and culture across continents.`,
+    instructions: "Complete the table using NO MORE THAN TWO WORDS OR A NUMBER for each gap.",
+    visual:
+`┌────────────┬────────────────────┬────────────┬──────────────────────┐
+│ Religion   │ Founded in / by    │ Century    │ Approx. followers    │
+├────────────┼────────────────────┼────────────┼──────────────────────┤
+│ Christianity│ (1) ___           │ 1st CE     │ 2.4 billion          │
+│ Islam      │ Muhammad / Mecca   │ (2) ___ CE │ 1.9 billion          │
+│ Buddhism   │ Siddhartha Gautama │ 5th BCE    │ (3) ___ million      │
+└────────────┴────────────────────┴────────────┴──────────────────────┘`,
+    items: [
+      { prompt: "Cell (1)", answer: "Jesus", acceptable: ["Jesus of Nazareth"] },
+      { prompt: "Cell (2)", answer: "7th", acceptable: ["seventh"] },
+      { prompt: "Cell (3)", answer: "500" },
+    ],
+    analysis:
+`(1) → Jesus. (2) → 7th. (3) → 500.`,
+  },
+  {
+    id: "tc-006", type: "table_completion", title: "Three National Space Agencies", topic: "Science · Technology",
+    passage:
+`Three of the world's most active space agencies operate from very different contexts. NASA, the United States agency, was founded in 1958 in response to the Soviet launch of Sputnik. It currently has the largest space-exploration budget of any single agency, at roughly 25 billion dollars a year.
+
+The European Space Agency, ESA, founded in 1975, is funded jointly by 22 member states and operates major launch facilities in French Guiana. China's national space programme, formally called the China National Space Administration or CNSA, was created in 1993 and has carried out the country's lunar and Mars missions, including a successful soft landing on the far side of the Moon in 2019.`,
+    instructions: "Complete the table using NO MORE THAN TWO WORDS OR A NUMBER for each gap.",
+    visual:
+`┌────────┬──────────┬──────────────────────────────────────┐
+│ Agency │ Founded  │ Notable feature                       │
+├────────┼──────────┼──────────────────────────────────────┤
+│ NASA   │ (1) ___  │ largest budget at $25 billion         │
+│ ESA    │ 1975     │ funded by (2) ___ member states       │
+│ CNSA   │ 1993     │ landed on the (3) ___ of the Moon     │
+└────────┴──────────┴──────────────────────────────────────┘`,
+    items: [
+      { prompt: "Cell (1)", answer: "1958" },
+      { prompt: "Cell (2)", answer: "22" },
+      { prompt: "Cell (3)", answer: "far side" },
+    ],
+    analysis:
+`(1) → 1958. (2) → 22. (3) → far side.`,
+  },
+  {
+    id: "tc-007", type: "table_completion", title: "Three Olympic Host Cities", topic: "Sport · History",
+    passage:
+`The modern Summer Olympic Games are held every four years in a different host city. The 2008 Games in Beijing, China, are remembered for their elaborate opening ceremony watched by an estimated 1.5 billion television viewers. The 2012 Games in London made the city the first to have hosted the Games three times, after earlier turns in 1908 and 1948. The 2020 Games, held in Tokyo, Japan, were postponed by a year because of the global Covid-19 pandemic and took place in 2021 with no spectators in the stands.`,
+    instructions: "Complete the table using NO MORE THAN TWO WORDS OR A NUMBER for each gap.",
+    visual:
+`┌────────┬──────────┬───────────────────────────────────┐
+│ Year   │ Host city│ Notable feature                    │
+├────────┼──────────┼───────────────────────────────────┤
+│ 2008   │ Beijing  │ opening watched by 1.5 (1) ___    │
+│ 2012   │ (2) ___  │ first city to host three times    │
+│ 2020   │ Tokyo    │ held in 2021 due to (3) ___       │
+└────────┴──────────┴───────────────────────────────────┘`,
+    items: [
+      { prompt: "Cell (1)", answer: "billion" },
+      { prompt: "Cell (2)", answer: "London" },
+      { prompt: "Cell (3)", answer: "Covid-19", acceptable: ["the pandemic", "Covid", "the Covid-19 pandemic"] },
+    ],
+    analysis:
+`(1) → billion. (2) → London. (3) → Covid-19.`,
+  },
+
+  // ───────── 13. Flow Chart Completion ─────────
+  {
+    id: "fc-004", type: "flow_chart_completion", title: "From Coffee Cherry to Roasted Bean", topic: "Agriculture · Food",
+    passage:
+`Coffee begins as a small red fruit called a cherry, which grows in clusters on tropical shrubs. Once ripe, the cherries are picked — by hand on the best estates — and taken to a processing plant within a few hours. There, the outer flesh is removed in one of two ways. In the "wet" method, water washes away the pulp; in the "dry" method, the cherries are spread out in the sun to shrivel for several weeks before the pulp is mechanically separated from the inner beans.
+
+The freshly extracted beans are still covered by a thin parchment layer and are dried again until their moisture content falls to around 11 per cent. The parchment is then mechanically removed, exposing the green coffee bean that is shipped around the world.
+
+At its destination, a roastery applies high heat for several minutes, causing dramatic chemical changes — the bean turns brown, releases volatile aromas and gives up much of its weight as steam. The cooled beans are packed and sold for grinding and brewing.`,
+    instructions: "Complete the flow chart using NO MORE THAN TWO WORDS from the passage for each gap.",
+    visual:
+`Step 1: Ripe cherries are picked.
+   ↓
+Step 2: At the plant, pulp is removed by the wet or (1) ___ method.
+   ↓
+Step 3: Beans are dried until moisture reaches around (2) ___ per cent.
+   ↓
+Step 4: Parchment layer mechanically removed → green beans shipped.
+   ↓
+Step 5: At a (3) ___, high heat turns the beans brown and aromatic.
+   ↓
+Step 6: Cooled beans packed and sold.`,
+    items: [
+      { prompt: "Gap (1)", answer: "dry" },
+      { prompt: "Gap (2)", answer: "11" },
+      { prompt: "Gap (3)", answer: "roastery" },
+    ],
+    analysis:
+`(1) → dry. (2) → 11. (3) → roastery.`,
+  },
+  {
+    id: "fc-005", type: "flow_chart_completion", title: "How Wine Is Made", topic: "Food science",
+    passage:
+`Winemaking begins with the harvest. Ripe grapes are picked, sorted to remove leaves and damaged fruit, and transferred to a crusher that gently breaks the skins without smashing the pips. The resulting mixture of juice, skins and pulp, called must, is then transferred to fermentation tanks.
+
+Yeast — either added by the winemaker or naturally present on the grape skins — converts the sugar in the must into alcohol and carbon dioxide over the next one to two weeks. For red wine the skins remain in the tank during this stage, releasing colour and tannin; for white wine they are removed first.
+
+After fermentation, the wine is pressed to separate the liquid from the solids and aged in either steel tanks or oak barrels for months or years. Finally it is filtered, bottled and held for further ageing before sale.`,
+    instructions: "Complete the flow chart using NO MORE THAN TWO WORDS from the passage for each gap.",
+    visual:
+`Step 1: Grapes harvested and sorted.
+   ↓
+Step 2: A (1) ___ gently breaks the skins.
+   ↓
+Step 3: Mixture (must) moved to fermentation tanks.
+   ↓
+Step 4: Yeast converts sugar into alcohol and (2) ___.
+   ↓
+Step 5: Wine pressed and aged in steel tanks or (3) ___ barrels.
+   ↓
+Step 6: Filtered, bottled and stored.`,
+    items: [
+      { prompt: "Gap (1)", answer: "crusher" },
+      { prompt: "Gap (2)", answer: "carbon dioxide" },
+      { prompt: "Gap (3)", answer: "oak" },
+    ],
+    analysis:
+`(1) → crusher. (2) → carbon dioxide. (3) → oak.`,
+  },
+  {
+    id: "fc-006", type: "flow_chart_completion", title: "Steel Production", topic: "Industry",
+    passage:
+`Modern steel begins with iron ore extracted from open-cast mines. The crushed ore is fed into a blast furnace along with coke (a treated form of coal) and limestone. Inside the furnace, hot air is blown up through the mixture; the coke burns at extremely high temperatures, releasing carbon monoxide that strips oxygen from the iron oxide and produces molten iron known as pig iron.
+
+The pig iron is too brittle for most uses because it contains around 4 per cent carbon. To turn it into steel, oxygen is blown through the molten metal in a basic oxygen furnace, burning off most of the carbon and reducing it to less than 2 per cent. Other elements — such as nickel, chromium or manganese — can be added at this stage to give the steel specific properties.
+
+The molten steel is finally poured into moulds, cooled into solid slabs, and rolled or shaped into the products demanded by industry.`,
+    instructions: "Complete the flow chart using NO MORE THAN TWO WORDS from the passage for each gap.",
+    visual:
+`Step 1: Iron ore mined and crushed.
+   ↓
+Step 2: Ore, (1) ___ and limestone fed into a blast furnace.
+   ↓
+Step 3: Hot air blown through; molten "pig iron" produced.
+   ↓
+Step 4: In a basic oxygen furnace, oxygen burns off most of the (2) ___.
+   ↓
+Step 5: Other elements added to make specific steel grades.
+   ↓
+Step 6: Molten steel poured into moulds, cooled into (3) ___ and rolled.`,
+    items: [
+      { prompt: "Gap (1)", answer: "coke" },
+      { prompt: "Gap (2)", answer: "carbon" },
+      { prompt: "Gap (3)", answer: "slabs", acceptable: ["solid slabs"] },
+    ],
+    analysis:
+`(1) → coke. (2) → carbon. (3) → slabs.`,
+  },
+  {
+    id: "fc-007", type: "flow_chart_completion", title: "How Tap Water Is Treated", topic: "Engineering",
+    passage:
+`Treating raw water from a river or reservoir for safe drinking involves several stages. The water first enters large tanks where it is mixed with a chemical called a coagulant. The coagulant causes tiny suspended particles of mud and organic matter to clump together into larger flakes, which then settle to the bottom of the tank during a slower process called sedimentation.
+
+The clearer water above the settled sludge is drawn off and passed through filters of fine sand and gravel that trap any remaining particles. Finally, a small amount of chlorine is added to kill bacteria and other pathogens, and the pH may be adjusted before the water enters the distribution network of pipes that carries it to homes and businesses.`,
+    instructions: "Complete the flow chart using NO MORE THAN TWO WORDS from the passage for each gap.",
+    visual:
+`Step 1: Raw water mixed with a (1) ___ in large tanks.
+   ↓
+Step 2: Particles clump into flakes; flakes settle (sedimentation).
+   ↓
+Step 3: Clearer water passed through filters of sand and (2) ___.
+   ↓
+Step 4: A small amount of (3) ___ added to kill bacteria.
+   ↓
+Step 5: pH adjusted; water sent through distribution pipes.`,
+    items: [
+      { prompt: "Gap (1)", answer: "coagulant" },
+      { prompt: "Gap (2)", answer: "gravel" },
+      { prompt: "Gap (3)", answer: "chlorine" },
+    ],
+    analysis:
+`(1) → coagulant. (2) → gravel. (3) → chlorine.`,
+  },
+
+  // ───────── 14. Diagram Completion ─────────
+  {
+    id: "dc-004", type: "diagram_completion", title: "A Plant Cell", topic: "Biology",
+    passage:
+`A typical plant cell is enclosed by a rigid cell wall made of cellulose, which gives the cell its shape. Just inside the wall lies the cell membrane, a thin layer that controls the movement of substances in and out of the cell. The inside of the cell is filled with a jelly-like fluid called cytoplasm, in which numerous specialised structures are suspended.
+
+The largest of these structures, the nucleus, contains the cell's genetic material and directs all cellular activity. Scattered throughout the cytoplasm are smaller green bodies called chloroplasts, which carry out photosynthesis. A large central vacuole, filled with watery sap, helps maintain the cell's pressure and stores essential nutrients and waste products.`,
+    instructions: "Label the diagram using NO MORE THAN TWO WORDS from the passage for each gap.",
+    visual:
+`┌─────────────────────────────────────┐ ← (1) ___ (rigid, made of cellulose)
+│ ┌─────────────────────────────────┐ │ ← cell membrane
+│ │       ●  ●                       │ │
+│ │    ●       ●  (2) ___ (green)    │ │
+│ │       ●                          │ │
+│ │  ┌──────────┐                    │ │
+│ │  │ (3) ___  │  ← contains DNA    │ │
+│ │  └──────────┘                    │ │
+│ │     [ large central vacuole ]    │ │
+│ └─────────────────────────────────┘ │
+└─────────────────────────────────────┘`,
+    items: [
+      { prompt: "Label (1) — outermost rigid layer", answer: "cell wall" },
+      { prompt: "Label (2) — green body that does photosynthesis", answer: "chloroplasts", acceptable: ["chloroplast"] },
+      { prompt: "Label (3) — structure containing genetic material", answer: "nucleus" },
+    ],
+    analysis:
+`(1) → cell wall. (2) → chloroplasts. (3) → nucleus.`,
+  },
+  {
+    id: "dc-005", type: "diagram_completion", title: "Cross-Section of a Volcano", topic: "Earth science",
+    passage:
+`Inside the Earth, partially molten rock called magma collects in a large underground pool known as the magma chamber, often several kilometres beneath the surface. From the chamber, a roughly vertical channel called the main vent rises through the volcano's cone and reaches the open air at an opening called the crater.
+
+When pressure in the chamber becomes high enough, magma is forced up the vent and erupts as lava, gas and ash. Some volcanoes also release smaller eruptions through side branches called secondary vents, which open out as small cones on the main slopes.`,
+    instructions: "Label the diagram using NO MORE THAN TWO WORDS from the passage for each gap.",
+    visual:
+`           (3) ___
+            ▼
+       ╱──────╲       ← cone with secondary vents
+      ╱   ║    ╲
+     ╱    ║     ╲
+   ─╱─────║──────╲─
+          ║              ← (2) ___ (rises through the cone)
+          ║
+          ║
+       ┌──╨──┐
+       │     │           ← (1) ___ (pool of magma underground)
+       └─────┘`,
+    items: [
+      { prompt: "Label (1)", answer: "magma chamber" },
+      { prompt: "Label (2)", answer: "main vent", acceptable: ["vent"] },
+      { prompt: "Label (3)", answer: "crater" },
+    ],
+    analysis:
+`(1) → magma chamber. (2) → main vent. (3) → crater.`,
+  },
+  {
+    id: "dc-006", type: "diagram_completion", title: "Inside a Camera", topic: "Optics",
+    passage:
+`A digital camera collects light through a curved glass lens at the front, which bends incoming rays so they converge at a single plane inside the body. Between the lens and the rest of the camera lies an adjustable aperture, an opening that can be made wider or narrower to control how much light enters in any moment.
+
+Behind the aperture, a thin shutter blocks the light path until the photographer presses the button. When the shutter opens for a fraction of a second, the focused light reaches a digital image sensor at the back of the camera, where millions of tiny photodetectors record the brightness and colour of each point in the scene.`,
+    instructions: "Label the diagram using NO MORE THAN TWO WORDS from the passage for each gap.",
+    visual:
+`Light entering →   (1) ___    (2) ___    shutter    (3) ___
+                    [ () ]      [ ◇ ]      [ █ ]      [ ▣ ]
+                  curved      controls               records the
+                  glass        amount                 brightness
+                  at front    of light                & colour`,
+    items: [
+      { prompt: "Label (1) — curved glass at the front", answer: "lens" },
+      { prompt: "Label (2) — adjustable opening that controls light", answer: "aperture" },
+      { prompt: "Label (3) — surface that records the image", answer: "image sensor", acceptable: ["sensor"] },
+    ],
+    analysis:
+`(1) → lens. (2) → aperture. (3) → image sensor.`,
+  },
+  {
+    id: "dc-007", type: "diagram_completion", title: "Chambers of the Human Heart", topic: "Biology",
+    passage:
+`The human heart has four chambers — two smaller upper chambers called atria, and two larger lower chambers called ventricles. Blood returning from the body, low in oxygen, enters the right atrium and then drops into the right ventricle, which pumps it through the pulmonary artery to the lungs to pick up oxygen.
+
+The newly oxygenated blood returns to the left atrium and passes into the left ventricle. The left ventricle, which has the thickest muscle wall, then pumps the oxygen-rich blood out through the aorta to circulate around the entire body.`,
+    instructions: "Label the diagram using NO MORE THAN TWO WORDS from the passage for each gap.",
+    visual:
+`            ↑ to lungs (pulmonary artery)
+            │              ↑ to body (aorta)
+   ┌────────┴──┐       ┌───┴──────────┐
+   │ right     │       │ (3) ___      │   ← receives oxygenated
+   │ (1) ___   │       │ atrium       │      blood from the lungs
+   ├───────────┤       ├──────────────┤
+   │ right     │       │ left         │
+   │ ventricle │       │ (2) ___      │   ← thickest muscle wall;
+   └───────────┘       └──────────────┘     pumps blood to body`,
+    items: [
+      { prompt: "Label (1)", answer: "atrium" },
+      { prompt: "Label (2)", answer: "ventricle" },
+      { prompt: "Label (3)", answer: "left" },
+    ],
+    analysis:
+`(1) → atrium. (2) → ventricle. (3) → left.`,
+  },
 ];
 
 export const SKILL_EXERCISES: SkillExercise[] = E;
