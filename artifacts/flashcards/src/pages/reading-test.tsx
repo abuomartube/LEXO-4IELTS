@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useAwardXp } from "@workspace/api-client-react";
 import { Layout } from "@/components/layout";
 import {
@@ -23,6 +23,19 @@ type Phase = "select" | "intro" | "test" | "results";
 
 export default function ReadingTestPage() {
   const [mode, setMode] = useState<Mode>("menu");
+
+  // Hash deep-linking from the daily plan: #full / #skills
+  useEffect(() => {
+    const apply = () => {
+      const h = (typeof window !== "undefined" ? window.location.hash : "").toLowerCase();
+      if (h === "#full") setMode("full");
+      else if (h === "#skills" || h.startsWith("#skills-")) setMode("skills");
+    };
+    apply();
+    window.addEventListener("hashchange", apply);
+    return () => window.removeEventListener("hashchange", apply);
+  }, []);
+
   const [phase, setPhase] = useState<Phase>("select");
   const [selectedTest, setSelectedTest] = useState<ReadingTest | null>(null);
   const [currentPassage, setCurrentPassage] = useState(0);

@@ -11,8 +11,7 @@ import {
   markTaskDone,
   unmarkTaskDone,
   daysUntilExam,
-  levelGroup,
-  levelGroupLabel,
+  levelLabel,
   type PlanTask,
 } from "@/lib/daily-plan";
 
@@ -70,7 +69,6 @@ export function DailyPlanSection() {
   const doneCount = tasks.filter((t) => completed.has(t.id)).length;
   const totalCount = tasks.length;
   const dayName = WEEKDAY_NAMES[today.getDay()];
-  const group = levelGroup(level);
 
   return (
     <section className="space-y-6" data-tour="daily-plan">
@@ -106,7 +104,7 @@ export function DailyPlanSection() {
               Your plan for today
             </h2>
             <p className="text-white/85 text-sm mt-1">
-              {levelGroupLabel(group)} · {totalCount} tasks · rotates daily
+              {levelLabel(level)} · {totalCount} tasks · rotates daily
             </p>
             <div className="mt-4">
               <div className="flex items-center justify-between mb-1.5">

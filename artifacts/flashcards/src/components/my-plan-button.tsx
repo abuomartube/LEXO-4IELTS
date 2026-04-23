@@ -8,8 +8,7 @@ import {
   markTaskDone,
   unmarkTaskDone,
   daysUntilExam,
-  levelGroup,
-  levelGroupLabel,
+  levelLabel,
   type PlanTask,
 } from "@/lib/daily-plan";
 
@@ -92,7 +91,7 @@ export function MyPlanButton() {
               <div className="min-w-0">
                 <p className="text-xs font-semibold uppercase tracking-widest opacity-80">Today's Plan</p>
                 <h2 className="text-lg font-extrabold leading-tight">My Study Plan</h2>
-                <p className="text-xs opacity-90">{levelGroupLabel(levelGroup(level))}</p>
+                <p className="text-xs opacity-90">{levelLabel(level)}</p>
               </div>
               <button
                 onClick={() => setOpen(false)}

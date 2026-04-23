@@ -28,9 +28,27 @@ export default function ListeningTestPage() {
   const [currentPart, setCurrentPart] = useState(0);
   const [answers, setAnswers] = useState<Answers>({});
   const [timeElapsed, setTimeElapsed] = useState(0);
+  const [initialSkillsSection, setInitialSkillsSection] = useState<1 | 2 | 3 | 4 | null>(null);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const topRef = useRef<HTMLDivElement>(null);
   const { mutate: awardXp } = useAwardXp();
+
+  // Hash deep-linking: #full / #skills / #skills-1 .. #skills-4
+  useEffect(() => {
+    const apply = () => {
+      const h = (typeof window !== "undefined" ? window.location.hash : "").toLowerCase();
+      if (!h) return;
+      if (h === "#full") setMode("full");
+      else if (h.startsWith("#skills")) {
+        setMode("skills");
+        const m = h.match(/^#skills-([1-4])$/);
+        setInitialSkillsSection(m ? (Number(m[1]) as 1 | 2 | 3 | 4) : null);
+      }
+    };
+    apply();
+    window.addEventListener("hashchange", apply);
+    return () => window.removeEventListener("hashchange", apply);
+  }, []);
 
   const selectTest = (test: ListeningTest) => {
     setSelectedTest(test);
@@ -126,7 +144,7 @@ export default function ListeningTestPage() {
   if (mode === "skills") {
     return (
       <Layout>
-        <ListeningSkills onBack={() => setMode("menu")} />
+        <ListeningSkills onBack={() => setMode("menu")} initialSection={initialSkillsSection} />
       </Layout>
     );
   }

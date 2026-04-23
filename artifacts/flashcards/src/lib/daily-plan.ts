@@ -13,62 +13,101 @@ export interface PlanTask {
 }
 
 export const TASKS: Record<string, PlanTask> = {
-  wordOfDay:        { id: "wordOfDay",        label: "Word of the Day",      arabicLabel: "كلمة اليوم",        emoji: "✨", href: "/",                  hash: "#word-of-day", estimatedMinutes: 3,  color: "from-purple-500 to-fuchsia-500" },
-  studyMode:        { id: "studyMode",        label: "Study Mode",           arabicLabel: "وضع الدراسة",       emoji: "📖", href: "/study",                                   estimatedMinutes: 15, color: "from-teal-500 to-emerald-500" },
-  quizMode:         { id: "quizMode",         label: "Quiz Mode",            arabicLabel: "اختبار سريع",        emoji: "🎯", href: "/quiz",                                    estimatedMinutes: 10, color: "from-sky-500 to-cyan-500" },
-  weakWords:        { id: "weakWords",        label: "Weak Words",           arabicLabel: "الكلمات الصعبة",     emoji: "🔥", href: "/weak-words",                              estimatedMinutes: 8,  color: "from-rose-500 to-orange-500" },
-  paragraph:        { id: "paragraph",        label: "Paragraph (Orwell)",   arabicLabel: "فقرة كتابية",        emoji: "✍️", href: "/essay-checker",                           estimatedMinutes: 15, color: "from-violet-500 to-purple-500" },
-  synonyms:         { id: "synonyms",         label: "Synonyms",             arabicLabel: "المرادفات",          emoji: "🔁", href: "/synonyms",                                estimatedMinutes: 8,  color: "from-teal-500 to-sky-500" },
-  antonyms:         { id: "antonyms",         label: "Antonyms",             arabicLabel: "الأضداد",            emoji: "↔️", href: "/antonyms",                                estimatedMinutes: 8,  color: "from-orange-500 to-amber-500" },
-  phrasalVerbs:     { id: "phrasalVerbs",     label: "Phrasal Verbs",        arabicLabel: "الأفعال المركبة",   emoji: "🧩", href: "/phrasal-verbs",                           estimatedMinutes: 8,  color: "from-indigo-500 to-blue-500" },
-  grammar:          { id: "grammar",          label: "Grammar",              arabicLabel: "القواعد",            emoji: "📚", href: "/grammar",                                 estimatedMinutes: 12, color: "from-indigo-500 to-violet-500" },
-  orwellTask1:      { id: "orwellTask1",      label: "Orwell Task 1",        arabicLabel: "أورويل المهمة ١",   emoji: "📊", href: "/essay-checker",                           estimatedMinutes: 25, color: "from-violet-500 to-fuchsia-500" },
-  orwellTask2:      { id: "orwellTask2",      label: "Orwell Task 2",        arabicLabel: "أورويل المهمة ٢",   emoji: "📝", href: "/essay-checker",                           estimatedMinutes: 40, color: "from-fuchsia-500 to-pink-500" },
-  churchillP1:      { id: "churchillP1",      label: "Churchill Part 1",     arabicLabel: "تشرشل الجزء ١",     emoji: "🎙️", href: "/speaking",                                estimatedMinutes: 10, color: "from-rose-500 to-pink-500" },
-  churchillP23:     { id: "churchillP23",     label: "Churchill Part 2 / 3", arabicLabel: "تشرشل الجزء ٢/٣",   emoji: "🎤", href: "/speaking",                                estimatedMinutes: 15, color: "from-pink-500 to-rose-500" },
-  topicBank:        { id: "topicBank",        label: "Topic Bank",           arabicLabel: "بنك المواضيع",       emoji: "🏛️", href: "/speaking-topics",                         estimatedMinutes: 8,  color: "from-amber-500 to-orange-500" },
-  listening:        { id: "listening",        label: "Listening Practice",   arabicLabel: "تمرين الاستماع",     emoji: "🎧", href: "/listening-test",                          estimatedMinutes: 30, color: "from-sky-500 to-blue-500" },
-  reading:          { id: "reading",          label: "Reading Practice",     arabicLabel: "تمرين القراءة",      emoji: "📖", href: "/reading-test",                            estimatedMinutes: 30, color: "from-emerald-500 to-teal-500" },
-  writingTemplates: { id: "writingTemplates", label: "Writing Templates",    arabicLabel: "قوالب الكتابة",      emoji: "📋", href: "/writing-templates",                       estimatedMinutes: 10, color: "from-amber-500 to-yellow-500" },
+  wordOfDay:        { id: "wordOfDay",        label: "Word of the Day",            arabicLabel: "كلمة اليوم",         emoji: "✨", href: "/",                          hash: "#word-of-day", estimatedMinutes: 3,  color: "from-purple-500 to-fuchsia-500" },
+  studyMode:        { id: "studyMode",        label: "Study Mode",                 arabicLabel: "وضع الدراسة",        emoji: "📖", href: "/study",                                           estimatedMinutes: 15, color: "from-teal-500 to-emerald-500" },
+  quizMode:         { id: "quizMode",         label: "Quiz Mode",                  arabicLabel: "اختبار سريع",         emoji: "🎯", href: "/quiz",                                            estimatedMinutes: 10, color: "from-sky-500 to-cyan-500" },
+  weakWords:        { id: "weakWords",        label: "Weak Words",                 arabicLabel: "الكلمات الصعبة",      emoji: "🔥", href: "/weak-words",                                      estimatedMinutes: 8,  color: "from-rose-500 to-orange-500" },
+  paragraph:        { id: "paragraph",        label: "Paragraph Writing (Orwell)", arabicLabel: "فقرة كتابية",         emoji: "✍️", href: "/essay-checker",                                   estimatedMinutes: 15, color: "from-violet-500 to-purple-500" },
+  synonyms:         { id: "synonyms",         label: "Synonyms",                   arabicLabel: "المرادفات",           emoji: "🔁", href: "/synonyms",                                        estimatedMinutes: 8,  color: "from-teal-500 to-sky-500" },
+  antonyms:         { id: "antonyms",         label: "Antonyms",                   arabicLabel: "الأضداد",             emoji: "↔️", href: "/antonyms",                                        estimatedMinutes: 8,  color: "from-orange-500 to-amber-500" },
+  phrasalVerbs:     { id: "phrasalVerbs",     label: "Phrasal Verbs",              arabicLabel: "الأفعال المركبة",    emoji: "🧩", href: "/phrasal-verbs",                                   estimatedMinutes: 8,  color: "from-indigo-500 to-blue-500" },
+  grammar:          { id: "grammar",          label: "Grammar",                    arabicLabel: "القواعد",             emoji: "📚", href: "/grammar",                                         estimatedMinutes: 12, color: "from-indigo-500 to-violet-500" },
+  orwellTask1:      { id: "orwellTask1",      label: "Orwell — Task 1",            arabicLabel: "أورويل المهمة ١",    emoji: "📊", href: "/essay-checker",                                   estimatedMinutes: 25, color: "from-violet-500 to-fuchsia-500" },
+  orwellTask2:      { id: "orwellTask2",      label: "Orwell — Task 2",            arabicLabel: "أورويل المهمة ٢",    emoji: "📝", href: "/essay-checker",                                   estimatedMinutes: 40, color: "from-fuchsia-500 to-pink-500" },
+  churchillP1:      { id: "churchillP1",      label: "Churchill — Part 1",         arabicLabel: "تشرشل الجزء ١",      emoji: "🎙️", href: "/speaking",                                        estimatedMinutes: 10, color: "from-rose-500 to-pink-500" },
+  churchillP2:      { id: "churchillP2",      label: "Churchill — Part 2",         arabicLabel: "تشرشل الجزء ٢",      emoji: "🎤", href: "/speaking",                                        estimatedMinutes: 12, color: "from-pink-500 to-rose-500" },
+  churchillP3:      { id: "churchillP3",      label: "Churchill — Part 3",         arabicLabel: "تشرشل الجزء ٣",      emoji: "🎙️", href: "/speaking",                                        estimatedMinutes: 15, color: "from-pink-500 to-fuchsia-500" },
+  topicBank:        { id: "topicBank",        label: "Topic Bank",                 arabicLabel: "بنك المواضيع",        emoji: "🏛️", href: "/speaking-topics",                                 estimatedMinutes: 8,  color: "from-amber-500 to-orange-500" },
+  // Reading
+  readingSkillsEasy:{ id: "readingSkillsEasy",label: "Reading Skills (Easy)",      arabicLabel: "مهارات القراءة (سهل)",emoji: "📖", href: "/reading-test",       hash: "#skills",     estimatedMinutes: 15, color: "from-emerald-500 to-lime-500" },
+  readingSkills:    { id: "readingSkills",    label: "Reading Section Practice",   arabicLabel: "تمرين قسم القراءة",   emoji: "📖", href: "/reading-test",       hash: "#skills",     estimatedMinutes: 25, color: "from-emerald-500 to-teal-500" },
+  // Listening per-section
+  listeningS1:      { id: "listeningS1",      label: "Listening — Section 1",      arabicLabel: "الاستماع — القسم ١",  emoji: "🎧", href: "/listening-test",     hash: "#skills-1",   estimatedMinutes: 15, color: "from-sky-500 to-blue-500" },
+  listeningS2:      { id: "listeningS2",      label: "Listening — Section 2",      arabicLabel: "الاستماع — القسم ٢",  emoji: "🎧", href: "/listening-test",     hash: "#skills-2",   estimatedMinutes: 20, color: "from-emerald-500 to-teal-500" },
+  listeningS3:      { id: "listeningS3",      label: "Listening — Section 3",      arabicLabel: "الاستماع — القسم ٣",  emoji: "🎧", href: "/listening-test",     hash: "#skills-3",   estimatedMinutes: 25, color: "from-amber-500 to-orange-500" },
+  listeningS4:      { id: "listeningS4",      label: "Listening — Section 4",      arabicLabel: "الاستماع — القسم ٤",  emoji: "🎧", href: "/listening-test",     hash: "#skills-4",   estimatedMinutes: 30, color: "from-rose-500 to-pink-500" },
+  writingTemplates: { id: "writingTemplates", label: "Writing Templates",          arabicLabel: "قوالب الكتابة",       emoji: "📋", href: "/writing-templates",                               estimatedMinutes: 10, color: "from-amber-500 to-yellow-500" },
 };
 
-export const LEVEL_POOLS: Record<LevelGroup, PlanTask[]> = {
-  beginner: [
+/**
+ * Per-CEFR-level task pools — built from the user's onboarding level.
+ * The daily plan rotates a window of TASKS_PER_DAY items through each pool, so
+ * the student covers different sections each day without repeating themselves.
+ */
+export const LEVEL_POOLS_BY_LEVEL: Record<CefrLevel, PlanTask[]> = {
+  A1: [
     TASKS.wordOfDay,
     TASKS.studyMode,
     TASKS.quizMode,
     TASKS.weakWords,
     TASKS.paragraph,
-    TASKS.synonyms,
-    TASKS.antonyms,
+    TASKS.readingSkillsEasy,
   ],
-  intermediate: [
+  A2: [
     TASKS.wordOfDay,
     TASKS.quizMode,
     TASKS.weakWords,
-    TASKS.phrasalVerbs,
+    TASKS.grammar,
+    TASKS.paragraph,
+    TASKS.readingSkills,
+    TASKS.listeningS1,
+  ],
+  B1: [
+    TASKS.wordOfDay,
+    TASKS.quizMode,
+    TASKS.weakWords,
     TASKS.grammar,
     TASKS.orwellTask1,
     TASKS.churchillP1,
-    TASKS.topicBank,
+    TASKS.readingSkills,
+    TASKS.listeningS1,
+    TASKS.listeningS2,
   ],
-  advanced: [
+  B2: [
     TASKS.wordOfDay,
     TASKS.quizMode,
     TASKS.weakWords,
-    TASKS.grammar,
     TASKS.orwellTask2,
-    TASKS.churchillP23,
-    TASKS.listening,
-    TASKS.reading,
+    TASKS.churchillP2,
+    TASKS.readingSkills,
+    TASKS.listeningS2,
+    TASKS.listeningS3,
+    TASKS.writingTemplates,
+  ],
+  C1: [
+    TASKS.wordOfDay,
+    TASKS.quizMode,
+    TASKS.weakWords,
+    TASKS.orwellTask2,
+    TASKS.churchillP3,
+    TASKS.readingSkills,
+    TASKS.listeningS3,
+    TASKS.listeningS4,
     TASKS.writingTemplates,
   ],
 };
 
 const TASKS_PER_DAY = 5;
 
-export function levelGroup(level: CefrLevel | string | null | undefined): LevelGroup {
+/** Normalize any incoming string to a valid CefrLevel. Defaults to B1. */
+export function normalizeLevel(level: CefrLevel | string | null | undefined): CefrLevel {
   const lvl = (level ?? "B1").toString().toUpperCase();
+  if (lvl === "A1" || lvl === "A2" || lvl === "B1" || lvl === "B2" || lvl === "C1") return lvl;
+  return "B1";
+}
+
+export function levelGroup(level: CefrLevel | string | null | undefined): LevelGroup {
+  const lvl = normalizeLevel(level);
   if (lvl === "A1" || lvl === "A2") return "beginner";
   if (lvl === "B1") return "intermediate";
   return "advanced";
@@ -78,10 +117,25 @@ export function levelGroupLabel(group: LevelGroup): string {
   return group === "beginner" ? "Beginner (A1/A2)" : group === "intermediate" ? "Intermediate (B1)" : "Advanced (B2/C1)";
 }
 
-/** Generate today's plan: a rotating window of TASKS_PER_DAY items from the level pool, sliding by day-of-week. */
+/** Friendly per-CEFR label (e.g. "A1 — Beginner", "B2 — Upper Intermediate"). */
+export function levelLabel(level: CefrLevel | string | null | undefined): string {
+  const lvl = normalizeLevel(level);
+  switch (lvl) {
+    case "A1": return "A1 — Beginner";
+    case "A2": return "A2 — Elementary";
+    case "B1": return "B1 — Intermediate";
+    case "B2": return "B2 — Upper Intermediate";
+    case "C1": return "C1 — Advanced";
+  }
+}
+
+/** Generate today's plan: a rotating window of TASKS_PER_DAY items from the level pool, sliding by day-of-year so each day is different. */
 export function getDailyPlan(level: CefrLevel | string | null | undefined, date: Date = new Date()): PlanTask[] {
-  const pool = LEVEL_POOLS[levelGroup(level)];
-  const offset = date.getDay() % pool.length;
+  const pool = LEVEL_POOLS_BY_LEVEL[normalizeLevel(level)];
+  // Day-of-year offset so the rotation advances every calendar day, not just weekly.
+  const start = new Date(date.getFullYear(), 0, 0);
+  const dayOfYear = Math.floor((date.getTime() - start.getTime()) / 86_400_000);
+  const offset = dayOfYear % pool.length;
   const result: PlanTask[] = [];
   const count = Math.min(TASKS_PER_DAY, pool.length);
   for (let i = 0; i < count; i++) {
@@ -92,7 +146,7 @@ export function getDailyPlan(level: CefrLevel | string | null | undefined, date:
 
 /** Full pool for the level — used for weekly progress bars (one bar per section). */
 export function getWeeklySections(level: CefrLevel | string | null | undefined): PlanTask[] {
-  return LEVEL_POOLS[levelGroup(level)];
+  return LEVEL_POOLS_BY_LEVEL[normalizeLevel(level)];
 }
 
 export function daysUntilExam(examDate: string | null | undefined): number | null {

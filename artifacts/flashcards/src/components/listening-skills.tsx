@@ -32,11 +32,12 @@ function saveProgress(p: Progress) {
 
 interface Props {
   onBack: () => void;
+  initialSection?: LSection | null;
 }
 
-export default function ListeningSkills({ onBack }: Props) {
-  const [phase, setPhase] = useState<Phase>("section-list");
-  const [section, setSection] = useState<LSection | null>(null);
+export default function ListeningSkills({ onBack, initialSection = null }: Props) {
+  const [phase, setPhase] = useState<Phase>(initialSection ? "test-list" : "section-list");
+  const [section, setSection] = useState<LSection | null>(initialSection ?? null);
   const [test, setTest] = useState<LSkillTest | null>(null);
   const [doneTick, setDoneTick] = useState(0);
   const [lastResult, setLastResult] = useState<{ correct: number; total: number; perItem: boolean[] } | null>(null);
