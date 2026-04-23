@@ -3,7 +3,7 @@ import { Layout } from "@/components/layout";
 import {
   Headphones, ChevronRight, ChevronLeft, CheckCircle2, XCircle,
   Clock, Trophy, AlertTriangle, RotateCcw, ArrowUp, ListChecks, X,
-  Play, Pause, Volume2
+  Play, Pause, Volume2, Sparkles, Target
 } from "lucide-react";
 import {
   listeningTests,
@@ -15,11 +15,14 @@ import {
   type ListeningQuestionSection,
 } from "@/data/listening-test";
 import { useAwardXp } from "@workspace/api-client-react";
+import ListeningSkills from "@/components/listening-skills";
 
 type Answers = Record<number, string>;
 type Phase = "select" | "intro" | "test" | "results";
+type Mode = "menu" | "full" | "skills";
 
 export default function ListeningTestPage() {
+  const [mode, setMode] = useState<Mode>("menu");
   const [phase, setPhase] = useState<Phase>("select");
   const [selectedTest, setSelectedTest] = useState<ListeningTest | null>(null);
   const [currentPart, setCurrentPart] = useState(0);
@@ -77,10 +80,68 @@ export default function ListeningTestPage() {
     return `${m}:${sec.toString().padStart(2, "0")}`;
   };
 
+  // ───────── Mode menu ─────────
+  if (mode === "menu") {
+    return (
+      <Layout>
+        <div className="max-w-4xl mx-auto space-y-6">
+          <div className="bg-card border border-border rounded-3xl p-8 text-center space-y-3">
+            <div className="w-16 h-16 rounded-2xl bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center mx-auto">
+              <Headphones className="w-8 h-8 text-purple-600 dark:text-purple-400" />
+            </div>
+            <h1 className="text-3xl font-black">Listening Practice</h1>
+            <p className="text-muted-foreground">Choose how you want to train your ear today.</p>
+            <p className="text-sm text-muted-foreground" dir="rtl" lang="ar">اختر طريقة التدريب على الاستماع</p>
+          </div>
+          <div className="grid sm:grid-cols-2 gap-4">
+            <button
+              onClick={() => setMode("full")}
+              className="group bg-card border border-border rounded-3xl p-6 text-left hover:border-purple-400 hover:shadow-xl hover:shadow-purple-500/10 transition-all"
+            >
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500 to-indigo-500 flex items-center justify-center mb-4">
+                <ListChecks className="w-7 h-7 text-white" />
+              </div>
+              <h3 className="text-xl font-black mb-1 group-hover:text-purple-600 transition-colors">Full Listening Tests</h3>
+              <p className="text-xs text-muted-foreground mb-2" dir="rtl" lang="ar">اختبارات استماع كاملة</p>
+              <p className="text-sm text-muted-foreground">Complete Cambridge-style tests: 4 parts, 40 questions, ~30 minutes — exam conditions.</p>
+            </button>
+            <button
+              onClick={() => setMode("skills")}
+              className="group bg-card border border-border rounded-3xl p-6 text-left hover:border-purple-400 hover:shadow-xl hover:shadow-purple-500/10 transition-all"
+            >
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center mb-4">
+                <Target className="w-7 h-7 text-white" />
+              </div>
+              <h3 className="text-xl font-black mb-1 group-hover:text-emerald-600 transition-colors">Section Practice</h3>
+              <p className="text-xs text-muted-foreground mb-2" dir="rtl" lang="ar">تدريب على كل قسم على حدة</p>
+              <p className="text-sm text-muted-foreground">Targeted practice for Sections 1–4 individually — short, focused exercises with full analysis.</p>
+            </button>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
+
+  // ───────── Skills practice ─────────
+  if (mode === "skills") {
+    return (
+      <Layout>
+        <ListeningSkills onBack={() => setMode("menu")} />
+      </Layout>
+    );
+  }
+
+  // ───────── Full tests (existing flow) ─────────
   if (phase === "select") {
     return (
       <Layout>
         <div className="max-w-3xl mx-auto space-y-8">
+          <button
+            onClick={() => setMode("menu")}
+            className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
+          >
+            <ChevronLeft className="w-4 h-4" /> Back to Listening Practice
+          </button>
           <div className="bg-card border border-border rounded-3xl p-8 text-center space-y-6">
             <div className="w-16 h-16 rounded-2xl bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center mx-auto">
               <Headphones className="w-8 h-8 text-purple-600 dark:text-purple-400" />

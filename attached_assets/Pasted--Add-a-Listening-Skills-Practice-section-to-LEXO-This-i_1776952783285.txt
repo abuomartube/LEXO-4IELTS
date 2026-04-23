@@ -1,0 +1,22 @@
+اكتب له:
+“Add a Listening Skills Practice section to LEXO. This is separate from the existing full Listening tests. It contains targeted practice for each of the 4 IELTS Listening sections, with 5 tests per section (20 tests total).
+Place this as a sub-section inside the existing Listening Practice section. When the student opens Listening Practice, they see two options: ‘Full Listening Tests’ and ‘Section Practice’. The Section Practice contains the 4 sections.
+Section descriptions and audio requirements:
+Section 1 — A conversation between two people in an everyday social context (e.g. booking a hotel, registering for a course). Audio must sound natural with two speakers.
+Section 2 — A monologue in an everyday social context (e.g. a speech about local facilities, a tour guide). One speaker only.
+Section 3 — A conversation between 2-4 people in an educational or training context (e.g. university tutor and student discussing an assignment). More complex vocabulary.
+Section 4 — An academic monologue (e.g. a university lecture). Most difficult section with academic vocabulary.
+Question types to include across the sections (matching real IELTS format):
+1. Multiple Choice — one correct answer (A, B or C) or multiple correct answers from a longer list
+2. Matching — match numbered items heard in the audio to a set of options
+3. Plan/Map/Diagram Labelling — complete labels on a visual based on what is heard
+4. Form/Note/Table/Flow-chart/Summary Completion — fill gaps using exact words from the recording (word limit must be stated e.g. NO MORE THAN TWO WORDS AND/OR A NUMBER)
+5. Sentence Completion — complete sentences using words from the recording (word limit applies)
+6. Short Answer Questions — write short answers using concrete facts heard in the recording
+Important rules:
+- Word limits must be clearly stated for all completion tasks
+- Contracted words will not be tested
+- Hyphenated words count as single words
+- Each completed exercise earns XP and counts toward the daily plan
+- After submission: show result + correct answer + analysis
+- All audio must match real IELTS difficulty level per section”
