@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import { Link } from "wouter";
 import { customFetch, useAwardXp } from "@workspace/api-client-react";
 import { Layout } from "@/components/layout";
@@ -7,7 +7,7 @@ import { Progress } from "@/components/ui/progress";
 import {
   Brain, ArrowRight, ArrowLeft, Loader2, CheckCircle2,
   XCircle, Sparkles, Trophy, RefreshCw, Volume2, RotateCcw,
-  StopCircle, History, Clock, FileText,
+  StopCircle, History, Clock, FileText, Square,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { markTaskDone } from "@/lib/daily-plan";
@@ -80,13 +80,93 @@ interface HistoryRow {
 const COUNT_OPTIONS = [5, 10, 15, 20] as const;
 type Count = typeof COUNT_OPTIONS[number];
 
-function speak(text: string) {
-  if ("speechSynthesis" in window) {
-    const u = new SpeechSynthesisUtterance(text);
-    u.lang = "en-GB";
-    window.speechSynthesis.cancel();
-    window.speechSynthesis.speak(u);
+// ── OpenAI TTS (onyx voice — British, natural) ──────────────────────────
+const API_BASE = (import.meta.env.VITE_API_URL as string | undefined) || "";
+
+// Cache audio blobs by text so repeat presses are instant.
+const ttsCache = new Map<string, string>();
+let currentAudio: HTMLAudioElement | null = null;
+
+async function fetchTtsUrl(text: string): Promise<string> {
+  const key = text.trim();
+  const cached = ttsCache.get(key);
+  if (cached) return cached;
+  const res = await fetch(`${API_BASE}/api/speaking/tts`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ text: key, voice: "onyx", model: "tts-1-hd", speed: 0.95 }),
+  });
+  if (!res.ok) throw new Error("tts_failed");
+  const blob = await res.blob();
+  const url = URL.createObjectURL(blob);
+  ttsCache.set(key, url);
+  return url;
+}
+
+function SpeakerButton({
+  text,
+  size = "md",
+  className,
+}: {
+  text: string;
+  size?: "sm" | "md";
+  className?: string;
+}) {
+  const [loading, setLoading] = useState(false);
+  const [playing, setPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  useEffect(() => () => { audioRef.current?.pause(); }, []);
+
+  const dim = size === "sm" ? "w-8 h-8" : "w-11 h-11";
+  const icon = size === "sm" ? "w-4 h-4" : "w-5 h-5";
+
+  async function handleClick(e: React.MouseEvent) {
+    e.stopPropagation();
+    if (!text?.trim()) return;
+    if (playing) {
+      audioRef.current?.pause();
+      setPlaying(false);
+      return;
+    }
+    setLoading(true);
+    try {
+      const url = await fetchTtsUrl(text);
+      if (currentAudio && currentAudio !== audioRef.current) {
+        currentAudio.pause();
+      }
+      const audio = new Audio(url);
+      audioRef.current = audio;
+      currentAudio = audio;
+      audio.onended = () => setPlaying(false);
+      audio.onpause = () => setPlaying(false);
+      audio.onplay = () => setPlaying(true);
+      await audio.play();
+    } catch {
+      // silent fail — keep UI clean
+    } finally {
+      setLoading(false);
+    }
   }
+
+  return (
+    <button
+      type="button"
+      onClick={handleClick}
+      disabled={loading}
+      aria-label={playing ? "Stop audio" : "Play audio"}
+      className={cn(
+        "rounded-full flex items-center justify-center shrink-0 transition-colors",
+        "bg-primary/10 hover:bg-primary/20 text-primary disabled:opacity-50",
+        dim,
+        className
+      )}
+    >
+      {loading ? <Loader2 className={cn(icon, "animate-spin")} />
+        : playing ? <Square className={cn(icon, "fill-current")} />
+        : <Volume2 className={icon} />}
+    </button>
+  );
 }
 
 function shuffle<T>(arr: T[]): T[] {
@@ -591,13 +671,7 @@ export default function SentenceBuilder() {
               <h2 className="text-4xl sm:text-5xl font-extrabold text-foreground">
                 {currentWord.english}
               </h2>
-              <button
-                onClick={() => speak(currentWord.english)}
-                aria-label="Pronounce"
-                className="w-11 h-11 rounded-full bg-primary/10 hover:bg-primary/20 flex items-center justify-center text-primary"
-              >
-                <Volume2 className="w-5 h-5" />
-              </button>
+              <SpeakerButton text={currentWord.english} />
             </div>
             <div className="text-xl font-bold text-primary font-cairo mb-2" dir="rtl">
               {currentWord.arabic}
@@ -701,8 +775,13 @@ export default function SentenceBuilder() {
             )}
 
             <div className="bg-primary/5 border border-primary/20 rounded-2xl p-4 mb-4">
-              <div className="text-xs font-bold uppercase tracking-wider text-primary mb-1">
-                {result.isCorrect ? "Even better" : "Suggested correction"}
+              <div className="flex items-center justify-between gap-2 mb-1">
+                <div className="text-xs font-bold uppercase tracking-wider text-primary">
+                  {result.isCorrect ? "Even better" : "Suggested correction"}
+                </div>
+                {result.corrected && (
+                  <SpeakerButton text={result.corrected} size="sm" />
+                )}
               </div>
               <p className="text-base font-semibold">{result.corrected}</p>
               {result.arabicCorrected && (
@@ -862,13 +941,21 @@ function ReportView({
                 </div>
               </div>
 
-              <div className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Your sentence</div>
+              <div className="flex items-center justify-between gap-2 mb-1">
+                <div className="text-xs text-muted-foreground uppercase tracking-wider">Your sentence</div>
+                {it.finalSentence && (
+                  <SpeakerButton text={it.finalSentence} size="sm" />
+                )}
+              </div>
               <p className="text-sm mb-2 italic">"{it.finalSentence}"</p>
 
               {it.corrected && it.corrected.toLowerCase() !== it.finalSentence.toLowerCase() && (
                 <>
-                  <div className="text-xs text-primary uppercase tracking-wider mb-1 font-bold">
-                    {it.isCorrect ? "Even better" : "Correction"}
+                  <div className="flex items-center justify-between gap-2 mb-1">
+                    <div className="text-xs text-primary uppercase tracking-wider font-bold">
+                      {it.isCorrect ? "Even better" : "Correction"}
+                    </div>
+                    <SpeakerButton text={it.corrected} size="sm" />
                   </div>
                   <p className="text-sm font-semibold mb-1">{it.corrected}</p>
                   {it.arabicCorrected && (
