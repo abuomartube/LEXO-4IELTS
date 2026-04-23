@@ -241,7 +241,7 @@ function TestRunner({ test, onCancel, onFinish }:{ test: LSkillTest; onCancel: (
         <p className="text-sm text-muted-foreground mt-1">{test.context}</p>
       </div>
 
-      <AudioPlayer lines={test.audioLines} onFirstPlay={() => setPlayed(true)} />
+      <AudioPlayer testId={test.id} lines={test.audioLines} onFirstPlay={() => setPlayed(true)} />
 
       <div className="bg-card border border-border rounded-2xl p-6">
         <p className="text-sm font-semibold text-foreground">{test.instructions}</p>
@@ -354,7 +354,7 @@ function ItemEditor({ item, index, value, onChange, qType, options }:{
 
 // ─────────────────────── AUDIO PLAYER ───────────────────────
 
-function AudioPlayer({ lines, onFirstPlay }:{ lines: AudioLine[]; onFirstPlay?: () => void }) {
+function AudioPlayer({ testId, lines, onFirstPlay }:{ testId: string; lines: AudioLine[]; onFirstPlay?: () => void }) {
   const [state, setState] = useState<"idle" | "loading" | "playing" | "paused">("idle");
   const [currentLine, setCurrentLine] = useState(-1);
   const [loadProgress, setLoadProgress] = useState(0);
@@ -384,7 +384,22 @@ function AudioPlayer({ lines, onFirstPlay }:{ lines: AudioLine[]; onFirstPlay?: 
     setLoadProgress(0);
   }, [lines]);
 
-  const fetchLine = async (line: AudioLine): Promise<string> => {
+  const fetchLine = async (line: AudioLine, idx: number): Promise<string> => {
+    // 1) Try the pre-generated static MP3 (instant, no API cost)
+    const staticUrl = `${import.meta.env.BASE_URL}audio/listening/${testId}-${idx}.mp3`;
+    try {
+      const staticRes = await fetch(staticUrl);
+      if (staticRes.ok) {
+        const ct = staticRes.headers.get("content-type") || "";
+        // Some dev servers return index.html for missing files — only accept audio
+        if (ct.includes("audio") || ct.includes("octet-stream") || ct === "" ) {
+          const blob = await staticRes.blob();
+          if (blob.size > 1000) return URL.createObjectURL(blob);
+        }
+      }
+    } catch { /* fall through to API */ }
+
+    // 2) Fallback: live TTS via the API (e.g. for new tests not yet pre-generated)
     const voice = line.voice === "f" ? "nova" : "alloy";
     const res = await fetch("/api/speaking/tts", {
       method: "POST",
