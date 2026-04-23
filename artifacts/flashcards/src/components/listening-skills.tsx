@@ -355,78 +355,120 @@ function ItemEditor({ item, index, value, onChange, qType, options }:{
 // ─────────────────────── AUDIO PLAYER ───────────────────────
 
 function AudioPlayer({ lines, onFirstPlay }:{ lines: AudioLine[]; onFirstPlay?: () => void }) {
-  const [state, setState] = useState<"idle" | "playing" | "paused">("idle");
+  const [state, setState] = useState<"idle" | "loading" | "playing" | "paused">("idle");
   const [currentLine, setCurrentLine] = useState(-1);
-  const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
+  const [loadProgress, setLoadProgress] = useState(0);
+  const [error, setError] = useState<string | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const blobUrlsRef = useRef<string[]>([]);
+  const cancelledRef = useRef(false);
   const playedOnce = useRef(false);
 
+  // Cleanup blob URLs on unmount
   useEffect(() => {
-    if (typeof window === "undefined" || !window.speechSynthesis) return;
-    const load = () => setVoices(window.speechSynthesis.getVoices());
-    load();
-    window.speechSynthesis.onvoiceschanged = load;
     return () => {
-      window.speechSynthesis.cancel();
-      window.speechSynthesis.onvoiceschanged = null;
+      cancelledRef.current = true;
+      if (audioRef.current) { audioRef.current.pause(); audioRef.current.src = ""; }
+      blobUrlsRef.current.forEach(u => URL.revokeObjectURL(u));
+      blobUrlsRef.current = [];
     };
   }, []);
 
-  const femaleVoice = useMemo(() => {
-    return voices.find(v => /female|samantha|victoria|karen|moira|tessa|fiona|zira/i.test(v.name) && /en/i.test(v.lang))
-        || voices.find(v => /en-(GB|US|AU)/.test(v.lang) && /female|woman/i.test(v.name))
-        || voices.find(v => /en-GB/i.test(v.lang))
-        || voices.find(v => /en/i.test(v.lang))
-        || voices[0];
-  }, [voices]);
-
-  const maleVoice = useMemo(() => {
-    return voices.find(v => /male|daniel|alex|fred|tom|david|oliver|aaron/i.test(v.name) && /en/i.test(v.lang))
-        || voices.find(v => /en-(GB|US|AU)/.test(v.lang) && v !== femaleVoice)
-        || voices.find(v => /en/i.test(v.lang) && v !== femaleVoice)
-        || femaleVoice;
-  }, [voices, femaleVoice]);
-
-  const stop = () => {
-    if (typeof window === "undefined") return;
-    window.speechSynthesis.cancel();
+  // Reset cache when lines change
+  useEffect(() => {
+    blobUrlsRef.current.forEach(u => URL.revokeObjectURL(u));
+    blobUrlsRef.current = [];
     setState("idle");
     setCurrentLine(-1);
+    setError(null);
+    setLoadProgress(0);
+  }, [lines]);
+
+  const fetchLine = async (line: AudioLine): Promise<string> => {
+    const voice = line.voice === "f" ? "nova" : "alloy";
+    const res = await fetch("/api/speaking/tts", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text: line.text, voice, model: "tts-1", speed: 1.0 }),
+    });
+    if (!res.ok) {
+      let msg = `TTS request failed (${res.status})`;
+      try {
+        const err = await res.json();
+        if (err?.error === "quota_exceeded") msg = "OpenAI quota exceeded. Please try again later.";
+        else if (err?.error) msg = err.error;
+      } catch { /* noop */ }
+      throw new Error(msg);
+    }
+    const blob = await res.blob();
+    return URL.createObjectURL(blob);
   };
 
-  const play = () => {
-    if (typeof window === "undefined" || !window.speechSynthesis) {
-      alert("Sorry, your browser does not support speech audio. Please try Chrome, Edge or Safari.");
-      return;
+  const ensureLoaded = async (): Promise<string[] | null> => {
+    if (blobUrlsRef.current.length === lines.length) return blobUrlsRef.current;
+    setState("loading");
+    setError(null);
+    setLoadProgress(0);
+    const urls: string[] = [];
+    try {
+      for (let i = 0; i < lines.length; i++) {
+        if (cancelledRef.current) return null;
+        const url = await fetchLine(lines[i]);
+        urls.push(url);
+        setLoadProgress(Math.round(((i + 1) / lines.length) * 100));
+      }
+      blobUrlsRef.current = urls;
+      return urls;
+    } catch (e) {
+      urls.forEach(u => URL.revokeObjectURL(u));
+      const msg = e instanceof Error ? e.message : "Could not load audio.";
+      setError(msg);
+      setState("idle");
+      return null;
     }
-    window.speechSynthesis.cancel();
-    if (!playedOnce.current) { playedOnce.current = true; onFirstPlay?.(); }
-    setState("playing");
+  };
 
-    let i = 0;
-    const speakNext = () => {
-      if (i >= lines.length) { setState("idle"); setCurrentLine(-1); return; }
-      const line = lines[i];
-      setCurrentLine(i);
-      const u = new SpeechSynthesisUtterance(line.text);
-      u.voice = line.voice === "f" ? femaleVoice : maleVoice;
-      u.rate = 0.95;
-      u.pitch = line.voice === "f" ? 1.05 : 0.95;
-      u.onend = () => { i++; speakNext(); };
-      u.onerror = () => { i++; speakNext(); };
-      window.speechSynthesis.speak(u);
-    };
-    speakNext();
+  const playFrom = (urls: string[], startIdx: number) => {
+    if (startIdx >= urls.length) { setState("idle"); setCurrentLine(-1); return; }
+    setCurrentLine(startIdx);
+    setState("playing");
+    const audio = new Audio(urls[startIdx]);
+    audioRef.current = audio;
+    audio.onended = () => playFrom(urls, startIdx + 1);
+    audio.onerror = () => playFrom(urls, startIdx + 1);
+    audio.play().catch(() => playFrom(urls, startIdx + 1));
+  };
+
+  const play = async () => {
+    if (!playedOnce.current) { playedOnce.current = true; onFirstPlay?.(); }
+    cancelledRef.current = false;
+    const urls = await ensureLoaded();
+    if (!urls) return;
+    playFrom(urls, 0);
   };
 
   const pause = () => {
-    if (typeof window === "undefined") return;
-    window.speechSynthesis.pause();
+    audioRef.current?.pause();
     setState("paused");
   };
   const resume = () => {
-    if (typeof window === "undefined") return;
-    window.speechSynthesis.resume();
-    setState("playing");
+    audioRef.current?.play().then(() => setState("playing")).catch(() => { /* noop */ });
+  };
+  const stop = () => {
+    if (audioRef.current) {
+      audioRef.current.onended = null;
+      audioRef.current.pause();
+      audioRef.current = null;
+    }
+    setState("idle");
+    setCurrentLine(-1);
+  };
+  const replay = () => {
+    stop();
+    setTimeout(() => {
+      if (blobUrlsRef.current.length === lines.length) playFrom(blobUrlsRef.current, 0);
+      else play();
+    }, 100);
   };
 
   return (
@@ -440,11 +482,21 @@ function AudioPlayer({ lines, onFirstPlay }:{ lines: AudioLine[]; onFirstPlay?: 
               <span className="inline-block w-2 h-2 bg-emerald-500 rounded-full animate-pulse" /> Playing
             </span>
           )}
+          {state === "loading" && (
+            <span className="text-xs text-indigo-600 dark:text-indigo-400 font-semibold">
+              Loading audio… {loadProgress}%
+            </span>
+          )}
         </div>
         <div className="flex items-center gap-2">
           {state === "idle" && (
             <button onClick={play} className="px-4 py-2 rounded-xl bg-indigo-600 text-white text-sm font-bold flex items-center gap-2 hover:bg-indigo-700 transition-colors">
               <Play className="w-4 h-4" /> Play
+            </button>
+          )}
+          {state === "loading" && (
+            <button disabled className="px-4 py-2 rounded-xl bg-indigo-600/50 text-white text-sm font-bold flex items-center gap-2 cursor-wait">
+              <span className="inline-block w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin" /> Loading
             </button>
           )}
           {state === "playing" && (
@@ -467,21 +519,34 @@ function AudioPlayer({ lines, onFirstPlay }:{ lines: AudioLine[]; onFirstPlay?: 
               </button>
             </>
           )}
-          {state !== "idle" && (
-            <button onClick={() => { stop(); setTimeout(play, 200); }} className="px-3 py-2 rounded-xl bg-muted text-foreground text-sm font-bold flex items-center gap-2 hover:bg-muted/70 transition-colors">
+          {(state === "playing" || state === "paused") && (
+            <button onClick={replay} className="px-3 py-2 rounded-xl bg-muted text-foreground text-sm font-bold flex items-center gap-2 hover:bg-muted/70 transition-colors">
               <RotateCcw className="w-4 h-4" /> Replay
             </button>
           )}
         </div>
       </div>
-      {state !== "idle" && currentLine >= 0 && (
+
+      {state === "loading" && (
+        <div className="w-full bg-muted/40 rounded-full h-2 overflow-hidden">
+          <div className="h-full bg-gradient-to-r from-indigo-500 to-purple-500 transition-all duration-300" style={{ width: `${loadProgress}%` }} />
+        </div>
+      )}
+
+      {error && (
+        <div className="bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-800 rounded-xl p-3 text-sm text-rose-700 dark:text-rose-300">
+          ⚠ {error}
+        </div>
+      )}
+
+      {(state === "playing" || state === "paused") && currentLine >= 0 && (
         <div className="bg-muted/40 rounded-xl p-3 border border-border text-sm">
           <span className="text-xs font-bold text-purple-600 dark:text-purple-400 mr-2">{lines[currentLine].speaker}:</span>
           <span className="text-muted-foreground">{lines[currentLine].text}</span>
         </div>
       )}
       <p className="text-xs text-muted-foreground italic">
-        🎧 Audio is generated by your browser's text-to-speech. Use headphones for the best experience. In a real IELTS exam you only hear the audio once — but here you may replay it for practice.
+        🎧 Audio uses natural AI voices (alloy &amp; nova). Use headphones for the best experience. In a real IELTS exam you only hear the audio once — but here you may replay it for practice.
       </p>
     </div>
   );
