@@ -37,6 +37,7 @@ export const TASKS: Record<string, PlanTask> = {
   listeningS3:      { id: "listeningS3",      label: "Listening — Section 3",      arabicLabel: "الاستماع — القسم ٣",  emoji: "🎧", href: "/listening-test",     hash: "#skills-3",   estimatedMinutes: 25, color: "from-amber-500 to-orange-500" },
   listeningS4:      { id: "listeningS4",      label: "Listening — Section 4",      arabicLabel: "الاستماع — القسم ٤",  emoji: "🎧", href: "/listening-test",     hash: "#skills-4",   estimatedMinutes: 30, color: "from-rose-500 to-pink-500" },
   writingTemplates: { id: "writingTemplates", label: "Writing Templates",          arabicLabel: "قوالب الكتابة",       emoji: "📋", href: "/writing-templates",                               estimatedMinutes: 10, color: "from-amber-500 to-yellow-500" },
+  sentenceBuilder:  { id: "sentenceBuilder",  label: "Sentence Builder",           arabicLabel: "بناء الجمل",          emoji: "🧠", href: "/sentence-builder",                                estimatedMinutes: 10, color: "from-cyan-500 to-blue-500" },
 };
 
 /**
@@ -49,6 +50,7 @@ export const LEVEL_POOLS_BY_LEVEL: Record<CefrLevel, PlanTask[]> = {
     TASKS.wordOfDay,
     TASKS.studyMode,
     TASKS.quizMode,
+    TASKS.sentenceBuilder,
     TASKS.weakWords,
     TASKS.paragraph,
     TASKS.readingSkillsEasy,
@@ -56,6 +58,7 @@ export const LEVEL_POOLS_BY_LEVEL: Record<CefrLevel, PlanTask[]> = {
   A2: [
     TASKS.wordOfDay,
     TASKS.quizMode,
+    TASKS.sentenceBuilder,
     TASKS.weakWords,
     TASKS.grammar,
     TASKS.paragraph,
@@ -65,6 +68,7 @@ export const LEVEL_POOLS_BY_LEVEL: Record<CefrLevel, PlanTask[]> = {
   B1: [
     TASKS.wordOfDay,
     TASKS.quizMode,
+    TASKS.sentenceBuilder,
     TASKS.weakWords,
     TASKS.grammar,
     TASKS.orwellTask1,
@@ -76,6 +80,7 @@ export const LEVEL_POOLS_BY_LEVEL: Record<CefrLevel, PlanTask[]> = {
   B2: [
     TASKS.wordOfDay,
     TASKS.quizMode,
+    TASKS.sentenceBuilder,
     TASKS.weakWords,
     TASKS.orwellTask2,
     TASKS.churchillP2,
@@ -87,6 +92,7 @@ export const LEVEL_POOLS_BY_LEVEL: Record<CefrLevel, PlanTask[]> = {
   C1: [
     TASKS.wordOfDay,
     TASKS.quizMode,
+    TASKS.sentenceBuilder,
     TASKS.weakWords,
     TASKS.orwellTask2,
     TASKS.churchillP3,

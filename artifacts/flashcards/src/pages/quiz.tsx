@@ -1,11 +1,12 @@
 import { useState, useEffect, useCallback, useRef } from "react";
+import { Link } from "wouter";
 import { useQuiz, useFillBlank, customFetch, useAwardXp, useAddWeakWords } from "@workspace/api-client-react";
 import { Layout } from "@/components/layout";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import {
   CheckCircle2, XCircle, RefreshCw, HelpCircle,
-  ArrowRight, Trophy, Volume2, PenLine, History, Clock
+  ArrowRight, Trophy, Volume2, PenLine, History, Clock, Brain
 } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
@@ -168,13 +169,13 @@ export default function Quiz() {
           <div className="bg-card border border-border rounded-3xl p-8 shadow-sm space-y-6">
             <div>
               <label className="text-sm font-semibold text-foreground mb-2 block">Quiz Type</label>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 {(["multiple-choice", "fill-blank"] as QuizMode[]).map((m) => (
                   <button
                     key={m}
                     onClick={() => setMode(m)}
                     className={cn(
-                      "p-4 rounded-2xl border-2 text-left transition-all",
+                      "p-4 rounded-2xl border-2 text-left transition-all min-h-[120px]",
                       mode === m ? "border-primary bg-primary/5" : "border-border hover:border-primary/40"
                     )}
                   >
@@ -189,6 +190,21 @@ export default function Quiz() {
                     </div>
                   </button>
                 ))}
+                <Link
+                  href="/sentence-builder"
+                  className="p-4 rounded-2xl border-2 border-border hover:border-primary/40 text-left transition-all min-h-[120px] block group"
+                >
+                  <div className="w-8 h-8 rounded-lg flex items-center justify-center mb-2 bg-primary/10 group-hover:bg-primary/20">
+                    <Brain className="w-4 h-4 text-primary" />
+                  </div>
+                  <div className="font-semibold text-foreground text-sm flex items-center gap-1.5">
+                    Sentence Builder
+                    <span className="text-[10px] uppercase font-bold bg-primary text-primary-foreground px-1.5 py-0.5 rounded">AI</span>
+                  </div>
+                  <div className="text-xs text-muted-foreground mt-1">
+                    Write your own sentences, get AI feedback
+                  </div>
+                </Link>
               </div>
             </div>
 

@@ -10,6 +10,7 @@ import notificationsRouter from "./notifications";
 import lexoAiRouter from "./lexo-ai";
 import orwellRouter from "./orwell";
 import lessonsRouter from "./lessons";
+import sentenceCheckRouter from "./sentence-check";
 
 const router: IRouter = Router();
 
@@ -24,5 +25,6 @@ router.use(notificationsRouter);
 router.use(lexoAiRouter);
 router.use(orwellRouter);
 router.use(lessonsRouter);
+router.use(sentenceCheckRouter);
 
 export default router;

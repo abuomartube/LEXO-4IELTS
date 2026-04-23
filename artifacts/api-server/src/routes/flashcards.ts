@@ -205,6 +205,7 @@ const XP_DAILY_CAP: Record<string, number> = {
   reading_test: 40,
   essay_check: 20,
   speaking_session: 20,
+  sentence_builder: 60,
 };
 
 router.get("/xp", async (req, res): Promise<void> => {
