@@ -389,7 +389,7 @@ function AudioPlayer({ lines, onFirstPlay }:{ lines: AudioLine[]; onFirstPlay?: 
     const res = await fetch("/api/speaking/tts", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ text: line.text, voice, model: "tts-1", speed: 1.0 }),
+      body: JSON.stringify({ text: line.text, voice, model: "tts-1", speed: 0.85 }),
     });
     if (!res.ok) {
       let msg = `TTS request failed (${res.status})`;
