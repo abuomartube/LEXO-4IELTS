@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { Link } from "wouter";
 import { customFetch, useAwardXp } from "@workspace/api-client-react";
 import { Layout } from "@/components/layout";
@@ -6,13 +6,14 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import {
   Brain, ArrowRight, ArrowLeft, Loader2, CheckCircle2,
-  XCircle, Sparkles, Trophy, RefreshCw, Volume2,
+  XCircle, Sparkles, Trophy, RefreshCw, Volume2, RotateCcw,
+  StopCircle, History, Clock, FileText,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { markTaskDone } from "@/lib/daily-plan";
 
 type Level = "A2" | "B1" | "B2" | "C1";
-type Step = "level" | "count" | "practice" | "done";
+type Step = "level" | "count" | "practice" | "report" | "history";
 
 interface Flashcard {
   id: number;
@@ -33,6 +34,47 @@ interface CheckResult {
   vocabBand: number;
   grammarBand: number;
   encouragement: string;
+}
+
+interface SentenceItem {
+  word: string;
+  arabic: string;
+  attempts: number;
+  finalSentence: string;
+  isCorrect: boolean;
+  errorHighlight: string | null;
+  explanation: string;
+  corrected: string;
+  arabicCorrected: string;
+  vocabBand: number;
+  grammarBand: number;
+  firstAttemptCorrect: boolean;
+}
+
+interface SessionReport {
+  id: number;
+  level: string;
+  totalWords: number;
+  firstAttemptCorrect: number;
+  neededCorrection: number;
+  avgVocabBand: number;
+  avgGrammarBand: number;
+  commonMistakes: string[];
+  items: SentenceItem[];
+  endedEarly: boolean;
+  completedAt: string;
+}
+
+interface HistoryRow {
+  id: number;
+  level: string;
+  totalWords: number;
+  firstAttemptCorrect: number;
+  neededCorrection: number;
+  avgVocabBand: number;
+  avgGrammarBand: number;
+  endedEarly: boolean;
+  completedAt: string;
 }
 
 const COUNT_OPTIONS = [5, 10, 15, 20] as const;
@@ -56,6 +98,17 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
+function performanceRating(report: SessionReport): { label: string; color: string; emoji: string } {
+  const avg = (report.avgVocabBand + report.avgGrammarBand) / 2;
+  const accuracy = report.totalWords > 0 ? report.firstAttemptCorrect / report.totalWords : 0;
+  const score = avg * 0.7 + accuracy * 9 * 0.3;
+  if (score >= 7.5) return { label: "Excellent", color: "text-green-600", emoji: "🎉" };
+  if (score >= 6.5) return { label: "Strong", color: "text-emerald-600", emoji: "💪" };
+  if (score >= 5.5) return { label: "Good Progress", color: "text-primary", emoji: "👍" };
+  if (score >= 4.5) return { label: "Keep Practising", color: "text-amber-600", emoji: "📚" };
+  return { label: "Needs More Work", color: "text-rose-500", emoji: "🌱" };
+}
+
 export default function SentenceBuilder() {
   const [step, setStep] = useState<Step>("level");
   const [level, setLevel] = useState<Level>("B1");
@@ -68,13 +121,33 @@ export default function SentenceBuilder() {
   const [analyzing, setAnalyzing] = useState(false);
   const [result, setResult] = useState<CheckResult | null>(null);
   const [err, setErr] = useState<string | null>(null);
-  const [completed, setCompleted] = useState(0);
-  const [bandSum, setBandSum] = useState(0);
+  const [attempts, setAttempts] = useState(1);
+  const [items, setItems] = useState<SentenceItem[]>([]);
+  const [report, setReport] = useState<SessionReport | null>(null);
+  const [savingReport, setSavingReport] = useState(false);
+  const [confirmEnd, setConfirmEnd] = useState(false);
+
+  // History
+  const [history, setHistory] = useState<HistoryRow[] | null>(null);
+  const [loadingHistory, setLoadingHistory] = useState(false);
+  const [openReport, setOpenReport] = useState<SessionReport | null>(null);
 
   const { mutate: awardXp } = useAwardXp();
 
   const currentWord = words[index];
   const progressPct = words.length > 0 ? Math.round((index / words.length) * 100) : 0;
+
+  async function loadHistory() {
+    setLoadingHistory(true);
+    try {
+      const data = await customFetch<HistoryRow[]>("/api/sentence-sessions");
+      setHistory(data);
+    } catch {
+      setHistory([]);
+    } finally {
+      setLoadingHistory(false);
+    }
+  }
 
   async function startSession() {
     setLoadingWords(true);
@@ -89,10 +162,11 @@ export default function SentenceBuilder() {
       setSentence("");
       setResult(null);
       setErr(null);
-      setCompleted(0);
-      setBandSum(0);
+      setAttempts(1);
+      setItems([]);
+      setReport(null);
       setStep("practice");
-    } catch (e) {
+    } catch {
       setErr("Could not load the word bank. Please try again.");
     } finally {
       setLoadingWords(false);
@@ -114,12 +188,8 @@ export default function SentenceBuilder() {
           level,
         }),
       });
-      if ("error" in data) {
-        setErr(data.error);
-      } else {
-        setResult(data);
-        setBandSum((b) => b + ((data.vocabBand ?? 5) + (data.grammarBand ?? 5)) / 2);
-      }
+      if ("error" in data) setErr(data.error);
+      else setResult(data);
     } catch {
       setErr("Analysis failed. Please try again.");
     } finally {
@@ -127,49 +197,121 @@ export default function SentenceBuilder() {
     }
   }
 
-  function next() {
-    const newCompleted = completed + 1;
-    setCompleted(newCompleted);
+  function tryAgain() {
+    if (!result) return;
+    setAttempts(attempts + 1);
+    setSentence("");
+    setResult(null);
+    setErr(null);
+  }
 
-    if (index + 1 >= words.length) {
-      // Session complete: award XP, mark daily-plan task done, save streak ping.
-      const xpAmount = newCompleted * 8;
-      awardXp({ activity: "sentence_builder", amount: xpAmount });
+  function recordCurrent(): SentenceItem | null {
+    if (!result || !currentWord) return null;
+    return {
+      word: currentWord.english,
+      arabic: currentWord.arabic,
+      attempts,
+      finalSentence: sentence,
+      isCorrect: result.isCorrect,
+      errorHighlight: result.errorHighlight,
+      explanation: result.explanation,
+      corrected: result.corrected,
+      arabicCorrected: result.arabicCorrected,
+      vocabBand: result.vocabBand ?? 5,
+      grammarBand: result.grammarBand ?? 5,
+      firstAttemptCorrect: result.isCorrect && attempts === 1,
+    };
+  }
+
+  async function saveReport(allItems: SentenceItem[], endedEarly: boolean): Promise<SessionReport | null> {
+    if (allItems.length === 0) return null;
+    setSavingReport(true);
+    try {
+      const saved = await customFetch<SessionReport>("/api/sentence-sessions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ level, items: allItems, endedEarly }),
+      });
+      const xp = allItems.length * 8;
+      awardXp({ activity: "sentence_builder", amount: xp });
       markTaskDone("sentenceBuilder");
-
-      // Save a quiz-score entry so it counts in the Teacher Dashboard.
-      const correct = Math.round(bandSum / Math.max(1, newCompleted) >= 6 ? newCompleted : Math.round(newCompleted * 0.7));
+      // Quiz-score entry so it counts in Teacher Dashboard quizzesTaken
+      const correct = allItems.filter((i) => i.firstAttemptCorrect).length;
       customFetch("/api/quiz-scores", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           mode: "sentence-builder",
           level,
-          total: newCompleted,
+          total: allItems.length,
           correct,
-          wrong: Math.max(0, newCompleted - correct),
+          wrong: allItems.length - correct,
         }),
       }).catch(() => {});
+      return saved;
+    } catch {
+      return null;
+    } finally {
+      setSavingReport(false);
+    }
+  }
 
-      // Light streak-ping: mark the first word in the session as "seen" via progress.
-      if (words[0]?.id) {
-        customFetch("/api/progress", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ flashcardId: words[0].id, known: true }),
-        }).catch(() => {});
-      }
+  async function nextWord() {
+    const item = recordCurrent();
+    const newItems = item ? [...items, item] : items;
+    setItems(newItems);
 
-      setStep("done");
+    if (index + 1 >= words.length) {
+      const saved = await saveReport(newItems, false);
+      if (saved) setReport(saved);
+      else setReport(buildLocalReport(newItems, false));
+      setStep("report");
       return;
     }
     setIndex(index + 1);
     setSentence("");
     setResult(null);
     setErr(null);
+    setAttempts(1);
   }
 
-  // Highlight the error span inside the student's sentence (case-insensitive).
+  async function endSession() {
+    let allItems = items;
+    // Include the current word's analysis if one exists.
+    const item = recordCurrent();
+    if (item) allItems = [...items, item];
+    setItems(allItems);
+
+    if (allItems.length === 0) {
+      // Nothing to save — just go back.
+      setStep("level");
+      return;
+    }
+    const saved = await saveReport(allItems, true);
+    if (saved) setReport(saved);
+    else setReport(buildLocalReport(allItems, true));
+    setStep("report");
+  }
+
+  function buildLocalReport(allItems: SentenceItem[], endedEarly: boolean): SessionReport {
+    const total = allItems.length;
+    const firstAttemptCorrect = allItems.filter((i) => i.firstAttemptCorrect).length;
+    return {
+      id: 0,
+      level,
+      totalWords: total,
+      firstAttemptCorrect,
+      neededCorrection: total - firstAttemptCorrect,
+      avgVocabBand: total ? allItems.reduce((s, i) => s + i.vocabBand, 0) / total : 0,
+      avgGrammarBand: total ? allItems.reduce((s, i) => s + i.grammarBand, 0) / total : 0,
+      commonMistakes: [],
+      items: allItems,
+      endedEarly,
+      completedAt: new Date().toISOString(),
+    };
+  }
+
+  // Highlight error span inside student's sentence (case-insensitive).
   const highlightedSentence = useMemo(() => {
     if (!result || !result.errorHighlight || result.isCorrect) return null;
     const original = sentence;
@@ -230,7 +372,96 @@ export default function SentenceBuilder() {
             >
               Continue <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
+
+            <button
+              onClick={() => { loadHistory(); setStep("history"); }}
+              className="w-full mt-3 rounded-full h-11 text-sm font-semibold flex items-center justify-center gap-2 text-muted-foreground hover:text-foreground border border-border hover:border-primary/40 transition-colors"
+            >
+              <History className="w-4 h-4" /> View Past Reports
+            </button>
           </div>
+        </div>
+      </Layout>
+    );
+  }
+
+  // ── History list ──
+  if (step === "history") {
+    return (
+      <Layout>
+        <div className="max-w-2xl mx-auto mt-6 animate-in fade-in duration-300">
+          <button
+            onClick={() => { setOpenReport(null); setStep("level"); }}
+            className="text-sm text-muted-foreground hover:text-foreground mb-4 flex items-center gap-1 min-h-[44px]"
+          >
+            <ArrowLeft className="w-4 h-4" /> Back
+          </button>
+
+          {openReport ? (
+            <ReportView
+              report={openReport}
+              onBack={() => setOpenReport(null)}
+              onPracticeMore={() => { setOpenReport(null); setStep("level"); }}
+            />
+          ) : (
+            <div className="bg-card border border-border rounded-3xl p-6 sm:p-8 shadow-sm">
+              <h2 className="text-xl font-extrabold flex items-center gap-2 mb-4">
+                <History className="w-5 h-5 text-primary" /> Your Sentence Builder History
+              </h2>
+
+              {loadingHistory ? (
+                <div className="flex items-center justify-center py-12 text-muted-foreground">
+                  <Loader2 className="w-6 h-6 animate-spin" />
+                </div>
+              ) : !history || history.length === 0 ? (
+                <div className="text-center py-10 text-sm text-muted-foreground">
+                  No past sessions yet. Finish a session to see your report here.
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  {history.map((h) => {
+                    const accuracy = h.totalWords > 0 ? Math.round((h.firstAttemptCorrect / h.totalWords) * 100) : 0;
+                    return (
+                      <button
+                        key={h.id}
+                        onClick={async () => {
+                          try {
+                            const r = await customFetch<SessionReport>(`/api/sentence-sessions/${h.id}`);
+                            setOpenReport(r);
+                          } catch {}
+                        }}
+                        className="w-full text-left bg-background border border-border hover:border-primary/40 rounded-2xl p-4 transition-colors flex items-center justify-between gap-3"
+                      >
+                        <div className="flex items-center gap-3 min-w-0">
+                          <div className={cn(
+                            "w-10 h-10 rounded-xl flex items-center justify-center shrink-0 font-bold text-xs",
+                            accuracy >= 80 ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400"
+                              : accuracy >= 60 ? "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400"
+                                : "bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400"
+                          )}>
+                            {accuracy}%
+                          </div>
+                          <div className="min-w-0">
+                            <div className="font-semibold text-sm truncate">
+                              {h.totalWords} words · Level {h.level}
+                              {h.endedEarly && <span className="text-xs text-amber-600 ml-1">(ended early)</span>}
+                            </div>
+                            <div className="text-xs text-muted-foreground flex items-center gap-1 mt-0.5">
+                              <Clock className="w-3 h-3" />
+                              {new Date(h.completedAt).toLocaleString("en-GB", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}
+                              <span className="mx-1">·</span>
+                              Bands {((h.avgVocabBand + h.avgGrammarBand) / 2).toFixed(1)}
+                            </div>
+                          </div>
+                        </div>
+                        <ArrowRight className="w-4 h-4 text-muted-foreground shrink-0" />
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </Layout>
     );
@@ -293,66 +524,68 @@ export default function SentenceBuilder() {
     );
   }
 
-  // ── Step 4: Done summary ──
-  if (step === "done") {
-    const avgBand = completed > 0 ? (bandSum / completed).toFixed(1) : "—";
+  // ── Step 4: Report ──
+  if (step === "report" && report) {
     return (
       <Layout>
-        <div className="max-w-lg mx-auto mt-12 animate-in fade-in zoom-in duration-500">
-          <div className="bg-card border border-border rounded-3xl p-10 text-center shadow-lg">
-            <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-6">
-              <Trophy className="w-10 h-10 text-primary" />
-            </div>
-            <h2 className="text-3xl font-extrabold mb-2">Session Complete!</h2>
-            <p className="text-muted-foreground mb-8">
-              You wrote {completed} sentences using {level} vocabulary.
-            </p>
-
-            <div className="grid grid-cols-2 gap-4 mb-8">
-              <div className="bg-background rounded-2xl p-4 border border-border">
-                <div className="text-3xl font-bold">{completed}</div>
-                <div className="text-xs text-muted-foreground uppercase mt-1">Sentences</div>
-              </div>
-              <div className="bg-background rounded-2xl p-4 border border-border">
-                <div className="text-3xl font-bold text-primary">{avgBand}</div>
-                <div className="text-xs text-muted-foreground uppercase mt-1">Avg Band</div>
-              </div>
-            </div>
-
-            <div className="text-lg font-semibold mb-8 text-muted-foreground">
-              +{completed * 8} XP earned · streak protected 🔥
-            </div>
-
-            <div className="flex gap-3 justify-center flex-wrap">
-              <Button onClick={() => { setStep("level"); }} className="rounded-full">
-                <RefreshCw className="w-4 h-4 mr-2" /> Practice Again
-              </Button>
-              <Button variant="outline" className="rounded-full" asChild>
-                <Link href="/quiz">Back to Quiz Mode</Link>
-              </Button>
-            </div>
-          </div>
+        <div className="max-w-2xl mx-auto mt-6 animate-in fade-in duration-300">
+          <ReportView
+            report={report}
+            onBack={null}
+            onPracticeMore={() => { setReport(null); setStep("level"); }}
+          />
         </div>
       </Layout>
     );
   }
 
-  // ── Step 3: Practice (one word at a time) ──
+  // ── Step 3: Practice ──
   return (
     <Layout>
       <div className="max-w-2xl mx-auto mt-6 animate-in fade-in duration-300">
-        {/* Progress header */}
-        <div className="flex items-center justify-between mb-3 text-sm text-muted-foreground">
-          <span>Word {index + 1} of {words.length}</span>
-          <span className="font-semibold">{level}</span>
+        {/* Progress header with End Session */}
+        <div className="flex items-center justify-between mb-3 gap-3 flex-wrap">
+          <span className="text-sm text-muted-foreground">Word {index + 1} of {words.length} · {level}</span>
+          <button
+            onClick={() => setConfirmEnd(true)}
+            disabled={savingReport}
+            className="text-xs font-semibold text-rose-500 hover:text-rose-600 flex items-center gap-1 px-3 py-1.5 rounded-full border border-rose-200 dark:border-rose-900/40 hover:border-rose-400 transition-colors min-h-[36px]"
+          >
+            <StopCircle className="w-3.5 h-3.5" /> End Session
+          </button>
         </div>
         <Progress value={progressPct} className="h-2 mb-6" />
+
+        {/* End-session confirm dialog */}
+        {confirmEnd && (
+          <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-in fade-in duration-200">
+            <div className="bg-card border border-border rounded-3xl p-6 max-w-sm w-full shadow-xl">
+              <h3 className="text-lg font-extrabold mb-2">End this session?</h3>
+              <p className="text-sm text-muted-foreground mb-5">
+                You'll see your full report so far. {items.length === 0 && !result ? "Nothing to save yet." : `${items.length + (result ? 1 : 0)} sentence${(items.length + (result ? 1 : 0)) === 1 ? "" : "s"} will be saved.`}
+              </p>
+              <div className="flex gap-2 justify-end">
+                <Button variant="outline" className="rounded-full" onClick={() => setConfirmEnd(false)}>
+                  Continue Practising
+                </Button>
+                <Button
+                  className="rounded-full"
+                  disabled={savingReport}
+                  onClick={async () => { setConfirmEnd(false); await endSession(); }}
+                >
+                  {savingReport ? <Loader2 className="w-4 h-4 animate-spin" /> : "End & See Report"}
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Word card */}
         {currentWord && (
           <div className="bg-card border border-border rounded-3xl p-6 sm:p-8 shadow-sm">
             <div className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">
               Your target word
+              {attempts > 1 && <span className="ml-2 text-amber-600">· Attempt #{attempts}</span>}
             </div>
             <div className="flex items-center justify-between gap-3 mb-1">
               <h2 className="text-4xl sm:text-5xl font-extrabold text-foreground">
@@ -395,7 +628,7 @@ export default function SentenceBuilder() {
               {err && <p className="text-sm text-red-500 mt-2">{err}</p>}
             </div>
 
-            {/* Action button */}
+            {/* Action button(s) */}
             {!result ? (
               <Button
                 onClick={analyze}
@@ -409,12 +642,24 @@ export default function SentenceBuilder() {
                 )}
               </Button>
             ) : (
-              <Button
-                onClick={next}
-                className="w-full mt-4 rounded-full h-12 text-base font-bold"
-              >
-                {index + 1 >= words.length ? "Finish" : "Next Word"} <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
+              <div className="grid grid-cols-2 gap-3 mt-4">
+                <Button
+                  variant="outline"
+                  onClick={tryAgain}
+                  className="rounded-full h-12 text-base font-bold"
+                >
+                  <RotateCcw className="w-4 h-4 mr-2" /> Try Again
+                </Button>
+                <Button
+                  onClick={nextWord}
+                  disabled={savingReport}
+                  className="rounded-full h-12 text-base font-bold"
+                >
+                  {savingReport ? <Loader2 className="w-4 h-4 animate-spin" /> : (
+                    <>{index + 1 >= words.length ? "Finish" : "Next Word"} <ArrowRight className="w-4 h-4 ml-2" /></>
+                  )}
+                </Button>
+              </div>
             )}
           </div>
         )}
@@ -422,7 +667,6 @@ export default function SentenceBuilder() {
         {/* AI Result */}
         {result && (
           <div className="mt-5 bg-card border border-border rounded-3xl p-6 sm:p-8 shadow-sm animate-in fade-in slide-in-from-bottom-2 duration-400">
-            {/* Header */}
             <div className="flex items-center gap-3 mb-4">
               {result.isCorrect ? (
                 <div className="w-10 h-10 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-green-600">
@@ -441,7 +685,6 @@ export default function SentenceBuilder() {
               </div>
             </div>
 
-            {/* Highlighted student sentence (if error found) */}
             {!result.isCorrect && highlightedSentence && (
               <div className="bg-amber-50 dark:bg-amber-900/10 border border-amber-200 dark:border-amber-900/30 rounded-2xl p-4 mb-4">
                 <div className="text-xs font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400 mb-1">
@@ -457,7 +700,6 @@ export default function SentenceBuilder() {
               </div>
             )}
 
-            {/* Corrected / improved */}
             <div className="bg-primary/5 border border-primary/20 rounded-2xl p-4 mb-4">
               <div className="text-xs font-bold uppercase tracking-wider text-primary mb-1">
                 {result.isCorrect ? "Even better" : "Suggested correction"}
@@ -470,7 +712,6 @@ export default function SentenceBuilder() {
               )}
             </div>
 
-            {/* Bands */}
             <div className="grid grid-cols-2 gap-3">
               <div className="bg-background border border-border rounded-2xl p-3 text-center">
                 <div className="text-xs text-muted-foreground uppercase tracking-wider">Vocabulary</div>
@@ -491,5 +732,175 @@ export default function SentenceBuilder() {
         )}
       </div>
     </Layout>
+  );
+}
+
+// ── Reusable Report View ──────────────────────────────────────────────────
+function ReportView({
+  report,
+  onBack,
+  onPracticeMore,
+}: {
+  report: SessionReport;
+  onBack: (() => void) | null;
+  onPracticeMore: () => void;
+}) {
+  const rating = performanceRating(report);
+  const accuracy = report.totalWords > 0 ? Math.round((report.firstAttemptCorrect / report.totalWords) * 100) : 0;
+  const avgBand = ((report.avgVocabBand + report.avgGrammarBand) / 2).toFixed(1);
+
+  return (
+    <div className="space-y-5">
+      {onBack && (
+        <button
+          onClick={onBack}
+          className="text-sm text-muted-foreground hover:text-foreground flex items-center gap-1 min-h-[44px]"
+        >
+          <ArrowLeft className="w-4 h-4" /> Back to history
+        </button>
+      )}
+
+      {/* Hero card */}
+      <div className="bg-card border border-border rounded-3xl p-6 sm:p-8 shadow-lg text-center">
+        <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+          <Trophy className="w-8 h-8 text-primary" />
+        </div>
+        <h2 className="text-2xl sm:text-3xl font-extrabold mb-1">
+          Session Report
+        </h2>
+        <p className="text-muted-foreground text-sm mb-1">
+          {new Date(report.completedAt).toLocaleString("en-GB", { dateStyle: "medium", timeStyle: "short" })}
+          {report.endedEarly && <span className="text-amber-600 ml-1">· Ended early</span>}
+        </p>
+        <div className={cn("text-2xl font-extrabold mt-3", rating.color)}>
+          {rating.emoji} {rating.label}
+        </div>
+      </div>
+
+      {/* Stats grid */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div className="bg-card border border-border rounded-2xl p-4 text-center">
+          <div className="text-3xl font-extrabold">{report.totalWords}</div>
+          <div className="text-[11px] text-muted-foreground uppercase tracking-wider mt-1">Words Practised</div>
+        </div>
+        <div className="bg-card border border-border rounded-2xl p-4 text-center">
+          <div className="text-3xl font-extrabold text-green-600">{report.firstAttemptCorrect}</div>
+          <div className="text-[11px] text-muted-foreground uppercase tracking-wider mt-1">Correct First Try</div>
+        </div>
+        <div className="bg-card border border-border rounded-2xl p-4 text-center">
+          <div className="text-3xl font-extrabold text-amber-600">{report.neededCorrection}</div>
+          <div className="text-[11px] text-muted-foreground uppercase tracking-wider mt-1">Needed Correction</div>
+        </div>
+        <div className="bg-card border border-border rounded-2xl p-4 text-center">
+          <div className="text-3xl font-extrabold text-primary">{avgBand}</div>
+          <div className="text-[11px] text-muted-foreground uppercase tracking-wider mt-1">Avg Band</div>
+        </div>
+      </div>
+
+      {/* Common mistakes */}
+      <div className="bg-card border border-border rounded-3xl p-5 sm:p-6">
+        <h3 className="font-extrabold text-base mb-3 flex items-center gap-2">
+          <FileText className="w-4 h-4 text-primary" />
+          Most Common Mistakes
+        </h3>
+        {report.commonMistakes.length === 0 ? (
+          <p className="text-sm text-muted-foreground">
+            {report.firstAttemptCorrect === report.totalWords
+              ? "No mistakes — beautifully done!"
+              : "No clear pattern — review the items below for specific feedback."}
+          </p>
+        ) : (
+          <ul className="space-y-1.5">
+            {report.commonMistakes.map((m) => (
+              <li key={m} className="flex items-start gap-2 text-sm">
+                <span className="text-amber-500 mt-0.5">•</span>
+                <span>{m}</span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+
+      {/* Sentence-by-sentence */}
+      <div className="bg-card border border-border rounded-3xl p-5 sm:p-6">
+        <h3 className="font-extrabold text-base mb-4 flex items-center justify-between">
+          <span className="flex items-center gap-2">
+            <Sparkles className="w-4 h-4 text-primary" />
+            All Your Sentences ({report.items.length})
+          </span>
+          <span className="text-xs font-semibold text-muted-foreground">
+            {accuracy}% first-try accuracy
+          </span>
+        </h3>
+        <div className="space-y-3">
+          {report.items.map((it, i) => (
+            <div
+              key={i}
+              className={cn(
+                "rounded-2xl p-4 border",
+                it.firstAttemptCorrect
+                  ? "bg-green-50 dark:bg-green-900/10 border-green-200 dark:border-green-900/30"
+                  : it.isCorrect
+                    ? "bg-yellow-50 dark:bg-yellow-900/10 border-yellow-200 dark:border-yellow-900/30"
+                    : "bg-rose-50 dark:bg-rose-900/10 border-rose-200 dark:border-rose-900/30"
+              )}
+            >
+              <div className="flex items-center justify-between gap-2 mb-2">
+                <div className="font-extrabold text-foreground flex items-center gap-2">
+                  <span className="text-xs text-muted-foreground">{i + 1}.</span>
+                  {it.word}
+                  <span className="text-xs font-normal font-cairo text-primary" dir="rtl">{it.arabic}</span>
+                </div>
+                <div className="flex items-center gap-1.5 shrink-0">
+                  {it.firstAttemptCorrect ? (
+                    <span className="text-[10px] font-bold uppercase bg-green-600 text-white px-1.5 py-0.5 rounded">First try ✓</span>
+                  ) : it.attempts > 1 ? (
+                    <span className="text-[10px] font-bold uppercase bg-amber-500 text-white px-1.5 py-0.5 rounded">{it.attempts} attempts</span>
+                  ) : (
+                    <span className="text-[10px] font-bold uppercase bg-rose-500 text-white px-1.5 py-0.5 rounded">Needs work</span>
+                  )}
+                </div>
+              </div>
+
+              <div className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Your sentence</div>
+              <p className="text-sm mb-2 italic">"{it.finalSentence}"</p>
+
+              {it.corrected && it.corrected.toLowerCase() !== it.finalSentence.toLowerCase() && (
+                <>
+                  <div className="text-xs text-primary uppercase tracking-wider mb-1 font-bold">
+                    {it.isCorrect ? "Even better" : "Correction"}
+                  </div>
+                  <p className="text-sm font-semibold mb-1">{it.corrected}</p>
+                  {it.arabicCorrected && (
+                    <p className="text-xs font-cairo text-muted-foreground" dir="rtl">{it.arabicCorrected}</p>
+                  )}
+                </>
+              )}
+
+              {it.explanation && (
+                <p className="text-xs text-muted-foreground mt-2 pt-2 border-t border-border/50">
+                  💡 {it.explanation}
+                </p>
+              )}
+
+              <div className="flex gap-3 mt-2 text-[11px] text-muted-foreground">
+                <span>Vocab: <span className="font-bold text-foreground">{it.vocabBand?.toFixed(1)}</span></span>
+                <span>Grammar: <span className="font-bold text-foreground">{it.grammarBand?.toFixed(1)}</span></span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Actions */}
+      <div className="flex gap-3 justify-center flex-wrap pb-6">
+        <Button onClick={onPracticeMore} className="rounded-full">
+          <RefreshCw className="w-4 h-4 mr-2" /> Practice Again
+        </Button>
+        <Button variant="outline" className="rounded-full" asChild>
+          <Link href="/quiz">Back to Quiz Mode</Link>
+        </Button>
+      </div>
+    </div>
   );
 }

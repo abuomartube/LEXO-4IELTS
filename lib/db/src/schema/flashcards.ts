@@ -1,4 +1,4 @@
-import { pgTable, text, serial, timestamp, boolean, integer, real, unique, primaryKey } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, timestamp, boolean, integer, real, unique, primaryKey, jsonb } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod/v4";
 
@@ -113,6 +113,38 @@ export const activityPositionTable = pgTable("activity_positions", {
   filters: text("filters").notNull().default("{}"),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
 }, (t) => [unique().on(t.email, t.activity)]);
+
+export interface SentenceItem {
+  word: string;
+  arabic: string;
+  attempts: number;
+  finalSentence: string;
+  isCorrect: boolean;
+  errorHighlight: string | null;
+  explanation: string;
+  corrected: string;
+  arabicCorrected: string;
+  vocabBand: number;
+  grammarBand: number;
+  firstAttemptCorrect: boolean;
+}
+
+export const sentenceSessionsTable = pgTable("sentence_sessions", {
+  id: serial("id").primaryKey(),
+  email: text("email").notNull(),
+  level: text("level").notNull(),
+  totalWords: integer("total_words").notNull(),
+  firstAttemptCorrect: integer("first_attempt_correct").notNull().default(0),
+  neededCorrection: integer("needed_correction").notNull().default(0),
+  avgVocabBand: real("avg_vocab_band").notNull().default(0),
+  avgGrammarBand: real("avg_grammar_band").notNull().default(0),
+  commonMistakes: jsonb("common_mistakes").$type<string[]>().notNull().default([]),
+  items: jsonb("items").$type<SentenceItem[]>().notNull().default([]),
+  endedEarly: boolean("ended_early").notNull().default(false),
+  completedAt: timestamp("completed_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export type SentenceSession = typeof sentenceSessionsTable.$inferSelect;
 
 export const quizScoresTable = pgTable("quiz_scores", {
   id: serial("id").primaryKey(),

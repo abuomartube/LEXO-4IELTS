@@ -3,7 +3,7 @@ import {
   GraduationCap, Flame, Star, AlertTriangle, BookOpen,
   Trophy, ArrowUpDown, Search, X, LogIn, Eye, EyeOff,
   RefreshCw, Users, TrendingUp, PlayCircle, Plus, Trash2, Loader2,
-  UserCheck, UserX, KeyRound, Copy, Check, Bell, Mail, Clock,
+  UserCheck, UserX, KeyRound, Copy, Check, Bell, Mail, Clock, ArrowRight,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
@@ -124,6 +124,7 @@ export default function TeacherDashboard() {
   const [deletingCodeId, setDeletingCodeId] = useState<number | null>(null);
   // Per-student writing history modal
   const [historyEmail, setHistoryEmail] = useState<string | null>(null);
+  const [sentenceEmail, setSentenceEmail] = useState<string | null>(null);
   const [showOnlyUnused, setShowOnlyUnused] = useState(true);
 
   const savedPass = typeof sessionStorage !== "undefined" ? sessionStorage.getItem("teacher_pass") : null;
@@ -922,12 +923,20 @@ export default function TeacherDashboard() {
                           {formatDate(s.lastActivity)}
                         </td>
                         <td className="px-3 py-3">
-                          <button
-                            onClick={() => setHistoryEmail(s.email)}
-                            className="text-xs font-bold px-2 py-1 rounded-lg bg-primary/10 hover:bg-primary/20 text-primary transition-colors"
-                          >
-                            View →
-                          </button>
+                          <div className="flex items-center gap-1.5 flex-wrap">
+                            <button
+                              onClick={() => setHistoryEmail(s.email)}
+                              className="text-xs font-bold px-2 py-1 rounded-lg bg-primary/10 hover:bg-primary/20 text-primary transition-colors"
+                            >
+                              Writing
+                            </button>
+                            <button
+                              onClick={() => setSentenceEmail(s.email)}
+                              className="text-xs font-bold px-2 py-1 rounded-lg bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-700 dark:text-cyan-400 transition-colors"
+                            >
+                              Sentences
+                            </button>
+                          </div>
                         </td>
                       </tr>
                     ))
@@ -944,6 +953,13 @@ export default function TeacherDashboard() {
           email={historyEmail}
           adminPassword={password}
           onClose={() => setHistoryEmail(null)}
+        />
+      )}
+      {sentenceEmail && (
+        <AdminSentenceSessionsModal
+          email={sentenceEmail}
+          adminPassword={password}
+          onClose={() => setSentenceEmail(null)}
         />
       )}
     </div>
@@ -1226,6 +1242,231 @@ function AdminWritingHistoryModal({ email, adminPassword, onClose }: {
           </div>
         )}
       </div>
+    </div>
+  );
+}
+
+// ── Admin Sentence-Builder Sessions modal ────────────────────────────────
+
+interface SentenceItem {
+  word: string;
+  arabic: string;
+  attempts: number;
+  finalSentence: string;
+  isCorrect: boolean;
+  errorHighlight: string | null;
+  explanation: string;
+  corrected: string;
+  arabicCorrected: string;
+  vocabBand: number;
+  grammarBand: number;
+  firstAttemptCorrect: boolean;
+}
+
+interface AdminSentenceSession {
+  id: number;
+  email: string;
+  level: string;
+  totalWords: number;
+  firstAttemptCorrect: number;
+  neededCorrection: number;
+  avgVocabBand: number;
+  avgGrammarBand: number;
+  commonMistakes: string[];
+  items: SentenceItem[];
+  endedEarly: boolean;
+  completedAt: string;
+}
+
+function AdminSentenceSessionsModal({
+  email,
+  adminPassword,
+  onClose,
+}: {
+  email: string;
+  adminPassword: string;
+  onClose: () => void;
+}) {
+  const [sessions, setSessions] = useState<AdminSentenceSession[] | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [openId, setOpenId] = useState<number | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      setLoading(true);
+      try {
+        const res = await fetch(
+          `${API}/api/teacher/sentence-sessions?email=${encodeURIComponent(email)}`,
+          { headers: { "x-admin-password": adminPassword } }
+        );
+        if (!res.ok) {
+          if (!cancelled) setSessions([]);
+          return;
+        }
+        const data = await res.json();
+        if (!cancelled) setSessions(data);
+      } catch {
+        if (!cancelled) setSessions([]);
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [email, adminPassword]);
+
+  const open = sessions?.find((s) => s.id === openId) ?? null;
+
+  return (
+    <div className="fixed inset-0 z-[60] bg-black/60 flex items-end sm:items-center justify-center p-0 sm:p-4 overflow-y-auto" onClick={onClose}>
+      <div className="bg-background w-full sm:max-w-3xl max-h-[95vh] overflow-y-auto rounded-t-2xl sm:rounded-2xl border border-border shadow-xl" onClick={(e) => e.stopPropagation()}>
+        <div className="sticky top-0 bg-background border-b border-border p-4 flex items-center justify-between z-10">
+          <div className="min-w-0">
+            <h3 className="font-extrabold text-base">Sentence Builder Sessions</h3>
+            <p className="text-xs text-muted-foreground truncate">{email}</p>
+          </div>
+          <button onClick={onClose} className="w-8 h-8 rounded-lg hover:bg-accent flex items-center justify-center shrink-0">
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+
+        {loading ? (
+          <div className="flex items-center justify-center py-16">
+            <Loader2 className="w-5 h-5 animate-spin text-muted-foreground" />
+          </div>
+        ) : !sessions || sessions.length === 0 ? (
+          <div className="px-5 py-12 text-center text-sm text-muted-foreground">
+            No sentence-builder sessions yet for this student.
+          </div>
+        ) : open ? (
+          <SessionDetail session={open} onBack={() => setOpenId(null)} />
+        ) : (
+          <ul className="divide-y divide-border">
+            {sessions.map((s) => {
+              const accuracy = s.totalWords > 0 ? Math.round((s.firstAttemptCorrect / s.totalWords) * 100) : 0;
+              const avgBand = ((s.avgVocabBand + s.avgGrammarBand) / 2).toFixed(1);
+              return (
+                <li key={s.id}>
+                  <button
+                    onClick={() => setOpenId(s.id)}
+                    className="w-full px-5 py-4 flex items-center gap-3 text-left hover:bg-muted/30 transition-colors"
+                  >
+                    <div className={cn(
+                      "w-12 h-12 rounded-xl flex items-center justify-center shrink-0 font-bold text-xs",
+                      accuracy >= 80 ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400"
+                        : accuracy >= 60 ? "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400"
+                          : "bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400"
+                    )}>
+                      {accuracy}%
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="font-semibold text-sm">
+                        {s.totalWords} words · Level {s.level} · Band {avgBand}
+                        {s.endedEarly && <span className="text-amber-600 ml-1.5 text-xs">(ended early)</span>}
+                      </div>
+                      <div className="text-xs text-muted-foreground mt-0.5">
+                        {new Date(s.completedAt).toLocaleString("en-GB", { dateStyle: "medium", timeStyle: "short" })}
+                        <span className="mx-1.5">·</span>
+                        ✓ {s.firstAttemptCorrect} first try
+                        <span className="mx-1.5">·</span>
+                        ✎ {s.neededCorrection} corrected
+                      </div>
+                    </div>
+                    <ArrowRight className="w-4 h-4 text-muted-foreground shrink-0" />
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function SessionDetail({ session, onBack }: { session: AdminSentenceSession; onBack: () => void }) {
+  const accuracy = session.totalWords > 0 ? Math.round((session.firstAttemptCorrect / session.totalWords) * 100) : 0;
+  const avgBand = ((session.avgVocabBand + session.avgGrammarBand) / 2).toFixed(1);
+  return (
+    <div className="p-5 space-y-4">
+      <button
+        onClick={onBack}
+        className="text-sm text-muted-foreground hover:text-foreground flex items-center gap-1"
+      >
+        ← Back to sessions
+      </button>
+
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+        <Stat label="Words" value={session.totalWords} />
+        <Stat label="First Try ✓" value={session.firstAttemptCorrect} accent="green" />
+        <Stat label="Needed Fix" value={session.neededCorrection} accent="amber" />
+        <Stat label="Avg Band" value={avgBand} accent="primary" />
+      </div>
+
+      <div className="bg-muted/30 border border-border rounded-xl p-3 text-xs">
+        <div className="font-bold mb-1">Most common mistakes</div>
+        {session.commonMistakes.length === 0 ? (
+          <span className="text-muted-foreground">None — all clean.</span>
+        ) : (
+          <ul className="space-y-0.5">
+            {session.commonMistakes.map((m) => (
+              <li key={m}>• {m}</li>
+            ))}
+          </ul>
+        )}
+      </div>
+
+      <div className="text-xs text-muted-foreground">
+        {new Date(session.completedAt).toLocaleString("en-GB")} · Level {session.level} · {accuracy}% first-try accuracy
+        {session.endedEarly && <span className="text-amber-600 ml-1">· Ended early</span>}
+      </div>
+
+      <div className="space-y-2">
+        {session.items.map((it, i) => (
+          <div
+            key={i}
+            className={cn(
+              "rounded-xl p-3 border text-xs",
+              it.firstAttemptCorrect
+                ? "bg-green-50 dark:bg-green-900/10 border-green-200 dark:border-green-900/30"
+                : "bg-rose-50 dark:bg-rose-900/10 border-rose-200 dark:border-rose-900/30"
+            )}
+          >
+            <div className="flex items-center justify-between mb-1.5 gap-2">
+              <span className="font-extrabold">
+                {i + 1}. {it.word} <span className="font-normal text-primary" dir="rtl">{it.arabic}</span>
+              </span>
+              <span className="text-[10px] font-bold uppercase">
+                {it.firstAttemptCorrect ? "✓ first try" : `${it.attempts} attempt${it.attempts === 1 ? "" : "s"}`}
+                {" · V" + it.vocabBand?.toFixed(1) + " · G" + it.grammarBand?.toFixed(1)}
+              </span>
+            </div>
+            <div className="text-muted-foreground italic mb-1">"{it.finalSentence}"</div>
+            {it.corrected && it.corrected.toLowerCase() !== it.finalSentence.toLowerCase() && (
+              <>
+                <div className="text-[10px] font-bold uppercase text-primary mt-1">Correction</div>
+                <div className="font-semibold">{it.corrected}</div>
+                {it.arabicCorrected && (
+                  <div className="text-muted-foreground" dir="rtl">{it.arabicCorrected}</div>
+                )}
+              </>
+            )}
+            {it.explanation && (
+              <div className="text-muted-foreground mt-1 pt-1 border-t border-border/50">💡 {it.explanation}</div>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function Stat({ label, value, accent }: { label: string; value: number | string; accent?: "green" | "amber" | "primary" }) {
+  const color = accent === "green" ? "text-green-600" : accent === "amber" ? "text-amber-600" : accent === "primary" ? "text-primary" : "text-foreground";
+  return (
+    <div className="bg-card border border-border rounded-xl p-2.5 text-center">
+      <div className={cn("text-xl font-extrabold", color)}>{value}</div>
+      <div className="text-[10px] text-muted-foreground uppercase tracking-wider">{label}</div>
     </div>
   );
 }

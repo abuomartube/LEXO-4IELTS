@@ -11,6 +11,7 @@ import lexoAiRouter from "./lexo-ai";
 import orwellRouter from "./orwell";
 import lessonsRouter from "./lessons";
 import sentenceCheckRouter from "./sentence-check";
+import sentenceSessionsRouter from "./sentence-sessions";
 
 const router: IRouter = Router();
 
@@ -26,5 +27,6 @@ router.use(lexoAiRouter);
 router.use(orwellRouter);
 router.use(lessonsRouter);
 router.use(sentenceCheckRouter);
+router.use(sentenceSessionsRouter);
 
 export default router;
