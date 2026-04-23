@@ -984,6 +984,412 @@ Earth's surface`,
 
 (3) → troposphere. "The lowest layer, the troposphere, extends from the surface up to roughly 12 kilometres and is where almost all weather takes place."`,
   },
+
+  // ═════════════════════ ROUND 2 (one more per type) ═════════════════════
+
+  // 1. Matching Headings — extra
+  {
+    id: "mh-003",
+    type: "matching_headings",
+    title: "The Rise of Electric Vehicles",
+    topic: "Technology · Transport",
+    passage:
+`[A] Although they often seem like a recent invention, electric cars in fact predate the internal combustion engine. Working prototypes were demonstrated in Europe and the United States as early as the 1830s, and by 1900 around a third of all vehicles on American roads were electric. Cheaper petrol and longer driving ranges, however, soon pushed them aside.
+
+[B] Modern interest in electric vehicles is driven by two converging pressures: tightening air-quality rules in major cities, and the global commitment to cut greenhouse-gas emissions. Several European countries have announced that the sale of new petrol and diesel cars will be banned within the next decade.
+
+[C] The remaining obstacles are practical rather than technical. Charging networks are still patchy outside large cities, and second-hand buyers worry about the long-term cost of replacing a battery pack. Governments are responding with grants for chargers and warranties on battery life, but progress remains uneven from country to country.`,
+    instructions: "Choose the most suitable heading for each paragraph A–C from the list of headings i–v. There are more headings than paragraphs.",
+    options: [
+      { label: "i",   text: "An older history than people assume" },
+      { label: "ii",  text: "Why fossil-fuel cars first won out" },
+      { label: "iii", text: "Pressures pushing the modern revival" },
+      { label: "iv",  text: "Practical barriers that still remain" },
+      { label: "v",   text: "How electric motors actually work" },
+    ],
+    items: [
+      { prompt: "Paragraph A", answer: "i" },
+      { prompt: "Paragraph B", answer: "iii" },
+      { prompt: "Paragraph C", answer: "iv" },
+    ],
+    analysis:
+`A → i. The whole paragraph stresses that EVs "predate the internal combustion engine" and were already common around 1900 — they have a longer history than people assume.
+
+B → iii. The paragraph names two converging pressures: city air-quality rules and the climate commitment to cut emissions.
+
+C → iv. The paragraph focuses on the remaining "practical rather than technical" obstacles: charging networks and battery cost.
+
+Distractor ii is tempting because A briefly mentions cheaper petrol pushing EVs aside, but that's only one sentence — not the main point of A. v (how motors work) isn't in the passage at all.`,
+  },
+
+  // 2. Matching Information — extra
+  {
+    id: "mi-003",
+    type: "matching_information",
+    title: "Reviving the Wolf",
+    topic: "Ecology · Conservation",
+    passage:
+`[A] By the early twentieth century, grey wolves had been almost entirely eliminated from the contiguous United States. Hunters and farmers, encouraged by federal bounties, had targeted the species relentlessly because of attacks on livestock. By 1960, fewer than a thousand individuals were thought to survive south of the Canadian border.
+
+[B] Attitudes began to shift in the 1970s. The Endangered Species Act of 1973 gave wolves federal protection, and ecologists began to argue that their absence had unbalanced entire ecosystems. Without wolves to control them, deer and elk populations had grown so large that young trees and riverside vegetation were being stripped bare.
+
+[C] The clearest demonstration came in 1995, when biologists released 31 wolves into Yellowstone National Park. Within a decade, elk numbers had fallen, willows and aspens had begun to regrow, and beavers had returned to streams that had lost them. Even rivers ran differently as stabilised banks slowed their flow.
+
+[D] Not everyone has welcomed the wolves' return. Ranchers near the park complain about livestock losses, and some state governments have authorised limited hunting once wolf numbers exceed a certain threshold. Compensation schemes for farmers have eased — but not ended — the conflict.`,
+    instructions: "Which paragraph (A, B, C or D) contains the following information?",
+    items: [
+      { prompt: "1. A specific number of wolves released into a park",       answer: "C" },
+      { prompt: "2. A reason farmers traditionally opposed wolves",          answer: "A" },
+      { prompt: "3. The name of a law that protected the species",            answer: "B" },
+      { prompt: "4. A measure used to reduce conflict with farmers today",    answer: "D" },
+    ],
+    analysis:
+`1 → C. Paragraph C says biologists "released 31 wolves into Yellowstone National Park" in 1995.
+2 → A. Paragraph A explains farmers targeted wolves "because of attacks on livestock".
+3 → B. Paragraph B names the "Endangered Species Act of 1973".
+4 → D. Paragraph D mentions "Compensation schemes for farmers" as a tool to ease conflict.`,
+  },
+
+  // 3. Matching Features — extra
+  {
+    id: "mf-003",
+    type: "matching_features",
+    title: "Three Pioneers of Flight",
+    topic: "Engineering · History",
+    passage:
+`In December 1903, the American brothers Orville and Wilbur Wright achieved the first sustained, controlled flight of a powered aircraft on a beach in North Carolina. Their machine flew for just twelve seconds, but the principles they had worked out — a movable rudder, wing-warping for roll control, and a lightweight engine of their own design — set the pattern for almost all later aeroplanes.
+
+A different breakthrough came in 1927, when the American aviator Charles Lindbergh became the first person to fly solo, non-stop across the Atlantic Ocean, from New York to Paris. The 33-hour flight made aviation a global news story and convinced governments to invest seriously in passenger air services.
+
+The third name often added to the list is the British engineer Frank Whittle, who in 1937 ran the first successful jet engine on a test bench. Although the technology was not used in commercial flight until after the Second World War, jet propulsion eventually replaced piston engines on almost every airliner.`,
+    instructions: "Match each pioneer (1–3) with the achievement (A–E). There are more achievements than pioneers.",
+    options: [
+      { label: "A", text: "First powered, controlled flight" },
+      { label: "B", text: "Built the first commercial helicopter" },
+      { label: "C", text: "First solo non-stop crossing of the Atlantic" },
+      { label: "D", text: "Successful test of the first jet engine" },
+      { label: "E", text: "Invented the parachute" },
+    ],
+    items: [
+      { prompt: "1. The Wright Brothers", answer: "A" },
+      { prompt: "2. Charles Lindbergh",   answer: "C" },
+      { prompt: "3. Frank Whittle",       answer: "D" },
+    ],
+    analysis:
+`Wright Brothers → A. "First sustained, controlled flight of a powered aircraft."
+Lindbergh → C. "First person to fly solo, non-stop across the Atlantic Ocean."
+Whittle → D. "Ran the first successful jet engine on a test bench."
+
+Distractors B (helicopter) and E (parachute) are not mentioned in the passage at all — never pick a feature that doesn't appear in the text.`,
+  },
+
+  // 4. Matching Sentence Endings — extra
+  {
+    id: "mse-003",
+    type: "matching_sentence_endings",
+    title: "Why We Yawn",
+    topic: "Biology · Psychology",
+    passage:
+`Yawning is one of the most familiar behaviours in the animal kingdom, yet its function remains debated. The oldest theory held that yawning increases the supply of oxygen to the brain, but careful experiments have shown that breathing high-oxygen air does not reduce the urge to yawn at all. A more recent hypothesis suggests that yawning helps cool the brain by drawing air into the mouth and nose; supporters point to studies in which subjects yawned more often when their foreheads were warmed than when they were cooled.
+
+Whatever its physiological purpose, yawning has a striking social dimension. People who watch others yawn — even on screen — are far more likely to yawn themselves, and the effect is strongest between close friends and family members. Researchers believe that contagious yawning may have evolved as a way of synchronising rest periods within a social group.`,
+    instructions: "Complete each sentence (1–3) with the correct ending (A–E). There are more endings than you need.",
+    options: [
+      { label: "A", text: "is strongest between people who know each other well." },
+      { label: "B", text: "helps cool the brain by drawing in air." },
+      { label: "C", text: "is unique to human beings." },
+      { label: "D", text: "may keep a social group's rest patterns in step." },
+      { label: "E", text: "has been disproved by modern experiments." },
+    ],
+    items: [
+      { prompt: "1. The old idea that yawning brings more oxygen to the brain", answer: "E" },
+      { prompt: "2. Contagious yawning",                                          answer: "A" },
+      { prompt: "3. The evolutionary purpose of contagious yawning",              answer: "D" },
+    ],
+    analysis:
+`1 → E. The passage says careful experiments showed extra oxygen "does not reduce the urge to yawn at all" — i.e. the old idea has been disproved.
+
+2 → A. "The effect is strongest between close friends and family members."
+
+3 → D. "Contagious yawning may have evolved as a way of synchronising rest periods within a social group."
+
+Don't choose B for question 3: cooling the brain is a personal, physiological theory — not specifically about contagious yawning.`,
+  },
+
+  // 5. True / False / Not Given — extra
+  {
+    id: "tfng-003",
+    type: "true_false_not_given",
+    title: "Easter Island's Statues",
+    topic: "Archaeology",
+    passage:
+`Easter Island, a remote volcanic outcrop in the South Pacific, is famous for the nearly 900 giant stone figures known as moai that line its coast. The statues were carved from compressed volcanic ash between roughly 1100 and 1600 CE by the island's Polynesian inhabitants. Most stand between three and five metres tall, although the largest ever erected is more than nine metres high. Recent archaeological work has shown that almost all moai once carried separate cylindrical "topknots" carved from a different, redder stone.
+
+How the islanders moved the heavy figures from the quarry to their final platforms has been debated for centuries. Early European visitors assumed wooden rollers must have been used, but no large trees survived on the island by the time of contact. Experiments in 2012 demonstrated that small teams of people could "walk" a five-tonne replica upright, using ropes attached to its sides — matching local oral traditions that the moai "walked" to their positions.`,
+    instructions: "Decide whether each statement agrees with the information in the passage. Choose TRUE, FALSE, or NOT GIVEN.",
+    items: [
+      { prompt: "1. The moai were carved from volcanic ash.",                                answer: "TRUE" },
+      { prompt: "2. All moai are exactly the same height.",                                  answer: "FALSE" },
+      { prompt: "3. The topknots were made of the same stone as the bodies.",                answer: "FALSE" },
+      { prompt: "4. The Polynesians arrived on the island from New Zealand.",                answer: "NOT GIVEN" },
+      { prompt: "5. The 2012 experiment supported one of the island's oral traditions.",     answer: "TRUE" },
+    ],
+    analysis:
+`1 → TRUE. "Carved from compressed volcanic ash."
+2 → FALSE. The passage gives a range (3–5 m, with the largest 9+ m), so they are NOT all the same height.
+3 → FALSE. The passage says topknots were carved from "a different, redder stone".
+4 → NOT GIVEN. The Polynesians are mentioned, but the passage never says where they came from.
+5 → TRUE. The 2012 experiment matched local oral traditions that the moai "walked" to their positions.`,
+  },
+
+  // 6. Multiple Choice — extra
+  {
+    id: "mc-003",
+    type: "multiple_choice",
+    title: "Memory and Music",
+    topic: "Neuroscience",
+    passage:
+`Songs encountered in adolescence appear to occupy a special place in human memory. Surveys of older adults consistently find that the music they remember most vividly, and report enjoying most strongly even decades later, was the music popular when they were aged roughly 12 to 22. Psychologists call this pattern the "reminiscence bump", and it has been observed in many cultures where the question has been studied.
+
+One leading explanation is biological: brain regions involved in emotional response and memory consolidation are still maturing during adolescence, so musical experiences in those years are encoded with unusual depth. A second, social explanation suggests that adolescence is when people most actively form their identities, and the soundtrack of that process becomes inseparable from how they remember themselves. The two explanations are not mutually exclusive — most researchers believe both factors contribute.`,
+    instructions: "Choose the correct letter, A, B, C or D.",
+    options: [
+      { label: "A", text: "Older adults usually prefer the music of their childhood years (ages 0–10)." },
+      { label: "B", text: "The reminiscence bump occurs because adolescents listen to more music." },
+      { label: "C", text: "Researchers think both biological and social factors are responsible." },
+      { label: "D", text: "The reminiscence bump has only been observed in Western countries." },
+    ],
+    items: [
+      { prompt: "Which statement is supported by the passage?", answer: "C" },
+    ],
+    analysis:
+`C is correct. The final sentence states "most researchers believe both factors contribute".
+
+A is wrong: the bump covers ages 12–22, not childhood.
+B is wrong: the passage gives biological and social reasons, not "more listening".
+D is wrong: it's been "observed in many cultures", not only Western ones.`,
+  },
+
+  // 7. List Selection — extra
+  {
+    id: "ls-003",
+    type: "list_selection",
+    title: "Effective Language Learning",
+    topic: "Education",
+    passage:
+`Studies of adult language learners have identified several practices that significantly accelerate progress. Distributed practice — short, regular sessions rather than long, occasional ones — produces stronger long-term retention. Active retrieval, in which learners try to recall vocabulary or grammar from memory before checking, also outperforms passive review such as re-reading a list. Speaking with native speakers, even for short conversations, gives the learner real-time pronunciation feedback that classroom drills cannot easily reproduce.
+
+Other widely advertised techniques are less helpful than they appear. Watching films in a target language without subtitles is enjoyable but, for beginners, often produces only minimal vocabulary gain. Listening to language recordings while sleeping has been investigated repeatedly and shown no measurable benefit. And paying for very expensive software does not, on its own, guarantee faster results.`,
+    instructions: "Which THREE practices are described as effective ways to learn a language? Choose THREE answers (A–F).",
+    options: [
+      { label: "A", text: "Short, regular study sessions" },
+      { label: "B", text: "Listening to recordings while asleep" },
+      { label: "C", text: "Trying to recall vocabulary before checking" },
+      { label: "D", text: "Watching films without subtitles as a beginner" },
+      { label: "E", text: "Speaking with native speakers" },
+      { label: "F", text: "Buying very expensive learning software" },
+    ],
+    items: [
+      { prompt: "Choose THREE letters.", answer: ["A", "C", "E"] },
+    ],
+    analysis:
+`A — "Distributed practice — short, regular sessions… produces stronger long-term retention."
+C — "Active retrieval… outperforms passive review."
+E — "Speaking with native speakers… gives the learner real-time pronunciation feedback."
+
+B, D and F are all explicitly listed under "less helpful than they appear" — classic List Selection traps.`,
+  },
+
+  // 8. Choose a Title — extra
+  {
+    id: "ct-003",
+    type: "choose_title",
+    title: "(See passage)",
+    topic: "History · Food",
+    passage:
+`Few foods have travelled as widely as the chilli pepper. Native to Central and South America, where it had been cultivated for at least six thousand years, it was unknown elsewhere until Spanish and Portuguese ships carried it across the Atlantic in the late 1400s. Within a single century the chilli had spread along trade routes from Lisbon to West Africa, India, China and Korea — often becoming so deeply embedded in local cooking that people now think of it as native.
+
+The reasons for its rapid adoption are practical. Chilli plants grow easily in many climates, dry well for storage, and add intense flavour to otherwise plain staple grains. They also contain capsaicin, a chemical that triggers the brain's pain receptors but, paradoxically, releases endorphins that produce a mild sense of pleasure. That combination of cheap, storable bulk and addictive flavour is hard to match.`,
+    instructions: "Choose the most appropriate title for the whole passage.",
+    options: [
+      { label: "A", text: "How chillies became a global ingredient" },
+      { label: "B", text: "The medical benefits of capsaicin" },
+      { label: "C", text: "Spanish exploration of the Americas" },
+      { label: "D", text: "Why some people dislike spicy food" },
+    ],
+    items: [
+      { prompt: "Choose A, B, C or D.", answer: "A" },
+    ],
+    analysis:
+`A is correct: the passage covers the chilli's American origin, its rapid spread by ship, and the practical reasons for its global adoption — all aspects of becoming a global ingredient.
+
+B is too narrow (capsaicin is one detail). C is the means, not the topic. D isn't discussed.`,
+  },
+
+  // 9. Short Answer — extra
+  {
+    id: "sa-003",
+    type: "short_answer",
+    title: "The Story of Aspirin",
+    topic: "Medicine · History",
+    passage:
+`The pain-relieving properties of willow bark were known to physicians as early as ancient Egypt. In 1828, the German pharmacist Johann Buchner isolated the active compound, salicin, from willow extract. Pure salicin and its derivative salicylic acid, however, badly irritated the stomachs of patients who took them.
+
+The breakthrough came in 1897 at the German chemical firm Bayer, where the chemist Felix Hoffmann produced a less aggressive form known as acetylsalicylic acid. Bayer began marketing it under the trade name Aspirin in 1899, and it quickly became one of the most widely used medicines in the world. Today, daily low-dose aspirin is also prescribed to reduce the risk of heart attacks in adults at high cardiovascular risk.`,
+    instructions: "Answer the questions below using NO MORE THAN THREE WORDS from the passage for each answer.",
+    items: [
+      { prompt: "1. Who first isolated salicin from willow extract?",   answer: "Johann Buchner" },
+      { prompt: "2. What chemical name describes Aspirin?",              answer: "acetylsalicylic acid" },
+      { prompt: "3. Which company began marketing Aspirin in 1899?",     answer: "Bayer" },
+    ],
+    analysis:
+`1 → Johann Buchner. "The German pharmacist Johann Buchner isolated the active compound, salicin."
+2 → acetylsalicylic acid. "A less aggressive form known as acetylsalicylic acid."
+3 → Bayer. "Bayer began marketing it under the trade name Aspirin in 1899."`,
+  },
+
+  // 10. Sentence Completion — extra
+  {
+    id: "sc-003",
+    type: "sentence_completion",
+    title: "The Mona Lisa",
+    topic: "Art · History",
+    passage:
+`Painted by Leonardo da Vinci between approximately 1503 and 1519, the Mona Lisa is probably the most famous portrait in the world. It is unusually small — only 77 by 53 centimetres — and is painted in oil on a thin panel of poplar wood. The subject is widely believed to be Lisa Gherardini, the wife of a Florentine merchant, although the identification has never been confirmed beyond doubt.
+
+The painting was acquired by the French king François I and has hung in the Louvre Museum since 1797. Its global fame, however, dates only from 1911, when an Italian workman named Vincenzo Peruggia stole the painting and hid it for two years before being caught while trying to sell it. The dramatic theft transformed the Mona Lisa from a respected artwork into a household name.`,
+    instructions: "Complete the sentences below using NO MORE THAN TWO WORDS OR A NUMBER from the passage for each gap.",
+    items: [
+      { prompt: "1. The Mona Lisa was painted on a panel of ___.",                  answer: "poplar wood", acceptable: ["poplar"] },
+      { prompt: "2. The painting has hung in the Louvre Museum since ___.",          answer: "1797" },
+      { prompt: "3. The thief who took the painting in 1911 was named ___.",         answer: "Vincenzo Peruggia", acceptable: ["Peruggia"] },
+    ],
+    analysis:
+`1 → poplar wood. "Painted in oil on a thin panel of poplar wood."
+2 → 1797. "Has hung in the Louvre Museum since 1797."
+3 → Vincenzo Peruggia. The thief is named in the second paragraph.`,
+  },
+
+  // 11. Summary Completion — extra
+  {
+    id: "smc-003",
+    type: "summary_completion",
+    title: "Why Glaciers Are Retreating",
+    topic: "Environment · Geology",
+    passage:
+`Mountain glaciers around the world are losing mass faster than at any time in recorded history. Satellite measurements taken over the past forty years show that the average glacier is now thinner by several metres each decade, and many small glaciers in the European Alps are expected to disappear entirely within the next century. The main driver is well established: rising air temperatures caused by greenhouse-gas emissions melt more ice in summer than fresh snow can replace in winter.
+
+The consequences extend far beyond the mountains themselves. Roughly two billion people, most of them in Asia, depend on rivers fed by glacier meltwater for drinking water, agriculture and hydroelectric power. As glaciers shrink, river flows will at first increase and then, once the ice is largely gone, fall dramatically — particularly during dry seasons.`,
+    instructions: "Complete the summary using NO MORE THAN TWO WORDS from the passage for each gap.",
+    items: [
+      { prompt: "1. The main cause of glacier retreat is rising ___.",                              answer: "air temperatures", acceptable: ["temperatures"] },
+      { prompt: "2. Many small glaciers in the European ___ may vanish within a century.",          answer: "Alps" },
+      { prompt: "3. Around ___ people depend on glacier-fed rivers.",                                answer: "two billion" },
+      { prompt: "4. Once the ice is gone, river flows will fall sharply, especially in ___ seasons.", answer: "dry" },
+    ],
+    analysis:
+`1 → air temperatures. "Rising air temperatures caused by greenhouse-gas emissions."
+2 → Alps. "Small glaciers in the European Alps are expected to disappear."
+3 → two billion. "Roughly two billion people… depend on rivers fed by glacier meltwater."
+4 → dry. "Fall dramatically — particularly during dry seasons."`,
+  },
+
+  // 12. Table Completion — extra
+  {
+    id: "tc-003",
+    type: "table_completion",
+    title: "Three of the World's Tallest Buildings",
+    topic: "Architecture · Engineering",
+    passage:
+`The race to build the world's tallest skyscraper has accelerated since the turn of the century, with cities in the Middle East and East Asia now leading the field. Completed in Dubai in 2010, the Burj Khalifa stands 828 metres tall and held the world record for over a decade. Its 163 floors are served by some of the fastest elevators ever built, climbing at up to 10 metres per second.
+
+The Shanghai Tower, completed in 2015, has a twisted form that engineers calculated would reduce wind load by around a quarter compared with a square design. At 632 metres it is China's tallest building. In Saudi Arabia, the Jeddah Tower has been under construction for over a decade and is planned to reach more than 1,000 metres on completion, which would make it the first building anywhere to exceed one kilometre in height.`,
+    instructions: "Complete the table below. Write NO MORE THAN TWO WORDS OR A NUMBER from the passage for each gap.",
+    visual:
+`┌────────────────┬───────────┬────────────────┬───────────────────────────┐
+│ Building       │ City      │ Height (metres)│ Notable feature           │
+├────────────────┼───────────┼────────────────┼───────────────────────────┤
+│ Burj Khalifa   │ Dubai     │ (1) ___        │ very fast elevators       │
+│ Shanghai Tower │ Shanghai  │ 632            │ twisted form reduces (2) ___│
+│ Jeddah Tower   │ Jeddah    │ over (3) ___   │ first to exceed one km    │
+└────────────────┴───────────┴────────────────┴───────────────────────────┘`,
+    items: [
+      { prompt: "Cell (1)", answer: "828" },
+      { prompt: "Cell (2)", answer: "wind load" },
+      { prompt: "Cell (3)", answer: "1,000", acceptable: ["1000", "one thousand"] },
+    ],
+    analysis:
+`(1) → 828. "The Burj Khalifa stands 828 metres tall."
+(2) → wind load. The twisted form was calculated "would reduce wind load by around a quarter."
+(3) → 1,000. The Jeddah Tower "is planned to reach more than 1,000 metres."`,
+  },
+
+  // 13. Flow Chart Completion — extra
+  {
+    id: "fc-003",
+    type: "flow_chart_completion",
+    title: "Recycling an Aluminium Can",
+    topic: "Industry · Environment",
+    passage:
+`Aluminium drinks cans are among the most efficiently recycled products in the world; recycling them uses about 95 per cent less energy than producing new aluminium from raw ore. The process begins when discarded cans are collected and transported to a recycling plant. There they are shredded into small flakes and passed under a powerful magnet, which removes any steel cans accidentally mixed in.
+
+The cleaned aluminium flakes are then heated in a large furnace until they melt at around 660 °C. Any paint or lacquer left on the surface burns off as the metal liquefies. The molten aluminium is poured into moulds to form solid blocks called ingots, which are rolled into thin sheets at a separate mill. The new sheets are sold to can makers, who can press them into fresh drinks cans within as little as sixty days from the original can being thrown away.`,
+    instructions: "Complete the flow chart below using NO MORE THAN TWO WORDS from the passage for each gap.",
+    visual:
+`Step 1: Used cans collected and taken to a recycling plant.
+   ↓
+Step 2: Cans shredded into flakes.
+   ↓
+Step 3: A (1) ___ removes any steel mixed in.
+   ↓
+Step 4: Flakes melted in a furnace at around 660 °C.
+   ↓
+Step 5: Molten aluminium poured into moulds to form (2) ___.
+   ↓
+Step 6: Ingots rolled into thin (3) ___ at a separate mill.
+   ↓
+Step 7: Sheets sold to can makers and pressed into new cans.`,
+    items: [
+      { prompt: "Gap (1)", answer: "magnet", acceptable: ["powerful magnet"] },
+      { prompt: "Gap (2)", answer: "ingots" },
+      { prompt: "Gap (3)", answer: "sheets" },
+    ],
+    analysis:
+`(1) → magnet. "Passed under a powerful magnet, which removes any steel cans."
+(2) → ingots. "Solid blocks called ingots."
+(3) → sheets. "Rolled into thin sheets at a separate mill."`,
+  },
+
+  // 14. Diagram Completion — extra
+  {
+    id: "dc-003",
+    type: "diagram_completion",
+    title: "The Human Ear",
+    topic: "Biology",
+    passage:
+`The human ear consists of three connected regions, each with a distinct role in hearing. Sound waves first enter the visible outer ear and travel down the ear canal until they strike the eardrum, a thin membrane that vibrates in response. These vibrations are passed across the air-filled middle ear by three of the smallest bones in the body — the hammer, the anvil and the stirrup — which together amplify the signal.
+
+The amplified vibrations then enter the cochlea, a fluid-filled spiral structure in the inner ear. Tiny hair cells lining the cochlea convert the mechanical movement into electrical signals, which travel along the auditory nerve to the brain. Damage to these hair cells, often caused by loud noise over many years, is the most common reason for permanent hearing loss in adults.`,
+    instructions: "Label the diagram below. Write NO MORE THAN TWO WORDS from the passage for each gap.",
+    visual:
+`Outer ear                Middle ear                    Inner ear
+  ┌─────────┐  ┌──────────────────────┐  ┌─────────────────────────┐
+  │ ear     │  │ (1) ___ vibrates     │  │ (2) ___ contains hair   │
+  │ canal   │→│ → 3 small bones      │→│   cells → electrical     │
+  │         │  │ amplify the signal   │  │   signals               │
+  └─────────┘  └──────────────────────┘  └────────┬────────────────┘
+                                                   │
+                                          (3) ___ nerve → brain`,
+    items: [
+      { prompt: "Label (1) — thin membrane at the end of the ear canal", answer: "eardrum" },
+      { prompt: "Label (2) — fluid-filled spiral in the inner ear",       answer: "cochlea" },
+      { prompt: "Label (3) — nerve carrying signals to the brain",         answer: "auditory" },
+    ],
+    analysis:
+`(1) → eardrum. "Strike the eardrum, a thin membrane that vibrates."
+(2) → cochlea. "The cochlea, a fluid-filled spiral structure in the inner ear."
+(3) → auditory. "Travel along the auditory nerve to the brain."`,
+  },
 ];
 
 export const SKILL_EXERCISES: SkillExercise[] = E;
