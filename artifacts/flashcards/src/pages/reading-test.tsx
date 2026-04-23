@@ -3,7 +3,8 @@ import { useAwardXp } from "@workspace/api-client-react";
 import { Layout } from "@/components/layout";
 import {
   BookOpen, ChevronRight, ChevronLeft, CheckCircle2, XCircle,
-  Clock, Trophy, AlertTriangle, RotateCcw, ArrowUp, ListChecks, X
+  Clock, Trophy, AlertTriangle, RotateCcw, ArrowUp, ListChecks, X,
+  Sparkles, Target
 } from "lucide-react";
 import {
   readingTests,
@@ -14,11 +15,14 @@ import {
   type ReadingTest,
   type QuestionSection
 } from "@/data/reading-test";
+import { ReadingSkills } from "@/components/reading-skills";
 
 type Answers = Record<number, string>;
+type Mode = "menu" | "full" | "skills";
 type Phase = "select" | "intro" | "test" | "results";
 
 export default function ReadingTestPage() {
+  const [mode, setMode] = useState<Mode>("menu");
   const [phase, setPhase] = useState<Phase>("select");
   const [selectedTest, setSelectedTest] = useState<ReadingTest | null>(null);
   const [currentPassage, setCurrentPassage] = useState(0);
@@ -84,11 +88,81 @@ export default function ReadingTestPage() {
     return `${m}:${sec.toString().padStart(2, "0")}`;
   };
 
+  // ── Mode menu: Full Tests vs Skills Practice ──
+  if (mode === "menu") {
+    return (
+      <Layout>
+        <div className="max-w-4xl mx-auto space-y-6">
+          <div className="bg-card border border-border rounded-3xl p-8 text-center space-y-3">
+            <div className="w-16 h-16 rounded-2xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mx-auto">
+              <BookOpen className="w-8 h-8 text-blue-600 dark:text-blue-400" />
+            </div>
+            <h1 className="text-3xl font-black text-foreground">IELTS Reading Practice</h1>
+            <p className="text-muted-foreground text-base">Choose how you want to practise today</p>
+            <p className="text-sm text-muted-foreground" dir="rtl" lang="ar">اختر طريقة التدريب</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <button
+              onClick={() => setMode("full")}
+              className="group text-left bg-card border border-border rounded-3xl p-6 hover:border-blue-400 hover:shadow-xl hover:shadow-blue-600/10 transition-all"
+            >
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white shadow-lg mb-4">
+                <ListChecks className="w-7 h-7" />
+              </div>
+              <h2 className="text-xl font-black text-foreground group-hover:text-blue-600 transition-colors">Full Reading Tests</h2>
+              <p className="text-sm text-muted-foreground mt-1">Complete 3-passage, 40-question, 60-minute Cambridge-style exams.</p>
+              <p className="text-xs text-muted-foreground mt-1" dir="rtl" lang="ar">اختبارات قراءة كاملة (٣ نصوص · ٤٠ سؤال · ٦٠ دقيقة)</p>
+              <div className="mt-4 inline-flex items-center gap-1.5 text-sm font-bold text-blue-600">
+                Start full test <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+              </div>
+            </button>
+
+            <button
+              onClick={() => setMode("skills")}
+              className="group text-left bg-card border border-border rounded-3xl p-6 hover:border-violet-400 hover:shadow-xl hover:shadow-violet-600/10 transition-all"
+            >
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-violet-500 via-purple-500 to-fuchsia-500 flex items-center justify-center text-white shadow-lg mb-4">
+                <Target className="w-7 h-7" />
+              </div>
+              <h2 className="text-xl font-black text-foreground group-hover:text-violet-600 transition-colors flex items-center gap-2">
+                Skills Practice by Question Type
+                <Sparkles className="w-4 h-4 text-violet-500" />
+              </h2>
+              <p className="text-sm text-muted-foreground mt-1">Targeted exercises for each of the 14 IELTS Reading question types — with detailed analysis after every submission.</p>
+              <p className="text-xs text-muted-foreground mt-1" dir="rtl" lang="ar">تمارين مركّزة لكل نوع من أنواع أسئلة القراءة الـ١٤</p>
+              <div className="mt-4 inline-flex items-center gap-1.5 text-sm font-bold text-violet-600">
+                Choose a question type <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+              </div>
+            </button>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
+
+  if (mode === "skills") {
+    return (
+      <Layout>
+        <div className="max-w-5xl mx-auto">
+          <ReadingSkills onBack={() => setMode("menu")} />
+        </div>
+      </Layout>
+    );
+  }
+
+  // ── Full-test mode: existing flow ──
   if (phase === "select") {
     return (
       <Layout>
         <div className="max-w-3xl mx-auto space-y-8">
           <div className="bg-card border border-border rounded-3xl p-8 text-center space-y-6">
+            <button
+              onClick={() => setMode("menu")}
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground"
+            >
+              <ChevronLeft className="w-3.5 h-3.5" /> Back to Reading Practice
+            </button>
             <div className="w-16 h-16 rounded-2xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mx-auto">
               <BookOpen className="w-8 h-8 text-blue-600 dark:text-blue-400" />
             </div>

@@ -1,0 +1,23 @@
+اكتب له:
+“Add a Reading Skills Practice section to LEXO. This is separate from the existing Reading tests. It contains targeted exercises for each of the 14 IELTS Reading question types, with 7 exercises per type (98 exercises total).
+Structure for each exercise:
+- A medium-length passage at real IELTS academic level (same vocabulary, topic style, and complexity as the actual exam)
+- One question below the passage matching that specific question type
+- After submission: show result + correct answer + detailed analysis explaining why
+- Each completed exercise earns XP and counts toward the daily plan
+The 14 question types with their specific formats:
+1. Matching Headings — student reads paragraphs and matches each to a heading from a list (list is always larger than needed; answers are usually roman numerals)
+2. Matching Paragraph Information — student matches statements to the paragraph letter that contains that information (answers not in consecutive order; same paragraph can have multiple answers)
+3. Matching Features — student matches specific facts to categories such as researcher to discovery or event to date (requires understanding synonyms and paraphrasing)
+4. Matching Sentence Endings — student completes sentences by matching them with correct endings from a separate list (grammar knowledge is key)
+5. True / False / Not Given — student decides if statements are True, False, or Not Given based on the passage
+6. Multiple Choice — student chooses the correct answer from 4 options (A, B, C, D)
+7. List Selection — student selects multiple correct answers from a list (e.g. ‘Which THREE of the following are mentioned?’)
+8. Choose a Title — student selects the most appropriate title for the whole passage from a list
+9. Short Answer Questions — student writes a short answer to specific questions (answers follow the same order as the passage)
+10. Sentence Completion — student completes sentences with words taken directly from the passage
+11. Summary Completion — student completes a paragraph summary using words from the passage or a word box
+12. Table Completion — student fills in missing information in a table based on the passage
+13. Flow Chart Completion — student fills in missing steps in a flow chart based on the passage
+14. Diagram Completion — student labels a diagram with information from the passage
+All passages must match real IELTS Academic Reading standards. Add this section to the sidebar navigation and include it in the daily study plan.”
