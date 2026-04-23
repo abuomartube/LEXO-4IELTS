@@ -1,33 +1,36 @@
+import { lazy, Suspense } from "react";
 import { Switch, Route, Router as WouterRouter } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/context/theme-context";
 import { PasswordGate } from "@/components/password-gate";
+import { PwaInstallPrompt } from "@/components/pwa-install-prompt";
 import { setStudentEmailGetter } from "@workspace/api-client-react";
-import NotFound from "@/pages/not-found";
-import Home from "@/pages/home";
-import Study from "@/pages/study";
-import Browse from "@/pages/browse";
-import ProgressPage from "@/pages/progress";
-import Quiz from "@/pages/quiz";
-import AdminPage from "@/pages/admin";
-import Synonyms from "@/pages/synonyms";
-import Antonyms from "@/pages/antonyms";
-import EssayChecker from "@/pages/essay-checker";
-import WritingHistory from "@/pages/writing-history";
-import Stories from "@/pages/stories";
-import Speaking from "@/pages/speaking";
-import PhrasalVerbs from "@/pages/phrasal-verbs";
-import ReadingTest from "@/pages/reading-test";
-import ListeningTest from "@/pages/listening-test";
-import WeakWords from "@/pages/weak-words";
-import SpeakingTopics from "@/pages/speaking-topics";
-import WritingTemplates from "@/pages/writing-templates";
-import TeacherDashboard from "@/pages/teacher-dashboard";
-import MockTest from "@/pages/mock-test";
-import Grammar from "@/pages/grammar";
-import Lessons from "@/pages/lessons";
+
+const Home = lazy(() => import("@/pages/home"));
+const Study = lazy(() => import("@/pages/study"));
+const Browse = lazy(() => import("@/pages/browse"));
+const ProgressPage = lazy(() => import("@/pages/progress"));
+const Quiz = lazy(() => import("@/pages/quiz"));
+const AdminPage = lazy(() => import("@/pages/admin"));
+const Synonyms = lazy(() => import("@/pages/synonyms"));
+const Antonyms = lazy(() => import("@/pages/antonyms"));
+const EssayChecker = lazy(() => import("@/pages/essay-checker"));
+const WritingHistory = lazy(() => import("@/pages/writing-history"));
+const Stories = lazy(() => import("@/pages/stories"));
+const Speaking = lazy(() => import("@/pages/speaking"));
+const PhrasalVerbs = lazy(() => import("@/pages/phrasal-verbs"));
+const ReadingTest = lazy(() => import("@/pages/reading-test"));
+const ListeningTest = lazy(() => import("@/pages/listening-test"));
+const WeakWords = lazy(() => import("@/pages/weak-words"));
+const SpeakingTopics = lazy(() => import("@/pages/speaking-topics"));
+const WritingTemplates = lazy(() => import("@/pages/writing-templates"));
+const TeacherDashboard = lazy(() => import("@/pages/teacher-dashboard"));
+const MockTest = lazy(() => import("@/pages/mock-test"));
+const Grammar = lazy(() => import("@/pages/grammar"));
+const Lessons = lazy(() => import("@/pages/lessons"));
+const NotFound = lazy(() => import("@/pages/not-found"));
 
 setStudentEmailGetter(() => {
   try {
@@ -50,39 +53,49 @@ const queryClient = new QueryClient({
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 
+function RouteFallback() {
+  return (
+    <div className="min-h-[60vh] flex items-center justify-center">
+      <div className="w-8 h-8 rounded-full border-[3px] border-primary/20 border-t-primary animate-spin" />
+    </div>
+  );
+}
+
 function Router() {
   return (
-    <Switch>
-      <Route path="/admin" component={AdminPage} />
-      <Route path="/teacher" component={TeacherDashboard} />
-      <Route>
-        <PasswordGate>
-          <Switch>
-            <Route path="/" component={Home} />
-            <Route path="/lessons" component={Lessons} />
-            <Route path="/study" component={Study} />
-            <Route path="/quiz" component={Quiz} />
-            <Route path="/browse" component={Browse} />
-            <Route path="/progress" component={ProgressPage} />
-            <Route path="/synonyms" component={Synonyms} />
-            <Route path="/antonyms" component={Antonyms} />
-            <Route path="/phrasal-verbs" component={PhrasalVerbs} />
-            <Route path="/essay-checker" component={EssayChecker} />
-            <Route path="/writing-history" component={WritingHistory} />
-            <Route path="/listening-test" component={ListeningTest} />
-            <Route path="/reading-test" component={ReadingTest} />
-            <Route path="/stories" component={Stories} />
-            <Route path="/speaking" component={Speaking} />
-            <Route path="/speaking-topics" component={SpeakingTopics} />
-            <Route path="/writing-templates" component={WritingTemplates} />
-            <Route path="/weak-words" component={WeakWords} />
-            <Route path="/grammar" component={Grammar} />
-            <Route path="/mock-test" component={MockTest} />
-            <Route component={NotFound} />
-          </Switch>
-        </PasswordGate>
-      </Route>
-    </Switch>
+    <Suspense fallback={<RouteFallback />}>
+      <Switch>
+        <Route path="/admin" component={AdminPage} />
+        <Route path="/teacher" component={TeacherDashboard} />
+        <Route>
+          <PasswordGate>
+            <Switch>
+              <Route path="/" component={Home} />
+              <Route path="/lessons" component={Lessons} />
+              <Route path="/study" component={Study} />
+              <Route path="/quiz" component={Quiz} />
+              <Route path="/browse" component={Browse} />
+              <Route path="/progress" component={ProgressPage} />
+              <Route path="/synonyms" component={Synonyms} />
+              <Route path="/antonyms" component={Antonyms} />
+              <Route path="/phrasal-verbs" component={PhrasalVerbs} />
+              <Route path="/essay-checker" component={EssayChecker} />
+              <Route path="/writing-history" component={WritingHistory} />
+              <Route path="/listening-test" component={ListeningTest} />
+              <Route path="/reading-test" component={ReadingTest} />
+              <Route path="/stories" component={Stories} />
+              <Route path="/speaking" component={Speaking} />
+              <Route path="/speaking-topics" component={SpeakingTopics} />
+              <Route path="/writing-templates" component={WritingTemplates} />
+              <Route path="/weak-words" component={WeakWords} />
+              <Route path="/grammar" component={Grammar} />
+              <Route path="/mock-test" component={MockTest} />
+              <Route component={NotFound} />
+            </Switch>
+          </PasswordGate>
+        </Route>
+      </Switch>
+    </Suspense>
   );
 }
 
@@ -93,6 +106,7 @@ function App() {
         <TooltipProvider>
           <WouterRouter base={base}>
             <Router />
+            <PwaInstallPrompt />
           </WouterRouter>
           <Toaster />
         </TooltipProvider>

@@ -2,14 +2,63 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
-    <title>English Flashcards</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover" />
+    <title>LEXO</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="theme-color" content="#0f9f9a" />
+    <meta name="application-name" content="LEXO" />
+
+    <!-- iOS PWA -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="LEXO" />
+    <link rel="apple-touch-icon" href="/4ielts-logo.png" />
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+      /* LEXO splash screen — shown until the React app mounts. */
+      #lexo-splash {
+        position: fixed; inset: 0; z-index: 9999;
+        display: flex; flex-direction: column; align-items: center; justify-content: center;
+        background: #f6fafa;
+        transition: opacity 320ms ease;
+      }
+      #lexo-splash.hide { opacity: 0; pointer-events: none; }
+      #lexo-splash img {
+        width: 96px; height: 96px; border-radius: 22px;
+        box-shadow: 0 8px 24px rgba(15, 159, 154, 0.18);
+      }
+      #lexo-splash .name {
+        margin-top: 18px; font-family: Inter, system-ui, -apple-system, sans-serif;
+        font-weight: 800; letter-spacing: 0.18em; color: #0f9f9a; font-size: 18px;
+      }
+      #lexo-splash .spin {
+        margin-top: 22px; width: 26px; height: 26px;
+        border: 3px solid rgba(15, 159, 154, 0.18);
+        border-top-color: #0f9f9a;
+        border-radius: 50%;
+        animation: lexo-spin 0.9s linear infinite;
+      }
+      @keyframes lexo-spin { to { transform: rotate(360deg); } }
+      @media (prefers-color-scheme: dark) {
+        #lexo-splash { background: #1a1714; }
+        #lexo-splash .name { color: #2dd4cd; }
+      }
+    </style>
   </head>
   <body>
+    <div id="lexo-splash" aria-hidden="true">
+      <img src="/4ielts-logo.png" alt="" />
+      <div class="name">LEXO</div>
+      <div class="spin"></div>
+    </div>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
