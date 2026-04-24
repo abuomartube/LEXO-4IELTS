@@ -347,17 +347,27 @@ async function callSpeakingAPIStream(
   isStart: boolean,
   onChunk: (text: string) => void,
 ): Promise<string> {
-  const res = await fetch("/api/speaking/message", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ messages, topic, part, questionNum, isStart }),
-  });
-  if (!res.ok) throw new Error("API error");
+  let res: Response;
+  try {
+    res = await fetch("/api/speaking/message", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ messages, topic, part, questionNum, isStart }),
+    });
+  } catch {
+    throw new Error("Network error — please check your connection and try again.");
+  }
+  if (!res.ok) {
+    const data = await res.json().catch(() => ({}));
+    throw new Error(data.message || data.error || "Churchill AI is temporarily unavailable. Please try again in a moment.");
+  }
 
-  const reader = res.body!.getReader();
+  const reader = res.body?.getReader();
+  if (!reader) throw new Error("Streaming response not available.");
   const decoder = new TextDecoder();
   let fullText = "";
   let buffer = "";
+  let sawError = false;
 
   while (true) {
     const { done, value } = await reader.read();
@@ -368,7 +378,8 @@ async function callSpeakingAPIStream(
     for (const line of lines) {
       if (!line.startsWith("data: ")) continue;
       const payload = line.slice(6).trim();
-      if (payload === "[DONE]" || payload === "[ERROR]") continue;
+      if (payload === "[DONE]") continue;
+      if (payload === "[ERROR]") { sawError = true; continue; }
       try {
         const { delta } = JSON.parse(payload) as { delta: string };
         fullText += delta;
@@ -376,17 +387,30 @@ async function callSpeakingAPIStream(
       } catch { /* ignore malformed chunks */ }
     }
   }
+  // Treat any [ERROR] marker as a hard failure even if partial text streamed in,
+  // so we never persist a truncated examiner turn into the session transcript.
+  if (sawError) throw new Error("Churchill AI was interrupted. Please try again.");
+  if (!fullText.trim()) throw new Error("Empty response from Churchill AI. Please try again.");
   return fullText;
 }
 
 async function callReportAPI(messages: Message[], topic: string): Promise<ReportData> {
-  const res = await fetch("/api/speaking/report", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ messages, topic }),
-  });
-  if (!res.ok) throw new Error("API error");
+  let res: Response;
+  try {
+    res = await fetch("/api/speaking/report", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ messages, topic }),
+    });
+  } catch {
+    throw new Error("Network error — please check your connection and try again.");
+  }
+  if (!res.ok) {
+    const data = await res.json().catch(() => ({}));
+    throw new Error(data.message || data.error || "Could not generate the report. Please try again.");
+  }
   const data = await res.json();
+  if (!data?.report) throw new Error("Report missing from response.");
   return data.report as ReportData;
 }
 
@@ -1117,9 +1141,9 @@ export default function SpeakingPage() {
         await playTts(q1Text);
       }
       // In voice mode, student manually taps mic after TTS ends
-    } catch {
+    } catch (err) {
       setStreamingContent(null);
-      setError("Could not connect to Churchill AI. Please try again.");
+      setError(err instanceof Error ? err.message : "Could not connect to Churchill AI. Please try again.");
       setSession((s) => ({ ...s, phase: "idle" }));
     } finally {
       setIsLoading(false);
@@ -1191,9 +1215,9 @@ export default function SpeakingPage() {
       } else {
         playTts(ttsText);
       }
-    } catch {
+    } catch (err) {
       setStreamingContent(null);
-      setError("Failed to get AI response. Please try again.");
+      setError(err instanceof Error ? err.message : "Failed to get AI response. Please try again.");
     } finally {
       isProcessingRef.current = false;
       setIsLoading(false);
@@ -1251,9 +1275,9 @@ export default function SpeakingPage() {
         }));
         const { examinerText } = parseFeedback(reply);
         playTts(examinerText || reply);
-      } catch {
+      } catch (err) {
         setStreamingContent(null);
-        setError("Failed to start Part 3. Please try again.");
+        setError(err instanceof Error ? err.message : "Failed to start Part 3. Please try again.");
       } finally {
         setIsLoading(false);
       }
@@ -1275,8 +1299,8 @@ export default function SpeakingPage() {
     try {
       const report = await callReportAPI(session.messages, session.topic);
       setSession((s) => ({ ...s, phase: "complete", report }));
-    } catch {
-      setError("Failed to generate report. Please try again.");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to generate report. Please try again.");
       setSession((s) => ({ ...s, phase: "part3" }));
     } finally {
       setIsLoading(false);

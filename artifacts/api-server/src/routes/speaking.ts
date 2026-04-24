@@ -82,6 +82,78 @@ CRITICAL scoring constraints:
 - A Band 5 student MUST receive Band 5, not 6
 - Be honest and strict in every score`;
 
+// ── Brace-balanced JSON object extractor ──
+// Scans for `{`, walks forward respecting strings/escapes, and returns the
+// first balanced object that parses successfully. More robust than a greedy
+// regex when the model wraps the JSON in any commentary or includes braces
+// inside the response that don't belong to the report object itself.
+function extractFirstJsonObject(text: string): unknown | null {
+  for (let start = text.indexOf("{"); start !== -1; start = text.indexOf("{", start + 1)) {
+    let depth = 0;
+    let inString = false;
+    let escaped = false;
+    for (let i = start; i < text.length; i++) {
+      const ch = text[i];
+      if (escaped) { escaped = false; continue; }
+      if (inString) {
+        if (ch === "\\") escaped = true;
+        else if (ch === '"') inString = false;
+        continue;
+      }
+      if (ch === '"') { inString = true; continue; }
+      if (ch === "{") depth++;
+      else if (ch === "}") {
+        depth--;
+        if (depth === 0) {
+          const candidate = text.slice(start, i + 1);
+          try {
+            return JSON.parse(candidate);
+          } catch {
+            break; // try next `{`
+          }
+        }
+      }
+    }
+  }
+  return null;
+}
+
+// ── Strict shape validation for the report payload ──
+// The frontend renders nested fields like report.pronunciation.tips.map(...)
+// and report.fluencyCoherence.comment, so a valid top-level key isn't enough —
+// we need to ensure the nested types are correct before sending.
+function isCriterion(v: unknown): v is { band: number; comment: string } {
+  return (
+    typeof v === "object" && v !== null &&
+    typeof (v as Record<string, unknown>).band === "number" &&
+    typeof (v as Record<string, unknown>).comment === "string"
+  );
+}
+function isStringArray(v: unknown): v is string[] {
+  return Array.isArray(v) && v.every((x) => typeof x === "string");
+}
+
+function extractAndValidateReport(text: string): Record<string, unknown> | null {
+  const parsed = extractFirstJsonObject(text);
+  if (!parsed || typeof parsed !== "object") return null;
+  const r = parsed as Record<string, unknown>;
+  const pron = r.pronunciation as Record<string, unknown> | undefined;
+
+  const ok =
+    typeof r.overallBand === "number" && r.overallBand >= 0 && r.overallBand <= 9 &&
+    isCriterion(r.fluencyCoherence) &&
+    isCriterion(r.lexicalResource) &&
+    isCriterion(r.grammaticalRange) &&
+    typeof pron === "object" && pron !== null &&
+    typeof pron.band === "number" &&
+    isStringArray(pron.tips) &&
+    isStringArray(r.topVocab) &&
+    isStringArray(r.strengths) &&
+    isStringArray(r.improvements);
+
+  return ok ? r : null;
+}
+
 function buildSystemPrompt(topic: string, part: number, questionNum: number, isStart: boolean): string {
   if (part === 1) {
     const isFinal = !isStart && questionNum > 8;
@@ -233,19 +305,32 @@ router.post("/speaking/report", async (req, res) => {
       topic: string;
     };
 
-    const systemPrompt = `You are a strict but fair certified IELTS examiner following British Council official band descriptors exactly. Based on the IELTS Speaking test conversation on the topic "${topic}", generate a detailed band score report.
+    if (!Array.isArray(messages) || messages.length === 0 || !topic) {
+      res.status(400).json({ error: "Missing topic or messages" });
+      return;
+    }
 
-Analyse ONLY the student's (user) messages. Evaluate strictly based on these 4 criteria:
+    // Build a single readable transcript string. Critically, we pack the entire
+    // conversation into ONE user turn so the model produces a fresh report
+    // instead of continuing the examiner's role from the prior assistant turn.
+    const trimmed = messages.slice(-30);
+    const transcript = trimmed
+      .map((m) => `${m.role === "assistant" ? "EXAMINER" : "STUDENT"}: ${m.content}`)
+      .join("\n\n");
+
+    const systemPrompt = `You are a strict but fair certified IELTS examiner following British Council official band descriptors exactly. You will receive a complete IELTS Speaking test transcript. Your task is to produce a detailed band score report as a single JSON object.
+
+Analyse ONLY the STUDENT messages. Evaluate strictly based on these 4 criteria:
 1. Fluency & Coherence — flow, pauses, logical connections, coherence markers
 2. Lexical Resource — vocabulary range, accuracy, use of less common/idiomatic words
 3. Grammatical Range & Accuracy — sentence variety, error frequency, complex structures
 4. Pronunciation — inferred from text quality, word choice patterns, phrasing naturalness
 
 STRICT SCORING RULES (you MUST follow these):
-- Band 4: Short/simple answers, many grammar errors, very limited vocabulary, frequent hesitation
+- Band 4: Short/simple answers, many grammar errors, very limited vocabulary
 - Band 5: Some relevant content, noticeable grammar errors, limited vocabulary range
-- Band 6: Generally relevant, some errors but meaning clear, adequate vocabulary, mostly fluent
-- Band 7: Extended developed answers, few errors, good vocabulary variety, fluent
+- Band 6: Generally relevant, some errors but meaning clear, adequate vocabulary
+- Band 7: Extended developed answers, few errors, good vocabulary variety
 - Band 8+: Full developed answers with examples, rare errors, wide sophisticated vocabulary
 
 CRITICAL constraints:
@@ -254,11 +339,11 @@ CRITICAL constraints:
 - If vocabulary is basic/repetitive → MAXIMUM Band 5.5 for lexicalResource
 - Only simple sentence structures → MAXIMUM Band 6 for grammaticalRange
 - NEVER give Band 7+ unless answers were genuinely extended, accurate, and vocabulary-rich
-- NEVER inflate scores to encourage the student — honesty helps them improve
-- The overall band is the average of the 4 criteria, rounded to nearest 0.5
-- Most intermediate students score between 4.5 and 6.0 — this is normal and expected
+- NEVER inflate scores — honesty helps the student improve
+- The overall band is the average of the 4 criteria, rounded to the nearest 0.5
+- Most intermediate students score between 4.5 and 6.0 — this is normal
 
-Return ONLY a valid JSON object, no markdown, no extra text:
+OUTPUT FORMAT — respond with ONE JSON object only. No prose, no markdown, no code fences. The JSON must match this exact shape:
 {
   "overallBand": 5.5,
   "fluencyCoherence": { "band": 5.5, "comment": "2 sentences of specific feedback" },
@@ -272,21 +357,30 @@ Return ONLY a valid JSON object, no markdown, no extra text:
 
     const anthropic = getAnthropicClient();
 
+    // Pack the transcript into a single user message so the model produces a
+    // fresh report instead of continuing the examiner's role from the prior
+    // assistant turn (the bug that was returning conversational follow-ups).
     const message = await anthropic.messages.create({
       model: "claude-sonnet-4-6",
-      max_tokens: 1200,
+      max_tokens: 1500,
       system: systemPrompt,
-      messages: messages.slice(-30),
+      messages: [
+        {
+          role: "user",
+          content: `Topic: ${topic}\n\nFull IELTS Speaking transcript below. Read it, then OUTPUT ONLY the JSON report — no greeting, no preamble, no markdown fences. Begin your response with the opening "{" character.\n\n${transcript}`,
+        },
+      ],
     });
 
-    const text = message.content[0].type === "text" ? message.content[0].text : "{}";
-    const jsonMatch = text.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) {
-      res.status(500).json({ error: "Invalid report format" });
+    const raw = message.content[0]?.type === "text" ? message.content[0].text : "";
+
+    const report = extractAndValidateReport(raw);
+    if (!report) {
+      console.error("[speaking/report] Could not extract a valid report. Raw output (first 600 chars):", raw.slice(0, 600));
+      res.status(500).json({ error: "invalid_report", message: "Churchill AI returned an unexpected response. Please try again." });
       return;
     }
 
-    const report = JSON.parse(jsonMatch[0]);
     res.json({ report });
     void recordAiUsage({ email: studentEmail, route: "churchill", endpoint: "/speaking/report" });
   } catch (err) {
