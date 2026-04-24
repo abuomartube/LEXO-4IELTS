@@ -21,7 +21,7 @@
     "pronunciation": "AB-strakt",
     "example": "The essay introduced abstract concepts that were difficult to grasp.",
     "exampleAr": "قدّمت المقالة مفاهيم مجردة يصعب استيعابها.",
-    "antonymTranslation": "ملموس، محدد",
+    "antonymTranslation": "ملموس / محدد",
     "antonymExample": "The research provides concrete evidence supporting the climate change hypothesis.",
     "antonymExampleAr": "يقدم البحث أدلة ملموسة تدعم فرضية تغير المناخ."
   },
@@ -99,7 +99,7 @@
     "pronunciation": "ad-VANS",
     "example": "Technology continues to advance at a remarkable pace.",
     "exampleAr": "تواصل التكنولوجيا التقدم بوتيرة ملحوظة.",
-    "antonymTranslation": "ينسحب، يتراجع",
+    "antonymTranslation": "ينسحب / يتراجع",
     "antonymExample": "Companies may retreat from international markets during economic downturns.",
     "antonymExampleAr": "قد تنسحب الشركات من الأسواق الدولية خلال فترات الركود الاقتصادي."
   },
@@ -112,7 +112,7 @@
     "pronunciation": "AD-vərs",
     "example": "Pollution has adverse effects on public health.",
     "exampleAr": "للتلوث آثار سلبية على الصحة العامة.",
-    "antonymTranslation": "مناسب، مؤاتٍ",
+    "antonymTranslation": "مواتٍ / مناسب",
     "antonymExample": "Favourable economic conditions encourage investment in renewable energy technologies.",
     "antonymExampleAr": "تشجع الظروف الاقتصادية المؤاتية الاستثمار في تقنيات الطاقة المتجددة."
   },
@@ -138,7 +138,7 @@
     "pronunciation": "ə-LOW",
     "example": "The new policy would allow citizens greater freedom of expression.",
     "exampleAr": "ستمنح السياسة الجديدة المواطنين حرية تعبير أكبر.",
-    "antonymTranslation": "يمنع، يحظر",
+    "antonymTranslation": "يمنع / يحظر",
     "antonymExample": "Many countries prohibit smoking in public places to protect health.",
     "antonymExampleAr": "تحظر العديد من الدول التدخين في الأماكن العامة لحماية الصحة."
   },
@@ -151,7 +151,7 @@
     "pronunciation": "AYN-shənt",
     "example": "The ancient ruins attracted thousands of tourists each year.",
     "exampleAr": "اجتذبت الآثار القديمة آلاف السياح كل عام.",
-    "antonymTranslation": "حديث، عصري",
+    "antonymTranslation": "حديث / عصري",
     "antonymExample": "Modern technology has transformed how students access educational resources.",
     "antonymExampleAr": "غيّرت التكنولوجيا الحديثة الطريقة التي يصل بها الطلاب إلى الموارد التعليمية."
   },
@@ -164,7 +164,7 @@
     "pronunciation": "ə-PAIR-ənt",
     "example": "It was apparent that the situation required immediate action.",
     "exampleAr": "كان من الواضح أن الوضع يستلزم اتخاذ إجراء فوري.",
-    "antonymTranslation": "مخفي، خفي",
+    "antonymTranslation": "مخفي / خفي",
     "antonymExample": "Hidden costs often make products more expensive than initially advertised.",
     "antonymExampleAr": "غالبًا ما تجعل التكاليف المخفية المنتجات أغلى مما هو معلن في البداية."
   },
@@ -216,7 +216,7 @@
     "pronunciation": "ə-SEND",
     "example": "The team managed to ascend to the mountain's summit by noon.",
     "exampleAr": "تمكّن الفريق من الصعود إلى قمة الجبل بحلول الظهيرة.",
-    "antonymTranslation": "ينزل، يهبط",
+    "antonymTranslation": "ينزل / يهبط",
     "antonymExample": "Aircraft descend gradually to ensure passenger safety during landing procedures.",
     "antonymExampleAr": "تهبط الطائرات تدريجيًا لضمان سلامة الركاب أثناء إجراءات الهبوط."
   },
@@ -255,7 +255,7 @@
     "pronunciation": "ə-TRAKT",
     "example": "The city's cultural events attract visitors from around the world.",
     "exampleAr": "تجذب الفعاليات الثقافية في المدينة زوارًا من جميع أنحاء العالم.",
-    "antonymTranslation": "يطرد، يصد",
+    "antonymTranslation": "يطرد / يصد",
     "antonymExample": "Certain chemicals repel insects effectively without harming the natural environment.",
     "antonymExampleAr": "تطرد بعض المواد الكيميائية الحشرات بفعالية دون الإضرار بالبيئة الطبيعية."
   },
@@ -281,7 +281,7 @@
     "pronunciation": "ə-WAIR",
     "example": "Students should be aware of the consequences of academic dishonesty.",
     "exampleAr": "يجب أن يكون الطلاب على دراية بعواقب عدم الأمانة الأكاديمية.",
-    "antonymTranslation": "غافل، غير مدرك",
+    "antonymTranslation": "غافل / غير مدرك",
     "antonymExample": "Being oblivious to cultural differences can hinder effective international communication.",
     "antonymExampleAr": "الغفلة عن الاختلافات الثقافية قد تعيق التواصل الدولي الفعال."
   },
@@ -294,7 +294,7 @@
     "pronunciation": "ə-BUN-dəns",
     "example": "The region is known for its abundance of natural resources.",
     "exampleAr": "تشتهر المنطقة بوفرة مواردها الطبيعية.",
-    "antonymTranslation": "ندرة، شح",
+    "antonymTranslation": "ندرة / شح",
     "antonymExample": "Water scarcity poses significant challenges for agricultural development in arid regions.",
     "antonymExampleAr": "تشكل ندرة المياه تحديات كبيرة للتنمية الزراعية في المناطق القاحلة."
   },
@@ -307,7 +307,7 @@
     "pronunciation": "ak-SEL-ə-rayt",
     "example": "Investment in technology can accelerate economic growth significantly.",
     "exampleAr": "يمكن للاستثمار في التكنولوجيا أن يُسرّع النمو الاقتصادي بشكل ملحوظ.",
-    "antonymTranslation": "يبطئ، يتباطأ",
+    "antonymTranslation": "يبطئ / يتباطأ",
     "antonymExample": "Economic growth tends to decelerate during periods of political instability.",
     "antonymExampleAr": "يميل النمو الاقتصادي إلى التباطؤ خلال فترات عدم الاستقرار السياسي."
   },
@@ -320,7 +320,7 @@
     "pronunciation": "ak-SES-ə-bəl",
     "example": "The library should be accessible to all members of the community.",
     "exampleAr": "يجب أن تكون المكتبة في متناول جميع أفراد المجتمع.",
-    "antonymTranslation": "حصري، خاص",
+    "antonymTranslation": "حصري / خاص",
     "antonymExample": "Exclusive educational programs often limit opportunities for disadvantaged students.",
     "antonymExampleAr": "غالبًا ما تحد البرامج التعليمية الحصرية من فرص الطلاب المحرومين."
   },
@@ -359,7 +359,7 @@
     "pronunciation": "əd-VAN-tij",
     "example": "Speaking multiple languages is a great advantage in today's job market.",
     "exampleAr": "التحدث بعدة لغات ميزة كبيرة في سوق العمل اليوم.",
-    "antonymTranslation": "عيب، سلبية",
+    "antonymTranslation": "عيب / سلبية",
     "antonymExample": "The main drawback of this approach is its high implementation cost.",
     "antonymExampleAr": "العيب الرئيسي لهذا النهج هو ارتفاع تكلفة تطبيقه."
   },
@@ -385,7 +385,7 @@
     "pronunciation": "ə-LEE-vee-ayt",
     "example": "The new medication helped alleviate the patient's chronic pain.",
     "exampleAr": "ساعد الدواء الجديد على تخفيف الألم المزمن للمريض.",
-    "antonymTranslation": "يزداد سوءًا",
+    "antonymTranslation": "يُفاقم / يزيد سوءًا",
     "antonymExample": "Air quality will worsen without stricter regulations on industrial emissions.",
     "antonymExampleAr": "ستسوء جودة الهواء دون تشديد اللوائح على الانبعاثات الصناعية."
   },
@@ -398,7 +398,7 @@
     "pronunciation": "am-BISH-əs",
     "example": "The ambitious student worked tirelessly to secure a scholarship.",
     "exampleAr": "عمل الطالب الطموح بلا كلل لضمان منحة دراسية.",
-    "antonymTranslation": "راضٍ عن النفس، مكتفٍ",
+    "antonymTranslation": "راضٍ عن النفس / مكتفٍ",
     "antonymExample": "Complacent attitudes toward education can lead to declining academic performance.",
     "antonymExampleAr": "يمكن للمواقف الراضية تجاه التعليم أن تؤدي إلى تراجع الأداء الأكاديمي."
   },
@@ -437,7 +437,7 @@
     "pronunciation": "ə-NON-ə-məs",
     "example": "The anonymous donor gave a million pounds to the charity.",
     "exampleAr": "قدّم المتبرع مجهول الهوية مليون جنيه إسترليني للجمعية الخيرية.",
-    "antonymTranslation": "معلوم، معروف",
+    "antonymTranslation": "معلوم / معروف",
     "antonymExample": "Scientists have identified several factors contributing to global temperature rise.",
     "antonymExampleAr": "حدد العلماء عدة عوامل تساهم في ارتفاع درجة الحرارة العالمية."
   },
@@ -463,7 +463,7 @@
     "pronunciation": "ə-REST",
     "example": "The police decided to arrest the suspect after gathering evidence.",
     "exampleAr": "قرّرت الشرطة اعتقال المشتبه به بعد جمع الأدلة.",
-    "antonymTranslation": "يطلق سراح، ينشر",
+    "antonymTranslation": "يطلق سراح",
     "antonymExample": "Universities release research findings to contribute to global knowledge advancement.",
     "antonymExampleAr": "تنشر الجامعات نتائج الأبحاث للمساهمة في تقدم المعرفة العالمية."
   },
@@ -502,7 +502,7 @@
     "pronunciation": "ə-VAY-lə-bəl",
     "example": "The doctor was available to answer questions after the lecture.",
     "exampleAr": "كان الطبيب متاحًا للإجابة على الأسئلة بعد المحاضرة.",
-    "antonymTranslation": "نادر، شحيح",
+    "antonymTranslation": "نادر / شحيح",
     "antonymExample": "Scarce resources require careful allocation to maximize their beneficial impact.",
     "antonymExampleAr": "تتطلب الموارد الشحيحة توزيعًا دقيقًا لتعظيم تأثيرها المفيد."
   },
@@ -541,7 +541,7 @@
     "pronunciation": "ə-RYE-vəl",
     "example": "The arrival of the relief team gave survivors new hope.",
     "exampleAr": "منح وصول فريق الإغاثة للناجين أملاً جديدًا.",
-    "antonymTranslation": "مغادرة، رحيل",
+    "antonymTranslation": "مغادرة / رحيل",
     "antonymExample": "His departure from the project caused significant delays in completion.",
     "antonymExampleAr": "تسبب رحيله عن المشروع في تأخيرات كبيرة في الإنجاز."
   },
@@ -619,7 +619,7 @@
     "pronunciation": "AL-ə-kayt",
     "example": "The government decided to allocate more funds to public health.",
     "exampleAr": "قررت الحكومة تخصيص مزيد من الأموال للصحة العامة.",
-    "antonymTranslation": "يحجب، يمنع",
+    "antonymTranslation": "يحجب / يمنع",
     "antonymExample": "Governments should not withhold information crucial for informed public decision-making.",
     "antonymExampleAr": "لا يجب على الحكومات حجب المعلومات الحاسمة لاتخاذ قرارات عامة مستنيرة."
   },
@@ -658,7 +658,7 @@
     "pronunciation": "ə-SOH-shee-ayt",
     "example": "Most people associate a healthy diet with physical fitness.",
     "exampleAr": "يربط معظم الناس بين النظام الغذائي الصحي واللياقة البدنية.",
-    "antonymTranslation": "منفصل",
+    "antonymTranslation": "يفصل",
     "antonymExample": "Students should separate personal opinions from academic research findings.",
     "antonymExampleAr": "يجب على الطلاب فصل الآراء الشخصية عن نتائج البحث الأكاديمي."
   },
@@ -697,7 +697,7 @@
     "pronunciation": "ə-KYOOM-yə-layt",
     "example": "Over time, small savings can accumulate into a significant amount.",
     "exampleAr": "مع مرور الوقت، يمكن للمدخرات الصغيرة أن تتراكم لتصبح مبلغًا كبيرًا.",
-    "antonymTranslation": "يبدد، يشتت",
+    "antonymTranslation": "يبدد / يشتت",
     "antonymExample": "Protesters began to disperse after the police arrived at campus.",
     "antonymExampleAr": "بدأ المتظاهرون بالتفرق بعد وصول الشرطة إلى الحرم الجامعي."
   },
@@ -723,7 +723,7 @@
     "pronunciation": "am-BIV-ə-lənt",
     "example": "She felt ambivalent about accepting the job offer abroad.",
     "exampleAr": "شعرت بتردد حيال قبول عرض العمل في الخارج.",
-    "antonymTranslation": "مؤكد، محدد",
+    "antonymTranslation": "مؤكد / محدد",
     "antonymExample": "Certain variables must be controlled in experimental research designs.",
     "antonymExampleAr": "يجب ضبط متغيرات معينة في تصاميم البحث التجريبي."
   },
@@ -788,7 +788,7 @@
     "pronunciation": "əb-ZORB",
     "example": "A sponge can absorb a large amount of water very quickly.",
     "exampleAr": "يمكن للإسفنج أن يمتص كمية كبيرة من الماء بسرعة كبيرة.",
-    "antonymTranslation": "يصدر، ينبعث",
+    "antonymTranslation": "يُصدر / ينبعث",
     "antonymExample": "Factories emit harmful pollutants that contribute to global climate change.",
     "antonymExampleAr": "تصدر المصانع ملوثات ضارة تساهم في تغير المناخ العالمي."
   },
@@ -866,7 +866,7 @@
     "pronunciation": "an-ə-LIT-i-kəl",
     "example": "An analytical approach helps solve complex problems more effectively.",
     "exampleAr": "يساعد النهج التحليلي على حل المشكلات المعقدة بشكل أكثر فاعلية.",
-    "antonymTranslation": "حدسي، بديهي",
+    "antonymTranslation": "حدسي / بديهي",
     "antonymExample": "The software features an intuitive interface suitable for inexperienced users.",
     "antonymExampleAr": "يتميز البرنامج بواجهة بديهية مناسبة للمستخدمين عديمي الخبرة."
   },
@@ -905,7 +905,7 @@
     "pronunciation": "an-TIS-i-payt",
     "example": "Analysts failed to anticipate the sharp rise in inflation.",
     "exampleAr": "فشل المحللون في توقع الارتفاع الحاد في التضخم.",
-    "antonymTranslation": "يتجاهل",
+    "antonymTranslation": "يغفل عن / يتجاهل",
     "antonymExample": "Researchers cannot overlook contradictory evidence in their scientific investigations.",
     "antonymExampleAr": "لا يمكن للباحثين تجاهل الأدلة المتناقضة في تحقيقاتهم العلمية."
   },
@@ -1057,7 +1057,7 @@
     "word": "attribute",
     "antonym": "deny",
     "skill": "Writing",
-    "translation": "يعزو / صفة",
+    "translation": "يعزو",
     "pronunciation": "ə-TRIB-yoot",
     "example": "Success can often be attributed to consistent hard work.",
     "exampleAr": "كثيرًا ما يمكن عزو النجاح إلى العمل الجاد المستمر.",
@@ -1187,7 +1187,7 @@
     "word": "benefit",
     "antonym": "drawback",
     "skill": "Writing",
-    "translation": "فائدة / يستفيد",
+    "translation": "فائدة / منفعة",
     "pronunciation": "BEN-ə-fit",
     "example": "The community benefited greatly from the new sports centre.",
     "exampleAr": "استفاد المجتمع كثيرًا من المركز الرياضي الجديد.",
@@ -1256,7 +1256,7 @@
     "pronunciation": "BRAW-dən",
     "example": "Travelling abroad can help broaden your perspective on the world.",
     "exampleAr": "يمكن أن يساعدك السفر إلى الخارج على توسيع منظورك تجاه العالم.",
-    "antonymTranslation": "محدود، ضيق",
+    "antonymTranslation": "يُضيِّق",
     "antonymExample": "Narrow definitions of success overlook important non-financial achievements.",
     "antonymExampleAr": "تتجاهل التعريفات الضيقة للنجاح الإنجازات المهمة غير المالية."
   },
@@ -1477,7 +1477,7 @@
     "pronunciation": "SEN-trə-lyz",
     "example": "Some governments centralise power to improve decision-making speed.",
     "exampleAr": "تلجأ بعض الحكومات إلى مركزية السلطة لتحسين سرعة اتخاذ القرار.",
-    "antonymTranslation": "يفوض السلطة",
+    "antonymTranslation": "يُلامَركز / يُوزِّع السلطة",
     "antonymExample": "Governments increasingly decentralise power to improve local governance efficiency.",
     "antonymExampleAr": "تقوم الحكومات بشكل متزايد بتفويض السلطة إلى المستويات المحلية لتحسين كفاءة الحكم المحلي."
   },
@@ -1620,7 +1620,7 @@
     "pronunciation": "kən-VURJ",
     "example": "The two research paths converge at the same conclusion.",
     "exampleAr": "يلتقي مسارا البحثين عند الوصول إلى نفس الاستنتاج.",
-    "antonymTranslation": "يتباعد، ينحرف",
+    "antonymTranslation": "يتباعد / يتشعب",
     "antonymExample": "Research findings diverge significantly depending on methodological approaches used.",
     "antonymExampleAr": "تتباعد نتائج البحث بشكل كبير اعتمادًا على الأساليب المنهجية المستخدمة."
   },
@@ -1837,7 +1837,7 @@
     "word": "challenge",
     "antonym": "opportunity",
     "skill": "Writing",
-    "translation": "تحدٍ",
+    "translation": "تحدٍّ",
     "pronunciation": "CHAL-inj",
     "example": "Overcoming personal challenges builds character and resilience.",
     "exampleAr": "التغلب على التحديات الشخصية يبني الشخصية والمرونة.",
@@ -1854,7 +1854,7 @@
     "pronunciation": "kəm-PEL",
     "example": "The harsh economic climate compelled many people to seek new jobs.",
     "exampleAr": "أجبر المناخ الاقتصادي القاسي كثيرين على البحث عن وظائف جديدة.",
-    "antonymTranslation": "يثبط، يحبط",
+    "antonymTranslation": "يثبّط / يحبط",
     "antonymExample": "Negative feedback can discourage students from pursuing challenging academic goals.",
     "antonymExampleAr": "يمكن للملاحظات السلبية أن تثبط الطلاب عن متابعة أهداف أكاديمية صعبة."
   },
@@ -1958,7 +1958,7 @@
     "pronunciation": "koh-HIIR-əns",
     "example": "The report lacked coherence, making it difficult to follow.",
     "exampleAr": "افتقر التقرير إلى التماسك، مما جعل متابعته أمرًا صعبًا.",
-    "antonymTranslation": "التجزؤ، التفتت",
+    "antonymTranslation": "تجزؤ / تفتت",
     "antonymExample": "Urban fragmentation creates difficulties in providing efficient public transportation systems.",
     "antonymExampleAr": "يخلق التجزؤ الحضري صعوبات في توفير أنظمة نقل عام فعالة."
   },
@@ -1984,7 +1984,7 @@
     "pronunciation": "kən-VAY",
     "example": "The writer uses metaphors to convey emotion effectively.",
     "exampleAr": "يستخدم الكاتب الاستعارات لنقل العاطفة بفاعلية.",
-    "antonymTranslation": "يخفي، يُخفي",
+    "antonymTranslation": "يخفي",
     "antonymExample": "Researchers should never conceal data that contradicts their initial hypothesis.",
     "antonymExampleAr": "يجب على الباحثين عدم إخفاء البيانات التي تناقض فرضيتهم الأولية أبداً."
   },
@@ -1997,7 +1997,7 @@
     "pronunciation": "SEES",
     "example": "The two countries agreed to cease hostilities immediately.",
     "exampleAr": "اتفق البلدان على وقف الأعمال العدائية فورًا.",
-    "antonymTranslation": "يستمر، يثابر",
+    "antonymTranslation": "يستمر / يثابر",
     "antonymExample": "Students must persist through academic challenges to achieve their goals.",
     "antonymExampleAr": "يجب على الطلاب المثابرة عبر التحديات الأكاديمية لتحقيق أهدافهم."
   },
@@ -2036,7 +2036,7 @@
     "pronunciation": "KOM-pi-tənt",
     "example": "A competent manager can motivate the team even in difficult times.",
     "exampleAr": "يمكن للمدير الكفء تحفيز الفريق حتى في الأوقات الصعبة.",
-    "antonymTranslation": "غير قادر، عاجز",
+    "antonymTranslation": "غير قادر / عاجز",
     "antonymExample": "Traditional methods proved incapable of solving complex environmental problems efficiently.",
     "antonymExampleAr": "أثبتت الطرق التقليدية أنها عاجزة عن حل المشاكل البيئية المعقدة بكفاءة."
   },
@@ -2062,7 +2062,7 @@
     "pronunciation": "kən-DEM",
     "example": "World leaders were quick to condemn the act of aggression.",
     "exampleAr": "سارع قادة العالم إلى إدانة عمل العدوان.",
-    "antonymTranslation": "يمدح، يُثني",
+    "antonymTranslation": "يمدح / يُثني",
     "antonymExample": "Critics praise the government's recent initiative to reduce carbon emissions.",
     "antonymExampleAr": "يمدح النقاد مبادرة الحكومة الأخيرة لخفض انبعاثات الكربون."
   },
@@ -2114,7 +2114,7 @@
     "pronunciation": "SUR-kyə-layt",
     "example": "Rumours about the merger began to circulate in the media.",
     "exampleAr": "بدأت الشائعات حول الاندماج تتداول في وسائل الإعلام.",
-    "antonymTranslation": "يحتوي، يضم",
+    "antonymTranslation": "يحصر / يحتجز",
     "antonymExample": "Academic journals contain peer-reviewed articles from researchers worldwide.",
     "antonymExampleAr": "تحتوي المجلات الأكاديمية على مقالات محكّمة من باحثين في جميع أنحاء العالم."
   },
@@ -2127,7 +2127,7 @@
     "pronunciation": "koh-ig-ZIST",
     "example": "Different cultures can coexist peacefully within one society.",
     "exampleAr": "يمكن للثقافات المختلفة أن تتعايش بسلام داخل مجتمع واحد.",
-    "antonymTranslation": "صراع، نزاع",
+    "antonymTranslation": "يتصارع / ينازع",
     "antonymExample": "International conflict often disrupts trade relationships and economic development.",
     "antonymExampleAr": "غالباً ما يعطل الصراع الدولي العلاقات التجارية والتنمية الاقتصادية."
   },
@@ -2140,7 +2140,7 @@
     "pronunciation": "koh-HEE-zhən",
     "example": "Social cohesion is vital for a stable and functioning society.",
     "exampleAr": "التماسك الاجتماعي ضروري لمجتمع مستقر وفعّال.",
-    "antonymTranslation": "قسمة، انقسام",
+    "antonymTranslation": "انقسام / تشتت",
     "antonymExample": "Political division within communities can hinder effective policy implementation.",
     "antonymExampleAr": "يمكن أن يعيق الانقسام السياسي داخل المجتمعات تنفيذ السياسات الفعالة."
   },
@@ -2153,7 +2153,7 @@
     "pronunciation": "koh-in-SYD",
     "example": "The two events coincided, causing a major scheduling conflict.",
     "exampleAr": "تزامن الحدثان، مما أدى إلى تعارض كبير في الجدول الزمني.",
-    "antonymTranslation": "يتباين، ينحرف",
+    "antonymTranslation": "يتباين / ينحرف",
     "antonymExample": "Cultural practices diverge significantly across different geographical regions globally.",
     "antonymExampleAr": "تتباين الممارسات الثقافية بشكل كبير عبر المناطق الجغرافية المختلفة عالمياً."
   },
@@ -2166,7 +2166,7 @@
     "pronunciation": "kə-MENS",
     "example": "Construction is expected to commence at the start of next year.",
     "exampleAr": "من المتوقع أن يبدأ البناء في مطلع العام القادم.",
-    "antonymTranslation": "ينهي، يُنهي",
+    "antonymTranslation": "يُنهي",
     "antonymExample": "Companies may terminate employment contracts due to economic downturns.",
     "antonymExampleAr": "قد تنهي الشركات عقود العمل بسبب التراجع الاقتصادي."
   },
@@ -2192,7 +2192,7 @@
     "pronunciation": "kən-DOHN",
     "example": "The school does not condone any form of bullying.",
     "exampleAr": "لا تتسامح المدرسة مع أي شكل من أشكال التنمر.",
-    "antonymTranslation": "يدين، يُدين",
+    "antonymTranslation": "يُدين",
     "antonymExample": "Human rights organizations condemn violations of international humanitarian law.",
     "antonymExampleAr": "تدين منظمات حقوق الإنسان انتهاكات القانون الإنساني الدولي."
   },
@@ -2205,7 +2205,7 @@
     "pronunciation": "kən-FYN",
     "example": "The illness confined her to her bed for several weeks.",
     "exampleAr": "حبسها المرض في سريرها لعدة أسابيع.",
-    "antonymTranslation": "يحرر، يُحرِّر",
+    "antonymTranslation": "يُحرِّر",
     "antonymExample": "Democratic movements aim to liberate populations from oppressive political regimes.",
     "antonymExampleAr": "تهدف الحركات الديمقراطية إلى تحرير السكان من الأنظمة السياسية القمعية."
   },
@@ -2218,7 +2218,7 @@
     "pronunciation": "DEF-i-nit",
     "example": "The manager gave a definite answer to end the uncertainty.",
     "exampleAr": "أعطى المدير إجابة قاطعة لإنهاء حالة عدم اليقين.",
-    "antonymTranslation": "غير مؤكد، غير متيقن",
+    "antonymTranslation": "غير مؤكد / غير متيقن",
     "antonymExample": "Economic forecasts remain uncertain due to volatile global market conditions.",
     "antonymExampleAr": "تبقى التوقعات الاقتصادية غير مؤكدة بسبب ظروف السوق العالمية المتقلبة."
   },
@@ -2227,11 +2227,11 @@
     "word": "demand",
     "antonym": "supply",
     "skill": "Writing",
-    "translation": "طلب / يطالب",
+    "translation": "طلب",
     "pronunciation": "di-MAND",
     "example": "There is a growing demand for renewable energy solutions.",
     "exampleAr": "هناك طلب متزايد على حلول الطاقة المتجددة.",
-    "antonymTranslation": "يمد، يزود",
+    "antonymTranslation": "عرض",
     "antonymExample": "Developing nations struggle to supply adequate healthcare to rural populations.",
     "antonymExampleAr": "تكافح الدول النامية لتزويد الرعاية الصحية الكافية للسكان الريفيين."
   },
@@ -2244,7 +2244,7 @@
     "pronunciation": "DENS",
     "example": "The city centre has a dense population of over two million people.",
     "exampleAr": "يضم مركز المدينة كثافة سكانية تزيد على مليوني شخص.",
-    "antonymTranslation": "متفرق، نادر",
+    "antonymTranslation": "متفرق / نادر",
     "antonymExample": "Sparse vegetation characterizes desert ecosystems with limited water availability.",
     "antonymExampleAr": "يميز الغطاء النباتي المتفرق النظم البيئية الصحراوية ذات التوافر المحدود للمياه."
   },
@@ -2309,7 +2309,7 @@
     "pronunciation": "DOM-i-nənt",
     "example": "English has become the dominant language of international business.",
     "exampleAr": "أصبحت اللغة الإنجليزية اللغة السائدة في الأعمال الدولية.",
-    "antonymTranslation": "تابع، ثانوي",
+    "antonymTranslation": "تابع / ثانوي",
     "antonymExample": "Subordinate clauses provide additional information within complex sentence structures.",
     "antonymExampleAr": "توفر الجمل التابعة معلومات إضافية ضمن هياكل الجمل المعقدة."
   },
@@ -2344,11 +2344,11 @@
     "word": "decline",
     "antonym": "improvement",
     "skill": "Writing",
-    "translation": "يتراجع / رفض",
+    "translation": "تراجع / انحدار",
     "pronunciation": "di-KLYNE",
     "example": "The number of wild species continues to decline at an alarming rate.",
     "exampleAr": "يستمر عدد الأنواع البرية في التراجع بمعدل مقلق.",
-    "antonymTranslation": "تحسين، تحسُّن",
+    "antonymTranslation": "تحسين / تحسُّن",
     "antonymExample": "Educational improvement requires sustained investment in teacher training programs.",
     "antonymExampleAr": "يتطلب التحسين التعليمي استثماراً مستداماً في برامج تدريب المعلمين."
   },
@@ -2361,7 +2361,7 @@
     "pronunciation": "di-FEND",
     "example": "The lawyer had to defend her client against serious allegations.",
     "exampleAr": "كان على المحامية الدفاع عن موكّلها ضد اتهامات خطيرة.",
-    "antonymTranslation": "يهاجم، هجوم",
+    "antonymTranslation": "يهاجم",
     "antonymExample": "Critics attack government policies that fail to address income inequality.",
     "antonymExampleAr": "يهاجم النقاد السياسات الحكومية التي تفشل في معالجة عدم المساواة في الدخل."
   },
@@ -2400,7 +2400,7 @@
     "pronunciation": "di-PLEET",
     "example": "Overfishing threatens to deplete ocean fish stocks permanently.",
     "exampleAr": "يهدد الصيد الجائر باستنفاد مخزون الأسماك في المحيطات بشكل دائم.",
-    "antonymTranslation": "يُعيد ملء، يُجدد",
+    "antonymTranslation": "يُعيد ملء / يُجدد",
     "antonymExample": "Sustainable forestry practices help replenish natural resources for future generations.",
     "antonymExampleAr": "تساعد ممارسات الحراجة المستدامة على تجديد الموارد الطبيعية للأجيال المقبلة."
   },
@@ -2452,7 +2452,7 @@
     "pronunciation": "di-MIN-ish",
     "example": "The government's credibility began to diminish after the scandal.",
     "exampleAr": "بدأت مصداقية الحكومة تتضاءل بعد الفضيحة.",
-    "antonymTranslation": "يزيد، يزداد",
+    "antonymTranslation": "يزيد / يزداد",
     "antonymExample": "Climate change may increase the frequency of extreme weather events.",
     "antonymExampleAr": "قد يزيد تغير المناخ من تواتر الظواهر الجوية المتطرفة."
   },
@@ -2478,7 +2478,7 @@
     "pronunciation": "dis-RUPT",
     "example": "The storm threatened to disrupt flight operations at the airport.",
     "exampleAr": "هددت العاصفة بتعطيل عمليات الطيران في المطار.",
-    "antonymTranslation": "يثبّت / يستقر",
+    "antonymTranslation": "يُثبِّت / يستقرّ",
     "antonymExample": "Central banks implement policies to stabilise inflation during economic crises.",
     "antonymExampleAr": "تنفذ البنوك المركزية سياسات لتثبيت التضخم خلال الأزمات الاقتصادية."
   },
@@ -2556,7 +2556,7 @@
     "pronunciation": "di-TUR-mind",
     "example": "She remained determined to finish the marathon despite the pain.",
     "exampleAr": "ظلت عازمة على إكمال الماراثون رغم الألم.",
-    "antonymTranslation": "مُتردد، غير حاسم",
+    "antonymTranslation": "مُتردد / غير حاسم",
     "antonymExample": "Indecisive leadership often results in delayed implementation of critical policies.",
     "antonymExampleAr": "غالباً ما تؤدي القيادة المترددة إلى تأخير تنفيذ السياسات الحاسمة."
   },
@@ -2569,7 +2569,7 @@
     "pronunciation": "dis-ə-POYN-tid",
     "example": "He was deeply disappointed when he failed to get the promotion.",
     "exampleAr": "شعر بخيبة أمل عميقة حين فشل في الحصول على الترقية.",
-    "antonymTranslation": "مسرور، راضٍ",
+    "antonymTranslation": "مسرور / راضٍ",
     "antonymExample": "Employers are pleased when productivity levels exceed quarterly targets consistently.",
     "antonymExampleAr": "يشعر أرباب العمل بالسرور عندما تتجاوز مستويات الإنتاجية الأهداف الفصلية باستمرار."
   },
@@ -2686,7 +2686,7 @@
     "pronunciation": "DAWN-ting",
     "example": "Giving a speech in front of thousands can be a daunting experience.",
     "exampleAr": "قد يكون إلقاء خطاب أمام الآلاف تجربة مُرهِبة.",
-    "antonymTranslation": "يمكن إدارته",
+    "antonymTranslation": "سهل الإدارة / في المتناول",
     "antonymExample": "Breaking tasks into smaller steps makes workloads more manageable.",
     "antonymExampleAr": "تقسيم المهام إلى خطوات أصغر يجعل أعباء العمل أكثر قابلية للإدارة."
   },
@@ -2903,7 +2903,7 @@
     "word": "export",
     "antonym": "import",
     "skill": "Writing",
-    "translation": "يصدّر / صادرات",
+    "translation": "يصدّر",
     "pronunciation": "EK-sport",
     "example": "The country relies heavily on oil exports for government revenue.",
     "exampleAr": "تعتمد الدولة بشكل كبير على صادرات النفط لتحقيق إيرادات الحكومة.",
@@ -2959,7 +2959,7 @@
     "pronunciation": "en-FORS",
     "example": "The authorities must enforce traffic laws more strictly.",
     "exampleAr": "يجب على السلطات تطبيق قوانين المرور بصرامة أكبر.",
-    "antonymTranslation": "يسترخي",
+    "antonymTranslation": "يُرخي / يُخفف",
     "antonymExample": "Students should relax before exams to reduce anxiety levels.",
     "antonymExampleAr": "يجب على الطلاب الاسترخاء قبل الامتحانات لتقليل مستويات القلق."
   },
@@ -2998,7 +2998,7 @@
     "pronunciation": "en-SHOOR",
     "example": "Regular inspections help ensure the safety of food products.",
     "exampleAr": "تساعد عمليات التفتيش المنتظمة على ضمان سلامة المنتجات الغذائية.",
-    "antonymTranslation": "مخاطرة",
+    "antonymTranslation": "يُخاطر",
     "antonymExample": "Investment decisions always involve some degree of financial risk.",
     "antonymExampleAr": "قرارات الاستثمار تتضمن دائماً درجة معينة من المخاطرة المالية."
   },
@@ -3137,7 +3137,7 @@
     "word": "elaborate",
     "antonym": "simple",
     "skill": "Writing",
-    "translation": "مفصّل / يوضّح",
+    "translation": "مفصّل / متقن",
     "pronunciation": "i-LAB-ə-rət",
     "example": "The scientist was asked to elaborate on her initial findings.",
     "exampleAr": "طُلب من العالمة التوضيح بشأن نتائجها الأولية.",
@@ -3258,7 +3258,7 @@
     "pronunciation": "i-ROHD",
     "example": "Public trust in institutions can erode if corruption is left unchecked.",
     "exampleAr": "يمكن أن تتآكل ثقة الجمهور في المؤسسات إذا تُرك الفساد دون رادع.",
-    "antonymTranslation": "يقوي، يعزز",
+    "antonymTranslation": "يُقوّي / يُعزّز",
     "antonymExample": "Regular exercise can strengthen the immune system significantly.",
     "antonymExampleAr": "التمرين المنتظم يمكن أن يقوي جهاز المناعة بشكل كبير."
   },
@@ -3271,7 +3271,7 @@
     "pronunciation": "ik-SKLOO-zhən",
     "example": "Social exclusion is a major barrier to achieving equality.",
     "exampleAr": "الإقصاء الاجتماعي عقبة كبرى أمام تحقيق المساواة.",
-    "antonymTranslation": "الإدماج، التضمين",
+    "antonymTranslation": "إدماج / تضمين",
     "antonymExample": "Social inclusion promotes equality and reduces discrimination in society.",
     "antonymExampleAr": "الإدماج الاجتماعي يعزز المساواة ويقلل التمييز في المجتمع."
   },
@@ -3284,7 +3284,7 @@
     "pronunciation": "FAIR",
     "example": "The judge was known for being fair and impartial in all cases.",
     "exampleAr": "كان القاضي معروفًا بعدالته وحياده في جميع القضايا.",
-    "antonymTranslation": "متحيز، منحاز",
+    "antonymTranslation": "متحيّز / منحاز",
     "antonymExample": "Biased research methods can lead to inaccurate scientific conclusions.",
     "antonymExampleAr": "الأساليب البحثية المتحيزة قد تؤدي إلى استنتاجات علمية غير دقيقة."
   },
@@ -3297,7 +3297,7 @@
     "pronunciation": "FAY-məs",
     "example": "The city became famous for its vibrant arts and music scene.",
     "exampleAr": "اشتهرت المدينة بمشهدها الفني والموسيقي النابض بالحياة.",
-    "antonymTranslation": "مجهول، غير معروف",
+    "antonymTranslation": "مجهول / غير معروف",
     "antonymExample": "The effects of this unknown substance require further investigation.",
     "antonymExampleAr": "آثار هذه المادة المجهولة تتطلب مزيداً من البحث."
   },
@@ -3310,7 +3310,7 @@
     "pronunciation": "FLEK-si-bəl",
     "example": "A flexible approach allows organisations to adapt to change quickly.",
     "exampleAr": "النهج المرن يُمكّن المنظمات من التكيف مع التغيير بسرعة.",
-    "antonymTranslation": "جامد، صارم",
+    "antonymTranslation": "جامد / صارم",
     "antonymExample": "Rigid educational systems may limit students' creative thinking abilities.",
     "antonymExampleAr": "الأنظمة التعليمية الجامدة قد تحد من قدرات التفكير الإبداعي للطلاب."
   },
@@ -3345,7 +3345,7 @@
     "word": "future",
     "antonym": "past",
     "skill": "Writing",
-    "translation": "مستقبل",
+    "translation": "المستقبل",
     "pronunciation": "FYOO-chər",
     "example": "Investing in education shapes the future of any nation.",
     "exampleAr": "الاستثمار في التعليم يُشكّل مستقبل أي أمة.",
@@ -3362,7 +3362,7 @@
     "pronunciation": "FAYL",
     "example": "The project was likely to fail without adequate resources.",
     "exampleAr": "كان من المرجح أن يفشل المشروع دون موارد كافية.",
-    "antonymTranslation": "ينجح، يفلح",
+    "antonymTranslation": "ينجح / يفلح",
     "antonymExample": "Students must work diligently to succeed in their academic pursuits.",
     "antonymExampleAr": "يجب على الطلاب العمل بجد لينجحوا في مساعيهم الأكاديمية."
   },
@@ -3375,7 +3375,7 @@
     "pronunciation": "fə-MIL-yər",
     "example": "Students find it easier to learn when topics are familiar.",
     "exampleAr": "يجد الطلاب أن التعلم أسهل عندما تكون الموضوعات مألوفة.",
-    "antonymTranslation": "غريب، أجنبي",
+    "antonymTranslation": "غريب / أجنبي",
     "antonymExample": "The concept seemed completely alien to traditional scientific understanding.",
     "antonymExampleAr": "بدا المفهوم غريبًا تمامًا بالنسبة للفهم العلمي التقليدي."
   },
@@ -3401,7 +3401,7 @@
     "pronunciation": "FOH-kəs",
     "example": "Students need to focus on their core subjects during exam preparation.",
     "exampleAr": "يحتاج الطلاب إلى التركيز على المواد الأساسية أثناء التحضير للامتحانات.",
-    "antonymTranslation": "يشتت، يلهي",
+    "antonymTranslation": "يشتّت / يُلهي",
     "antonymExample": "Social media notifications can distract students during study sessions.",
     "antonymExampleAr": "إشعارات وسائل التواصل الاجتماعي قد تشتت الطلاب أثناء جلسات الدراسة."
   },
@@ -3410,7 +3410,7 @@
     "word": "force",
     "antonym": "persuade",
     "skill": "Writing",
-    "translation": "قوة / يُجبر",
+    "translation": "يُجبر / قوّة",
     "pronunciation": "FORS",
     "example": "The law should not force people to act against their beliefs.",
     "exampleAr": "لا ينبغي للقانون أن يُجبر الناس على التصرف ضد معتقداتهم.",
@@ -3427,7 +3427,7 @@
     "pronunciation": "fun-də-MEN-təl",
     "example": "Access to justice is a fundamental right in a democratic society.",
     "exampleAr": "الوصول إلى العدالة حق أساسي في المجتمع الديمقراطي.",
-    "antonymTranslation": "تافه، بسيط",
+    "antonymTranslation": "تافه / بسيط",
     "antonymExample": "Seemingly trivial details can have significant impacts on research outcomes.",
     "antonymExampleAr": "التفاصيل التي تبدو تافهة قد يكون لها آثار كبيرة على نتائج البحث."
   },
@@ -3440,7 +3440,7 @@
     "pronunciation": "FAK-choo-əl",
     "example": "Reports should be factual and based on verified evidence.",
     "exampleAr": "يجب أن تكون التقارير واقعية ومستندة إلى أدلة موثقة.",
-    "antonymTranslation": "خيالي، وهمي",
+    "antonymTranslation": "خيالي / وهمي",
     "antonymExample": "Fictional narratives often reflect real social issues and concerns.",
     "antonymExampleAr": "الروايات الخيالية غالباً ما تعكس قضايا ومخاوف اجتماعية حقيقية."
   },
@@ -3453,7 +3453,7 @@
     "pronunciation": "FREND-lee",
     "example": "A friendly atmosphere encourages open communication in the workplace.",
     "exampleAr": "الجو الودّي يشجع على التواصل المفتوح في بيئة العمل.",
-    "antonymTranslation": "عدائي، معادٍ",
+    "antonymTranslation": "عدائي / معادٍ",
     "antonymExample": "Hostile work environments reduce employee productivity and job satisfaction.",
     "antonymExampleAr": "البيئات العدائية في العمل تقلل إنتاجية الموظفين والرضا الوظيفي."
   },
@@ -3466,7 +3466,7 @@
     "pronunciation": "FAY-vər-ə-bəl",
     "example": "The report received a favourable response from the academic community.",
     "exampleAr": "حظي التقرير باستجابة إيجابية من الأوساط الأكاديمية.",
-    "antonymTranslation": "ضار، مؤذٍ",
+    "antonymTranslation": "ضار / مؤذٍ",
     "antonymExample": "Climate change has detrimental effects on global ecosystems.",
     "antonymExampleAr": "للتغير المناخي آثار ضارة على النظم البيئية العالمية."
   },
@@ -3479,7 +3479,7 @@
     "pronunciation": "FLUR-ish",
     "example": "Small businesses flourish when there is a supportive economic environment.",
     "exampleAr": "تزدهر الشركات الصغيرة عندما تكون هناك بيئة اقتصادية داعمة.",
-    "antonymTranslation": "ينخفض، يتراجع",
+    "antonymTranslation": "يتراجع / ينحدر",
     "antonymExample": "Birth rates continue to decline in many developed countries.",
     "antonymExampleAr": "معدلات المواليد تستمر في الانخفاض في العديد من الدول المتقدمة."
   },
@@ -3492,7 +3492,7 @@
     "pronunciation": "FOH-kəst",
     "example": "Staying focused during revision sessions greatly improves performance.",
     "exampleAr": "البقاء مركّزًا خلال جلسات المراجعة يُحسّن الأداء بشكل كبير.",
-    "antonymTranslation": "مشتت، مشغول البال",
+    "antonymTranslation": "مشتّت / مشغول البال",
     "antonymExample": "Distracted drivers cause numerous traffic accidents every year.",
     "antonymExampleAr": "السائقون المشتتون يتسببون في حوادث مرورية عديدة كل عام."
   },
@@ -3505,7 +3505,7 @@
     "pronunciation": "FRAJ-əl",
     "example": "The peace agreement remained fragile and could easily collapse.",
     "exampleAr": "ظلّ اتفاق السلام هشًا وقابلًا للانهيار بسهولة.",
-    "antonymTranslation": "قوي، متين",
+    "antonymTranslation": "قوي / متين",
     "antonymExample": "A robust economy can withstand external financial shocks effectively.",
     "antonymExampleAr": "الاقتصاد القوي يمكنه تحمل الصدمات المالية الخارجية بفعالية."
   },
@@ -3518,7 +3518,7 @@
     "pronunciation": "FREE-dəm",
     "example": "Freedom of speech is a cornerstone of democratic societies.",
     "exampleAr": "حرية التعبير ركيزة أساسية في المجتمعات الديمقراطية.",
-    "antonymTranslation": "تقييد، قيد",
+    "antonymTranslation": "تقييد / قيد",
     "antonymExample": "Government restriction on emissions aims to reduce environmental pollution.",
     "antonymExampleAr": "تقييد الحكومة للانبعاثات يهدف إلى تقليل التلوث البيئي."
   },
@@ -3531,7 +3531,7 @@
     "pronunciation": "fə-SIL-i-tayt",
     "example": "Technology can facilitate better communication between people.",
     "exampleAr": "يمكن للتكنولوجيا أن تُيسّر التواصل بين الناس.",
-    "antonymTranslation": "يعيق، يعرقل",
+    "antonymTranslation": "يعيق / يعرقل",
     "antonymExample": "Traffic congestion can obstruct emergency vehicles from reaching destinations.",
     "antonymExampleAr": "الازدحام المروري قد يعيق مركبات الطوارئ من الوصول إلى الوجهات."
   },
@@ -3544,7 +3544,7 @@
     "pronunciation": "FLUK-choo-ayt",
     "example": "Oil prices fluctuate according to global supply and demand.",
     "exampleAr": "تتقلب أسعار النفط وفقًا للعرض والطلب العالميين.",
-    "antonymTranslation": "يستقر، يثبت",
+    "antonymTranslation": "يستقر / يثبت",
     "antonymExample": "Central banks stabilise currency values through monetary policy interventions.",
     "antonymExampleAr": "البنوك المركزية تثبت قيم العملات من خلال تدخلات السياسة النقدية."
   },
@@ -3557,7 +3557,7 @@
     "pronunciation": "fluk-choo-AY-shən",
     "example": "Currency fluctuation can have a major impact on import costs.",
     "exampleAr": "يمكن أن يكون لتقلّب العملة تأثير كبير على تكاليف الاستيراد.",
-    "antonymTranslation": "الاستقرار، الثبات",
+    "antonymTranslation": "استقرار / ثبات",
     "antonymExample": "Political stability attracts foreign investment and promotes economic growth.",
     "antonymExampleAr": "الاستقرار السياسي يجذب الاستثمار الأجنبي ويعزز النمو الاقتصادي."
   },
@@ -3570,7 +3570,7 @@
     "pronunciation": "FOS-tər",
     "example": "Good leadership can foster innovation and creative thinking.",
     "exampleAr": "يمكن للقيادة الجيدة أن تُعزّز الابتكار والتفكير الإبداعي.",
-    "antonymTranslation": "يعيق، يعرقل",
+    "antonymTranslation": "يعيق / يعرقل",
     "antonymExample": "Language barriers can hinder effective communication in multicultural workplaces.",
     "antonymExampleAr": "حواجز اللغة قد تعيق التواصل الفعال في أماكن العمل متعددة الثقافات."
   },
@@ -3609,7 +3609,7 @@
     "pronunciation": "FRAG-men-tid",
     "example": "The health system was fragmented and difficult to navigate.",
     "exampleAr": "كان النظام الصحي مجزأً ويصعب التنقل فيه.",
-    "antonymTranslation": "متماسك، منسجم",
+    "antonymTranslation": "متماسك / منسجم",
     "antonymExample": "Cohesive teams demonstrate better performance and higher productivity levels.",
     "antonymExampleAr": "الفرق المتماسكة تظهر أداءً أفضل ومستويات إنتاجية أعلى."
   },
@@ -3622,7 +3622,7 @@
     "pronunciation": "FROO-gəl",
     "example": "Being frugal during difficult times helps preserve financial stability.",
     "exampleAr": "الاقتصاد في الأوقات الصعبة يُساعد في الحفاظ على الاستقرار المالي.",
-    "antonymTranslation": "مسرف، باذخ",
+    "antonymTranslation": "مسرف / باذخ",
     "antonymExample": "Extravagant spending can lead to serious financial problems later.",
     "antonymExampleAr": "الإنفاق المسرف قد يؤدي إلى مشاكل مالية خطيرة لاحقاً."
   },
@@ -3635,7 +3635,7 @@
     "pronunciation": "FYOO-tyl",
     "example": "Without proper investment, the plan would prove futile.",
     "exampleAr": "بدون استثمار مناسب، ستثبت الخطة أنها بلا جدوى.",
-    "antonymTranslation": "منتج، مثمر",
+    "antonymTranslation": "منتج / مثمر",
     "antonymExample": "Productive employees contribute significantly to organizational success and growth.",
     "antonymExampleAr": "الموظفون المنتجون يساهمون بشكل كبير في نجاح ونمو المنظمة."
   },
@@ -3648,7 +3648,7 @@
     "pronunciation": "GAYN",
     "example": "Students can gain valuable experience through internship programmes.",
     "exampleAr": "يمكن للطلاب اكتساب خبرة قيّمة من خلال برامج التدريب.",
-    "antonymTranslation": "يخسر، يفقد",
+    "antonymTranslation": "يخسر / يفقد",
     "antonymExample": "Companies may lose market share without continuous innovation efforts.",
     "antonymExampleAr": "الشركات قد تخسر حصتها السوقية دون جهود ابتكار مستمرة."
   },
@@ -3674,7 +3674,7 @@
     "pronunciation": "JEN-yoo-in",
     "example": "A genuine interest in learning is essential for academic success.",
     "exampleAr": "الاهتمام الحقيقي بالتعلم ضروري للنجاح الأكاديمي.",
-    "antonymTranslation": "مزيف، مزور",
+    "antonymTranslation": "مزيف / مزور",
     "antonymExample": "Fake news spreads rapidly through social media platforms nowadays.",
     "antonymExampleAr": "الأخبار المزيفة تنتشر بسرعة عبر منصات التواصل الاجتماعي حالياً."
   },
@@ -3713,7 +3713,7 @@
     "pronunciation": "GROH",
     "example": "The economy is expected to grow by 3% over the next two years.",
     "exampleAr": "من المتوقع أن ينمو الاقتصاد بنسبة 3٪ على مدى العامين المقبلين.",
-    "antonymTranslation": "يتقلص، ينكمش",
+    "antonymTranslation": "يتقلص / ينكمش",
     "antonymExample": "Glaciers continue to shrink due to rising global temperatures.",
     "antonymExampleAr": "الأنهار الجليدية تستمر في التقلص بسبب ارتفاع درجات الحرارة العالمية."
   },
@@ -3752,7 +3752,7 @@
     "pronunciation": "GROHTH",
     "example": "Sustainable economic growth requires responsible resource management.",
     "exampleAr": "النمو الاقتصادي المستدام يتطلب إدارة مسؤولة للموارد.",
-    "antonymTranslation": "انكماش، تقلص",
+    "antonymTranslation": "انكماش / تقلص",
     "antonymExample": "Economic contraction often leads to increased unemployment and reduced spending.",
     "antonymExampleAr": "الانكماش الاقتصادي غالباً يؤدي إلى زيادة البطالة وتقليل الإنفاق."
   },
@@ -3778,7 +3778,7 @@
     "pronunciation": "GROWND-bray-king",
     "example": "The groundbreaking discovery changed the entire field of medicine.",
     "exampleAr": "غيّر الاكتشاف الرائد مجال الطب بأكمله.",
-    "antonymTranslation": "تقليدي، عرفي",
+    "antonymTranslation": "تقليدي / عرفي",
     "antonymExample": "Conventional teaching methods may not suit all learning styles equally.",
     "antonymExampleAr": "أساليب التدريس التقليدية قد لا تناسب جميع أنماط التعلم بالتساوي."
   },
@@ -3791,7 +3791,7 @@
     "pronunciation": "HARM",
     "example": "Excessive screen time can harm children's social development.",
     "exampleAr": "يمكن أن يؤثر وقت الشاشة المفرط سلبًا على التطور الاجتماعي للأطفال.",
-    "antonymTranslation": "فائدة، منفعة",
+    "antonymTranslation": "يفيد / ينفع",
     "antonymExample": "Regular exercise provides numerous health benefit for all age groups.",
     "antonymExampleAr": "التمرين المنتظم يوفر فوائد صحية عديدة لجميع الفئات العمرية."
   },
@@ -3804,7 +3804,7 @@
     "pronunciation": "HARSH",
     "example": "The harsh winter conditions made it difficult for farmers.",
     "exampleAr": "جعلت الأحوال الشتوية القاسية الأمر صعبًا على المزارعين.",
-    "antonymTranslation": "معتدل، خفيف",
+    "antonymTranslation": "معتدل / خفيف",
     "antonymExample": "Mild climates generally support diverse agricultural production throughout year.",
     "antonymExampleAr": "المناخات المعتدلة عموماً تدعم إنتاجاً زراعياً متنوعاً طوال العام."
   },
@@ -3817,7 +3817,7 @@
     "pronunciation": "ON-ist",
     "example": "An honest assessment of the situation is essential before making decisions.",
     "exampleAr": "التقييم الصادق للوضع ضروري قبل اتخاذ القرارات.",
-    "antonymTranslation": "خادع، مضلل",
+    "antonymTranslation": "خادع / مضلل",
     "antonymExample": "Deceptive advertising practices mislead consumers and damage brand reputation.",
     "antonymExampleAr": "ممارسات الإعلان الخادعة تضلل المستهلكين وتضر بسمعة العلامة التجارية."
   },
@@ -3830,7 +3830,7 @@
     "pronunciation": "HOHP-fəl",
     "example": "Despite the challenges, residents remained hopeful about the future.",
     "exampleAr": "رغم التحديات، ظل السكان متفائلين حيال المستقبل.",
-    "antonymTranslation": "ميؤوس منه، يائس",
+    "antonymTranslation": "يائس / قانط",
     "antonymExample": "The situation seemed hopeless until new evidence emerged unexpectedly.",
     "antonymExampleAr": "بدا الوضع ميؤوساً منه حتى ظهرت أدلة جديدة بشكل غير متوقع."
   },
@@ -3843,7 +3843,7 @@
     "pronunciation": "HYOOJ",
     "example": "The charity event raised a huge amount for the children's hospital.",
     "exampleAr": "جمع الحدث الخيري مبلغًا ضخمًا لصالح مستشفى الأطفال.",
-    "antonymTranslation": "صغير جدًا، ضئيل",
+    "antonymTranslation": "صغير جدًا / ضئيل",
     "antonymExample": "Tiny microorganisms play crucial roles in maintaining ecosystem balance.",
     "antonymExampleAr": "الكائنات الدقيقة الصغيرة جدًا تلعب أدوارًا حاسمة في الحفاظ على توازن النظام البيئي."
   },
@@ -3869,7 +3869,7 @@
     "pronunciation": "HELP-fəl",
     "example": "Peer support can be incredibly helpful for students under exam pressure.",
     "exampleAr": "يمكن أن يكون دعم الأقران مفيدًا للغاية للطلاب تحت ضغط الامتحانات.",
-    "antonymTranslation": "ضار، مؤذٍ",
+    "antonymTranslation": "ضار / مؤذٍ",
     "antonymExample": "Harmful chemicals in pesticides threaten wildlife and human health.",
     "antonymExampleAr": "المواد الكيميائية الضارة في المبيدات تهدد الحياة البرية والصحة البشرية."
   },
@@ -3882,7 +3882,7 @@
     "pronunciation": "HID-ən",
     "example": "The report revealed hidden costs that had not been disclosed.",
     "exampleAr": "كشف التقرير عن تكاليف مخفية لم يُفصح عنها.",
-    "antonymTranslation": "مرئي، واضح",
+    "antonymTranslation": "مرئي / واضح",
     "antonymExample": "The effects of pollution become visible through environmental degradation.",
     "antonymExampleAr": "آثار التلوث تصبح مرئية من خلال التدهور البيئي."
   },
@@ -3895,7 +3895,7 @@
     "pronunciation": "hoh-mə-JEE-nee-əs",
     "example": "A homogeneous society may lack the diversity needed for innovation.",
     "exampleAr": "قد يفتقر المجتمع المتجانس إلى التنوع اللازم للابتكار.",
-    "antonymTranslation": "متنوع، متعدد",
+    "antonymTranslation": "متنوع / متعدد",
     "antonymExample": "Diverse perspectives enhance problem-solving capabilities in research teams.",
     "antonymExampleAr": "وجهات النظر المتنوعة تعزز قدرات حل المشكلات في فرق البحث."
   },
@@ -3908,7 +3908,7 @@
     "pronunciation": "HUM-bəl",
     "example": "Despite his success, he remained humble and easy to approach.",
     "exampleAr": "رغم نجاحه، ظل متواضعًا وسهل التعامل.",
-    "antonymTranslation": "متكبر، متعجرف",
+    "antonymTranslation": "متكبر / متعجرف",
     "antonymExample": "Arrogant researchers often dismiss alternative perspectives in their field.",
     "antonymExampleAr": "الباحثون المتكبرون غالباً يرفضون وجهات النظر البديلة في مجالهم."
   },
@@ -3934,7 +3934,7 @@
     "pronunciation": "HY-tən",
     "example": "The crisis served to heighten public awareness of the issue.",
     "exampleAr": "أسهمت الأزمة في تعزيز الوعي العام بهذه القضية.",
-    "antonymTranslation": "يقلل، يخفض",
+    "antonymTranslation": "يقلل / يخفض",
     "antonymExample": "Government policies aim to reduce carbon emissions by thirty percent.",
     "antonymExampleAr": "تهدف السياسات الحكومية إلى تقليل انبعاثات الكربون بنسبة ثلاثين بالمئة."
   },
@@ -3947,7 +3947,7 @@
     "pronunciation": "HAM-pər",
     "example": "Bureaucratic processes can hamper business growth significantly.",
     "exampleAr": "يمكن للإجراءات البيروقراطية أن تُعيق نمو الأعمال بشكل ملحوظ.",
-    "antonymTranslation": "يساعد، يعاون",
+    "antonymTranslation": "يساعد / يعاون",
     "antonymExample": "Technology can assist educators in delivering more effective learning experiences.",
     "antonymExampleAr": "يمكن للتكنولوجيا أن تساعد المعلمين في تقديم تجارب تعليمية أكثر فعالية."
   },
@@ -3960,7 +3960,7 @@
     "pronunciation": "hy-pə-THET-i-kəl",
     "example": "The discussion was based on a hypothetical scenario rather than real data.",
     "exampleAr": "استندت المناقشة إلى سيناريو افتراضي بدلًا من الاعتماد على بيانات حقيقية.",
-    "antonymTranslation": "واقعي، حقيقي",
+    "antonymTranslation": "واقعي / حقيقي",
     "antonymExample": "Academic writing requires factual evidence to support all arguments presented.",
     "antonymExampleAr": "تتطلب الكتابة الأكاديمية أدلة واقعية لدعم جميع الحجج المقدمة."
   },
@@ -3973,7 +3973,7 @@
     "pronunciation": "y-DEN-ti-kəl",
     "example": "The two samples produced identical results in the laboratory.",
     "exampleAr": "أنتجت العينتان نتائج متطابقة في المختبر.",
-    "antonymTranslation": "مختلف، متباين",
+    "antonymTranslation": "مختلف / متباين",
     "antonymExample": "Different cultures have varying approaches to education and child development.",
     "antonymExampleAr": "للثقافات المختلفة مقاربات متباينة للتعليم وتنمية الطفل."
   },
@@ -3986,7 +3986,7 @@
     "pronunciation": "IG-nər-ənt",
     "example": "Being ignorant of the law is not an acceptable excuse in court.",
     "exampleAr": "الجهل بالقانون ليس عذرًا مقبولًا في المحكمة.",
-    "antonymTranslation": "عالم، خبير",
+    "antonymTranslation": "عالِم / خبير",
     "antonymExample": "Knowledgeable professionals contribute significantly to innovation in their industries.",
     "antonymExampleAr": "يساهم المحترفون الخبراء بشكل كبير في الابتكار في صناعاتهم."
   },
@@ -3999,7 +3999,7 @@
     "pronunciation": "im-PROOV",
     "example": "Regular feedback helps employees improve their performance.",
     "exampleAr": "التغذية الراجعة المنتظمة تُساعد الموظفين على تحسين أدائهم.",
-    "antonymTranslation": "يزداد سوءاً، يتدهور",
+    "antonymTranslation": "يزداد سوءًا / يتدهور",
     "antonymExample": "Poor infrastructure can worsen economic conditions in developing regions rapidly.",
     "antonymExampleAr": "يمكن للبنية التحتية الضعيفة أن تزيد الأوضاع الاقتصادية سوءاً في المناطق النامية."
   },
@@ -4012,7 +4012,7 @@
     "pronunciation": "in-KLOOD",
     "example": "The programme should include activities for all age groups.",
     "exampleAr": "يجب أن يشمل البرنامج أنشطة لجميع الفئات العمرية.",
-    "antonymTranslation": "يستبعد، يستثني",
+    "antonymTranslation": "يستبعد / يستثني",
     "antonymExample": "The study chose to exclude participants under eighteen years old.",
     "antonymExampleAr": "اختارت الدراسة استبعاد المشاركين تحت سن الثامنة عشر."
   },
@@ -4038,7 +4038,7 @@
     "pronunciation": "IN-ə-vay-tiv",
     "example": "The company's innovative products helped it stay ahead of competitors.",
     "exampleAr": "ساعدت منتجات الشركة المبتكرة على التفوق على المنافسين.",
-    "antonymTranslation": "تقليدي، عرفي",
+    "antonymTranslation": "تقليدي / عرفي",
     "antonymExample": "Conventional teaching methods may not suit all modern learning styles.",
     "antonymExampleAr": "قد لا تناسب أساليب التدريس التقليدية جميع أنماط التعلم الحديثة."
   },
@@ -4051,7 +4051,7 @@
     "pronunciation": "in-sig-NIF-i-kənt",
     "example": "The error appeared insignificant but had major consequences.",
     "exampleAr": "بدا الخطأ ضئيل الأهمية لكنه أفضى إلى عواقب وخيمة.",
-    "antonymTranslation": "مهم، ذو دلالة",
+    "antonymTranslation": "مهم / ذو أهمية",
     "antonymExample": "The research findings show significant correlations between diet and health.",
     "antonymExampleAr": "تظهر نتائج البحث ارتباطات مهمة بين النظام الغذائي والصحة."
   },
@@ -4064,7 +4064,7 @@
     "pronunciation": "in-sə-FISH-ənt",
     "example": "The funding was insufficient to cover the full cost of the project.",
     "exampleAr": "كان التمويل غير كافٍ لتغطية التكلفة الإجمالية للمشروع.",
-    "antonymTranslation": "كافٍ، ملائم",
+    "antonymTranslation": "كافٍ / ملائم",
     "antonymExample": "Sufficient funding is essential for conducting comprehensive scientific research projects.",
     "antonymExampleAr": "التمويل الكافي ضروري لإجراء مشاريع بحثية علمية شاملة."
   },
@@ -4077,7 +4077,7 @@
     "pronunciation": "in-TEN-shə-nəl",
     "example": "The deception was intentional and led to serious consequences.",
     "exampleAr": "كان الخداع متعمّدًا وأفضى إلى عواقب وخيمة.",
-    "antonymTranslation": "عرضي، عارض",
+    "antonymTranslation": "عرضي / غير مقصود",
     "antonymExample": "The discovery was accidental rather than the result of planned research.",
     "antonymExampleAr": "كان الاكتشاف عرضياً وليس نتيجة بحث مخطط له."
   },
@@ -4090,7 +4090,7 @@
     "pronunciation": "i-REL-ə-vənt",
     "example": "Several points raised in the discussion were completely irrelevant.",
     "exampleAr": "عدة نقاط أُثيرت في النقاش كانت غير ذات صلة تمامًا.",
-    "antonymTranslation": "ذو صلة، مناسب",
+    "antonymTranslation": "ذو صلة / مناسب",
     "antonymExample": "Only relevant data should be included in the final analysis.",
     "antonymExampleAr": "يجب تضمين البيانات ذات الصلة فقط في التحليل النهائي."
   },
@@ -4103,7 +4103,7 @@
     "pronunciation": "y-DEEL",
     "example": "The location was ideal for launching a new retail business.",
     "exampleAr": "كان الموقع مثاليًا لإطلاق عمل تجاري جديد في مجال البيع بالتجزئة.",
-    "antonymTranslation": "معيب، به خلل",
+    "antonymTranslation": "معيب / به خلل",
     "antonymExample": "The flawed methodology undermined the credibility of the entire study.",
     "antonymExampleAr": "قوضت المنهجية المعيبة مصداقية الدراسة بأكملها."
   },
@@ -4116,7 +4116,7 @@
     "pronunciation": "ig-NOR",
     "example": "It is dangerous to ignore warning signs of health problems.",
     "exampleAr": "من الخطورة تجاهل علامات التحذير من المشكلات الصحية.",
-    "antonymTranslation": "يعالج، يتناول",
+    "antonymTranslation": "يعالج / يتناول",
     "antonymExample": "The government must address environmental concerns through effective policy measures.",
     "antonymExampleAr": "يجب على الحكومة معالجة القضايا البيئية من خلال تدابير سياسية فعالة."
   },
@@ -4129,7 +4129,7 @@
     "pronunciation": "im-PAR-shəl",
     "example": "Judges are expected to be impartial and unbiased in their rulings.",
     "exampleAr": "من المتوقع أن يكون القضاة محايدين وغير متحيزين في أحكامهم.",
-    "antonymTranslation": "متحيز، منحاز",
+    "antonymTranslation": "متحيز / منحاز",
     "antonymExample": "Biased research undermines academic integrity and produces unreliable conclusions.",
     "antonymExampleAr": "البحث المتحيز يقوض النزاهة الأكاديمية وينتج استنتاجات غير موثوقة."
   },
@@ -4142,7 +4142,7 @@
     "pronunciation": "im-POR-tənt",
     "example": "It is important to review your answers before submitting the exam.",
     "exampleAr": "من المهم مراجعة إجاباتك قبل تسليم الامتحان.",
-    "antonymTranslation": "تافه، بسيط",
+    "antonymTranslation": "تافه / بسيط",
     "antonymExample": "These trivial details do not affect the overall research outcome.",
     "antonymExampleAr": "هذه التفاصيل التافهة لا تؤثر على نتيجة البحث الإجمالية."
   },
@@ -4155,7 +4155,7 @@
     "pronunciation": "im-POHZ",
     "example": "The government decided to impose stricter regulations on emissions.",
     "exampleAr": "قررت الحكومة فرض لوائح أكثر صرامة على الانبعاثات.",
-    "antonymTranslation": "يزيل، يحذف",
+    "antonymTranslation": "يزيل / يحذف",
     "antonymExample": "Researchers decided to remove outliers from the dataset before analysis.",
     "antonymExampleAr": "قرر الباحثون إزالة القيم الشاذة من مجموعة البيانات قبل التحليل."
   },
@@ -4168,7 +4168,7 @@
     "pronunciation": "in-SEN-tiv",
     "example": "Tax reductions serve as a strong incentive for foreign investment.",
     "exampleAr": "تُشكّل التخفيضات الضريبية حافزًا قويًا للاستثمار الأجنبي.",
-    "antonymTranslation": "رادع، مانع",
+    "antonymTranslation": "رادع / مانع",
     "antonymExample": "Strict penalties serve as a deterrent against academic dishonesty practices.",
     "antonymExampleAr": "تعمل العقوبات الصارمة كرادع ضد ممارسات عدم الأمانة الأكاديمية."
   },
@@ -4181,7 +4181,7 @@
     "pronunciation": "in-DIF-ər-ənt",
     "example": "Being indifferent to social problems can make them worse over time.",
     "exampleAr": "قد تُفاقم اللامبالاة تجاه المشكلات الاجتماعية هذه المشكلات مع مرور الوقت.",
-    "antonymTranslation": "شغوف، متحمّس",
+    "antonymTranslation": "شغوف / متحمّس",
     "antonymExample": "Passionate teachers inspire students to pursue excellence in their studies.",
     "antonymExampleAr": "المعلمون الشغوفون يلهمون الطلاب لتحقيق التميز في دراساتهم."
   },
@@ -4194,7 +4194,7 @@
     "pronunciation": "in-di-VIJ-oo-əl",
     "example": "Each individual is responsible for their own learning journey.",
     "exampleAr": "غالبًا ما تنتج عمليات اتخاذ القرار الجماعي نتائج أكثر توازناً.",
-    "antonymTranslation": "جماعي، تعاوني",
+    "antonymTranslation": "جماعي / تعاوني",
     "antonymExample": "Collective decision-making processes often produce more balanced outcomes.",
     "antonymExampleAr": "غالبًا ما تنتج عمليات اتخاذ القرار الجماعي نتائج أكثر توازناً."
   },
@@ -4207,7 +4207,7 @@
     "pronunciation": "in-i-KWOL-i-tee",
     "example": "Economic inequality continues to be one of the most pressing global challenges.",
     "exampleAr": "لا تزال عدم المساواة الاقتصادية من أكثر التحديات العالمية إلحاحًا.",
-    "antonymTranslation": "مساواة، تكافؤ",
+    "antonymTranslation": "مساواة / تكافؤ",
     "antonymExample": "Educational equality ensures that all students have access to opportunities.",
     "antonymExampleAr": "تضمن المساواة التعليمية حصول جميع الطلاب على الفرص."
   },
@@ -4220,7 +4220,7 @@
     "pronunciation": "in-FLAYT",
     "example": "Over-reporting can inflate figures and lead to poor decisions.",
     "exampleAr": "يمكن للإبلاغ المبالغ فيه أن يُضخّم الأرقام ويؤدي إلى قرارات سيئة.",
-    "antonymTranslation": "يفرغ من الهواء، يقلل",
+    "antonymTranslation": "ينكمش / يتقلص",
     "antonymExample": "Economic downturns can deflate consumer confidence and reduce spending significantly.",
     "antonymExampleAr": "يمكن للركود الاقتصادي أن يقلل من ثقة المستهلك ويخفض الإنفاق بشكل كبير."
   },
@@ -4233,7 +4233,7 @@
     "pronunciation": "in-HIB-it",
     "example": "Fear of failure can inhibit creativity and risk-taking.",
     "exampleAr": "يمكن أن يُثبِّط الخوف من الفشل الإبداع والقدرة على المخاطرة.",
-    "antonymTranslation": "يشجع، يحفز",
+    "antonymTranslation": "يشجع / يحفز",
     "antonymExample": "Universities encourage students to participate in international exchange programs actively.",
     "antonymExampleAr": "تشجع الجامعات الطلاب على المشاركة في برامج التبادل الدولي بنشاط."
   },
@@ -4246,7 +4246,7 @@
     "pronunciation": "in-JUS-tis",
     "example": "Social movements often arise in response to systemic injustice.",
     "exampleAr": "كثيرًا ما تنشأ الحركات الاجتماعية استجابةً للظلم المنهجي.",
-    "antonymTranslation": "عدالة، إنصاف",
+    "antonymTranslation": "عدالة / إنصاف",
     "antonymExample": "Social justice requires equal treatment regardless of background or status.",
     "antonymExampleAr": "تتطلب العدالة الاجتماعية معاملة متساوية بغض النظر عن الخلفية أو المكانة."
   },
@@ -4259,7 +4259,7 @@
     "pronunciation": "Y-sə-lay-tid",
     "example": "Remote villages can become isolated during severe winter storms.",
     "exampleAr": "يمكن أن تصبح القرى النائية معزولة خلال العواصف الشتوية الشديدة.",
-    "antonymTranslation": "متصل، مرتبط",
+    "antonymTranslation": "متصل / مرتبط",
     "antonymExample": "Connected communities demonstrate stronger social cohesion and mutual support systems.",
     "antonymExampleAr": "تظهر المجتمعات المترابطة تماسكاً اجتماعياً أقوى وأنظمة دعم متبادل."
   },
@@ -4272,7 +4272,7 @@
     "pronunciation": "im-PLYD",
     "example": "The agreement contained several implied obligations not written explicitly.",
     "exampleAr": "تضمّن الاتفاق عدة التزامات ضمنية لم تُكتب صراحةً.",
-    "antonymTranslation": "مذكور، معلن",
+    "antonymTranslation": "مذكور / معلن",
     "antonymExample": "The stated objectives align with the university's long-term strategic goals.",
     "antonymExampleAr": "تتماشى الأهداف المعلنة مع الأهداف الاستراتيجية طويلة الأجل للجامعة."
   },
@@ -4285,7 +4285,7 @@
     "pronunciation": "in-FUR",
     "example": "From the tone of the letter, we can infer that the writer was upset.",
     "exampleAr": "من نبرة الخطاب، يمكننا استنتاج أن الكاتب كان منزعجًا.",
-    "antonymTranslation": "يذكر، يصرح",
+    "antonymTranslation": "يذكر / يصرح",
     "antonymExample": "Researchers must state their hypotheses clearly before conducting experimental procedures.",
     "antonymExampleAr": "يجب على الباحثين ذكر فرضياتهم بوضوح قبل إجراء التجارب."
   },
@@ -4298,7 +4298,7 @@
     "pronunciation": "IN-trə-sting",
     "example": "The lecture was highly interesting and sparked a lively debate.",
     "exampleAr": "كانت المحاضرة مثيرة للاهتمام للغاية وأشعلت نقاشًا حيويًا.",
-    "antonymTranslation": "باهت، ممل",
+    "antonymTranslation": "ممل / رتيب",
     "antonymExample": "Dull presentations fail to engage audiences and reduce information retention.",
     "antonymExampleAr": "العروض الباهتة تفشل في إشراك الجمهور وتقلل الاحتفاظ بالمعلومات."
   },
@@ -4311,7 +4311,7 @@
     "pronunciation": "IM-plə-ment",
     "example": "The school decided to implement a new reading programme.",
     "exampleAr": "قرّرت المدرسة تطبيق برنامج قراءة جديد.",
-    "antonymTranslation": "يتخلى عن، يهجر",
+    "antonymTranslation": "يتخلى عن / يهجر",
     "antonymExample": "Scientists should never abandon research projects due to temporary setbacks.",
     "antonymExampleAr": "لا يجب على العلماء التخلي عن المشاريع البحثية بسبب النكسات المؤقتة."
   },
@@ -4324,7 +4324,7 @@
     "pronunciation": "in-KLOO-siv",
     "example": "An inclusive education system benefits all types of learners.",
     "exampleAr": "نظام التعليم الشامل يُفيد جميع أنواع المتعلمين.",
-    "antonymTranslation": "حصري، خاص",
+    "antonymTranslation": "حصري / خاص",
     "antonymExample": "Exclusive membership programs limit access to only privileged individuals.",
     "antonymExampleAr": "تحد برامج العضوية الحصرية الوصول إلى الأفراد المميزين فقط."
   },
@@ -4337,7 +4337,7 @@
     "pronunciation": "in-EV-i-tə-bəl",
     "example": "Technological change is inevitable, and society must adapt.",
     "exampleAr": "التغيير التكنولوجي أمر حتمي، ويجب على المجتمع التكيف معه.",
-    "antonymTranslation": "يمكن تجنبه، قابل للتفادي",
+    "antonymTranslation": "قابل للتجنب / قابل للتفادي",
     "antonymExample": "Many research errors are avoidable through careful planning and review.",
     "antonymExampleAr": "العديد من أخطاء البحث يمكن تجنبها من خلال التخطيط والمراجعة الدقيقة."
   },
@@ -4350,7 +4350,7 @@
     "pronunciation": "in-floo-EN-shəl",
     "example": "She became one of the most influential figures in modern science.",
     "exampleAr": "أصبحت من أكثر الشخصيات تأثيرًا في العلوم الحديثة.",
-    "antonymTranslation": "عاجز، عديم القوة",
+    "antonymTranslation": "عاجز / عديم القوة",
     "antonymExample": "Citizens feel powerless when governments ignore their legitimate concerns completely.",
     "antonymExampleAr": "يشعر المواطنون بالعجز عندما تتجاهل الحكومات مخاوفهم المشروعة تماماً."
   },
@@ -4363,7 +4363,7 @@
     "pronunciation": "in-ə-VAY-shən",
     "example": "Business innovation is the driving force behind economic progress.",
     "exampleAr": "الابتكار التجاري هو القوة الدافعة وراء التقدم الاقتصادي.",
-    "antonymTranslation": "ركود، جمود",
+    "antonymTranslation": "ركود / جمود",
     "antonymExample": "Economic stagnation prevents progress and limits opportunities for future growth.",
     "antonymExampleAr": "الركود الاقتصادي يمنع التقدم ويحد من فرص النمو المستقبلي."
   },
@@ -4376,7 +4376,7 @@
     "pronunciation": "in-kən-KLOO-siv",
     "example": "The test results were inconclusive and required further investigation.",
     "exampleAr": "كانت نتائج الاختبار غير قاطعة وتطلّبت مزيدًا من التحقيق.",
-    "antonymTranslation": "نهائي، قطعي",
+    "antonymTranslation": "نهائي / قطعي",
     "antonymExample": "The definitive study established clear guidelines for subsequent research endeavors.",
     "antonymExampleAr": "أنشأت الدراسة النهائية مبادئ توجيهية واضحة لمساعي البحث اللاحقة."
   },
@@ -4389,7 +4389,7 @@
     "pronunciation": "im-PEED",
     "example": "Excessive bureaucracy can impede economic development.",
     "exampleAr": "يمكن أن تُعرقل البيروقراطية المفرطة التنمية الاقتصادية.",
-    "antonymTranslation": "يسهل، ييسر",
+    "antonymTranslation": "يسهّل / ييسّر",
     "antonymExample": "Technology can facilitate communication between researchers across different continents.",
     "antonymExampleAr": "يمكن للتكنولوجيا أن تسهل التواصل بين الباحثين عبر القارات المختلفة."
   },
@@ -4415,7 +4415,7 @@
     "pronunciation": "in-SEN-tə-vyz",
     "example": "The policy was designed to incentivise businesses to reduce carbon emissions.",
     "exampleAr": "صُمّمت السياسة لتحفيز الشركات على خفض انبعاثات الكربون.",
-    "antonymTranslation": "يردع، يثني",
+    "antonymTranslation": "يردع / يثني",
     "antonymExample": "High costs may deter students from pursuing advanced degrees abroad.",
     "antonymExampleAr": "قد تردع التكاليف العالية الطلاب عن متابعة درجات متقدمة بالخارج."
   },
@@ -4428,7 +4428,7 @@
     "pronunciation": "in-kən-SIS-tənt",
     "example": "Inconsistent results raised doubts about the reliability of the study.",
     "exampleAr": "أثارت النتائج غير المتسقة شكوكًا حول موثوقية الدراسة.",
-    "antonymTranslation": "موحد، متجانس",
+    "antonymTranslation": "موحد / متجانس",
     "antonymExample": "Uniform standards ensure consistency across all educational institutions nationally.",
     "antonymExampleAr": "تضمن المعايير الموحدة الاتساق عبر جميع المؤسسات التعليمية وطنياً."
   },
@@ -4441,7 +4441,7 @@
     "pronunciation": "in-di-SPEN-sə-bəl",
     "example": "Technology has become indispensable in modern healthcare.",
     "exampleAr": "أصبحت التكنولوجيا لا غنى عنها في الرعاية الصحية الحديثة.",
-    "antonymTranslation": "زائد عن الحاجة، فائض",
+    "antonymTranslation": "زائد عن الحاجة / فائض",
     "antonymExample": "Redundant information should be eliminated to improve clarity in reports.",
     "antonymExampleAr": "يجب حذف المعلومات الزائدة لتحسين الوضوح في التقارير."
   },
@@ -4454,7 +4454,7 @@
     "pronunciation": "i-NAYT",
     "example": "Some researchers believe that language ability is innate in humans.",
     "exampleAr": "يعتقد بعض الباحثين أن القدرة اللغوية فطرية في الإنسان.",
-    "antonymTranslation": "مكتسب، محصل",
+    "antonymTranslation": "مكتسب / محصَّل",
     "antonymExample": "Acquired skills through education enhance employability in competitive job markets.",
     "antonymExampleAr": "المهارات المكتسبة من خلال التعليم تعزز القابلية للتوظيف في أسواق العمل التنافسية."
   },
@@ -4467,7 +4467,7 @@
     "pronunciation": "in-tər-VEEN",
     "example": "The international community decided to intervene to stop the conflict.",
     "exampleAr": "قرر المجتمع الدولي التدخل لوقف النزاع.",
-    "antonymTranslation": "يسحب، ينسحب",
+    "antonymTranslation": "ينسحب / يتراجع",
     "antonymExample": "Participants may withdraw from the study at any time freely.",
     "antonymExampleAr": "يمكن للمشاركين الانسحاب من الدراسة في أي وقت بحرية."
   },
@@ -4480,7 +4480,7 @@
     "pronunciation": "i-ri-VUR-sə-bəl",
     "example": "Environmental damage caused by deforestation is often irreversible.",
     "exampleAr": "الأضرار البيئية التي تسببها إزالة الغابات غالبًا ما تكون لا رجعة فيها.",
-    "antonymTranslation": "قابل للعكس، عكوس",
+    "antonymTranslation": "قابل للعكس / قابل للتراجع",
     "antonymExample": "Climate change effects may not be reversible without immediate action.",
     "antonymExampleAr": "قد لا تكون آثار تغير المناخ قابلة للعكس دون اتخاذ إجراء فوري."
   },
@@ -4493,7 +4493,7 @@
     "pronunciation": "JUS-ti-fyd",
     "example": "The decision to increase taxes was seen as justified given the deficit.",
     "exampleAr": "نُظر إلى قرار رفع الضرائب باعتباره مبرّرًا في ضوء العجز.",
-    "antonymTranslation": "تعسفي، عشوائي",
+    "antonymTranslation": "تعسفي / عشوائي",
     "antonymExample": "Arbitrary decisions undermine trust and credibility in institutional governance.",
     "antonymExampleAr": "القرارات التعسفية تقوض الثقة والمصداقية في الحوكمة المؤسسية."
   },
@@ -4506,7 +4506,7 @@
     "pronunciation": "JUS-ti-fy",
     "example": "The results do not justify such a large investment of public funds.",
     "exampleAr": "النتائج لا تُبرّر هذا الاستثمار الضخم للأموال العامة.",
-    "antonymTranslation": "يسأل، يستجوب",
+    "antonymTranslation": "يشكّك / يتساءل",
     "antonymExample": "Critical thinkers question assumptions rather than accepting them uncritically.",
     "antonymExampleAr": "المفكرون النقديون يستجوبون الافتراضات بدلاً من قبولها دون نقد."
   },
@@ -4519,7 +4519,7 @@
     "pronunciation": "KEEP",
     "example": "It is important to keep accurate records of all transactions.",
     "exampleAr": "من المهم الاحتفاظ بسجلات دقيقة لجميع المعاملات.",
-    "antonymTranslation": "يتخلص من، يرفض",
+    "antonymTranslation": "يتخلص من / يرفض",
     "antonymExample": "Researchers discard unreliable data to maintain study validity and accuracy.",
     "antonymExampleAr": "يتخلص الباحثون من البيانات غير الموثوقة للحفاظ على صحة الدراسة ودقتها."
   },
@@ -4532,7 +4532,7 @@
     "pronunciation": "LEE-gəl",
     "example": "All business activities must comply with legal requirements.",
     "exampleAr": "يجب أن تمتثل جميع أنشطة الأعمال للمتطلبات القانونية.",
-    "antonymTranslation": "غير قانوني، محظور",
+    "antonymTranslation": "غير قانوني / محظور",
     "antonymExample": "Illegal practices in research violate ethical standards and compromise integrity.",
     "antonymExampleAr": "الممارسات غير القانونية في البحث تنتهك المعايير الأخلاقية وتضر بالنزاهة."
   },
@@ -4545,7 +4545,7 @@
     "pronunciation": "LEE-nee-ənt",
     "example": "Critics argued that the judge was too lenient with the defendant.",
     "exampleAr": "جادل المنتقدون بأن القاضي كان متساهلًا للغاية مع المتهم.",
-    "antonymTranslation": "صارم، متشدد",
+    "antonymTranslation": "صارم / متشدد",
     "antonymExample": "Strict regulations ensure safety standards are maintained in laboratory environments.",
     "antonymExampleAr": "تضمن اللوائح الصارمة الحفاظ على معايير السلامة في بيئات المختبرات."
   },
@@ -4610,7 +4610,7 @@
     "pronunciation": "LES-ən",
     "example": "Regular exercise can help lessen the risk of chronic disease.",
     "exampleAr": "يمكن للتمارين المنتظمة المساعدة في تقليل خطر الأمراض المزمنة.",
-    "antonymTranslation": "زيادة",
+    "antonymTranslation": "يزيد / يرفع",
     "antonymExample": "Global temperatures continue to increase due to greenhouse gas emissions.",
     "antonymExampleAr": "تستمر درجات الحرارة العالمية في الزيادة بسبب انبعاثات الغازات الدفيئة."
   },
@@ -4831,7 +4831,7 @@
     "pronunciation": "MIT-i-gayt",
     "example": "Planting trees is one way to mitigate the effects of climate change.",
     "exampleAr": "زراعة الأشجار إحدى الطرق للتخفيف من آثار تغير المناخ.",
-    "antonymTranslation": "يتفاقم",
+    "antonymTranslation": "يُفاقم",
     "antonymExample": "Air pollution continues to worsen in many rapidly developing urban areas.",
     "antonymExampleAr": "يستمر تلوث الهواء في التفاقم في العديد من المناطق الحضرية سريعة النمو."
   },
@@ -5013,7 +5013,7 @@
     "pronunciation": "owt-WAY",
     "example": "The benefits of the project outweigh the potential risks.",
     "exampleAr": "فوائد المشروع تفوق المخاطر المحتملة.",
-    "antonymTranslation": "يؤدي أداءً ضعيفاً",
+    "antonymTranslation": "يقلّ / يَنقص",
     "antonymExample": "Students underperform when they lack adequate support and learning resources.",
     "antonymExampleAr": "يؤدي الطلاب أداءً ضعيفاً عندما يفتقرون إلى الدعم الكافي وموارد التعلم."
   },
@@ -5065,7 +5065,7 @@
     "pronunciation": "oh-vər-ES-ti-mayt",
     "example": "It is easy to overestimate the speed of social change.",
     "exampleAr": "من السهل المبالغة في تقدير سرعة التغيير الاجتماعي.",
-    "antonymTranslation": "يستهين",
+    "antonymTranslation": "يُقلّل من التقدير",
     "antonymExample": "Researchers often underestimate the complexity of human behavioral patterns significantly.",
     "antonymExampleAr": "غالباً ما يستهين الباحثون بتعقيد أنماط السلوك البشري بشكل كبير."
   },
@@ -5091,7 +5091,7 @@
     "pronunciation": "OP-ti-myz",
     "example": "The team worked to optimise the efficiency of the production process.",
     "exampleAr": "عمل الفريق على تحسين كفاءة عملية الإنتاج.",
-    "antonymTranslation": "إهمال",
+    "antonymTranslation": "يُهمل",
     "antonymExample": "Environmental neglect causes irreversible damage to ecosystems and biodiversity.",
     "antonymExampleAr": "يسبب الإهمال البيئي ضرراً لا رجعة فيه للنظم البيئية والتنوع البيولوجي."
   },
@@ -5195,7 +5195,7 @@
     "pronunciation": "PAR-shəl",
     "example": "A partial solution was agreed upon while talks continued.",
     "exampleAr": "تمّ الاتفاق على حل جزئي بينما استمرت المحادثات.",
-    "antonymTranslation": "أحادي الجانب",
+    "antonymTranslation": "منحاز / أحادي الجانب",
     "antonymExample": "One-sided arguments weaken the credibility of academic discussions and debates.",
     "antonymExampleAr": "تضعف الحجج الأحادية الجانب مصداقية النقاشات الأكاديمية."
   },
@@ -5234,7 +5234,7 @@
     "pronunciation": "pə-LOOT",
     "example": "Industrial waste continues to pollute rivers and oceans.",
     "exampleAr": "تستمر النفايات الصناعية في تلويث الأنهار والمحيطات.",
-    "antonymTranslation": "نظيف",
+    "antonymTranslation": "يُنظّف",
     "antonymExample": "Clean energy sources are essential for sustainable economic development worldwide.",
     "antonymExampleAr": "مصادر الطاقة النظيفة ضرورية للتنمية الاقتصادية المستدامة عالمياً."
   },
@@ -5286,7 +5286,7 @@
     "pronunciation": "PROH-gres",
     "example": "Scientific progress has transformed the way we live and work.",
     "exampleAr": "أحدث التقدم العلمي ثورة في أسلوب حياتنا وعملنا.",
-    "antonymTranslation": "انخفاض، تراجع",
+    "antonymTranslation": "تراجع / انحدار",
     "antonymExample": "Economic indicators show a significant decline in manufacturing output recently.",
     "antonymExampleAr": "تُظهر المؤشرات الاقتصادية انخفاضاً كبيراً في الإنتاج الصناعي مؤخراً."
   },
@@ -5312,7 +5312,7 @@
     "pronunciation": "prə-TEKT",
     "example": "Governments have a duty to protect their citizens from harm.",
     "exampleAr": "على الحكومات واجب حماية مواطنيها من الأذى.",
-    "antonymTranslation": "ضرر، أذى",
+    "antonymTranslation": "يؤذي / يضر",
     "antonymExample": "Environmental pollution can harm both ecosystems and human health significantly.",
     "antonymExampleAr": "يمكن للتلوث البيئي أن يضر بالنظم البيئية والصحة البشرية بشكل كبير."
   },
@@ -5334,7 +5334,7 @@
     "word": "patient",
     "antonym": "impulsive",
     "skill": "Speaking",
-    "translation": "صبور / مريض",
+    "translation": "صبور",
     "pronunciation": "PAY-shənt",
     "example": "Being patient is crucial when learning a new language.",
     "exampleAr": "الصبر أمر بالغ الأهمية عند تعلم لغة جديدة.",
@@ -5390,7 +5390,7 @@
     "pronunciation": "PROWD",
     "example": "She was proud to represent her country at the international competition.",
     "exampleAr": "كانت فخورة بتمثيل بلادها في المسابقة الدولية.",
-    "antonymTranslation": "خجل، خزي",
+    "antonymTranslation": "خجول / خزيان",
     "antonymExample": "Students felt ashamed after submitting plagiarized work to their professor.",
     "antonymExampleAr": "شعر الطلاب بالخجل بعد تقديم عمل منتحل لأستاذهم."
   },
@@ -5442,7 +5442,7 @@
     "pronunciation": "pər-VAY-siv",
     "example": "Social media has a pervasive influence on modern culture.",
     "exampleAr": "لوسائل التواصل الاجتماعي تأثير واسع الانتشار على الثقافة الحديثة.",
-    "antonymTranslation": "محلي، موضعي",
+    "antonymTranslation": "محلي / موضعي",
     "antonymExample": "Climate change effects are not merely localised but affect global populations.",
     "antonymExampleAr": "آثار تغير المناخ ليست موضعية فقط بل تؤثر على السكان عالمياً."
   },
@@ -5585,7 +5585,7 @@
     "pronunciation": "ri-KUV-ər",
     "example": "The economy is expected to recover within the next two years.",
     "exampleAr": "من المتوقع أن يتعافى الاقتصاد في غضون العامين المقبلين.",
-    "antonymTranslation": "انخفاض، تراجع",
+    "antonymTranslation": "يتراجع / ينخفض",
     "antonymExample": "Biodiversity decline threatens ecosystem stability and long-term environmental sustainability globally.",
     "antonymExampleAr": "انخفاض التنوع البيولوجي يهدد استقرار النظام البيئي والاستدامة البيئية طويلة الأجل عالمياً."
   },
@@ -5598,7 +5598,7 @@
     "pronunciation": "ri-DYOOS",
     "example": "Renewable energy can significantly reduce carbon emissions.",
     "exampleAr": "يمكن للطاقة المتجددة أن تُقلّل بشكل ملحوظ من انبعاثات الكربون.",
-    "antonymTranslation": "زيادة، ارتفاع",
+    "antonymTranslation": "يزيد / يرفع",
     "antonymExample": "Population increase puts additional pressure on limited natural resources worldwide.",
     "antonymExampleAr": "الزيادة السكانية تضع ضغطاً إضافياً على الموارد الطبيعية المحدودة عالمياً."
   },
@@ -5663,7 +5663,7 @@
     "pronunciation": "ri-STRIKT",
     "example": "The new law seeks to restrict the sale of harmful products.",
     "exampleAr": "يسعى القانون الجديد إلى تقييد بيع المنتجات الضارة.",
-    "antonymTranslation": "مجاني، حر",
+    "antonymTranslation": "يُحرّر / يُطلق",
     "antonymExample": "Free education systems aim to provide equal opportunities for all students.",
     "antonymExampleAr": "تهدف أنظمة التعليم المجاني إلى توفير فرص متساوية لجميع الطلاب."
   },
@@ -5685,7 +5685,7 @@
     "word": "reward",
     "antonym": "punish",
     "skill": "Writing",
-    "translation": "مكافأة / يُكافئ",
+    "translation": "يُكافئ / مكافأة",
     "pronunciation": "ri-WORD",
     "example": "The company introduced a reward scheme to motivate employees.",
     "exampleAr": "أطلقت الشركة برنامج مكافآت لتحفيز الموظفين.",
@@ -5754,7 +5754,7 @@
     "pronunciation": "ri-STOR",
     "example": "The government launched a programme to restore damaged public buildings.",
     "exampleAr": "أطلقت الحكومة برنامجًا لترميم المباني العامة المتضررة.",
-    "antonymTranslation": "ضرر، تلف",
+    "antonymTranslation": "يُتلف / يُضرّ",
     "antonymExample": "Pollution can damage marine ecosystems and threaten biodiversity permanently.",
     "antonymExampleAr": "يمكن للتلوث أن يتلف النظم البيئية البحرية ويهدد التنوع البيولوجي بشكل دائم."
   },
@@ -5828,7 +5828,7 @@
     "word": "standard",
     "antonym": "substandard",
     "skill": "Writing",
-    "translation": "معيار / مستوى",
+    "translation": "معياري / قياسي",
     "pronunciation": "STAN-dərd",
     "example": "Educational standards must be maintained to ensure quality.",
     "exampleAr": "يجب الحفاظ على المعايير التعليمية لضمان الجودة.",
@@ -5897,7 +5897,7 @@
     "pronunciation": "SOLV",
     "example": "Collaboration between nations is needed to solve global challenges.",
     "exampleAr": "هناك حاجة إلى التعاون بين الدول لحل التحديات العالمية.",
-    "antonymTranslation": "يخلق، يبتكر",
+    "antonymTranslation": "يُسبّب / يُوجد",
     "antonymExample": "Entrepreneurs create innovative solutions to address contemporary social problems.",
     "antonymExampleAr": "رواد الأعمال يخلقون حلولاً مبتكرة لمعالجة المشاكل الاجتماعية المعاصرة."
   },
@@ -5923,7 +5923,7 @@
     "pronunciation": "SPRED",
     "example": "The disease began to spread rapidly through the densely populated area.",
     "exampleAr": "بدأ المرض ينتشر بسرعة في المنطقة المكتظة بالسكان.",
-    "antonymTranslation": "يحتوي على / يكبح انتشار",
+    "antonymTranslation": "يحتوي / يكبح",
     "antonymExample": "This database contains comprehensive information about global climate patterns.",
     "antonymExampleAr": "تحتوي قاعدة البيانات هذه على معلومات شاملة عن أنماط المناخ العالمية."
   },
@@ -5962,7 +5962,7 @@
     "pronunciation": "SURJ",
     "example": "There was a surge in demand for face masks during the pandemic.",
     "exampleAr": "شهد الطلب على الكمامات ارتفاعًا مفاجئًا خلال الجائحة.",
-    "antonymTranslation": "انخفاض، تراجع",
+    "antonymTranslation": "يتراجع / ينخفض",
     "antonymExample": "The decline in manufacturing jobs has significantly affected regional economies.",
     "antonymExampleAr": "أثر انخفاض الوظائف الصناعية بشكل كبير على الاقتصادات الإقليمية."
   },
@@ -6040,7 +6040,7 @@
     "pronunciation": "STRES",
     "example": "Chronic stress at work can lead to burnout and health problems.",
     "exampleAr": "التوتر المزمن في العمل قد يؤدي إلى الإرهاق والمشكلات الصحية.",
-    "antonymTranslation": "استرخاء، راحة",
+    "antonymTranslation": "استرخاء / راحة",
     "antonymExample": "Adequate relaxation periods improve student concentration and academic performance.",
     "antonymExampleAr": "فترات الاسترخاء الكافية تحسن تركيز الطلاب والأداء الأكاديمي."
   },
@@ -6118,7 +6118,7 @@
     "pronunciation": "SUP-lə-ment",
     "example": "Some students choose to supplement their studies with online courses.",
     "exampleAr": "يختار بعض الطلاب تكميل دراستهم بدورات عبر الإنترنت.",
-    "antonymTranslation": "يقلل، يخفض",
+    "antonymTranslation": "يُقلّل / يخفض",
     "antonymExample": "Renewable energy sources significantly reduce greenhouse gas emissions globally.",
     "antonymExampleAr": "مصادر الطاقة المتجددة تقلل بشكل كبير انبعاثات الغازات الدفيئة عالمياً."
   },
@@ -6322,7 +6322,7 @@
     "word": "unanimous",
     "antonym": "divided",
     "skill": "Reading",
-    "translation": "بالإجماع",
+    "translation": "إجماعي / متفق عليه",
     "pronunciation": "yoo-NAN-i-məs",
     "example": "The committee reached a unanimous decision to implement the policy.",
     "exampleAr": "توصّلت اللجنة إلى قرار بالإجماع لتطبيق السياسة.",
@@ -6378,7 +6378,7 @@
     "pronunciation": "VY-brənt",
     "example": "The vibrant local economy attracted entrepreneurs from across the country.",
     "exampleAr": "جذب الاقتصاد المحلي النابض بالحياة رواد الأعمال من جميع أنحاء البلاد.",
-    "antonymTranslation": "باهت، ممل",
+    "antonymTranslation": "باهت / ممل",
     "antonymExample": "Dull lectures fail to stimulate student interest and intellectual curiosity.",
     "antonymExampleAr": "المحاضرات المملة تفشل في تحفيز اهتمام الطلاب والفضول الفكري."
   },
@@ -6391,7 +6391,7 @@
     "pronunciation": "VAL-i-dayt",
     "example": "The results were independently verified to validate the original findings.",
     "exampleAr": "تم التحقق من النتائج بشكل مستقل لتأكيد صحة النتائج الأصلية.",
-    "antonymTranslation": "يدحض، يفند",
+    "antonymTranslation": "يدحض / يفند",
     "antonymExample": "New evidence may refute previously accepted theories in scientific literature.",
     "antonymExampleAr": "الأدلة الجديدة قد تدحض النظريات المقبولة سابقاً في الأدبيات العلمية."
   },
@@ -6404,7 +6404,7 @@
     "pronunciation": "VEH-ri-fy",
     "example": "All sources should be verified before including them in an academic paper.",
     "exampleAr": "يجب التحقق من جميع المصادر قبل إدراجها في ورقة بحثية أكاديمية.",
-    "antonymTranslation": "يجادل، يناقش",
+    "antonymTranslation": "يجادل / يناقش",
     "antonymExample": "Scholars continue to dispute the origins of ancient civilizations vigorously.",
     "antonymExampleAr": "يواصل العلماء الجدل حول أصول الحضارات القديمة بشدة."
   },
@@ -6417,7 +6417,7 @@
     "pronunciation": "WIL-ing",
     "example": "Both parties said they were willing to engage in further negotiations.",
     "exampleAr": "أعرب الطرفان عن استعدادهما للمشاركة في مزيد من المفاوضات.",
-    "antonymTranslation": "متردد، ممانع",
+    "antonymTranslation": "متردد / مُمانع",
     "antonymExample": "Some governments remain reluctant to implement necessary environmental protection measures.",
     "antonymExampleAr": "بعض الحكومات تبقى مترددة في تنفيذ تدابير الحماية البيئية الضرورية."
   },
@@ -6439,11 +6439,11 @@
     "word": "waste",
     "antonym": "conserve",
     "skill": "Writing",
-    "translation": "يُهدر / إهدار",
+    "translation": "يُهدر",
     "pronunciation": "WAYST",
     "example": "Reducing food waste is one of the simplest ways to help the environment.",
     "exampleAr": "تقليل هدر الطعام من أبسط الطرق للمساعدة في حماية البيئة.",
-    "antonymTranslation": "يحافظ على، يصون",
+    "antonymTranslation": "يحافظ على / يصون",
     "antonymExample": "Protected areas conserve biodiversity and maintain essential ecological balance effectively.",
     "antonymExampleAr": "المناطق المحمية تحافظ على التنوع البيولوجي وتحفظ التوازن البيئي الأساسي بفعالية."
   },
@@ -6456,7 +6456,7 @@
     "pronunciation": "WY-dən",
     "example": "Improving education can help widen access to opportunities.",
     "exampleAr": "تحسين التعليم يمكن أن يُوسّع إمكانية الوصول إلى الفرص.",
-    "antonymTranslation": "يضيق، ضيق",
+    "antonymTranslation": "يُضيّق",
     "antonymExample": "Narrow perspectives limit understanding of complex global socioeconomic issues.",
     "antonymExampleAr": "وجهات النظر الضيقة تحد من فهم القضايا الاجتماعية والاقتصادية العالمية المعقدة."
   },
@@ -6469,7 +6469,7 @@
     "pronunciation": "WUR-eed",
     "example": "Parents were worried about the long-term effects of screen time on children.",
     "exampleAr": "كان الآباء قلقين بشأن الآثار طويلة الأمد لوقت الشاشة على الأطفال.",
-    "antonymTranslation": "هادئ، متزن",
+    "antonymTranslation": "هادئ / متزن",
     "antonymExample": "Calm decision-making during crises often produces better long-term outcomes.",
     "antonymExampleAr": "غالبًا ما يؤدي اتخاذ قرارات هادئة أثناء الأزمات إلى نتائج أفضل على المدى الطويل."
   },
@@ -6482,7 +6482,7 @@
     "pronunciation": "WYD-spred",
     "example": "The use of smartphones has become widespread across all age groups.",
     "exampleAr": "أصبح استخدام الهواتف الذكية واسع الانتشار في جميع الفئات العمرية.",
-    "antonymTranslation": "محلي، محدود النطاق",
+    "antonymTranslation": "محلي / محدود النطاق",
     "antonymExample": "Localised pollution can still have widespread effects on regional ecosystems.",
     "antonymExampleAr": "التلوث المحلي لا يزال يمكن أن يكون له آثار واسعة على النظم البيئية الإقليمية."
   },
@@ -6495,7 +6495,7 @@
     "pronunciation": "YEELD",
     "example": "The new farming techniques yield significantly higher crop production.",
     "exampleAr": "تُنتج تقنيات الزراعة الجديدة محاصيل أعلى بكثير.",
-    "antonymTranslation": "يقاوم، يعارض",
+    "antonymTranslation": "يقاوم / يعارض",
     "antonymExample": "Some communities resist technological changes that threaten traditional cultural practices.",
     "antonymExampleAr": "بعض المجتمعات تقاوم التغييرات التكنولوجية التي تهدد الممارسات الثقافية التقليدية."
   }

@@ -82,6 +82,57 @@ async function seedFlashcards() {
 
 const EXPECTED_COUNT = 3000;
 
+// Reconciles existing flashcard rows with the seed JSON. Updates only the
+// rows whose Arabic translation (or Arabic example) differs from the JSON.
+// This lets us ship corrected translations without truncating user-progress
+// references (which point to flashcard IDs).
+async function reconcileFlashcardTranslations() {
+  const rows = seedData as SeedRow[];
+  const existing = await db.execute<{
+    id: number;
+    english: string;
+    level: string;
+    category: string;
+    arabic: string;
+    example_sentence_arabic: string | null;
+  }>(sql`SELECT id, english, level, category, arabic, example_sentence_arabic FROM flashcards`);
+
+  const byKey = new Map<string, { id: number; arabic: string; exampleAr: string | null }>();
+  for (const r of existing.rows) {
+    byKey.set(`${r.english}::${r.level}::${r.category}`, {
+      id: r.id,
+      arabic: r.arabic,
+      exampleAr: r.example_sentence_arabic,
+    });
+  }
+
+  let arabicUpdates = 0;
+  let exampleUpdates = 0;
+  for (const seed of rows) {
+    const cur = byKey.get(`${seed.english}::${seed.level}::${seed.category}`);
+    if (!cur) continue;
+    const newArabic = seed.arabic;
+    const newExample = seed.example_sentence_arabic ?? null;
+    if (cur.arabic !== newArabic) {
+      await db.execute(sql`UPDATE flashcards SET arabic = ${newArabic} WHERE id = ${cur.id}`);
+      arabicUpdates++;
+    }
+    if (cur.exampleAr !== newExample) {
+      await db.execute(sql`UPDATE flashcards SET example_sentence_arabic = ${newExample} WHERE id = ${cur.id}`);
+      exampleUpdates++;
+    }
+  }
+
+  if (arabicUpdates || exampleUpdates) {
+    logger.info(
+      { arabicUpdates, exampleUpdates },
+      "Reconciled flashcard Arabic translations from seed JSON",
+    );
+  } else {
+    logger.info("Flashcard Arabic translations already match seed JSON");
+  }
+}
+
 async function ensureStoriesTable() {
   await db.execute(sql`
     CREATE TABLE IF NOT EXISTS stories (
@@ -157,6 +208,7 @@ export async function runSeed() {
       logger.info({ updated: a1Count }, "Migrated A1 words to A2");
     }
 
+    await reconcileFlashcardTranslations();
     await seedStoriesData();
   } catch (err) {
     logger.error({ err }, "Seed error");

@@ -41,7 +41,7 @@
   },
   {
     "english": "address",
-    "arabic": "العنوان",
+    "arabic": "عنوان",
     "level": "A2",
     "category": "n.",
     "example_sentence": "Please write your address on the form.",
@@ -97,7 +97,7 @@
   },
   {
     "english": "alone",
-    "arabic": "وحدها",
+    "arabic": "وحده",
     "level": "A2",
     "category": "adv.",
     "example_sentence": "She lives alone in a small flat.",
@@ -121,7 +121,7 @@
   },
   {
     "english": "answer",
-    "arabic": "الإجابة",
+    "arabic": "إجابة",
     "level": "A2",
     "category": "n.",
     "example_sentence": "Please write the answer in the box.",
@@ -145,7 +145,7 @@
   },
   {
     "english": "area",
-    "arabic": "المنطقة",
+    "arabic": "منطقة",
     "level": "A2",
     "category": "n.",
     "example_sentence": "This area has many shops and parks.",
@@ -153,7 +153,7 @@
   },
   {
     "english": "arm",
-    "arabic": "الذراع",
+    "arabic": "ذراع",
     "level": "A2",
     "category": "n.",
     "example_sentence": "She broke her arm playing football.",
@@ -177,7 +177,7 @@
   },
   {
     "english": "baby",
-    "arabic": "الطفل الرضيع",
+    "arabic": "رضيع",
     "level": "A2",
     "category": "n.",
     "example_sentence": "The baby is sleeping in the cot.",
@@ -185,7 +185,7 @@
   },
   {
     "english": "back",
-    "arabic": "الظهر",
+    "arabic": "ظهر",
     "level": "A2",
     "category": "n.",
     "example_sentence": "He has pain in his back.",
@@ -201,7 +201,7 @@
   },
   {
     "english": "bag",
-    "arabic": "الحقيبة",
+    "arabic": "حقيبة",
     "level": "A2",
     "category": "n.",
     "example_sentence": "Put your books in your bag.",
@@ -209,7 +209,7 @@
   },
   {
     "english": "ball",
-    "arabic": "الكرة",
+    "arabic": "كرة",
     "level": "A2",
     "category": "n.",
     "example_sentence": "The children kicked the ball in the park.",
@@ -217,7 +217,7 @@
   },
   {
     "english": "bank",
-    "arabic": "البنك",
+    "arabic": "بنك",
     "level": "A2",
     "category": "n.",
     "example_sentence": "I go to the bank to get money.",
@@ -225,7 +225,7 @@
   },
   {
     "english": "bathroom",
-    "arabic": "دورة المياه",
+    "arabic": "حمام",
     "level": "A2",
     "category": "n.",
     "example_sentence": "The bathroom is on the first floor.",
@@ -401,7 +401,7 @@
   },
   {
     "english": "by",
-    "arabic": "بجانب",
+    "arabic": "بواسطة",
     "level": "A2",
     "category": "prep.",
     "example_sentence": "The school is by the river.",
@@ -417,7 +417,7 @@
   },
   {
     "english": "call",
-    "arabic": "يتصل",
+    "arabic": "يسمي",
     "level": "A2",
     "category": "v.",
     "example_sentence": "Please call me when you arrive home.",
@@ -505,7 +505,7 @@
   },
   {
     "english": "class",
-    "arabic": "فصل",
+    "arabic": "صف",
     "level": "A2",
     "category": "n.",
     "example_sentence": "The class starts at nine in the morning.",
@@ -753,7 +753,7 @@
   },
   {
     "english": "fall",
-    "arabic": "تسقط",
+    "arabic": "يسقط",
     "level": "A2",
     "category": "v.",
     "example_sentence": "Leaves fall from trees in autumn.",
@@ -1017,7 +1017,7 @@
   },
   {
     "english": "head",
-    "arabic": "الرأس",
+    "arabic": "رأس",
     "level": "A2",
     "category": "n.",
     "example_sentence": "Wear a helmet to protect your head.",
@@ -1041,7 +1041,7 @@
   },
   {
     "english": "high",
-    "arabic": "عالي",
+    "arabic": "عالٍ",
     "level": "A2",
     "category": "adj.",
     "example_sentence": "The mountain is very high and covered in snow.",
@@ -1049,7 +1049,7 @@
   },
   {
     "english": "home",
-    "arabic": "البيت / المنزل",
+    "arabic": "بيت / منزل",
     "level": "A2",
     "category": "n.",
     "example_sentence": "I go home at three o&#39;clock every day.",
@@ -1161,7 +1161,7 @@
   },
   {
     "english": "last",
-    "arabic": "الأسبوع الماضي",
+    "arabic": "الماضي / الأخير",
     "level": "A2",
     "category": "adj.",
     "example_sentence": "Last week we learned about plants.",
@@ -1281,7 +1281,7 @@
   },
   {
     "english": "many",
-    "arabic": "كم عدد",
+    "arabic": "كثير من",
     "level": "A2",
     "category": "det.",
     "example_sentence": "How many books have you read this year?",
@@ -1353,7 +1353,7 @@
   },
   {
     "english": "much",
-    "arabic": "كم من",
+    "arabic": "كثير من",
     "level": "A2",
     "category": "det.",
     "example_sentence": "How much water do you drink a day?",
@@ -1441,7 +1441,7 @@
   },
   {
     "english": "off",
-    "arabic": "إطفاء",
+    "arabic": "بعيداً / خارجاً",
     "level": "A2",
     "category": "adv.",
     "example_sentence": "Turn off the lights when you leave.",
@@ -1489,7 +1489,7 @@
   },
   {
     "english": "open",
-    "arabic": "افتح",
+    "arabic": "يفتح",
     "level": "A2",
     "category": "v.",
     "example_sentence": "Please open your books to page twelve.",
@@ -1641,7 +1641,7 @@
   },
   {
     "english": "read",
-    "arabic": "اقرأ",
+    "arabic": "يقرأ",
     "level": "A2",
     "category": "v.",
     "example_sentence": "Read the passage carefully before answering.",
@@ -1665,7 +1665,7 @@
   },
   {
     "english": "remember",
-    "arabic": "تذكر",
+    "arabic": "يتذكر",
     "level": "A2",
     "category": "v.",
     "example_sentence": "Remember to bring your homework tomorrow.",
@@ -1729,7 +1729,7 @@
   },
   {
     "english": "sea",
-    "arabic": "البحر",
+    "arabic": "بحر",
     "level": "A2",
     "category": "n.",
     "example_sentence": "We swam in the sea on our holiday.",
@@ -1785,7 +1785,7 @@
   },
   {
     "english": "sky",
-    "arabic": "السماء",
+    "arabic": "سماء",
     "level": "A2",
     "category": "n.",
     "example_sentence": "The sky is very clear and blue today.",
@@ -1921,7 +1921,7 @@
   },
   {
     "english": "sun",
-    "arabic": "الشمس",
+    "arabic": "شمس",
     "level": "A2",
     "category": "n.",
     "example_sentence": "The sun rises in the east every morning.",
@@ -1961,7 +1961,7 @@
   },
   {
     "english": "than",
-    "arabic": "من",
+    "arabic": "أكثر من / مقارنةً بـ",
     "level": "A2",
     "category": "conj.",
     "example_sentence": "She is taller than her brother by five centimetres.",
@@ -1985,7 +1985,7 @@
   },
   {
     "english": "tired",
-    "arabic": "متعب / متعبة",
+    "arabic": "متعب",
     "level": "A2",
     "category": "adj.",
     "example_sentence": "I felt tired after the long spelling test.",
@@ -2025,7 +2025,7 @@
   },
   {
     "english": "town",
-    "arabic": "بلدة / مدينة",
+    "arabic": "بلدة",
     "level": "A2",
     "category": "n.",
     "example_sentence": "I live in a small town near the mountains.",
@@ -2081,7 +2081,7 @@
   },
   {
     "english": "up",
-    "arabic": "أعلى / يرفع",
+    "arabic": "أعلى",
     "level": "A2",
     "category": "adv.",
     "example_sentence": "Put your hand up if you know the answer.",
@@ -2105,7 +2105,7 @@
   },
   {
     "english": "warm",
-    "arabic": "دافئ / دافئة",
+    "arabic": "دافئ",
     "level": "A2",
     "category": "adj.",
     "example_sentence": "The classroom is warm and comfortable in winter.",
@@ -2137,7 +2137,7 @@
   },
   {
     "english": "well",
-    "arabic": "بشكل جيد / جيداً",
+    "arabic": "جيداً",
     "level": "A2",
     "category": "adv.",
     "example_sentence": "She writes very well for her age.",
@@ -2225,7 +2225,7 @@
   },
   {
     "english": "young",
-    "arabic": "صغير/شاب",
+    "arabic": "شاب",
     "level": "A2",
     "category": "adj.",
     "example_sentence": "Young learners pick up new languages quickly.",
@@ -2233,7 +2233,7 @@
   },
   {
     "english": "ability",
-    "arabic": "القدرة",
+    "arabic": "قدرة",
     "level": "A2",
     "category": "n.",
     "example_sentence": "She has the ability to learn new words very quickly.",
@@ -2329,7 +2329,7 @@
   },
   {
     "english": "bright",
-    "arabic": "ساطع/مضيء",
+    "arabic": "مشرق",
     "level": "A2",
     "category": "adj.",
     "example_sentence": "The classroom has bright lights and big windows.",
@@ -2417,7 +2417,7 @@
   },
   {
     "english": "choose",
-    "arabic": "اختار",
+    "arabic": "يختار",
     "level": "A2",
     "category": "v.",
     "example_sentence": "Choose the correct answer and circle it.",
@@ -2481,7 +2481,7 @@
   },
   {
     "english": "complete",
-    "arabic": "أكمل",
+    "arabic": "يكمل",
     "level": "A2",
     "category": "v.",
     "example_sentence": "Complete the sentences using the words below.",
@@ -2529,7 +2529,7 @@
   },
   {
     "english": "dance",
-    "arabic": "رقص",
+    "arabic": "يرقص",
     "level": "A2",
     "category": "v.",
     "example_sentence": "We dance to music in our PE class on Fridays.",
@@ -2553,7 +2553,7 @@
   },
   {
     "english": "decide",
-    "arabic": "قرر",
+    "arabic": "يقرر",
     "level": "A2",
     "category": "v.",
     "example_sentence": "I need to decide which topic to write about.",
@@ -2617,7 +2617,7 @@
   },
   {
     "english": "dream",
-    "arabic": "حلم",
+    "arabic": "يحلم",
     "level": "A2",
     "category": "v.",
     "example_sentence": "I dream of travelling to many different countries.",
@@ -2673,7 +2673,7 @@
   },
   {
     "english": "expensive",
-    "arabic": "مكلف",
+    "arabic": "غالي",
     "level": "A2",
     "category": "adj.",
     "example_sentence": "The new phone is very expensive.",
@@ -2681,7 +2681,7 @@
   },
   {
     "english": "explain",
-    "arabic": "شرح",
+    "arabic": "يشرح",
     "level": "A2",
     "category": "v.",
     "example_sentence": "Can you explain the meaning of this word?",
@@ -2713,7 +2713,7 @@
   },
   {
     "english": "forget",
-    "arabic": "نسي",
+    "arabic": "ينسى",
     "level": "A2",
     "category": "v.",
     "example_sentence": "Do not forget to bring your notebook tomorrow.",
@@ -2753,7 +2753,7 @@
   },
   {
     "english": "guess",
-    "arabic": "خمّن",
+    "arabic": "يخمّن",
     "level": "A2",
     "category": "v.",
     "example_sentence": "Try to guess the meaning from the context.",
@@ -2921,7 +2921,7 @@
   },
   {
     "english": "meet",
-    "arabic": "التقى",
+    "arabic": "يلتقي",
     "level": "A2",
     "category": "v.",
     "example_sentence": "Let&#39;s meet at the library at four o&#39;clock.",
@@ -2953,7 +2953,7 @@
   },
   {
     "english": "move",
-    "arabic": "حرّك",
+    "arabic": "يتحرك",
     "level": "A2",
     "category": "v.",
     "example_sentence": "Move your chair closer to the desk please.",
@@ -3057,7 +3057,7 @@
   },
   {
     "english": "popular",
-    "arabic": "شهير",
+    "arabic": "شائع",
     "level": "A2",
     "category": "adj.",
     "example_sentence": "Football is a very popular sport in this country.",
@@ -3081,7 +3081,7 @@
   },
   {
     "english": "practice",
-    "arabic": "التمرين",
+    "arabic": "ممارسة",
     "level": "A2",
     "category": "n.",
     "example_sentence": "Regular practice helps you improve your English.",
@@ -3097,7 +3097,7 @@
   },
   {
     "english": "price",
-    "arabic": "السعر",
+    "arabic": "سعر",
     "level": "A2",
     "category": "n.",
     "example_sentence": "What is the price of this dictionary?",
@@ -3105,7 +3105,7 @@
   },
   {
     "english": "programme",
-    "arabic": "برنامج تلفزيوني",
+    "arabic": "برنامج",
     "level": "A2",
     "category": "n.",
     "example_sentence": "The television programme starts at seven o&#39;clock.",
@@ -3161,7 +3161,7 @@
   },
   {
     "english": "relax",
-    "arabic": "استرخى",
+    "arabic": "يسترخي",
     "level": "A2",
     "category": "v.",
     "example_sentence": "I relax by reading a book or watching a film.",
@@ -3169,7 +3169,7 @@
   },
   {
     "english": "repeat",
-    "arabic": "كرر",
+    "arabic": "يكرر",
     "level": "A2",
     "category": "v.",
     "example_sentence": "Please repeat that sentence more slowly.",
@@ -3185,7 +3185,7 @@
   },
   {
     "english": "return",
-    "arabic": "أعاد",
+    "arabic": "يعود",
     "level": "A2",
     "category": "v.",
     "example_sentence": "Please return the library book by Friday.",
@@ -3249,7 +3249,7 @@
   },
   {
     "english": "shopping",
-    "arabic": "التسوق",
+    "arabic": "تسوق",
     "level": "A2",
     "category": "n.",
     "example_sentence": "We go shopping for food every Saturday morning.",
@@ -3313,7 +3313,7 @@
   },
   {
     "english": "spell",
-    "arabic": "تهجي",
+    "arabic": "يتهجى",
     "level": "A2",
     "category": "v.",
     "example_sentence": "Can you spell your surname for me?",
@@ -3449,7 +3449,7 @@
   },
   {
     "english": "translate",
-    "arabic": "ترجم",
+    "arabic": "يترجم",
     "level": "A2",
     "category": "v.",
     "example_sentence": "Can you translate this sentence into Arabic?",
@@ -3465,7 +3465,7 @@
   },
   {
     "english": "uniform",
-    "arabic": "زي مدرسي",
+    "arabic": "زي رسمي",
     "level": "A2",
     "category": "n.",
     "example_sentence": "Students wear a blue and white uniform at school.",
@@ -3497,7 +3497,7 @@
   },
   {
     "english": "vocabulary",
-    "arabic": "المفردات",
+    "arabic": "مفردات",
     "level": "A2",
     "category": "n.",
     "example_sentence": "Learning new vocabulary helps you communicate better.",
@@ -3513,7 +3513,7 @@
   },
   {
     "english": "weather",
-    "arabic": "الطقس",
+    "arabic": "طقس",
     "level": "A2",
     "category": "n.",
     "example_sentence": "The weather is warm and sunny in July.",
@@ -3585,7 +3585,7 @@
   },
   {
     "english": "abroad",
-    "arabic": "بالخارج",
+    "arabic": "في الخارج",
     "level": "A2",
     "category": "adv.",
     "example_sentence": "She went abroad for the first time last summer.",
@@ -3601,7 +3601,7 @@
   },
   {
     "english": "actor",
-    "arabic": "الممثل",
+    "arabic": "ممثل",
     "level": "A2",
     "category": "n.",
     "example_sentence": "His favourite actor is in the new film.",
@@ -3665,7 +3665,7 @@
   },
   {
     "english": "aunt",
-    "arabic": "عمة",
+    "arabic": "عمة أو خالة",
     "level": "A2",
     "category": "n.",
     "example_sentence": "My aunt lives in another city far from us.",
@@ -3697,7 +3697,7 @@
   },
   {
     "english": "banana",
-    "arabic": "موزة",
+    "arabic": "موز",
     "level": "A2",
     "category": "n.",
     "example_sentence": "A banana is a sweet and filling snack.",
@@ -3769,7 +3769,7 @@
   },
   {
     "english": "bill",
-    "arabic": "الفاتورة",
+    "arabic": "فاتورة",
     "level": "A2",
     "category": "n.",
     "example_sentence": "The waiter brought the bill at the end of the meal.",
@@ -3873,7 +3873,7 @@
   },
   {
     "english": "brush",
-    "arabic": "ينظف بالفرشاة",
+    "arabic": "يفرشي",
     "level": "A2",
     "category": "v.",
     "example_sentence": "Brush your teeth after every meal.",
@@ -3889,7 +3889,7 @@
   },
   {
     "english": "burn",
-    "arabic": "يحترق",
+    "arabic": "يحرق",
     "level": "A2",
     "category": "v.",
     "example_sentence": "Do not touch the stove — you might burn yourself.",
@@ -3977,7 +3977,7 @@
   },
   {
     "english": "charity",
-    "arabic": "جمعية خيرية",
+    "arabic": "خيرية",
     "level": "A2",
     "category": "n.",
     "example_sentence": "We raised money for a local children&#39;s charity.",
@@ -4057,7 +4057,7 @@
   },
   {
     "english": "climb",
-    "arabic": "تسلق",
+    "arabic": "يتسلق",
     "level": "A2",
     "category": "v.",
     "example_sentence": "We climbed the hill to get a better view.",
@@ -4073,7 +4073,7 @@
   },
   {
     "english": "collect",
-    "arabic": "جمع",
+    "arabic": "يجمع",
     "level": "A2",
     "category": "v.",
     "example_sentence": "She collects stamps from different countries.",
@@ -4097,7 +4097,7 @@
   },
   {
     "english": "copy",
-    "arabic": "نسخ",
+    "arabic": "ينسخ",
     "level": "A2",
     "category": "v.",
     "example_sentence": "Do not copy your classmate&#39;s work.",
@@ -4121,7 +4121,7 @@
   },
   {
     "english": "crash",
-    "arabic": "اصطدم",
+    "arabic": "يصطدم",
     "level": "A2",
     "category": "v.",
     "example_sentence": "The car crashed into the wall on the bend.",
@@ -4129,7 +4129,7 @@
   },
   {
     "english": "cross",
-    "arabic": "عبر",
+    "arabic": "يعبر",
     "level": "A2",
     "category": "v.",
     "example_sentence": "Cross the road at the traffic lights.",
@@ -4145,7 +4145,7 @@
   },
   {
     "english": "cry",
-    "arabic": "بكى",
+    "arabic": "يبكي",
     "level": "A2",
     "category": "v.",
     "example_sentence": "She started to cry when she heard the sad news.",
@@ -4177,7 +4177,7 @@
   },
   {
     "english": "cycle",
-    "arabic": "ركب دراجة",
+    "arabic": "يركب دراجة",
     "level": "A2",
     "category": "v.",
     "example_sentence": "I cycle to the park at the weekend.",
@@ -4217,7 +4217,7 @@
   },
   {
     "english": "deliver",
-    "arabic": "سلم",
+    "arabic": "يُسلِّم",
     "level": "A2",
     "category": "v.",
     "example_sentence": "The postman delivered a parcel this morning.",
@@ -4225,7 +4225,7 @@
   },
   {
     "english": "describe",
-    "arabic": "وصف",
+    "arabic": "يصف",
     "level": "A2",
     "category": "v.",
     "example_sentence": "Describe the picture using three sentences.",
@@ -4249,7 +4249,7 @@
   },
   {
     "english": "dig",
-    "arabic": "حفر",
+    "arabic": "يحفر",
     "level": "A2",
     "category": "v.",
     "example_sentence": "The children dug a hole in the sand at the beach.",
@@ -4289,7 +4289,7 @@
   },
   {
     "english": "dull",
-    "arabic": "كئيب",
+    "arabic": "ممل",
     "level": "A2",
     "category": "adj.",
     "example_sentence": "The weather was dull and grey all day.",
@@ -4297,7 +4297,7 @@
   },
   {
     "english": "dump",
-    "arabic": "ألقى",
+    "arabic": "يُلقي",
     "level": "A2",
     "category": "v.",
     "example_sentence": "Do not dump rubbish in the park.",
@@ -4377,7 +4377,7 @@
   },
   {
     "english": "escape",
-    "arabic": "هرب",
+    "arabic": "يهرب",
     "level": "A2",
     "category": "v.",
     "example_sentence": "The bird escaped from its cage through the open window.",
@@ -4385,7 +4385,7 @@
   },
   {
     "english": "excuse",
-    "arabic": "اعتذر",
+    "arabic": "يعتذر",
     "level": "A2",
     "category": "v.",
     "example_sentence": "Excuse me — could you tell me where the library is?",
@@ -4409,7 +4409,7 @@
   },
   {
     "english": "February",
-    "arabic": "شباط",
+    "arabic": "فبراير",
     "level": "A2",
     "category": "n.",
     "example_sentence": "Valentine&#39;s Day is on the 14th of February.",
@@ -4433,7 +4433,7 @@
   },
   {
     "english": "fit",
-    "arabic": "بصحة جيدة",
+    "arabic": "لائق بدنياً",
     "level": "A2",
     "category": "adj.",
     "example_sentence": "Eating well and exercising helps you stay fit.",
@@ -4441,7 +4441,7 @@
   },
   {
     "english": "fix",
-    "arabic": "إصلاح",
+    "arabic": "يُصلح",
     "level": "A2",
     "category": "v.",
     "example_sentence": "Can you fix the broken chair in the corner?",
@@ -4545,7 +4545,7 @@
   },
   {
     "english": "gold",
-    "arabic": "ذهبي",
+    "arabic": "ذهب",
     "level": "A2",
     "category": "adj.",
     "example_sentence": "She won a gold medal at the swimming competition.",
@@ -4609,7 +4609,7 @@
   },
   {
     "english": "hamster",
-    "arabic": "الهامستر",
+    "arabic": "هامستر",
     "level": "A2",
     "category": "n.",
     "example_sentence": "The class has a hamster that lives in a small cage.",
@@ -4617,7 +4617,7 @@
   },
   {
     "english": "hang",
-    "arabic": "علّق",
+    "arabic": "يعلّق",
     "level": "A2",
     "category": "v.",
     "example_sentence": "Hang your coat on the hook by the door.",
@@ -4665,7 +4665,7 @@
   },
   {
     "english": "hunt",
-    "arabic": "صطاد",
+    "arabic": "يصطاد",
     "level": "A2",
     "category": "v.",
     "example_sentence": "In the past, people had to hunt for their food.",
@@ -4673,7 +4673,7 @@
   },
   {
     "english": "hurry",
-    "arabic": "أسرع",
+    "arabic": "يُسرع",
     "level": "A2",
     "category": "v.",
     "example_sentence": "Hurry up or we will miss the school bus.",
@@ -4697,7 +4697,7 @@
   },
   {
     "english": "invite",
-    "arabic": "دعا",
+    "arabic": "يدعو",
     "level": "A2",
     "category": "v.",
     "example_sentence": "She invited all her classmates to her birthday party.",
@@ -4737,7 +4737,7 @@
   },
   {
     "english": "kick",
-    "arabic": "ركل",
+    "arabic": "يركل",
     "level": "A2",
     "category": "v.",
     "example_sentence": "Kick the ball into the goal as hard as you can.",
@@ -4745,7 +4745,7 @@
   },
   {
     "english": "knock",
-    "arabic": "طرق",
+    "arabic": "يطرق",
     "level": "A2",
     "category": "v.",
     "example_sentence": "Always knock before entering the teacher&#39;s office.",
@@ -4761,7 +4761,7 @@
   },
   {
     "english": "lamb",
-    "arabic": "حمل",
+    "arabic": "خروف صغير",
     "level": "A2",
     "category": "n.",
     "example_sentence": "A lamb is a young sheep that is soft and white.",
@@ -4777,7 +4777,7 @@
   },
   {
     "english": "land",
-    "arabic": "هبط",
+    "arabic": "يهبط",
     "level": "A2",
     "category": "v.",
     "example_sentence": "The plane will land at the airport at noon.",
@@ -4785,7 +4785,7 @@
   },
   {
     "english": "laugh",
-    "arabic": "ضحك",
+    "arabic": "يضحك",
     "level": "A2",
     "category": "v.",
     "example_sentence": "The children laughed loudly at the funny story.",
@@ -4809,7 +4809,7 @@
   },
   {
     "english": "lean",
-    "arabic": "استند",
+    "arabic": "يستند",
     "level": "A2",
     "category": "v.",
     "example_sentence": "Lean your bicycle against the wall of the building.",
@@ -4849,7 +4849,7 @@
   },
   {
     "english": "lock",
-    "arabic": "أغلق",
+    "arabic": "يُغلق",
     "level": "A2",
     "category": "v.",
     "example_sentence": "Always lock the door when you leave the classroom.",
@@ -4873,7 +4873,7 @@
   },
   {
     "english": "loud",
-    "arabic": "عالي الصوت",
+    "arabic": "عالٍ",
     "level": "A2",
     "category": "adj.",
     "example_sentence": "The music was too loud in the room next door.",
@@ -4921,7 +4921,7 @@
   },
   {
     "english": "meal",
-    "arabic": "وجبة طعام",
+    "arabic": "وجبة",
     "level": "A2",
     "category": "n.",
     "example_sentence": "A balanced meal includes protein, vegetables, and carbs.",
@@ -5033,7 +5033,7 @@
   },
   {
     "english": "nephew",
-    "arabic": "ابن أخ",
+    "arabic": "ابن أخ أو ابن أخت",
     "level": "A2",
     "category": "n.",
     "example_sentence": "Her nephew is only three years old.",
@@ -5049,7 +5049,7 @@
   },
   {
     "english": "niece",
-    "arabic": "ابنة أخ",
+    "arabic": "ابنة أخ أو أخت",
     "level": "A2",
     "category": "n.",
     "example_sentence": "Her niece is starting school for the first time.",
@@ -5105,7 +5105,7 @@
   },
   {
     "english": "paint",
-    "arabic": "يرسم",
+    "arabic": "يطلي",
     "level": "A2",
     "category": "v.",
     "example_sentence": "We paint pictures every Thursday in art class.",
@@ -5137,7 +5137,7 @@
   },
   {
     "english": "past",
-    "arabic": "يمر",
+    "arabic": "الماضي",
     "level": "A2",
     "category": "n.",
     "example_sentence": "Walk past the shop and turn left at the corner.",
@@ -5169,7 +5169,7 @@
   },
   {
     "english": "penguin",
-    "arabic": "البطريق",
+    "arabic": "بطريق",
     "level": "A2",
     "category": "n.",
     "example_sentence": "A penguin cannot fly but it can swim very well.",
@@ -5393,7 +5393,7 @@
   },
   {
     "english": "van",
-    "arabic": "حافلة صغيرة",
+    "arabic": "شاحنة صغيرة",
     "level": "A2",
     "category": "n.",
     "example_sentence": "The school van picks students up every morning.",
@@ -5417,7 +5417,7 @@
   },
   {
     "english": "uncle",
-    "arabic": "عم",
+    "arabic": "عم أو خال",
     "level": "A2",
     "category": "n.",
     "example_sentence": "My uncle taught me how to ride a bicycle.",
@@ -5545,7 +5545,7 @@
   },
   {
     "english": "action",
-    "arabic": "إجراء/فعل",
+    "arabic": "فعل",
     "level": "A2",
     "category": "n.",
     "example_sentence": "Quick action saved the child from further danger.",
@@ -5585,7 +5585,7 @@
   },
   {
     "english": "arrange",
-    "arabic": "ينظم",
+    "arabic": "يرتب",
     "level": "A2",
     "category": "v.",
     "example_sentence": "Can you arrange a meeting for next Monday morning?",
@@ -5657,7 +5657,7 @@
   },
   {
     "english": "cost",
-    "arabic": "التكلفة",
+    "arabic": "تكلفة",
     "level": "A2",
     "category": "n.",
     "example_sentence": "The cost of living in the capital has risen sharply.",
@@ -5681,7 +5681,7 @@
   },
   {
     "english": "design",
-    "arabic": "تصمم",
+    "arabic": "يصمم",
     "level": "A2",
     "category": "v.",
     "example_sentence": "She designed a beautiful and functional new poster.",
@@ -5705,7 +5705,7 @@
   },
   {
     "english": "education",
-    "arabic": "التعليم",
+    "arabic": "تعليم",
     "level": "A2",
     "category": "n.",
     "example_sentence": "Quality education is widely recognised as a basic human right.",
@@ -5729,7 +5729,7 @@
   },
   {
     "english": "fail",
-    "arabic": "يرسب",
+    "arabic": "يفشل",
     "level": "A2",
     "category": "v.",
     "example_sentence": "Students who do not prepare adequately often fail exams.",
@@ -5753,7 +5753,7 @@
   },
   {
     "english": "form",
-    "arabic": "يتكون",
+    "arabic": "يُشكِّل",
     "level": "A2",
     "category": "v.",
     "example_sentence": "Water can form solid ice at extremely low temperatures.",
@@ -5785,7 +5785,7 @@
   },
   {
     "english": "history",
-    "arabic": "التاريخ",
+    "arabic": "تاريخ",
     "level": "A2",
     "category": "n.",
     "example_sentence": "History teaches us many important and valuable life lessons.",
@@ -5857,7 +5857,7 @@
   },
   {
     "english": "lead",
-    "arabic": "يؤدي",
+    "arabic": "يقود",
     "level": "A2",
     "category": "v.",
     "example_sentence": "A consistently poor diet can lead to serious health problems.",
@@ -5953,7 +5953,7 @@
   },
   {
     "english": "order",
-    "arabic": "لكي",
+    "arabic": "نظام",
     "level": "A2",
     "category": "n.",
     "example_sentence": "In order to succeed in life, you absolutely must work hard.",
@@ -5969,7 +5969,7 @@
   },
   {
     "english": "percent",
-    "arabic": "نسبة مئوية",
+    "arabic": "بالمئة",
     "level": "A2",
     "category": "n.",
     "example_sentence": "Total sales figures rose by fifteen percent last year.",
@@ -5985,7 +5985,7 @@
   },
   {
     "english": "prepare",
-    "arabic": "يحضر",
+    "arabic": "يُعِد",
     "level": "A2",
     "category": "v.",
     "example_sentence": "Always prepare your comprehensive notes thoroughly before any lecture.",
@@ -6017,7 +6017,7 @@
   },
   {
     "english": "rise",
-    "arabic": "ترتفع",
+    "arabic": "يرتفع",
     "level": "A2",
     "category": "v.",
     "example_sentence": "Average global temperatures have clearly risen significantly over the century.",
@@ -6089,7 +6089,7 @@
   },
   {
     "english": "subject",
-    "arabic": "المادة",
+    "arabic": "موضوع",
     "level": "A2",
     "category": "n.",
     "example_sentence": "English is now a compulsory subject in most schools worldwide.",
@@ -6097,7 +6097,7 @@
   },
   {
     "english": "success",
-    "arabic": "النجاح",
+    "arabic": "نجاح",
     "level": "A2",
     "category": "n.",
     "example_sentence": "Consistent hard work and determination always lead to real success.",
@@ -6113,7 +6113,7 @@
   },
   {
     "english": "survey",
-    "arabic": "الاستطلاع",
+    "arabic": "استطلاع",
     "level": "A2",
     "category": "n.",
     "example_sentence": "A large-scale survey found that 70 percent preferred online learning.",
@@ -6129,7 +6129,7 @@
   },
   {
     "english": "technology",
-    "arabic": "التكنولوجيا",
+    "arabic": "تكنولوجيا",
     "level": "A2",
     "category": "n.",
     "example_sentence": "Digital technology has completely transformed how we all communicate.",
@@ -6137,7 +6137,7 @@
   },
   {
     "english": "topic",
-    "arabic": "الموضوع",
+    "arabic": "موضوع",
     "level": "A2",
     "category": "n.",
     "example_sentence": "Always choose a familiar topic that you know really well.",
@@ -6145,7 +6145,7 @@
   },
   {
     "english": "total",
-    "arabic": "الإجمالي",
+    "arabic": "إجمالي",
     "level": "A2",
     "category": "n.",
     "example_sentence": "The total number of enrolled students increased to five hundred.",
@@ -6321,7 +6321,7 @@
   },
   {
     "english": "greenhouse",
-    "arabic": "احتباس حراري",
+    "arabic": "بيت زجاجي",
     "level": "A2",
     "category": "n.",
     "example_sentence": "Greenhouse gases effectively trap and retain heat in the atmosphere.",
@@ -6473,7 +6473,7 @@
   },
   {
     "english": "smart",
-    "arabic": "ذكية",
+    "arabic": "ذكي",
     "level": "A2",
     "category": "adj.",
     "example_sentence": "Smart cities use advanced technology to improve the quality of urban living.",
@@ -6537,7 +6537,7 @@
   },
   {
     "english": "experience",
-    "arabic": "يعاني",
+    "arabic": "يختبر / يعاني من",
     "level": "A2",
     "category": "v.",
     "example_sentence": "Many migrants genuinely experience difficulties when adjusting to a new",
@@ -6561,7 +6561,7 @@
   },
   {
     "english": "record",
-    "arabic": "تسجيل",
+    "arabic": "يسجّل",
     "level": "A2",
     "category": "v.",
     "example_sentence": "Scientists carefully record daily temperature changes at thousands of stations",
@@ -6601,7 +6601,7 @@
   },
   {
     "english": "inform",
-    "arabic": "استنير",
+    "arabic": "يُبلغ / يُخبر",
     "level": "A2",
     "category": "v.",
     "example_sentence": "All policy decisions should always be informed by the best available evidence.",
@@ -6609,7 +6609,7 @@
   },
   {
     "english": "introduce",
-    "arabic": "أدخل",
+    "arabic": "يُقدِّم / يُدخِل",
     "level": "A2",
     "category": "v.",
     "example_sentence": "The government introduced important new regulations to limit plastic use.",
@@ -6617,7 +6617,7 @@
   },
   {
     "english": "mention",
-    "arabic": "ذكر",
+    "arabic": "يذكر",
     "level": "A2",
     "category": "v.",
     "example_sentence": "The essay should clearly mention both the advantages and disadvantages.",
@@ -6633,7 +6633,7 @@
   },
   {
     "english": "recognise",
-    "arabic": "الاعتراف",
+    "arabic": "يتعرف على / يعترف بـ",
     "level": "A2",
     "category": "v.",
     "example_sentence": "Governments are beginning to recognise the true economic cost of inaction.",
@@ -6641,7 +6641,7 @@
   },
   {
     "english": "update",
-    "arabic": "تحديث",
+    "arabic": "يُحدِّث",
     "level": "A2",
     "category": "v.",
     "example_sentence": "The government pledged to update its climate targets every five years.",
@@ -6673,7 +6673,7 @@
   },
   {
     "english": "celebration",
-    "arabic": "احتفالية",
+    "arabic": "احتفال",
     "level": "A2",
     "category": "n.",
     "example_sentence": "The end-of-year celebration was enjoyed by all the students.",
@@ -6689,7 +6689,7 @@
   },
   {
     "english": "code",
-    "arabic": "قانون",
+    "arabic": "رمز / كود",
     "level": "A2",
     "category": "n.",
     "example_sentence": "Students must follow the school code of conduct at all times.",
@@ -6777,7 +6777,7 @@
   },
   {
     "english": "apply",
-    "arabic": "يتقدم بطلب",
+    "arabic": "يطبّق",
     "level": "B1",
     "category": "v.",
     "example_sentence": "You should apply for the scholarship before the deadline.",
@@ -6849,7 +6849,7 @@
   },
   {
     "english": "border",
-    "arabic": "حدود",
+    "arabic": "حدّ",
     "level": "B1",
     "category": "n.",
     "example_sentence": "They crossed the international border just after midnight.",
@@ -6873,7 +6873,7 @@
   },
   {
     "english": "certain",
-    "arabic": "متأكد",
+    "arabic": "معين",
     "level": "B1",
     "category": "adj.",
     "example_sentence": "I am certain that her answer is completely correct.",
@@ -6969,7 +6969,7 @@
   },
   {
     "english": "control",
-    "arabic": "تتحكم في",
+    "arabic": "يتحكم في",
     "level": "B1",
     "category": "v.",
     "example_sentence": "Governments try to control levels of harmful air pollution.",
@@ -7025,7 +7025,7 @@
   },
   {
     "english": "develop",
-    "arabic": "تتطور",
+    "arabic": "يطوّر",
     "level": "B1",
     "category": "v.",
     "example_sentence": "New technology is developing at an incredibly fast pace.",
@@ -7049,7 +7049,7 @@
   },
   {
     "english": "discuss",
-    "arabic": "نناقش",
+    "arabic": "يناقش",
     "level": "B1",
     "category": "v.",
     "example_sentence": "Let us discuss this important topic in small groups.",
@@ -7233,7 +7233,7 @@
   },
   {
     "english": "major",
-    "arabic": "كبير",
+    "arabic": "رئيسي",
     "level": "B1",
     "category": "adj.",
     "example_sentence": "Air pollution is now a major public health risk.",
@@ -7305,7 +7305,7 @@
   },
   {
     "english": "power",
-    "arabic": "طاقة",
+    "arabic": "قوة",
     "level": "B1",
     "category": "n.",
     "example_sentence": "Solar power is now a widely accepted sustainable energy source.",
@@ -7353,7 +7353,7 @@
   },
   {
     "english": "purpose",
-    "arabic": "الهدف",
+    "arabic": "هدف",
     "level": "B1",
     "category": "n.",
     "example_sentence": "The clear purpose of this graph is to show long-term trends.",
@@ -7465,7 +7465,7 @@
   },
   {
     "english": "serious",
-    "arabic": "خطير",
+    "arabic": "جدي، خطير",
     "level": "B1",
     "category": "adj.",
     "example_sentence": "Air pollution remains a very serious public health issue globally.",
@@ -7473,7 +7473,7 @@
   },
   {
     "english": "situation",
-    "arabic": "حالة",
+    "arabic": "وضع",
     "level": "B1",
     "category": "n.",
     "example_sentence": "The current global environmental situation is getting steadily worse.",
@@ -7489,7 +7489,7 @@
   },
   {
     "english": "society",
-    "arabic": "المجتمع",
+    "arabic": "مجتمع",
     "level": "B1",
     "category": "n.",
     "example_sentence": "Quality education benefits the entire fabric of our society.",
@@ -7497,7 +7497,7 @@
   },
   {
     "english": "solve",
-    "arabic": "حل",
+    "arabic": "يحل",
     "level": "B1",
     "category": "v.",
     "example_sentence": "We urgently need to solve the serious problem of plastic waste.",
@@ -7521,7 +7521,7 @@
   },
   {
     "english": "structure",
-    "arabic": "الهيكل",
+    "arabic": "هيكل",
     "level": "B1",
     "category": "n.",
     "example_sentence": "A well-written essay always has a very clear overall structure.",
@@ -7537,7 +7537,7 @@
   },
   {
     "english": "system",
-    "arabic": "النظام",
+    "arabic": "نظام",
     "level": "B1",
     "category": "n.",
     "example_sentence": "The national education system urgently needs significant reform.",
@@ -7545,7 +7545,7 @@
   },
   {
     "english": "value",
-    "arabic": "القيمة",
+    "arabic": "قيمة",
     "level": "B1",
     "category": "n.",
     "example_sentence": "Education has enormous and lasting value for all of society.",
@@ -7561,7 +7561,7 @@
   },
   {
     "english": "waste",
-    "arabic": "النفايات",
+    "arabic": "نفايات",
     "level": "B1",
     "category": "n.",
     "example_sentence": "Industrial waste is widely recognised as a major source of pollution.",
@@ -7577,7 +7577,7 @@
   },
   {
     "english": "agriculture",
-    "arabic": "الزراعة",
+    "arabic": "زراعة",
     "level": "B1",
     "category": "n.",
     "example_sentence": "Sustainable agriculture is the main source of income in rural areas.",
@@ -7585,7 +7585,7 @@
   },
   {
     "english": "ambition",
-    "arabic": "الطموح",
+    "arabic": "طموح",
     "level": "B1",
     "category": "n.",
     "example_sentence": "Her personal ambition is to work for a major international organisation.",
@@ -7601,7 +7601,7 @@
   },
   {
     "english": "atmosphere",
-    "arabic": "الغلاف الجوي",
+    "arabic": "غلاف جوي",
     "level": "B1",
     "category": "n.",
     "example_sentence": "The Earth&#39;s atmosphere is warming at an alarming and unprecedented rate.",
@@ -7609,7 +7609,7 @@
   },
   {
     "english": "attitude",
-    "arabic": "الموقف",
+    "arabic": "موقف",
     "level": "B1",
     "category": "n.",
     "example_sentence": "A consistently positive attitude makes language learning significantly easier.",
@@ -7617,7 +7617,7 @@
   },
   {
     "english": "budget",
-    "arabic": "الميزانية",
+    "arabic": "ميزانية",
     "level": "B1",
     "category": "n.",
     "example_sentence": "The government significantly increased the national education budget this year.",
@@ -7641,7 +7641,7 @@
   },
   {
     "english": "chemical",
-    "arabic": "كيماوي",
+    "arabic": "مادة كيميائية",
     "level": "B1",
     "category": "n.",
     "example_sentence": "Some industrial chemicals can be extremely harmful to the environment.",
@@ -7649,7 +7649,7 @@
   },
   {
     "english": "climate",
-    "arabic": "المناخ",
+    "arabic": "مناخ",
     "level": "B1",
     "category": "n.",
     "example_sentence": "The climate in tropical regions is consistently hot and humid.",
@@ -7665,7 +7665,7 @@
   },
   {
     "english": "conclusion",
-    "arabic": "الخلاصة",
+    "arabic": "خلاصة، استنتاج",
     "level": "B1",
     "category": "n.",
     "example_sentence": "The essay must end with a clear and well-reasoned conclusion.",
@@ -7681,7 +7681,7 @@
   },
   {
     "english": "conservation",
-    "arabic": "الحفاظ",
+    "arabic": "حفاظ",
     "level": "B1",
     "category": "n.",
     "example_sentence": "Active conservation of natural habitats is absolutely vital for wildlife.",
@@ -7697,7 +7697,7 @@
   },
   {
     "english": "cooperation",
-    "arabic": "التعاون",
+    "arabic": "تعاون",
     "level": "B1",
     "category": "n.",
     "example_sentence": "International cooperation is urgently needed to effectively tackle pollution.",
@@ -7737,7 +7737,7 @@
   },
   {
     "english": "disadvantage",
-    "arabic": "عيب، عدم ميزة",
+    "arabic": "عيب، مساوئ",
     "level": "B1",
     "category": "n.",
     "example_sentence": "A major disadvantage of city life is the constant noise and pollution.",
@@ -7913,7 +7913,7 @@
   },
   {
     "english": "harm",
-    "arabic": "إلحاق الضرر/الإضرار",
+    "arabic": "يضر/يلحق الضرر",
     "level": "B1",
     "category": "v.",
     "example_sentence": "Plastic waste causes significant and lasting harm to marine life.",
@@ -7953,7 +7953,7 @@
   },
   {
     "english": "ignore",
-    "arabic": "تجاهل",
+    "arabic": "يتجاهل",
     "level": "B1",
     "category": "v.",
     "example_sentence": "We simply cannot continue to ignore the effects of climate change.",
@@ -8025,7 +8025,7 @@
   },
   {
     "english": "mental",
-    "arabic": "نفسي",
+    "arabic": "عقلي",
     "level": "B1",
     "category": "adj.",
     "example_sentence": "Mental health is just as critically important as physical health.",
@@ -8033,7 +8033,7 @@
   },
   {
     "english": "minimum",
-    "arabic": "الحد الأدنى",
+    "arabic": "أدنى",
     "level": "B1",
     "category": "adj.",
     "example_sentence": "Last winter the minimum recorded temperature was minus ten degrees.",
@@ -8201,7 +8201,7 @@
   },
   {
     "english": "remain",
-    "arabic": "تظل/تبقى",
+    "arabic": "يظل/يبقى",
     "level": "B1",
     "category": "v.",
     "example_sentence": "Temperatures remain dangerously high during the long summer months.",
@@ -8209,7 +8209,7 @@
   },
   {
     "english": "renewable",
-    "arabic": "متجددة",
+    "arabic": "متجدد",
     "level": "B1",
     "category": "adj.",
     "example_sentence": "Renewable energy sources include wind, solar, and hydroelectric power.",
@@ -8217,7 +8217,7 @@
   },
   {
     "english": "responsible",
-    "arabic": "مسؤولة",
+    "arabic": "مسؤول",
     "level": "B1",
     "category": "adj.",
     "example_sentence": "All governments are responsible for adequately protecting natural resources.",
@@ -8233,7 +8233,7 @@
   },
   {
     "english": "signal",
-    "arabic": "تشير/تدل",
+    "arabic": "يشير/يدل",
     "level": "B1",
     "category": "v.",
     "example_sentence": "The available data signals a genuinely worrying and persistent long-term trend.",
@@ -8241,7 +8241,7 @@
   },
   {
     "english": "solar",
-    "arabic": "شمسية",
+    "arabic": "شمسي",
     "level": "B1",
     "category": "adj.",
     "example_sentence": "Solar panels are now more affordable and accessible than ever before.",
@@ -8257,7 +8257,7 @@
   },
   {
     "english": "spread",
-    "arabic": "تنتشر",
+    "arabic": "ينتشر",
     "level": "B1",
     "category": "v.",
     "example_sentence": "Infectious disease can spread with alarming rapidity in crowded urban areas.",
@@ -8265,7 +8265,7 @@
   },
   {
     "english": "stable",
-    "arabic": "مستقرة",
+    "arabic": "مستقر",
     "level": "B1",
     "category": "adj.",
     "example_sentence": "A consistently stable and growing economy benefits all citizens.",
@@ -8273,7 +8273,7 @@
   },
   {
     "english": "standard",
-    "arabic": "معايير",
+    "arabic": "معيار",
     "level": "B1",
     "category": "n.",
     "example_sentence": "Living standards have improved significantly in many developing countries.",
@@ -8281,7 +8281,7 @@
   },
   {
     "english": "steady",
-    "arabic": "ثابتة",
+    "arabic": "ثابت",
     "level": "B1",
     "category": "adj.",
     "example_sentence": "There was a steady and consistent increase in temperatures throughout the",
@@ -8297,7 +8297,7 @@
   },
   {
     "english": "strict",
-    "arabic": "أصرم/أقسى",
+    "arabic": "صارم",
     "level": "B1",
     "category": "adj.",
     "example_sentence": "Much stricter laws are urgently needed to adequately protect endangered",
@@ -8313,7 +8313,7 @@
   },
   {
     "english": "suitable",
-    "arabic": "مناسبة",
+    "arabic": "مناسب",
     "level": "B1",
     "category": "adj.",
     "example_sentence": "Always choose the most suitable vocabulary for your academic writing.",
@@ -8369,7 +8369,7 @@
   },
   {
     "english": "unemployed",
-    "arabic": "عاطلة عن العمل",
+    "arabic": "عاطل عن العمل",
     "level": "B1",
     "category": "adj.",
     "example_sentence": "Many young people sadly remain unemployed for years after graduating.",
@@ -8377,7 +8377,7 @@
   },
   {
     "english": "various",
-    "arabic": "متنوع",
+    "arabic": "متنوعة",
     "level": "B1",
     "category": "adj.",
     "example_sentence": "There are various practical ways to significantly reduce energy consumption.",
@@ -8433,7 +8433,7 @@
   },
   {
     "english": "advance",
-    "arabic": "تتقدم",
+    "arabic": "يتقدم",
     "level": "B1",
     "category": "v.",
     "example_sentence": "Science and technology continue to advance at a remarkable pace.",
@@ -8473,7 +8473,7 @@
   },
   {
     "english": "capture",
-    "arabic": "التقط",
+    "arabic": "يلتقط",
     "level": "B1",
     "category": "v.",
     "example_sentence": "Photographs can effectively capture very important historical moments.",
@@ -8497,7 +8497,7 @@
   },
   {
     "english": "concentrate",
-    "arabic": "ركّز",
+    "arabic": "يركّز",
     "level": "B1",
     "category": "v.",
     "example_sentence": "You must concentrate very carefully during the listening test.",
@@ -8513,7 +8513,7 @@
   },
   {
     "english": "contrast",
-    "arabic": "قارن",
+    "arabic": "يتناقض",
     "level": "B1",
     "category": "v.",
     "example_sentence": "The essay effectively contrasts the benefits of urban and rural life.",
@@ -8521,7 +8521,7 @@
   },
   {
     "english": "convince",
-    "arabic": "أقنع",
+    "arabic": "يقنع",
     "level": "B1",
     "category": "v.",
     "example_sentence": "The scientific evidence convinced many governments to urgently act on",
@@ -8585,7 +8585,7 @@
   },
   {
     "english": "investigate",
-    "arabic": "التحقيق / البحث",
+    "arabic": "يحقق / يبحث",
     "level": "B1",
     "category": "v.",
     "example_sentence": "Researchers thoroughly investigated the long-term effects of urban air",
@@ -8601,7 +8601,7 @@
   },
   {
     "english": "launch",
-    "arabic": "إطلاق / طرح",
+    "arabic": "يطلق / يطرح",
     "level": "B1",
     "category": "v.",
     "example_sentence": "The company successfully launched an innovative new range of electric",
@@ -8617,7 +8617,7 @@
   },
   {
     "english": "overcome",
-    "arabic": "التغلب على",
+    "arabic": "يتغلب على",
     "level": "B1",
     "category": "v.",
     "example_sentence": "With determination and good support, students can overcome most obstacles.",
@@ -8633,7 +8633,7 @@
   },
   {
     "english": "promote",
-    "arabic": "تعزيز / الترويج",
+    "arabic": "يعزز / يروّج",
     "level": "B1",
     "category": "v.",
     "example_sentence": "The government actively promotes the wider use of sustainable public",
@@ -8681,7 +8681,7 @@
   },
   {
     "english": "resource",
-    "arabic": "موارد",
+    "arabic": "مورد",
     "level": "B1",
     "category": "n.",
     "example_sentence": "Fresh water is increasingly recognised as a precious and finite natural",
@@ -8689,7 +8689,7 @@
   },
   {
     "english": "respond",
-    "arabic": "يجيب على",
+    "arabic": "يستجيب",
     "level": "B1",
     "category": "v.",
     "example_sentence": "Students should always respond precisely to the exact question that is asked.",
@@ -8713,7 +8713,7 @@
   },
   {
     "english": "revise",
-    "arabic": "يعيد دراسة",
+    "arabic": "يراجع",
     "level": "B1",
     "category": "v.",
     "example_sentence": "You should revise all your key vocabulary notes at least once every week.",
@@ -8721,7 +8721,7 @@
   },
   {
     "english": "risk",
-    "arabic": "مخاطر",
+    "arabic": "خطر",
     "level": "B1",
     "category": "n.",
     "example_sentence": "Long-term exposure to air pollution poses very serious risks to human health.",
@@ -8801,7 +8801,7 @@
   },
   {
     "english": "confirm",
-    "arabic": "أكد",
+    "arabic": "يؤكد",
     "level": "B1",
     "category": "v.",
     "example_sentence": "The new data confirms that emissions are continuing to rise rapidly.",
@@ -8809,7 +8809,7 @@
   },
   {
     "english": "doubt",
-    "arabic": "شك",
+    "arabic": "يشكك",
     "level": "B1",
     "category": "v.",
     "example_sentence": "Few scientists now doubt the link between human activity and climate change.",
@@ -8817,7 +8817,7 @@
   },
   {
     "english": "link",
-    "arabic": "ربط",
+    "arabic": "يربط",
     "level": "B1",
     "category": "v.",
     "example_sentence": "Researchers have firmly linked poor air quality to increased rates of asthma.",
@@ -8841,7 +8841,7 @@
   },
   {
     "english": "outline",
-    "arabic": "وضع مخطط",
+    "arabic": "يضع مخططاً",
     "level": "B1",
     "category": "v.",
     "example_sentence": "Carefully outline your essay plan before you begin writing it.",
@@ -8857,7 +8857,7 @@
   },
   {
     "english": "refer",
-    "arabic": "الرجوع إلى",
+    "arabic": "يرجع إلى",
     "level": "B1",
     "category": "v.",
     "example_sentence": "Always refer back to specific data when writing your Task 1 response.",
@@ -8865,7 +8865,7 @@
   },
   {
     "english": "replace",
-    "arabic": "استبدال",
+    "arabic": "يستبدل",
     "level": "B1",
     "category": "v.",
     "example_sentence": "Electric vehicles will gradually replace petrol-powered cars completely.",
@@ -8881,7 +8881,7 @@
   },
   {
     "english": "underline",
-    "arabic": "تسطير",
+    "arabic": "يُسطّر",
     "level": "B1",
     "category": "v.",
     "example_sentence": "Underline key words in the question before planning your response.",
@@ -8897,7 +8897,7 @@
   },
   {
     "english": "appeal",
-    "arabic": "جذب",
+    "arabic": "يستأثر / يجذب",
     "level": "B1",
     "category": "v.",
     "example_sentence": "Sustainable travel options are beginning to appeal to a much wider audience.",
@@ -8937,7 +8937,7 @@
   },
   {
     "english": "advertising",
-    "arabic": "إعلان",
+    "arabic": "إعلانات",
     "level": "B1",
     "category": "n.",
     "example_sentence": "Advertising on social media can reach millions of people instantly.",
@@ -8969,7 +8969,7 @@
   },
   {
     "english": "assignment",
-    "arabic": "واجب",
+    "arabic": "مهمة / واجب",
     "level": "B1",
     "category": "n.",
     "example_sentence": "Please submit your writing assignment by Friday at noon.",
@@ -9145,7 +9145,7 @@
   },
   {
     "english": "literacy",
-    "arabic": "محو الأمية / الثقافة",
+    "arabic": "محو الأمية / القدرة على القراءة والكتابة",
     "level": "B1",
     "category": "n.",
     "example_sentence": "Data literacy is now a core skill required in most professional and academic",
@@ -9209,7 +9209,7 @@
   },
   {
     "english": "timely",
-    "arabic": "في الوقت المناسب",
+    "arabic": "في الوقت المناسب / مناسب توقيتاً",
     "level": "B1",
     "category": "adj.",
     "example_sentence": "A timely and well-targeted intervention can prevent minor problems from",
@@ -9385,7 +9385,7 @@
   },
   {
     "english": "significant",
-    "arabic": "كبيرة/هام",
+    "arabic": "هام / كبير",
     "level": "B2",
     "category": "adj.",
     "example_sentence": "There has been a very significant and sustained rise in global temperatures.",
@@ -9393,7 +9393,7 @@
   },
   {
     "english": "statistic",
-    "arabic": "إحصائيات",
+    "arabic": "إحصاء",
     "level": "B2",
     "category": "n.",
     "example_sentence": "The latest statistics clearly show that air quality has improved.",
@@ -9545,7 +9545,7 @@
   },
   {
     "english": "capacity",
-    "arabic": "السعة",
+    "arabic": "سعة",
     "level": "B2",
     "category": "n.",
     "example_sentence": "The new stadium has a total capacity of over 80,000 spectators.",
@@ -9561,7 +9561,7 @@
   },
   {
     "english": "classify",
-    "arabic": "صنّف",
+    "arabic": "يصنّف",
     "level": "B2",
     "category": "v.",
     "example_sentence": "Biologists carefully classify living organisms into clearly defined groups.",
@@ -9569,7 +9569,7 @@
   },
   {
     "english": "collaborate",
-    "arabic": "تعاون",
+    "arabic": "يتعاون",
     "level": "B2",
     "category": "v.",
     "example_sentence": "Students consistently learn more effectively when they collaborate on tasks.",
@@ -9601,7 +9601,7 @@
   },
   {
     "english": "conclude",
-    "arabic": "استنتج",
+    "arabic": "يستنتج",
     "level": "B2",
     "category": "v.",
     "example_sentence": "The research report clearly concludes that immediate action is required.",
@@ -9609,7 +9609,7 @@
   },
   {
     "english": "conduct",
-    "arabic": "أجرى",
+    "arabic": "يُجري",
     "level": "B2",
     "category": "v.",
     "example_sentence": "Scientists carefully conduct experiments to test and validate hypotheses.",
@@ -9633,7 +9633,7 @@
   },
   {
     "english": "construct",
-    "arabic": "بناء",
+    "arabic": "يبني",
     "level": "B2",
     "category": "v.",
     "example_sentence": "The government plans to construct several important new hospitals this year.",
@@ -9641,7 +9641,7 @@
   },
   {
     "english": "consume",
-    "arabic": "استهلك",
+    "arabic": "يستهلك",
     "level": "B2",
     "category": "v.",
     "example_sentence": "Developed nations consume far more energy per person than developing ones.",
@@ -9649,7 +9649,7 @@
   },
   {
     "english": "context",
-    "arabic": "السياق",
+    "arabic": "سياق",
     "level": "B2",
     "category": "n.",
     "example_sentence": "Always read a new vocabulary word in its full context.",
@@ -9665,7 +9665,7 @@
   },
   {
     "english": "cope",
-    "arabic": "تعامل",
+    "arabic": "يتعامل",
     "level": "B2",
     "category": "v.",
     "example_sentence": "Some coastal communities genuinely struggle to cope with severe flooding.",
@@ -9673,7 +9673,7 @@
   },
   {
     "english": "decline",
-    "arabic": "تراجع",
+    "arabic": "يتراجع",
     "level": "B2",
     "category": "v.",
     "example_sentence": "Wild fish populations have declined very sharply due to overfishing.",
@@ -9681,7 +9681,7 @@
   },
   {
     "english": "dedicate",
-    "arabic": "كرّس",
+    "arabic": "يكرّس",
     "level": "B2",
     "category": "v.",
     "example_sentence": "She dedicated more than ten years of her career to improving literacy.",
@@ -9689,7 +9689,7 @@
   },
   {
     "english": "demonstrate",
-    "arabic": "أثبت",
+    "arabic": "يوضح",
     "level": "B2",
     "category": "v.",
     "example_sentence": "The data clearly demonstrates a strong and consistent upward trend.",
@@ -9697,7 +9697,7 @@
   },
   {
     "english": "detect",
-    "arabic": "كشف",
+    "arabic": "يكتشف",
     "level": "B2",
     "category": "v.",
     "example_sentence": "Satellites can now accurately detect changes in forest cover from space.",
@@ -9729,7 +9729,7 @@
   },
   {
     "english": "dramatic",
-    "arabic": "دراماتيكي",
+    "arabic": "مثير",
     "level": "B2",
     "category": "adj.",
     "example_sentence": "There has been a very dramatic increase in online shopping worldwide.",
@@ -9745,7 +9745,7 @@
   },
   {
     "english": "emphasis",
-    "arabic": "التركيز",
+    "arabic": "تركيز",
     "level": "B2",
     "category": "n.",
     "example_sentence": "The IELTS course places great emphasis on developing writing skills.",
@@ -9769,7 +9769,7 @@
   },
   {
     "english": "ensure",
-    "arabic": "يتأكد",
+    "arabic": "يضمن",
     "level": "B2",
     "category": "v.",
     "example_sentence": "Please ensure that your essay is clearly organised before submitting.",
@@ -9833,7 +9833,7 @@
   },
   {
     "english": "foundation",
-    "arabic": "الأساس",
+    "arabic": "أساس",
     "level": "B2",
     "category": "n.",
     "example_sentence": "A solid foundation in vocabulary is absolutely essential for IELTS success.",
@@ -9857,7 +9857,7 @@
   },
   {
     "english": "imply",
-    "arabic": "يعني",
+    "arabic": "يستلزم",
     "level": "B2",
     "category": "v.",
     "example_sentence": "The available data implies that energy demand will continue to rise.",
@@ -9897,7 +9897,7 @@
   },
   {
     "english": "integrate",
-    "arabic": "دمج / دمج",
+    "arabic": "يدمج",
     "level": "B2",
     "category": "v.",
     "example_sentence": "Schools should integrate digital technology into daily classroom activities.",
@@ -9905,7 +9905,7 @@
   },
   {
     "english": "interpret",
-    "arabic": "تفسير",
+    "arabic": "يفسّر",
     "level": "B2",
     "category": "v.",
     "example_sentence": "It is essential to interpret all data objectively and without personal bias.",
@@ -9913,7 +9913,7 @@
   },
   {
     "english": "justify",
-    "arabic": "تبرير",
+    "arabic": "يبرر",
     "level": "B2",
     "category": "v.",
     "example_sentence": "Every argument in your essay must be justified with relevant evidence.",
@@ -9921,7 +9921,7 @@
   },
   {
     "english": "maintain",
-    "arabic": "الحفاظ على",
+    "arabic": "يحافظ على",
     "level": "B2",
     "category": "v.",
     "example_sentence": "It is genuinely challenging to maintain a balanced diet when busy.",
@@ -9929,7 +9929,7 @@
   },
   {
     "english": "migrate",
-    "arabic": "هاجر / الهجرة",
+    "arabic": "يهاجر",
     "level": "B2",
     "category": "v.",
     "example_sentence": "Millions of birds migrate thousands of kilometres south during winter.",
@@ -9945,7 +9945,7 @@
   },
   {
     "english": "monitor",
-    "arabic": "مراقبة",
+    "arabic": "يراقب",
     "level": "B2",
     "category": "v.",
     "example_sentence": "Environmental authorities continuously monitor air quality in all major cities.",
@@ -9953,7 +9953,7 @@
   },
   {
     "english": "motivate",
-    "arabic": "تحفيز / تشجيع",
+    "arabic": "يحفّز",
     "level": "B2",
     "category": "v.",
     "example_sentence": "Effective teachers find creative ways to genuinely motivate their students.",
@@ -9961,7 +9961,7 @@
   },
   {
     "english": "objective",
-    "arabic": "الهدف / الغاية",
+    "arabic": "هدف",
     "level": "B2",
     "category": "n.",
     "example_sentence": "The primary objective of the project is to significantly reduce carbon emissions.",
@@ -9969,7 +9969,7 @@
   },
   {
     "english": "outcome",
-    "arabic": "نتيجة / نتيجة",
+    "arabic": "نتيجة",
     "level": "B2",
     "category": "n.",
     "example_sentence": "The actual outcome of the experiment was completely unexpected by",
@@ -9977,7 +9977,7 @@
   },
   {
     "english": "participate",
-    "arabic": "المشاركة / الاشتراك",
+    "arabic": "يشارك",
     "level": "B2",
     "category": "v.",
     "example_sentence": "All students are actively encouraged to participate in class discussions.",
@@ -9985,7 +9985,7 @@
   },
   {
     "english": "potential",
-    "arabic": "محتمل / الإمكانات",
+    "arabic": "محتمل",
     "level": "B2",
     "category": "adj.",
     "example_sentence": "Solar energy has enormous untapped potential as a global energy source.",
@@ -9993,7 +9993,7 @@
   },
   {
     "english": "predict",
-    "arabic": "التنبؤ",
+    "arabic": "يتنبأ",
     "level": "B2",
     "category": "v.",
     "example_sentence": "Climate scientists predict that global temperatures will continue to rise.",
@@ -10017,7 +10017,7 @@
   },
   {
     "english": "propose",
-    "arabic": "اقتراح / تقديم",
+    "arabic": "يقترح",
     "level": "B2",
     "category": "v.",
     "example_sentence": "The lead researcher proposed an innovative and practical solution to the",
@@ -10025,7 +10025,7 @@
   },
   {
     "english": "pursue",
-    "arabic": "السعي / المتابعة",
+    "arabic": "يسعى",
     "level": "B2",
     "category": "v.",
     "example_sentence": "After graduating, she decided to pursue a rewarding career in environmental",
@@ -10065,7 +10065,7 @@
   },
   {
     "english": "restriction",
-    "arabic": "قيود",
+    "arabic": "قيد",
     "level": "B2",
     "category": "n.",
     "example_sentence": "There are strict legal restrictions on the use of certain harmful chemicals.",
@@ -10129,7 +10129,7 @@
   },
   {
     "english": "vary",
-    "arabic": "تختلف",
+    "arabic": "يتباين",
     "level": "B2",
     "category": "v.",
     "example_sentence": "Individual test scores vary considerably depending on how well students",
@@ -10145,7 +10145,7 @@
   },
   {
     "english": "vulnerable",
-    "arabic": "عرضة",
+    "arabic": "هش",
     "level": "B2",
     "category": "adj.",
     "example_sentence": "Elderly people are particularly vulnerable to the effects of extreme heat.",
@@ -10193,7 +10193,7 @@
   },
   {
     "english": "critical",
-    "arabic": "حرج",
+    "arabic": "حاسم",
     "level": "B2",
     "category": "adj.",
     "example_sentence": "Critical analysis of sources is a core skill at university level.",
@@ -10209,7 +10209,7 @@
   },
   {
     "english": "devote",
-    "arabic": "كرس",
+    "arabic": "يكرس",
     "level": "B2",
     "category": "v.",
     "example_sentence": "She devoted several years to researching the effects of ocean acidification.",
@@ -10225,7 +10225,7 @@
   },
   {
     "english": "engage",
-    "arabic": "شارك",
+    "arabic": "يشارك",
     "level": "B2",
     "category": "v.",
     "example_sentence": "Students who engage actively with feedback make faster progress.",
@@ -10233,7 +10233,7 @@
   },
   {
     "english": "exceed",
-    "arabic": "تجاوز",
+    "arabic": "يتجاوز",
     "level": "B2",
     "category": "v.",
     "example_sentence": "Current emissions far exceed the targets set in the Paris Agreement.",
@@ -10281,7 +10281,7 @@
   },
   {
     "english": "alongside",
-    "arabic": "جنباً إلى جنب",
+    "arabic": "جانب",
     "level": "B2",
     "category": "prep.",
     "example_sentence": "Renewable energy must expand alongside improvements in overall energy",
@@ -10321,7 +10321,7 @@
   },
   {
     "english": "implement",
-    "arabic": "تنفيذ",
+    "arabic": "ينفذ",
     "level": "B2",
     "category": "v.",
     "example_sentence": "New environmental policies must be implemented both quickly and effectively.",
@@ -10433,7 +10433,7 @@
   },
   {
     "english": "comprehension",
-    "arabic": "الفهم",
+    "arabic": "فهم",
     "level": "B2",
     "category": "n.",
     "example_sentence": "Reading comprehension improves with regular and varied practice.",
@@ -10441,7 +10441,7 @@
   },
   {
     "english": "compromise",
-    "arabic": "توافق",
+    "arabic": "حل وسط",
     "level": "B2",
     "category": "n.",
     "example_sentence": "Both sides reached a compromise after several hours of negotiation.",
@@ -10481,7 +10481,7 @@
   },
   {
     "english": "earnings",
-    "arabic": "الأرباح",
+    "arabic": "أرباح",
     "level": "B2",
     "category": "n.",
     "example_sentence": "Average earnings in the technology sector have risen significantly.",
@@ -10489,7 +10489,7 @@
   },
   {
     "english": "affirm",
-    "arabic": "تأكيد",
+    "arabic": "يؤكد",
     "level": "B2",
     "category": "v.",
     "example_sentence": "The new evidence affirms the link between diet and long-term health outcomes.",
@@ -10497,7 +10497,7 @@
   },
   {
     "english": "amplify",
-    "arabic": "تضخيم",
+    "arabic": "يضخم",
     "level": "B2",
     "category": "v.",
     "example_sentence": "Social media algorithms can rapidly amplify false or misleading information.",
@@ -10505,7 +10505,7 @@
   },
   {
     "english": "anticipate",
-    "arabic": "توقع",
+    "arabic": "يتوقع",
     "level": "B2",
     "category": "v.",
     "example_sentence": "Economists widely anticipate a prolonged period of slower economic growth.",
@@ -10513,7 +10513,7 @@
   },
   {
     "english": "articulate",
-    "arabic": "التعبير عن",
+    "arabic": "يعبر عن",
     "level": "B2",
     "category": "v.",
     "example_sentence": "Effective writers are able to articulate complex ideas with great clarity.",
@@ -10545,7 +10545,7 @@
   },
   {
     "english": "catalyst",
-    "arabic": "عامل حفز",
+    "arabic": "محفز",
     "level": "B2",
     "category": "n.",
     "example_sentence": "Education acts as a powerful catalyst for economic and social change.",
@@ -10569,7 +10569,7 @@
   },
   {
     "english": "compensate",
-    "arabic": "تعويض",
+    "arabic": "يعوض",
     "level": "B2",
     "category": "v.",
     "example_sentence": "Higher wages partially compensate workers for difficult or dangerous",
@@ -10577,7 +10577,7 @@
   },
   {
     "english": "competence",
-    "arabic": "الكفاءة",
+    "arabic": "كفاءة",
     "level": "B2",
     "category": "n.",
     "example_sentence": "Language competence is assessed across all four of the core IELTS skills.",
@@ -10601,7 +10601,7 @@
   },
   {
     "english": "contradict",
-    "arabic": "يتناقض مع",
+    "arabic": "يتناقض",
     "level": "B2",
     "category": "v.",
     "example_sentence": "The newly discovered evidence directly contradicts the findings of earlier",
@@ -10625,7 +10625,7 @@
   },
   {
     "english": "deplete",
-    "arabic": "استنزاف",
+    "arabic": "يستنزف",
     "level": "B2",
     "category": "v.",
     "example_sentence": "Fossil fuels are being depleted at an alarming and unsustainable rate.",
@@ -10649,7 +10649,7 @@
   },
   {
     "english": "discriminate",
-    "arabic": "يمييز",
+    "arabic": "يميّز",
     "level": "B2",
     "category": "v.",
     "example_sentence": "It is both illegal and unethical to discriminate based on race or gender.",
@@ -10729,7 +10729,7 @@
   },
   {
     "english": "isolate",
-    "arabic": "عزل",
+    "arabic": "يعزل",
     "level": "B2",
     "category": "v.",
     "example_sentence": "The study successfully isolated the primary cause of the health problem.",
@@ -10737,7 +10737,7 @@
   },
   {
     "english": "overlap",
-    "arabic": "تتداخل",
+    "arabic": "يتداخل",
     "level": "B2",
     "category": "v.",
     "example_sentence": "The findings of these two independent studies overlap considerably.",
@@ -10753,7 +10753,7 @@
   },
   {
     "english": "prioritise",
-    "arabic": "إعطاء الأولوية",
+    "arabic": "يُعطي الأولوية",
     "level": "B2",
     "category": "v.",
     "example_sentence": "Governments should clearly prioritise substantial investment in clean energy.",
@@ -10769,7 +10769,7 @@
   },
   {
     "english": "refine",
-    "arabic": "حسّن",
+    "arabic": "يُحسّن",
     "level": "B2",
     "category": "v.",
     "example_sentence": "The lead researcher refined the original theoretical model after initial testing.",
@@ -10785,7 +10785,7 @@
   },
   {
     "english": "restrict",
-    "arabic": "تقيد",
+    "arabic": "يقيّد",
     "level": "B2",
     "category": "v.",
     "example_sentence": "Some governments attempt to restrict public access to social media.",
@@ -10793,7 +10793,7 @@
   },
   {
     "english": "retain",
-    "arabic": "الاحتفاظ",
+    "arabic": "يحتفظ",
     "level": "B2",
     "category": "v.",
     "example_sentence": "Regularly reviewing new vocabulary is essential in order to retain it.",
@@ -10849,7 +10849,7 @@
   },
   {
     "english": "yield",
-    "arabic": "تنتج",
+    "arabic": "ينتج",
     "level": "B2",
     "category": "v.",
     "example_sentence": "New and improved agricultural methods consistently yield significantly higher",
@@ -10873,7 +10873,7 @@
   },
   {
     "english": "consolidate",
-    "arabic": "توحيد، دمج",
+    "arabic": "يوحّد، يدمج",
     "level": "B2",
     "category": "v.",
     "example_sentence": "Merging overlapping departments helped significantly consolidate scarce",
@@ -10881,7 +10881,7 @@
   },
   {
     "english": "abolish",
-    "arabic": "إلغاء، حذف",
+    "arabic": "يُلغي",
     "level": "B2",
     "category": "v.",
     "example_sentence": "Several countries have abolished the death penalty in recent decades.",
@@ -10897,7 +10897,7 @@
   },
   {
     "english": "accuracy",
-    "arabic": "الدقة",
+    "arabic": "دقة",
     "level": "B2",
     "category": "n.",
     "example_sentence": "Accuracy in data presentation is essential for a high IELTS score.",
@@ -10905,7 +10905,7 @@
   },
   {
     "english": "circulate",
-    "arabic": "تنتشر",
+    "arabic": "ينتشر",
     "level": "B2",
     "category": "v.",
     "example_sentence": "Misinformation can circulate with alarming rapidity through large online",
@@ -10913,7 +10913,7 @@
   },
   {
     "english": "collapse",
-    "arabic": "تنهار",
+    "arabic": "ينهار",
     "level": "B2",
     "category": "v.",
     "example_sentence": "Several fragile ecosystems are at risk of collapsing under continued human",
@@ -10929,7 +10929,7 @@
   },
   {
     "english": "displace",
-    "arabic": "يشرد",
+    "arabic": "يُهجّر",
     "level": "B2",
     "category": "v.",
     "example_sentence": "Large-scale industrial development has permanently displaced many local",
@@ -11057,7 +11057,7 @@
   },
   {
     "english": "infer",
-    "arabic": "استنتج / استخلص",
+    "arabic": "يستنتج",
     "level": "B2",
     "category": "v.",
     "example_sentence": "What can we legitimately infer from the limited data presented in the graph?",
@@ -11105,7 +11105,7 @@
   },
   {
     "english": "conscientious",
-    "arabic": "ضميري",
+    "arabic": "دقيق في عمله",
     "level": "B2",
     "category": "adj.",
     "example_sentence": "A conscientious researcher always checks data for errors before drawing",
@@ -11129,7 +11129,7 @@
   },
   {
     "english": "esteem",
-    "arabic": "الاحترام",
+    "arabic": "احترام",
     "level": "B2",
     "category": "n.",
     "example_sentence": "She was widely and consistently held in the highest professional esteem by all",
@@ -11137,7 +11137,7 @@
   },
   {
     "english": "hamper",
-    "arabic": "عرقل، أعاق",
+    "arabic": "يُعرقل، يُعيق",
     "level": "B2",
     "category": "v.",
     "example_sentence": "Inadequate and inconsistent research funding can significantly and seriously",
@@ -11169,7 +11169,7 @@
   },
   {
     "english": "principled",
-    "arabic": "مبني على مبادئ",
+    "arabic": "صاحب مبادئ",
     "level": "B2",
     "category": "adj.",
     "example_sentence": "A principled approach to research design prioritises validity over convenience.",
@@ -11193,7 +11193,7 @@
   },
   {
     "english": "saturate",
-    "arabic": "تشبع",
+    "arabic": "يُشبع",
     "level": "B2",
     "category": "v.",
     "example_sentence": "A market that is fully saturated with similar products leaves little room for new",
@@ -11249,7 +11249,7 @@
   },
   {
     "english": "agitate",
-    "arabic": "يطالب، يحث",
+    "arabic": "يحرض، يثير",
     "level": "B2",
     "category": "v.",
     "example_sentence": "The report agitated for a fundamental overhaul of the ethical review",
@@ -11273,7 +11273,7 @@
   },
   {
     "english": "exquisite",
-    "arabic": "رقيق جداً، دقيق جداً",
+    "arabic": "رائع، بالغ الجمال",
     "level": "B2",
     "category": "adj.",
     "example_sentence": "The exquisite precision of the measurement instrument was its principal",
@@ -11409,7 +11409,7 @@
   },
   {
     "english": "derive",
-    "arabic": "اشتقق",
+    "arabic": "يشتق",
     "level": "C1",
     "category": "v.",
     "example_sentence": "Many English words derive their meaning from Greek or Latin roots.",
@@ -11481,7 +11481,7 @@
   },
   {
     "english": "modify",
-    "arabic": "تعديل / تغيير",
+    "arabic": "يعدّل",
     "level": "C1",
     "category": "v.",
     "example_sentence": "The research team modified the original experimental design for greater",
@@ -11489,7 +11489,7 @@
   },
   {
     "english": "obtain",
-    "arabic": "الحصول على / الحصول عليه",
+    "arabic": "يحصل على",
     "level": "C1",
     "category": "v.",
     "example_sentence": "International students can usually obtain a visa at the local embassy.",
@@ -11577,7 +11577,7 @@
   },
   {
     "english": "undergo",
-    "arabic": "خضع",
+    "arabic": "يخضع",
     "level": "C1",
     "category": "v.",
     "example_sentence": "The global energy industry has undergone major and fundamental changes.",
@@ -11585,7 +11585,7 @@
   },
   {
     "english": "utilise",
-    "arabic": "استخدم",
+    "arabic": "يستخدم",
     "level": "C1",
     "category": "v.",
     "example_sentence": "Students should actively utilise all available resources and support services.",
@@ -11593,7 +11593,7 @@
   },
   {
     "english": "accelerate",
-    "arabic": "سرع",
+    "arabic": "يسرّع",
     "level": "C1",
     "category": "v.",
     "example_sentence": "New policies could significantly accelerate the shift to clean energy.",
@@ -11601,7 +11601,7 @@
   },
   {
     "english": "attain",
-    "arabic": "حقق",
+    "arabic": "يحقق",
     "level": "C1",
     "category": "v.",
     "example_sentence": "Few students attain Band 8 without significant long-term preparation.",
@@ -11609,7 +11609,7 @@
   },
   {
     "english": "broaden",
-    "arabic": "وسع",
+    "arabic": "يوسّع",
     "level": "C1",
     "category": "v.",
     "example_sentence": "Reading widely helps broaden your academic vocabulary considerably.",
@@ -11617,7 +11617,7 @@
   },
   {
     "english": "cite",
-    "arabic": "استشهد",
+    "arabic": "يستشهد",
     "level": "C1",
     "category": "v.",
     "example_sentence": "Always cite your sources when using evidence in academic writing.",
@@ -11633,7 +11633,7 @@
   },
   {
     "english": "minimise",
-    "arabic": "تقليل",
+    "arabic": "يقلّل",
     "level": "C1",
     "category": "v.",
     "example_sentence": "Good planning helps minimise errors in IELTS writing tasks.",
@@ -11641,7 +11641,7 @@
   },
   {
     "english": "sustain",
-    "arabic": "الحفاظ على",
+    "arabic": "يحافظ على",
     "level": "C1",
     "category": "v.",
     "example_sentence": "It is very difficult to sustain economic growth without environmental damage.",
@@ -11649,7 +11649,7 @@
   },
   {
     "english": "accumulate",
-    "arabic": "تراكم",
+    "arabic": "يتراكم",
     "level": "C1",
     "category": "v.",
     "example_sentence": "Debt can accumulate rapidly if spending is not carefully managed.",
@@ -11657,7 +11657,7 @@
   },
   {
     "english": "compile",
-    "arabic": "تجميع",
+    "arabic": "يجمّع",
     "level": "C1",
     "category": "v.",
     "example_sentence": "The team compiled data from multiple sources before writing the report.",
@@ -11665,7 +11665,7 @@
   },
   {
     "english": "comprehend",
-    "arabic": "فهم",
+    "arabic": "يفهم",
     "level": "C1",
     "category": "v.",
     "example_sentence": "Students must comprehend the full question before planning their answer.",
@@ -11705,7 +11705,7 @@
   },
   {
     "english": "interdependent",
-    "arabic": "متعاون",
+    "arabic": "مترابط",
     "level": "C1",
     "category": "adj.",
     "example_sentence": "Modern national economies are becoming increasingly interdependent.",
@@ -11801,7 +11801,7 @@
   },
   {
     "english": "comprise",
-    "arabic": "يتكون من",
+    "arabic": "يشمل",
     "level": "C1",
     "category": "v.",
     "example_sentence": "The committee comprises senior experts from over twenty countries.",
@@ -11849,7 +11849,7 @@
   },
   {
     "english": "disparity",
-    "arabic": "عدم المساواة",
+    "arabic": "تفاوت",
     "level": "C1",
     "category": "n.",
     "example_sentence": "There is a deeply troubling and growing disparity between wealthy and poor",
@@ -11873,7 +11873,7 @@
   },
   {
     "english": "equilibrium",
-    "arabic": "التوازن",
+    "arabic": "توازن",
     "level": "C1",
     "category": "n.",
     "example_sentence": "Healthy natural ecosystems maintain a complex and delicate internal",
@@ -11881,7 +11881,7 @@
   },
   {
     "english": "erode",
-    "arabic": "ينجرف",
+    "arabic": "يتآكل",
     "level": "C1",
     "category": "v.",
     "example_sentence": "Coastal land is rapidly eroding as a direct consequence of rising sea levels.",
@@ -11969,7 +11969,7 @@
   },
   {
     "english": "leverage",
-    "arabic": "الاستفادة من",
+    "arabic": "يستغل",
     "level": "C1",
     "category": "v.",
     "example_sentence": "Schools can strategically leverage digital technology to significantly improve",
@@ -11993,7 +11993,7 @@
   },
   {
     "english": "parameter",
-    "arabic": "المعاملات",
+    "arabic": "معامل",
     "level": "C1",
     "category": "n.",
     "example_sentence": "The precise parameters of the experiment were very carefully defined.",
@@ -12033,7 +12033,7 @@
   },
   {
     "english": "polarise",
-    "arabic": "استقطب",
+    "arabic": "يستقطب",
     "level": "C1",
     "category": "v.",
     "example_sentence": "The controversial immigration debate has deeply polarised public opinion.",
@@ -12041,7 +12041,7 @@
   },
   {
     "english": "precede",
-    "arabic": "تسبق",
+    "arabic": "يسبق",
     "level": "C1",
     "category": "v.",
     "example_sentence": "Periods of significant economic decline often precede social unrest.",
@@ -12049,7 +12049,7 @@
   },
   {
     "english": "predominantly",
-    "arabic": "بشكل أساسي",
+    "arabic": "في معظمه",
     "level": "C1",
     "category": "adv.",
     "example_sentence": "The economy of this region is predominantly and historically agricultural.",
@@ -12065,7 +12065,7 @@
   },
   {
     "english": "prevalent",
-    "arabic": "منتشرة",
+    "arabic": "سائد",
     "level": "C1",
     "category": "adj.",
     "example_sentence": "Chronic non-communicable diseases are becoming increasingly prevalent.",
@@ -12081,7 +12081,7 @@
   },
   {
     "english": "projection",
-    "arabic": "التوقعات",
+    "arabic": "توقع",
     "level": "C1",
     "category": "n.",
     "example_sentence": "Current population projections strongly suggest that cities will grow",
@@ -12105,7 +12105,7 @@
   },
   {
     "english": "quantify",
-    "arabic": "تحديد كمية",
+    "arabic": "يحدد كميًا",
     "level": "C1",
     "category": "v.",
     "example_sentence": "It is inherently difficult to fully quantify the true social costs of inequality.",
@@ -12129,7 +12129,7 @@
   },
   {
     "english": "replicate",
-    "arabic": "يكرر",
+    "arabic": "يستنسخ",
     "level": "C1",
     "category": "v.",
     "example_sentence": "All scientific experiments should be independently replicable to ensure",
@@ -12137,7 +12137,7 @@
   },
   {
     "english": "respective",
-    "arabic": "الخاصة بهم",
+    "arabic": "على التوالي",
     "level": "C1",
     "category": "adj.",
     "example_sentence": "The students returned quietly to their respective assigned seats.",
@@ -12169,7 +12169,7 @@
   },
   {
     "english": "simulate",
-    "arabic": "محاكاة",
+    "arabic": "يحاكي",
     "level": "C1",
     "category": "v.",
     "example_sentence": "Scientists use sophisticated models to accurately simulate the effects of",
@@ -12241,7 +12241,7 @@
   },
   {
     "english": "synthesise",
-    "arabic": "يدمج",
+    "arabic": "يُركّب",
     "level": "C1",
     "category": "v.",
     "example_sentence": "Effective academic writers synthesise information from multiple credible",
@@ -12257,7 +12257,7 @@
   },
   {
     "english": "threshold",
-    "arabic": "حد أدنى",
+    "arabic": "عتبة",
     "level": "C1",
     "category": "n.",
     "example_sentence": "Achieving IELTS Band 7 is a very demanding and competitive threshold for",
@@ -12281,7 +12281,7 @@
   },
   {
     "english": "validate",
-    "arabic": "يصدق",
+    "arabic": "يُتحقق من صحة",
     "level": "C1",
     "category": "v.",
     "example_sentence": "The independent results successfully validate the central hypothesis of the",
@@ -12345,7 +12345,7 @@
   },
   {
     "english": "anachronistic",
-    "arabic": "متزامن مع الزمن",
+    "arabic": "متناقض مع العصر، خارج عن زمنه",
     "level": "C1",
     "category": "adj.",
     "example_sentence": "Critics argue that the current regulatory framework is anachronistic and",
@@ -12385,7 +12385,7 @@
   },
   {
     "english": "augment",
-    "arabic": "زيادة، تعزيز",
+    "arabic": "يزيد، يعزز",
     "level": "C1",
     "category": "v.",
     "example_sentence": "Research capacity can be significantly augmented through genuine",
@@ -12425,7 +12425,7 @@
   },
   {
     "english": "circumvent",
-    "arabic": "تجاوز، الالتفاف حول",
+    "arabic": "يتجاوز، يلتف حول",
     "level": "C1",
     "category": "v.",
     "example_sentence": "Some corporations attempt to circumvent environmental regulations through",
@@ -12433,7 +12433,7 @@
   },
   {
     "english": "cogent",
-    "arabic": "مقنع، حجة قوية",
+    "arabic": "مقنع، قوي الحجة",
     "level": "C1",
     "category": "adj.",
     "example_sentence": "The published paper presents a cogent, well-evidenced, and logically coherent",
@@ -12497,7 +12497,7 @@
   },
   {
     "english": "converge",
-    "arabic": "تتقارب، تتجمع",
+    "arabic": "يتقارب، يتجمع",
     "level": "C1",
     "category": "v.",
     "example_sentence": "Multiple independent lines of research are now converging on a single",
@@ -12521,7 +12521,7 @@
   },
   {
     "english": "culminate",
-    "arabic": "تنتهي إلى، تصل إلى",
+    "arabic": "يبلغ ذروته، ينتهي بـ",
     "level": "C1",
     "category": "v.",
     "example_sentence": "Years of dedicated and painstaking research finally culminated in a landmark",
@@ -12625,7 +12625,7 @@
   },
   {
     "english": "assimilate",
-    "arabic": "يستيعب",
+    "arabic": "يستوعب",
     "level": "C1",
     "category": "v.",
     "example_sentence": "It takes considerable time to fully assimilate all the ideas in complex texts.",
@@ -12761,7 +12761,7 @@
   },
   {
     "english": "endemic",
-    "arabic": "متفشي",
+    "arabic": "متفشٍّ",
     "level": "C1",
     "category": "adj.",
     "example_sentence": "Corruption is unfortunately endemic in some poorly governed and unstable",
@@ -12817,7 +12817,7 @@
   },
   {
     "english": "glean",
-    "arabic": "استخلاص، استنباط",
+    "arabic": "يستخلص، يستنبط",
     "level": "C1",
     "category": "v.",
     "example_sentence": "Important insights can often be gleaned from careful analysis of qualitative",
@@ -12937,7 +12937,7 @@
   },
   {
     "english": "instigate",
-    "arabic": "أثار، بدأ",
+    "arabic": "يُثير، يُحرِّض",
     "level": "C1",
     "category": "v.",
     "example_sentence": "New and compelling data instigated a complete and thorough review of the",
@@ -12993,7 +12993,7 @@
   },
   {
     "english": "negate",
-    "arabic": "ألغى، نفى",
+    "arabic": "يُلغي، يَنفي",
     "level": "C1",
     "category": "v.",
     "example_sentence": "The compelling new evidence entirely negated the previously widely accepted",
@@ -13001,7 +13001,7 @@
   },
   {
     "english": "nefarious",
-    "arabic": "شرير، خطير",
+    "arabic": "شرير، فاسق",
     "level": "C1",
     "category": "adj.",
     "example_sentence": "The nefarious and illegal activities of some corporations have caused",
@@ -13057,7 +13057,7 @@
   },
   {
     "english": "pedantic",
-    "arabic": "متطرف في الدقة، حذر زائد",
+    "arabic": "متحذلق، مفرط في الدقة الشكلية",
     "level": "C1",
     "category": "adj.",
     "example_sentence": "Overly pedantic criticism of minor errors can obscure the real value of a strong",
@@ -13081,7 +13081,7 @@
   },
   {
     "english": "placate",
-    "arabic": "تهدئة / إرضاء",
+    "arabic": "يُهدِّئ، يُرضي",
     "level": "C1",
     "category": "v.",
     "example_sentence": "Short-term measures were hurriedly introduced to placate growing public",
@@ -13121,7 +13121,7 @@
   },
   {
     "english": "preclude",
-    "arabic": "منع / يحول دون",
+    "arabic": "يَمنع، يَحول دون",
     "level": "C1",
     "category": "v.",
     "example_sentence": "High and prohibitive costs should not preclude access to quality education for",
@@ -13185,7 +13185,7 @@
   },
   {
     "english": "rectify",
-    "arabic": "إصلاح / تصحيح",
+    "arabic": "يُصلِح، يُصحِّح",
     "level": "C1",
     "category": "v.",
     "example_sentence": "Urgent steps must be taken to rectify the serious damage caused by past",
@@ -13193,7 +13193,7 @@
   },
   {
     "english": "redress",
-    "arabic": "معالجة / تصحيح",
+    "arabic": "يُعالج، يُصحِّح",
     "level": "C1",
     "category": "v.",
     "example_sentence": "New and comprehensive legislation aims to redress longstanding historical",
@@ -13201,7 +13201,7 @@
   },
   {
     "english": "remonstrate",
-    "arabic": "احتج / عترض",
+    "arabic": "يَحتج، يَعترض",
     "level": "C1",
     "category": "v.",
     "example_sentence": "Environmental activists publicly remonstrated with senior government officials",
@@ -13289,7 +13289,7 @@
   },
   {
     "english": "sobering",
-    "arabic": "مقلق / محبط",
+    "arabic": "مُقلِق، يدعو إلى التأمل الجاد",
     "level": "C1",
     "category": "adj.",
     "example_sentence": "The very latest climate projections provide a deeply sobering reminder of the",
@@ -13297,7 +13297,7 @@
   },
   {
     "english": "solicit",
-    "arabic": "يطلب / يستجيز",
+    "arabic": "يَطلب، يَستجدي",
     "level": "C1",
     "category": "v.",
     "example_sentence": "Researchers carefully solicited feedback from a broad and genuinely",
@@ -13377,7 +13377,7 @@
   },
   {
     "english": "temerity",
-    "arabic": "جرأة / إقدام",
+    "arabic": "تهوُّر، جرأة متهورة",
     "level": "C1",
     "category": "n.",
     "example_sentence": "It requires considerable intellectual temerity to openly challenge deeply",
@@ -13521,7 +13521,7 @@
   },
   {
     "english": "zealotry",
-    "arabic": "تعصب / متطرفية",
+    "arabic": "تعصب / غلو",
     "level": "C1",
     "category": "n.",
     "example_sentence": "Zealotry, even in the service of a good cause, can ultimately undermine a",
@@ -13537,7 +13537,7 @@
   },
   {
     "english": "persistence",
-    "arabic": "استمرارية",
+    "arabic": "مثابرة",
     "level": "C1",
     "category": "n.",
     "example_sentence": "The persistence of the effect over time confirmed the robustness of the finding.",
@@ -13545,7 +13545,7 @@
   },
   {
     "english": "elicit",
-    "arabic": "استخراج",
+    "arabic": "يستخلص / يستثير",
     "level": "C1",
     "category": "v.",
     "example_sentence": "The survey was designed specifically to elicit honest and candid responses.",
@@ -13897,7 +13897,7 @@
   },
   {
     "english": "relegate",
-    "arabic": "إهمال، تهميش",
+    "arabic": "يُهمل / يُهمِّش",
     "level": "C1",
     "category": "v.",
     "example_sentence": "Environmental concerns have been consistently relegated to the margins of the",
@@ -13905,7 +13905,7 @@
   },
   {
     "english": "abdicate",
-    "arabic": "التخلي عن، التنصل من",
+    "arabic": "يتخلى عن / يتنصل من",
     "level": "C1",
     "category": "v.",
     "example_sentence": "Leaders must not abdicate their responsibility to act on climate change.",
@@ -13921,7 +13921,7 @@
   },
   {
     "english": "accentuate",
-    "arabic": "يؤكد",
+    "arabic": "يُبرز / يُشدد على",
     "level": "C1",
     "category": "v.",
     "example_sentence": "The report accentuates the widening inequality gap between rich and poor",
@@ -13993,7 +13993,7 @@
   },
   {
     "english": "exonerate",
-    "arabic": "برّأ / أعفى",
+    "arabic": "يُبرِّئ / يُعفي",
     "level": "C1",
     "category": "v.",
     "example_sentence": "Newly discovered evidence completely exonerated the researcher of any",
@@ -14049,7 +14049,7 @@
   },
   {
     "english": "homogenise",
-    "arabic": "جعّل موحداً / وحّد",
+    "arabic": "يوحّد / يجعل متجانساً",
     "level": "C1",
     "category": "v.",
     "example_sentence": "Globalisation tends to progressively homogenise diverse cultural practices.",
@@ -14153,7 +14153,7 @@
   },
   {
     "english": "ostensibly",
-    "arabic": "على ما يبدو / يظاهر",
+    "arabic": "على ما يبدو / ظاهرياً",
     "level": "C1",
     "category": "adv.",
     "example_sentence": "The controversial policy was ostensibly introduced to protect consumer",
@@ -14217,7 +14217,7 @@
   },
   {
     "english": "allay",
-    "arabic": "تخفيف، تهدئة",
+    "arabic": "يخفف / يهدئ",
     "level": "C1",
     "category": "v.",
     "example_sentence": "Clearer and more transparent communication from authorities significantly",
@@ -14273,7 +14273,7 @@
   },
   {
     "english": "capitulate",
-    "arabic": "استسلم، انهزم",
+    "arabic": "يستسلم / يذعن",
     "level": "C1",
     "category": "v.",
     "example_sentence": "Under intense and sustained public and media pressure, the government",
@@ -14281,7 +14281,7 @@
   },
   {
     "english": "caustic",
-    "arabic": "لاذع، قاسي",
+    "arabic": "لاذع / قارص",
     "level": "C1",
     "category": "adj.",
     "example_sentence": "The caustic and sharply worded editorial drew considerable and entirely",
@@ -14297,7 +14297,7 @@
   },
   {
     "english": "coalesce",
-    "arabic": "تجمع، التقى",
+    "arabic": "يتوحد / يندمج",
     "level": "C1",
     "category": "v.",
     "example_sentence": "Multiple previously separate and divergent research streams are now",
@@ -14385,7 +14385,7 @@
   },
   {
     "english": "egalitarian",
-    "arabic": "متساوي، عادل",
+    "arabic": "مساواتي / يؤمن بالمساواة",
     "level": "C1",
     "category": "adj.",
     "example_sentence": "A truly egalitarian education system gives every child an equal opportunity.",
@@ -14529,7 +14529,7 @@
   },
   {
     "english": "altruistic",
-    "arabic": "إيثاري، نكران ذات",
+    "arabic": "إيثاري / نكران للذات",
     "level": "C1",
     "category": "adj.",
     "example_sentence": "Genuinely altruistic motivations are rare in highly competitive environments.",
@@ -14745,7 +14745,7 @@
   },
   {
     "english": "counterintuitive",
-    "arabic": "يتعارض مع الحدس",
+    "arabic": "مخالف للحدس",
     "level": "C1",
     "category": "adj.",
     "example_sentence": "The counterintuitive results led to a thorough re-examination of the model.",
@@ -14865,7 +14865,7 @@
   },
   {
     "english": "errant",
-    "arabic": "غير صحيح",
+    "arabic": "ضال، خاطئ",
     "level": "C1",
     "category": "adj.",
     "example_sentence": "The errant methodology in the original study inevitably led to seriously",
@@ -14905,7 +14905,7 @@
   },
   {
     "english": "expedient",
-    "arabic": "انتهازي",
+    "arabic": "مناسب للظرف، براغماتي",
     "level": "C1",
     "category": "adj.",
     "example_sentence": "An expedient and short-term solution that deliberately ignores root causes will",
@@ -14921,7 +14921,7 @@
   },
   {
     "english": "fabricate",
-    "arabic": "اختلق",
+    "arabic": "يختلق",
     "level": "C1",
     "category": "v.",
     "example_sentence": "The researcher was found to have deliberately fabricated key data points in",
@@ -15065,7 +15065,7 @@
   },
   {
     "english": "inexorable",
-    "arabic": "لا يقاوم، متسارع",
+    "arabic": "لا يرحم، لا يلين",
     "level": "C1",
     "category": "adj.",
     "example_sentence": "The inexorable and accelerating rise in average global temperatures demands",
@@ -15129,7 +15129,7 @@
   },
   {
     "english": "lenient",
-    "arabic": "متساهل، متحرر",
+    "arabic": "متساهل، لين",
     "level": "C1",
     "category": "adj.",
     "example_sentence": "The assessment committee was somewhat lenient in its evaluation of the first",
@@ -15169,7 +15169,7 @@
   },
   {
     "english": "outstrip",
-    "arabic": "تفوق، تجاوز",
+    "arabic": "يتفوق على، يتجاوز",
     "level": "C1",
     "category": "v.",
     "example_sentence": "Demand for the new treatment quickly outstripped the available supply.",
@@ -15233,7 +15233,7 @@
   },
   {
     "english": "perturb",
-    "arabic": "أزعج، أقلق",
+    "arabic": "يُزعج، يُقلق",
     "level": "C1",
     "category": "v.",
     "example_sentence": "The unexpected findings perturbed the existing theoretical consensus",
@@ -15433,7 +15433,7 @@
   },
   {
     "english": "charge",
-    "arabic": "رسوم",
+    "arabic": "يفرض رسوماً",
     "level": "A2",
     "category": "v.",
     "example_sentence": "The hotel charges extra for breakfast.",
@@ -15441,7 +15441,7 @@
   },
   {
     "english": "chat",
-    "arabic": "يتحدث",
+    "arabic": "يتحدث بشكل غير رسمي",
     "level": "A2",
     "category": "v.",
     "example_sentence": "We chatted with the neighbors over the fence.",
@@ -15537,7 +15537,7 @@
   },
   {
     "english": "false",
-    "arabic": "خطأ",
+    "arabic": "زائف، كاذب",
     "level": "A2",
     "category": "adj.",
     "example_sentence": "The statement turned out to be completely false.",
@@ -15897,7 +15897,7 @@
   },
   {
     "english": "valley",
-    "arabic": "وادي",
+    "arabic": "وادٍ",
     "level": "A2",
     "category": "n.",
     "example_sentence": "The small village was hidden in the green valley.",
@@ -15945,7 +15945,7 @@
   },
   {
     "english": "apparently",
-    "arabic": "يبدو أن",
+    "arabic": "على ما يبدو",
     "level": "B1",
     "category": "adv.",
     "example_sentence": "Apparently, the results were better than expected.",
@@ -16065,7 +16065,7 @@
   },
   {
     "english": "detail",
-    "arabic": "تفصيل",
+    "arabic": "تفصيلة",
     "level": "B1",
     "category": "n.",
     "example_sentence": "She paid close attention to every detail of the plan.",
@@ -16145,7 +16145,7 @@
   },
   {
     "english": "entire",
-    "arabic": "بأكمله",
+    "arabic": "كامل",
     "level": "B1",
     "category": "adj.",
     "example_sentence": "She read the entire book in one day.",
@@ -16305,7 +16305,7 @@
   },
   {
     "english": "obviously",
-    "arabic": "من الواضح",
+    "arabic": "بوضوح",
     "level": "B1",
     "category": "adv.",
     "example_sentence": "She was obviously upset about the news.",
@@ -16401,7 +16401,7 @@
   },
   {
     "english": "react",
-    "arabic": "يتفاعل",
+    "arabic": "يستجيب",
     "level": "B1",
     "category": "v.",
     "example_sentence": "How did she react to the news?",
@@ -16417,7 +16417,7 @@
   },
   {
     "english": "recognize",
-    "arabic": "يعترف",
+    "arabic": "يُدرك",
     "level": "B1",
     "category": "v.",
     "example_sentence": "She recognized the importance of early preparation.",
@@ -16577,7 +16577,7 @@
   },
   {
     "english": "ancestor",
-    "arabic": "جد",
+    "arabic": "جَدّ",
     "level": "B1",
     "category": "n.",
     "example_sentence": "She researched her ancestors and family history.",
@@ -16745,7 +16745,7 @@
   },
   {
     "english": "count",
-    "arabic": "يُحسب",
+    "arabic": "يَعُدّ",
     "level": "B1",
     "category": "v.",
     "example_sentence": "Every vote counts in a democratic election.",
@@ -16753,7 +16753,7 @@
   },
   {
     "english": "creation",
-    "arabic": "إبداع",
+    "arabic": "إنشاء",
     "level": "B1",
     "category": "n.",
     "example_sentence": "The creation of new jobs is a government priority.",
@@ -16817,7 +16817,7 @@
   },
   {
     "english": "disorder",
-    "arabic": "فوضى",
+    "arabic": "اضطراب",
     "level": "B1",
     "category": "n.",
     "example_sentence": "The files were in complete disorder after the move.",
@@ -16881,7 +16881,7 @@
   },
   {
     "english": "expense",
-    "arabic": "نفقات",
+    "arabic": "نفقة",
     "level": "B1",
     "category": "n.",
     "example_sentence": "The company covers all travel expenses.",
@@ -16961,7 +16961,7 @@
   },
   {
     "english": "formula",
-    "arabic": "معادلة",
+    "arabic": "صيغة",
     "level": "B1",
     "category": "n.",
     "example_sentence": "She used a mathematical formula to solve the problem.",
@@ -17121,7 +17121,7 @@
   },
   {
     "english": "input",
-    "arabic": "إسهام",
+    "arabic": "مدخلات",
     "level": "B1",
     "category": "n.",
     "example_sentence": "Her input was valuable to the success of the project.",
@@ -17185,7 +17185,7 @@
   },
   {
     "english": "landscape",
-    "arabic": "منظر",
+    "arabic": "مشهد طبيعي",
     "level": "B1",
     "category": "n.",
     "example_sentence": "The landscape of the countryside is beautiful in spring.",
@@ -17329,7 +17329,7 @@
   },
   {
     "english": "notable",
-    "arabic": "جدير بالملاحظة",
+    "arabic": "بارز",
     "level": "B1",
     "category": "adj.",
     "example_sentence": "There was a notable improvement in the students' results.",
@@ -17345,7 +17345,7 @@
   },
   {
     "english": "numerous",
-    "arabic": "عديد",
+    "arabic": "عديدة",
     "level": "B1",
     "category": "adj.",
     "example_sentence": "There are numerous reasons to learn a second language.",
@@ -17353,7 +17353,7 @@
   },
   {
     "english": "navigate",
-    "arabic": "يتعامل مع",
+    "arabic": "يتنقل في",
     "level": "B1",
     "category": "v.",
     "example_sentence": "She learned to navigate the complex bureaucratic system.",
@@ -17361,7 +17361,7 @@
   },
   {
     "english": "milestone",
-    "arabic": "حدث بارز",
+    "arabic": "علامة فارقة",
     "level": "B1",
     "category": "n.",
     "example_sentence": "Passing the exam was a major milestone in her life.",
@@ -17457,7 +17457,7 @@
   },
   {
     "english": "outstanding",
-    "arabic": "بارز",
+    "arabic": "متميز",
     "level": "B1",
     "category": "adj.",
     "example_sentence": "Her academic performance was outstanding last year.",
@@ -17473,7 +17473,7 @@
   },
   {
     "english": "persistent",
-    "arabic": "مثابر",
+    "arabic": "مستمر",
     "level": "B1",
     "category": "adj.",
     "example_sentence": "She was persistent in pursuing her academic goals.",
@@ -17665,7 +17665,7 @@
   },
   {
     "english": "verify",
-    "arabic": "يتحقق من",
+    "arabic": "يتحقق",
     "level": "B1",
     "category": "v.",
     "example_sentence": "Please verify your email address before logging in.",
@@ -17729,7 +17729,7 @@
   },
   {
     "english": "pause",
-    "arabic": "توقف",
+    "arabic": "يتوقف",
     "level": "B1",
     "category": "v.",
     "example_sentence": "She paused for a moment before answering the question.",
@@ -17817,7 +17817,7 @@
   },
   {
     "english": "remarkable",
-    "arabic": "رائع",
+    "arabic": "ملحوظ",
     "level": "B1",
     "category": "adj.",
     "example_sentence": "She showed remarkable progress in her studies.",
@@ -17865,7 +17865,7 @@
   },
   {
     "english": "speculation",
-    "arabic": "تخمين",
+    "arabic": "تكهن",
     "level": "B1",
     "category": "n.",
     "example_sentence": "There is a lot of speculation about the new policy.",
@@ -17921,7 +17921,7 @@
   },
   {
     "english": "thoughtful",
-    "arabic": "مدروس",
+    "arabic": "متأمل",
     "level": "B1",
     "category": "adj.",
     "example_sentence": "She gave a thoughtful response to the question.",
@@ -18025,7 +18025,7 @@
   },
   {
     "english": "badly",
-    "arabic": "بشكل سيئ",
+    "arabic": "بشدة",
     "level": "B1",
     "category": "adv.",
     "example_sentence": "The project was badly managed from the beginning.",
@@ -18057,7 +18057,7 @@
   },
   {
     "english": "broadly",
-    "arabic": "على نطاق واسع",
+    "arabic": "على نحو عام",
     "level": "B1",
     "category": "adv.",
     "example_sentence": "The idea was broadly supported by the team.",
@@ -18121,7 +18121,7 @@
   },
   {
     "english": "division",
-    "arabic": "قسم",
+    "arabic": "انقسام",
     "level": "B1",
     "category": "n.",
     "example_sentence": "She works in the marketing division of the company.",
@@ -18145,7 +18145,7 @@
   },
   {
     "english": "exhibit",
-    "arabic": "يُظهر",
+    "arabic": "يعرض",
     "level": "B1",
     "category": "v.",
     "example_sentence": "She exhibited strong leadership skills from a young age.",
@@ -18161,7 +18161,7 @@
   },
   {
     "english": "fairly",
-    "arabic": "بشكل عادل",
+    "arabic": "إلى حد ما",
     "level": "B1",
     "category": "adv.",
     "example_sentence": "All students must be treated fairly and equally.",
@@ -18233,7 +18233,7 @@
   },
   {
     "english": "mainly",
-    "arabic": "بشكل رئيسي",
+    "arabic": "أساساً",
     "level": "B1",
     "category": "adv.",
     "example_sentence": "The students were mainly from urban areas.",
@@ -18313,7 +18313,7 @@
   },
   {
     "english": "utilize",
-    "arabic": "يستخدم",
+    "arabic": "يستفيد من",
     "level": "B1",
     "category": "v.",
     "example_sentence": "She utilized all available resources to complete her essay.",
@@ -19049,7 +19049,7 @@
   },
   {
     "english": "extrapolation",
-    "arabic": "استقراء",
+    "arabic": "استقراء خارجي",
     "level": "B2",
     "category": "n.",
     "example_sentence": "Her extrapolation of the data was criticized by peers.",
@@ -19217,7 +19217,7 @@
   },
   {
     "english": "regulation",
-    "arabic": "لائحة",
+    "arabic": "تنظيم",
     "level": "B1",
     "category": "noun",
     "example_sentence": "All businesses must follow government regulations.",
@@ -19361,7 +19361,7 @@
   },
   {
     "english": "symptom",
-    "arabic": "أعراض",
+    "arabic": "عَرَض",
     "level": "B1",
     "category": "noun",
     "example_sentence": "A sore throat is a common symptom of a cold.",
@@ -19369,7 +19369,7 @@
   },
   {
     "english": "therapy",
-    "arabic": "علاج نفسي",
+    "arabic": "علاج",
     "level": "B1",
     "category": "noun",
     "example_sentence": "She attends therapy every week to manage her stress.",
@@ -19849,7 +19849,7 @@
   },
   {
     "english": "mentorship",
-    "arabic": "إرشاد",
+    "arabic": "توجيه مهني",
     "level": "B1",
     "category": "noun",
     "example_sentence": "Mentorship can help young professionals develop faster.",
@@ -20057,7 +20057,7 @@
   },
   {
     "english": "hardware",
-    "arabic": "أجهزة",
+    "arabic": "عتاد",
     "level": "B1",
     "category": "noun",
     "example_sentence": "The computer hardware was damaged by the power surge.",
@@ -20089,7 +20089,7 @@
   },
   {
     "english": "software",
-    "arabic": "برنامج",
+    "arabic": "برمجيات",
     "level": "B1",
     "category": "noun",
     "example_sentence": "Please install the latest version of the software.",
@@ -20361,7 +20361,7 @@
   },
   {
     "english": "side effect",
-    "arabic": "عرض جانبي",
+    "arabic": "أثر جانبي",
     "level": "B1",
     "category": "noun",
     "example_sentence": "Every medication can have side effects.",
@@ -20545,7 +20545,7 @@
   },
   {
     "english": "degrade",
-    "arabic": "يُدهور",
+    "arabic": "يُدهوِر",
     "level": "B2",
     "category": "verb",
     "example_sentence": "Plastic waste degrades slowly and pollutes the environment.",
@@ -20641,7 +20641,7 @@
   },
   {
     "english": "justification",
-    "arabic": "مسوّغ",
+    "arabic": "تبرير",
     "level": "B2",
     "category": "noun",
     "example_sentence": "There is no justification for treating people unfairly.",
@@ -20681,7 +20681,7 @@
   },
   {
     "english": "obsolete",
-    "arabic": "قديم",
+    "arabic": "متقادم",
     "level": "B2",
     "category": "adjective",
     "example_sentence": "Many jobs will become obsolete because of automation.",
@@ -20729,7 +20729,7 @@
   },
   {
     "english": "reinstate",
-    "arabic": "يُعيد",
+    "arabic": "يُعيد تأهيل",
     "level": "B2",
     "category": "verb",
     "example_sentence": "The manager was reinstated after the investigation.",
@@ -20897,7 +20897,7 @@
   },
   {
     "english": "compliment",
-    "arabic": "إطراء",
+    "arabic": "يُطري",
     "level": "B2",
     "category": "verb",
     "example_sentence": "He complimented her on her excellent presentation.",
@@ -20985,7 +20985,7 @@
   },
   {
     "english": "groceries",
-    "arabic": "مشتريات",
+    "arabic": "بقالة",
     "level": "B2",
     "category": "noun",
     "example_sentence": "I need to buy groceries for the week.",
@@ -21001,7 +21001,7 @@
   },
   {
     "english": "hug",
-    "arabic": "عناق",
+    "arabic": "يحتضن",
     "level": "B2",
     "category": "verb",
     "example_sentence": "She hugged her friend when they met.",
@@ -21049,7 +21049,7 @@
   },
   {
     "english": "lawn",
-    "arabic": "عشب",
+    "arabic": "حديقة عشبية",
     "level": "B2",
     "category": "noun",
     "example_sentence": "He mows the lawn every weekend.",
@@ -21129,7 +21129,7 @@
   },
   {
     "english": "noodle",
-    "arabic": "نودلز",
+    "arabic": "شعيرية",
     "level": "B2",
     "category": "noun",
     "example_sentence": "She cooked a bowl of noodle soup.",
@@ -21257,7 +21257,7 @@
   },
   {
     "english": "tag",
-    "arabic": "وسم",
+    "arabic": "بطاقة",
     "level": "B2",
     "category": "noun",
     "example_sentence": "The price tag fell off the shirt.",
@@ -21265,7 +21265,7 @@
   },
   {
     "english": "taste",
-    "arabic": "ذوق",
+    "arabic": "طعم",
     "level": "B2",
     "category": "noun",
     "example_sentence": "This soup has a lovely taste.",
@@ -21377,7 +21377,7 @@
   },
   {
     "english": "aerobics",
-    "arabic": "تمارين الهوائية",
+    "arabic": "الأيروبيكس",
     "level": "B1",
     "category": "noun",
     "example_sentence": "She does aerobics three times a week to stay fit.",
@@ -21449,7 +21449,7 @@
   },
   {
     "english": "sprint",
-    "arabic": "عدو سريع",
+    "arabic": "سباق السرعة",
     "level": "B1",
     "category": "noun",
     "example_sentence": "He won the 100-metre sprint by a small margin.",
@@ -21465,7 +21465,7 @@
   },
   {
     "english": "tournament",
-    "arabic": "دوري",
+    "arabic": "بطولة",
     "level": "B1",
     "category": "noun",
     "example_sentence": "The tennis tournament takes place every summer.",
@@ -21473,7 +21473,7 @@
   },
   {
     "english": "trophy",
-    "arabic": "كأس",
+    "arabic": "كأس تذكاري",
     "level": "B1",
     "category": "noun",
     "example_sentence": "The team proudly displayed the championship trophy.",
@@ -21521,7 +21521,7 @@
   },
   {
     "english": "cartoon",
-    "arabic": "كاريكاتير",
+    "arabic": "رسوم متحركة",
     "level": "B1",
     "category": "noun",
     "example_sentence": "The children laughed at the funny cartoon characters.",
@@ -21585,7 +21585,7 @@
   },
   {
     "english": "genre",
-    "arabic": "نوع أدبي",
+    "arabic": "نوع أدبي أو فني",
     "level": "B1",
     "category": "noun",
     "example_sentence": "Science fiction is her favourite reading genre.",
@@ -21753,7 +21753,7 @@
   },
   {
     "english": "overhead",
-    "arabic": "تكاليف عامة",
+    "arabic": "تكاليف تشغيلية",
     "level": "B2",
     "category": "noun",
     "example_sentence": "Reducing overheads helped the business increase profits.",
@@ -21849,7 +21849,7 @@
   },
   {
     "english": "defendant",
-    "arabic": "متهم",
+    "arabic": "مدّعى عليه",
     "level": "B2",
     "category": "noun",
     "example_sentence": "The defendant pleaded not guilty to all charges.",
@@ -22089,7 +22089,7 @@
   },
   {
     "english": "quantum",
-    "arabic": "كمي",
+    "arabic": "كم",
     "level": "B2",
     "category": "adjective",
     "example_sentence": "Quantum physics deals with very small particles.",
@@ -22289,7 +22289,7 @@
   },
   {
     "english": "sedentary",
-    "arabic": "خامل",
+    "arabic": "مستقر",
     "level": "B2",
     "category": "adjective",
     "example_sentence": "A sedentary lifestyle increases the risk of heart disease.",
@@ -22353,7 +22353,7 @@
   },
   {
     "english": "cynical",
-    "arabic": "متشائم",
+    "arabic": "ساخر متشكك",
     "level": "B2",
     "category": "adjective",
     "example_sentence": "He became cynical about politics after years of disappointment.",
@@ -22537,7 +22537,7 @@
   },
   {
     "english": "reluctance",
-    "arabic": "تردد",
+    "arabic": "إحجام",
     "level": "B2",
     "category": "noun",
     "example_sentence": "Her reluctance to speak in public was holding her back.",
@@ -22553,7 +22553,7 @@
   },
   {
     "english": "resilience",
-    "arabic": "صمود",
+    "arabic": "مرونة",
     "level": "B2",
     "category": "noun",
     "example_sentence": "Communities show remarkable resilience after natural disasters.",
@@ -22569,7 +22569,7 @@
   },
   {
     "english": "skepticism",
-    "arabic": "تشككية",
+    "arabic": "تشكيك",
     "level": "B2",
     "category": "noun",
     "example_sentence": "There was widespread skepticism about the new findings.",
@@ -22601,7 +22601,7 @@
   },
   {
     "english": "tenacity",
-    "arabic": "مثابرة وإصرار",
+    "arabic": "مثابرة",
     "level": "B2",
     "category": "noun",
     "example_sentence": "She achieved her goals through sheer tenacity.",
@@ -22609,7 +22609,7 @@
   },
   {
     "english": "validation",
-    "arabic": "تحقق",
+    "arabic": "تحقق من الصحة",
     "level": "B2",
     "category": "noun",
     "example_sentence": "Students need validation from their teachers to build confidence.",
@@ -22625,7 +22625,7 @@
   },
   {
     "english": "allergic",
-    "arabic": "يعاني من حساسية",
+    "arabic": "مصاب بحساسية",
     "level": "A2",
     "category": "adjective",
     "example_sentence": "She is allergic to cats and cannot keep one as a pet.",
@@ -22697,7 +22697,7 @@
   },
   {
     "english": "cobweb",
-    "arabic": "خيط عنكبوت",
+    "arabic": "بيت العنكبوت",
     "level": "A2",
     "category": "noun",
     "example_sentence": "There was a cobweb in the corner of the old room.",
@@ -22785,7 +22785,7 @@
   },
   {
     "english": "flip-flops",
-    "arabic": "شبشب",
+    "arabic": "شبشب مطاطي",
     "level": "A2",
     "category": "noun",
     "example_sentence": "He wore flip-flops on the beach.",
@@ -22809,7 +22809,7 @@
   },
   {
     "english": "hopeful",
-    "arabic": "متفائل",
+    "arabic": "مفعم بالأمل",
     "level": "A2",
     "category": "adjective",
     "example_sentence": "She was hopeful that she would receive good news.",
@@ -22857,7 +22857,7 @@
   },
   {
     "english": "jogger",
-    "arabic": "متمرن بالركض",
+    "arabic": "عدّاء",
     "level": "A2",
     "category": "noun",
     "example_sentence": "The park was full of joggers early in the morning.",
@@ -22889,7 +22889,7 @@
   },
   {
     "english": "knit",
-    "arabic": "يحيك",
+    "arabic": "يحوك",
     "level": "A2",
     "category": "verb",
     "example_sentence": "She knits scarves for her grandchildren in winter.",
@@ -22953,7 +22953,7 @@
   },
   {
     "english": "napkin",
-    "arabic": "مناديل ورقية",
+    "arabic": "منديل مائدة",
     "level": "A2",
     "category": "noun",
     "example_sentence": "She placed a napkin on her lap before eating.",
@@ -23009,7 +23009,7 @@
   },
   {
     "english": "pancake",
-    "arabic": "فطيرة مسطحة",
+    "arabic": "فطيرة",
     "level": "A2",
     "category": "noun",
     "example_sentence": "She made pancakes for breakfast on Sunday.",
@@ -23073,7 +23073,7 @@
   },
   {
     "english": "rush",
-    "arabic": "يتسرع",
+    "arabic": "يتعجّل",
     "level": "A2",
     "category": "verb",
     "example_sentence": "Don't rush; we have plenty of time.",
@@ -23297,7 +23297,7 @@
   },
   {
     "english": "twins",
-    "arabic": "توأم",
+    "arabic": "توأمان",
     "level": "A2",
     "category": "noun",
     "example_sentence": "She has twins who are both interested in science.",
@@ -23521,7 +23521,7 @@
   },
   {
     "english": "indulge",
-    "arabic": "يُطيع هواه",
+    "arabic": "يستمتع بـ",
     "level": "B2",
     "category": "verb",
     "example_sentence": "She occasionally indulges in chocolate as a treat.",
@@ -23577,7 +23577,7 @@
   },
   {
     "english": "outlook",
-    "arabic": "توقعات",
+    "arabic": "نظرة عامة",
     "level": "B2",
     "category": "noun",
     "example_sentence": "The economic outlook for next year is uncertain.",
@@ -23673,7 +23673,7 @@
   },
   {
     "english": "undertake",
-    "arabic": "يُقدم على",
+    "arabic": "يضطلع بـ",
     "level": "B2",
     "category": "verb",
     "example_sentence": "She decided to undertake a postgraduate degree.",
@@ -23721,7 +23721,7 @@
   },
   {
     "english": "attachment",
-    "arabic": "مرفق",
+    "arabic": "ارتباط",
     "level": "B1",
     "category": "noun",
     "example_sentence": "Please open the attachment in the email.",
@@ -23761,7 +23761,7 @@
   },
   {
     "english": "cultivation",
-    "arabic": "زراعة",
+    "arabic": "تنمية",
     "level": "B2",
     "category": "noun",
     "example_sentence": "The cultivation of new habits takes time and effort.",
@@ -23793,7 +23793,7 @@
   },
   {
     "english": "fulfillment",
-    "arabic": "إشباع",
+    "arabic": "تحقق",
     "level": "B2",
     "category": "noun",
     "example_sentence": "She found great fulfillment in teaching children.",
@@ -23825,7 +23825,7 @@
   },
   {
     "english": "orientation",
-    "arabic": "توجيه",
+    "arabic": "توجُّه",
     "level": "B2",
     "category": "noun",
     "example_sentence": "New students attend an orientation on the first day.",
@@ -23897,7 +23897,7 @@
   },
   {
     "english": "versatility",
-    "arabic": "تعدد المواهب",
+    "arabic": "تعدد الاستخدامات",
     "level": "B2",
     "category": "noun",
     "example_sentence": "His versatility as an actor is impressive.",
@@ -23937,7 +23937,7 @@
   },
   {
     "english": "yielding",
-    "arabic": "مُنتج",
+    "arabic": "مُتسامح",
     "level": "B2",
     "category": "adjective",
     "example_sentence": "The new approach was more yielding in results.",
@@ -23977,7 +23977,7 @@
   },
   {
     "english": "rhetoric",
-    "arabic": "خطابة",
+    "arabic": "خطاب مُقنع",
     "level": "B2",
     "category": "noun",
     "example_sentence": "His speech was full of rhetoric but lacked concrete proposals.",
