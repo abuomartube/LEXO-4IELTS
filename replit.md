@@ -5,7 +5,7 @@ This is a pnpm workspace monorepo using TypeScript, designed to build a comprehe
 The project utilizes a modern web stack, emphasizing a performant and scalable architecture. It targets a global audience of IELTS aspirants, particularly those seeking bilingual English-Arabic learning resources. Key capabilities include:
 
 -   **Extensive Flashcard System**: 2,198 unique CEFR-corrected flashcards with Arabic translations and bilingual example sentences.
--   **Interactive Study Modes**: Study, Quiz, Browse, and Spaced Repetition (SM-2 algorithm) for effective vocabulary acquisition.
+-   **Interactive Study Modes**: Study, Quiz, Browse, Spell It (timed spelling game with TTS clue audio preloaded for the current word + 2 ahead so playback is instant), and Spaced Repetition (SM-2 algorithm) for effective vocabulary acquisition.
 -   **AI-Powered Tools**: Orwell AI for IELTS essay checking with Band 7 grading anchors and LEXO AI Chat Assistant for IELTS-specific queries.
 -   **Comprehensive Testing**: Full IELTS Listening, Reading, and Mock Tests with auto-grading and detailed feedback.
 -   **Personalized Learning**: Daily streaks, weak-word decks, progress tracking, and an onboarding flow for customized study plans.
