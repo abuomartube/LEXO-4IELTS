@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { useTheme } from "@/context/theme-context";
 import { Button } from "@/components/ui/button";
 import { MyPlanButton } from "@/components/my-plan-button";
+import { NotificationsBell } from "@/components/notifications-bell";
 
 function handleLogout() {
   try {
@@ -79,15 +80,18 @@ export function Layout({ children }: { children: React.ReactNode }) {
               />
             </Link>
           </div>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="rounded-full hidden md:flex"
-            onClick={toggleTheme}
-            aria-label="Toggle theme"
-          >
-            {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-          </Button>
+          <div className="flex items-center gap-1">
+            <NotificationsBell variant="sidebar" />
+            <Button
+              variant="ghost"
+              size="icon"
+              className="rounded-full hidden md:flex"
+              onClick={toggleTheme}
+              aria-label="Toggle theme"
+            >
+              {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+            </Button>
+          </div>
         </div>
         <nav className="flex-1 px-4 py-4 space-y-1 overflow-y-auto hidden md:block">
           {navItems.map((item) => {

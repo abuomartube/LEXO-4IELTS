@@ -9,7 +9,8 @@ The project utilizes a modern web stack, emphasizing a performant and scalable a
 -   **AI-Powered Tools**: Orwell AI for IELTS essay checking with Band 7 grading anchors and LEXO AI Chat Assistant for IELTS-specific queries.
 -   **Comprehensive Testing**: Full IELTS Listening, Reading, and Mock Tests with auto-grading and detailed feedback.
 -   **Personalized Learning**: Daily streaks, weak-word decks, progress tracking, and an onboarding flow for customized study plans.
--   **Teacher Dashboard**: Admin interface to monitor student progress and activity.
+-   **Teacher Dashboard**: Admin interface to monitor student progress and activity, plus an in-app Notifications composer (type, audience, send-now or schedule).
+-   **In-App Notifications**: Bell icon in the student sidebar with a red unread badge and a dropdown panel; targets All Students or a specific level (A1–C1); types (Reminder/Feature/Announcement/Motivational) are color-coded; admin sees per-notification open counts.
 -   **Rich Content**: Phrasal verbs, grammar topics, writing templates, and speaking topic banks.
 
 ## User Preferences

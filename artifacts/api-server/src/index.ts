@@ -3,6 +3,7 @@ import { logger } from "./lib/logger";
 import { runSeed } from "./seed";
 import { warmUpPdf } from "./routes/vocab-pdf";
 import { startReminderScheduler } from "./routes/notifications";
+import { startNotificationsScheduler } from "./routes/admin-notifications";
 
 const rawPort = process.env["PORT"];
 
@@ -33,6 +34,7 @@ async function main() {
   });
   warmUpPdf();
   startReminderScheduler();
+  startNotificationsScheduler();
 }
 
 main().catch((err) => {

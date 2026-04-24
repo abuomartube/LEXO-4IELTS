@@ -4,6 +4,7 @@ import {
   Trophy, ArrowUpDown, Search, X, LogIn, Eye, EyeOff,
   RefreshCw, Users, TrendingUp, PlayCircle, Plus, Trash2, Loader2,
   UserCheck, UserX, KeyRound, Copy, Check, Bell, Mail, Clock, ArrowRight,
+  Send, Megaphone, Sparkles, Eye as EyeIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
@@ -48,6 +49,19 @@ interface AccessRequest {
   reviewedAt: string | null;
   expiresAt: string | null;
   accessCodeId: number | null;
+}
+
+interface AdminNotification {
+  id: number;
+  message: string;
+  type: string;
+  audience: string;
+  level: string | null;
+  scheduled_at: string | null;
+  sent_at: string | null;
+  created_at: string;
+  created_by: string;
+  open_count: number;
 }
 
 interface AccessCodeRow {
@@ -127,6 +141,19 @@ export default function TeacherDashboard() {
   const [sentenceEmail, setSentenceEmail] = useState<string | null>(null);
   const [showOnlyUnused, setShowOnlyUnused] = useState(true);
 
+  // Notifications composer state
+  const [notifMessage, setNotifMessage] = useState("");
+  const [notifType, setNotifType] = useState<"reminder" | "feature" | "announcement" | "motivational">("announcement");
+  const [notifAudience, setNotifAudience] = useState<"all" | "level">("all");
+  const [notifLevel, setNotifLevel] = useState<"A1" | "A2" | "B1" | "B2" | "C1">("A2");
+  const [notifSchedule, setNotifSchedule] = useState<"now" | "later">("now");
+  const [notifWhen, setNotifWhen] = useState<string>("");
+  const [notifSending, setNotifSending] = useState(false);
+  const [notifError, setNotifError] = useState("");
+  const [notifList, setNotifList] = useState<AdminNotification[]>([]);
+  const [notifLoading, setNotifLoading] = useState(false);
+  const [deletingNotifId, setDeletingNotifId] = useState<number | null>(null);
+
   const savedPass = typeof sessionStorage !== "undefined" ? sessionStorage.getItem("teacher_pass") : null;
 
   useEffect(() => {
@@ -143,6 +170,7 @@ export default function TeacherDashboard() {
       fetchLessons();
       fetchPendingRequests();
       fetchAccessCodes();
+      fetchNotifications();
     }
   }, [authed]);
 
@@ -241,6 +269,77 @@ export default function TeacherDashboard() {
       });
       if (res.ok) await fetchAccessCodes();
     } finally { setDeletingCodeId(null); }
+  }
+
+  async function fetchNotifications() {
+    setNotifLoading(true);
+    try {
+      const res = await fetch(`${API}/api/admin/notifications`, {
+        headers: { "x-admin-password": password },
+      });
+      if (!res.ok) return;
+      const data = await res.json();
+      setNotifList(data.notifications ?? []);
+    } catch { /* ignore */ }
+    finally { setNotifLoading(false); }
+  }
+
+  async function sendNotification(e: React.FormEvent) {
+    e.preventDefault();
+    setNotifError("");
+    const message = notifMessage.trim();
+    if (!message) { setNotifError("Message is required"); return; }
+    if (notifSchedule === "later" && !notifWhen) {
+      setNotifError("Pick a date & time, or choose Send Now");
+      return;
+    }
+
+    let scheduledAt: string | null = null;
+    if (notifSchedule === "later") {
+      const d = new Date(notifWhen);
+      if (Number.isNaN(d.getTime())) { setNotifError("Invalid date/time"); return; }
+      scheduledAt = d.toISOString();
+    }
+
+    setNotifSending(true);
+    try {
+      const res = await fetch(`${API}/api/admin/notifications`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-admin-password": password },
+        body: JSON.stringify({
+          message,
+          type: notifType,
+          audience: notifAudience,
+          level: notifAudience === "level" ? notifLevel : null,
+          scheduledAt,
+        }),
+      });
+      if (!res.ok) {
+        const j = await res.json().catch(() => ({}));
+        setNotifError(j.error || "Could not send");
+        return;
+      }
+      setNotifMessage("");
+      setNotifSchedule("now");
+      setNotifWhen("");
+      await fetchNotifications();
+    } catch {
+      setNotifError("Network error");
+    } finally {
+      setNotifSending(false);
+    }
+  }
+
+  async function deleteNotification(id: number) {
+    if (!confirm("Delete this notification? Students will no longer see it.")) return;
+    setDeletingNotifId(id);
+    try {
+      const res = await fetch(`${API}/api/admin/notifications/${id}`, {
+        method: "DELETE",
+        headers: { "x-admin-password": password },
+      });
+      if (res.ok) await fetchNotifications();
+    } finally { setDeletingNotifId(null); }
   }
 
   function copyCode(code: string) {
@@ -586,6 +685,244 @@ export default function TeacherDashboard() {
               ))}
             </ul>
           )}
+        </section>
+
+        {/* ── Notifications ──────────────────────────────────────────── */}
+        <section className="bg-card border border-border rounded-2xl overflow-hidden">
+          <div className="px-5 py-4 border-b border-border flex items-center gap-3 flex-wrap">
+            <div className="w-9 h-9 rounded-xl bg-sky-500/10 flex items-center justify-center">
+              <Bell className="w-5 h-5 text-sky-500" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <h2 className="text-base font-extrabold text-foreground">Notifications</h2>
+              <p className="text-xs text-muted-foreground">
+                Send announcements, reminders, and feature updates straight to students' bell.
+              </p>
+            </div>
+            <button
+              onClick={fetchNotifications}
+              disabled={notifLoading}
+              className="text-xs font-medium text-muted-foreground hover:text-foreground bg-muted/50 px-3 py-1.5 rounded-lg flex items-center gap-1.5 disabled:opacity-50"
+            >
+              <RefreshCw className={cn("w-3.5 h-3.5", notifLoading && "animate-spin")} />
+              Refresh
+            </button>
+          </div>
+
+          <form onSubmit={sendNotification} className="p-5 space-y-4">
+            <div>
+              <label className="block text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1.5">
+                Message
+              </label>
+              <textarea
+                value={notifMessage}
+                onChange={(e) => setNotifMessage(e.target.value)}
+                placeholder="What do you want to tell your students?"
+                maxLength={2000}
+                rows={3}
+                className="w-full px-4 py-2.5 bg-muted/40 border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 resize-y"
+              />
+              <div className="text-[11px] text-muted-foreground mt-1 text-right">{notifMessage.length}/2000</div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1.5">Type</label>
+                <div className="grid grid-cols-2 gap-2">
+                  {([
+                    ["reminder",     "Reminder",     "bg-yellow-100 text-yellow-800 border-yellow-300 dark:bg-yellow-900/40 dark:text-yellow-200 dark:border-yellow-700", Clock],
+                    ["feature",      "New Feature",  "bg-blue-100 text-blue-800 border-blue-300 dark:bg-blue-900/40 dark:text-blue-200 dark:border-blue-700",            Sparkles],
+                    ["announcement", "Announcement", "bg-emerald-100 text-emerald-800 border-emerald-300 dark:bg-emerald-900/40 dark:text-emerald-200 dark:border-emerald-700", Megaphone],
+                    ["motivational", "Motivational", "bg-amber-100 text-amber-900 border-amber-300 dark:bg-amber-900/40 dark:text-amber-100 dark:border-amber-700",       Trophy],
+                  ] as Array<[typeof notifType, string, string, typeof Bell]>).map(([key, label, cls, Icon]) => {
+                    const active = notifType === key;
+                    return (
+                      <button
+                        type="button"
+                        key={key}
+                        onClick={() => setNotifType(key)}
+                        className={cn(
+                          "flex items-center gap-2 px-3 py-2 rounded-xl border-2 text-xs font-bold transition-all text-left",
+                          active ? `${cls} ring-2 ring-offset-1 ring-offset-card ring-foreground/20` : "bg-muted/30 text-muted-foreground border-transparent hover:bg-muted/50"
+                        )}
+                      >
+                        <Icon className="w-4 h-4 shrink-0" />
+                        <span className="truncate">{label}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1.5">Audience</label>
+                <div className="flex flex-col gap-2">
+                  <div className="flex gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setNotifAudience("all")}
+                      className={cn(
+                        "flex-1 px-3 py-2 rounded-xl border-2 text-xs font-bold transition-all",
+                        notifAudience === "all" ? "bg-primary text-primary-foreground border-primary" : "bg-muted/30 text-muted-foreground border-transparent hover:bg-muted/50"
+                      )}
+                    >
+                      All Students
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setNotifAudience("level")}
+                      className={cn(
+                        "flex-1 px-3 py-2 rounded-xl border-2 text-xs font-bold transition-all",
+                        notifAudience === "level" ? "bg-primary text-primary-foreground border-primary" : "bg-muted/30 text-muted-foreground border-transparent hover:bg-muted/50"
+                      )}
+                    >
+                      Specific Level
+                    </button>
+                  </div>
+                  {notifAudience === "level" && (
+                    <div className="flex flex-wrap gap-1.5">
+                      {(["A1", "A2", "B1", "B2", "C1"] as const).map((lv) => (
+                        <button
+                          type="button"
+                          key={lv}
+                          onClick={() => setNotifLevel(lv)}
+                          className={cn(
+                            "px-3 py-1.5 rounded-lg text-xs font-bold transition-all",
+                            notifLevel === lv ? "bg-foreground text-background" : "bg-muted/40 text-muted-foreground hover:bg-muted"
+                          )}
+                        >
+                          {lv}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1.5">When</label>
+              <div className="flex flex-col sm:flex-row gap-2">
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setNotifSchedule("now")}
+                    className={cn(
+                      "px-4 py-2 rounded-xl border-2 text-xs font-bold transition-all",
+                      notifSchedule === "now" ? "bg-emerald-500 text-white border-emerald-500" : "bg-muted/30 text-muted-foreground border-transparent hover:bg-muted/50"
+                    )}
+                  >
+                    Send Now
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setNotifSchedule("later")}
+                    className={cn(
+                      "px-4 py-2 rounded-xl border-2 text-xs font-bold transition-all",
+                      notifSchedule === "later" ? "bg-violet-500 text-white border-violet-500" : "bg-muted/30 text-muted-foreground border-transparent hover:bg-muted/50"
+                    )}
+                  >
+                    Schedule
+                  </button>
+                </div>
+                {notifSchedule === "later" && (
+                  <input
+                    type="datetime-local"
+                    value={notifWhen}
+                    onChange={(e) => setNotifWhen(e.target.value)}
+                    className="flex-1 px-3 py-2 bg-muted/40 border border-border rounded-xl text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+                  />
+                )}
+              </div>
+            </div>
+
+            {notifError && (
+              <div className="bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-800 rounded-xl px-3 py-2 text-xs text-red-700 dark:text-red-400">
+                {notifError}
+              </div>
+            )}
+
+            <div className="flex justify-end">
+              <button
+                type="submit"
+                disabled={notifSending || !notifMessage.trim()}
+                className="px-5 py-2.5 bg-primary text-primary-foreground font-bold rounded-xl hover:opacity-90 transition-opacity disabled:opacity-50 flex items-center gap-2"
+              >
+                {notifSending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
+                {notifSchedule === "now" ? "Send Notification" : "Schedule Notification"}
+              </button>
+            </div>
+          </form>
+
+          <div className="border-t border-border">
+            <div className="px-5 py-3 text-xs font-bold text-muted-foreground uppercase tracking-wider">
+              Sent & Scheduled ({notifList.length})
+            </div>
+            {notifLoading && notifList.length === 0 ? (
+              <div className="px-5 py-10 text-center text-sm text-muted-foreground">
+                <Loader2 className="w-5 h-5 mx-auto mb-2 animate-spin" />
+                Loading…
+              </div>
+            ) : notifList.length === 0 ? (
+              <div className="px-5 py-8 text-center text-sm text-muted-foreground">
+                No notifications yet. Compose one above.
+              </div>
+            ) : (
+              <ul className="divide-y divide-border max-h-[480px] overflow-y-auto">
+                {notifList.map((n) => {
+                  const sent = !!n.sent_at;
+                  const typeMeta: Record<string, { label: string; cls: string }> = {
+                    reminder:     { label: "Reminder",     cls: "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/40 dark:text-yellow-200" },
+                    feature:      { label: "New Feature",  cls: "bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-200" },
+                    announcement: { label: "Announcement", cls: "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-200" },
+                    motivational: { label: "Motivational", cls: "bg-amber-100 text-amber-900 dark:bg-amber-900/40 dark:text-amber-100" },
+                  };
+                  const tm = typeMeta[n.type] ?? typeMeta["announcement"]!;
+                  return (
+                    <li key={n.id} className="px-5 py-3 flex gap-3">
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 flex-wrap mb-1">
+                          <span className={cn("text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full", tm.cls)}>
+                            {tm.label}
+                          </span>
+                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-muted text-muted-foreground">
+                            {n.audience === "all" ? "All Students" : `Level ${n.level ?? "?"}`}
+                          </span>
+                          {sent ? (
+                            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300 flex items-center gap-1">
+                              <Check className="w-3 h-3" /> Sent
+                            </span>
+                          ) : (
+                            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-violet-100 text-violet-700 dark:bg-violet-900/40 dark:text-violet-300 flex items-center gap-1">
+                              <Clock className="w-3 h-3" /> Scheduled
+                            </span>
+                          )}
+                          <span className="text-[10px] text-muted-foreground inline-flex items-center gap-1">
+                            <EyeIcon className="w-3 h-3" /> {n.open_count} open{n.open_count === 1 ? "" : "s"}
+                          </span>
+                        </div>
+                        <p className="text-sm text-foreground whitespace-pre-wrap break-words">{n.message}</p>
+                        <p className="text-[11px] text-muted-foreground mt-1">
+                          {sent
+                            ? `Sent ${formatDate(n.sent_at)}`
+                            : `Scheduled for ${n.scheduled_at ? new Date(n.scheduled_at).toLocaleString() : "?"}`}
+                          {" · "}created {formatDate(n.created_at)}
+                        </p>
+                      </div>
+                      <button
+                        onClick={() => deleteNotification(n.id)}
+                        disabled={deletingNotifId === n.id}
+                        className="text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/20 p-2 rounded-lg transition-colors disabled:opacity-50 self-start"
+                        title="Delete notification"
+                      >
+                        {deletingNotifId === n.id ? <Loader2 className="w-4 h-4 animate-spin" /> : <Trash2 className="w-4 h-4" />}
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </div>
         </section>
 
         {/* ── Access Codes ───────────────────────────────────────────── */}

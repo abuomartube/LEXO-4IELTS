@@ -60,6 +60,44 @@ async function ensureTables() {
       UNIQUE(email, card_id)
     )
   `);
+
+  await db.execute(sql`
+    CREATE TABLE IF NOT EXISTS notifications (
+      id SERIAL PRIMARY KEY,
+      message TEXT NOT NULL,
+      type TEXT NOT NULL,
+      audience TEXT NOT NULL DEFAULT 'all',
+      level TEXT,
+      scheduled_at TIMESTAMPTZ,
+      sent_at TIMESTAMPTZ,
+      created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+      created_by TEXT NOT NULL DEFAULT 'admin'
+    )
+  `);
+
+  await db.execute(sql`
+    CREATE TABLE IF NOT EXISTS notification_reads (
+      id SERIAL PRIMARY KEY,
+      notification_id INTEGER NOT NULL REFERENCES notifications(id) ON DELETE CASCADE,
+      email TEXT NOT NULL,
+      opened_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+      UNIQUE(notification_id, email)
+    )
+  `);
+
+  await db.execute(sql`
+    CREATE INDEX IF NOT EXISTS notifications_sent_at_idx
+    ON notifications(sent_at)
+  `);
+  await db.execute(sql`
+    CREATE INDEX IF NOT EXISTS notifications_scheduled_at_idx
+    ON notifications(scheduled_at)
+    WHERE sent_at IS NULL
+  `);
+  await db.execute(sql`
+    CREATE INDEX IF NOT EXISTS notification_reads_email_idx
+    ON notification_reads(email)
+  `);
 }
 
 async function seedFlashcards() {

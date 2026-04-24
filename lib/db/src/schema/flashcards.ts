@@ -245,3 +245,30 @@ export const lessonCompletionsTable = pgTable("lesson_completions", {
 }, (t) => [unique().on(t.email, t.lessonId)]);
 
 export type LessonCompletion = typeof lessonCompletionsTable.$inferSelect;
+
+// ── Admin → Student notifications (in-app bell) ──────────────────────────
+// type:     'reminder' | 'feature' | 'announcement' | 'motivational'
+// audience: 'all' | 'level'   (when 'level', `level` holds the CEFR level)
+// sentAt:   null until the scheduler / immediate-send marks it delivered
+export const notificationsTable = pgTable("notifications", {
+  id: serial("id").primaryKey(),
+  message: text("message").notNull(),
+  type: text("type").notNull(),
+  audience: text("audience").notNull().default("all"),
+  level: text("level"),
+  scheduledAt: timestamp("scheduled_at", { withTimezone: true }),
+  sentAt: timestamp("sent_at", { withTimezone: true }),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  createdBy: text("created_by").notNull().default("admin"),
+});
+
+export type Notification = typeof notificationsTable.$inferSelect;
+
+export const notificationReadsTable = pgTable("notification_reads", {
+  id: serial("id").primaryKey(),
+  notificationId: integer("notification_id").notNull().references(() => notificationsTable.id, { onDelete: "cascade" }),
+  email: text("email").notNull(),
+  openedAt: timestamp("opened_at", { withTimezone: true }).notNull().defaultNow(),
+}, (t) => [unique().on(t.notificationId, t.email)]);
+
+export type NotificationRead = typeof notificationReadsTable.$inferSelect;
