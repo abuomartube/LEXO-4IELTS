@@ -508,7 +508,7 @@ router.post("/quiz-scores", async (req, res): Promise<void> => {
   if (!email) { res.status(401).json({ error: "Unauthorized" }); return; }
   const { mode, level, total, correct, wrong } = req.body;
   if (!mode || !level || typeof total !== "number" || total < 0) { res.status(400).json({ error: "Invalid data" }); return; }
-  const validModes = ["multiple-choice", "fill-blank"];
+  const validModes = ["multiple-choice", "fill-blank", "flip-it"];
   const validLevels = ["ALL", "A2", "B1", "B2", "C1"];
   if (!validModes.includes(mode) || !validLevels.includes(level)) { res.status(400).json({ error: "Invalid mode or level" }); return; }
   const c = Math.max(0, Math.floor(correct ?? 0));

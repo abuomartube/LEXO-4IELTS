@@ -38,6 +38,7 @@ export const TASKS: Record<string, PlanTask> = {
   listeningS4:      { id: "listeningS4",      label: "Listening — Section 4",      arabicLabel: "الاستماع — القسم ٤",  emoji: "🎧", href: "/listening-test",     hash: "#skills-4",   estimatedMinutes: 30, color: "from-rose-500 to-pink-500" },
   writingTemplates: { id: "writingTemplates", label: "Writing Templates",          arabicLabel: "قوالب الكتابة",       emoji: "📋", href: "/writing-templates",                               estimatedMinutes: 10, color: "from-amber-500 to-yellow-500" },
   sentenceBuilder:  { id: "sentenceBuilder",  label: "Sentence Builder",           arabicLabel: "بناء الجمل",          emoji: "🧠", href: "/sentence-builder",                                estimatedMinutes: 10, color: "from-cyan-500 to-blue-500" },
+  flipIt:           { id: "flipIt",           label: "Flip It",                    arabicLabel: "اقلب البطاقة",         emoji: "⚡", href: "/flip-it",                                         estimatedMinutes: 6,  color: "from-amber-500 to-orange-500" },
 };
 
 /**

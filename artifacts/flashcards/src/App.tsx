@@ -31,6 +31,7 @@ const MockTest = lazy(() => import("@/pages/mock-test"));
 const Grammar = lazy(() => import("@/pages/grammar"));
 const Lessons = lazy(() => import("@/pages/lessons"));
 const SentenceBuilder = lazy(() => import("@/pages/sentence-builder"));
+const FlipIt = lazy(() => import("@/pages/flip-it"));
 const NotFound = lazy(() => import("@/pages/not-found"));
 
 setStudentEmailGetter(() => {
@@ -92,6 +93,7 @@ function Router() {
               <Route path="/grammar" component={Grammar} />
               <Route path="/mock-test" component={MockTest} />
               <Route path="/sentence-builder" component={SentenceBuilder} />
+              <Route path="/flip-it" component={FlipIt} />
               <Route component={NotFound} />
             </Switch>
           </PasswordGate>
