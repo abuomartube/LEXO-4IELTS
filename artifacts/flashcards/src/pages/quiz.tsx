@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import {
   CheckCircle2, XCircle, RefreshCw, HelpCircle,
-  ArrowRight, ArrowLeft, Trophy, Volume2, PenLine, History, Clock, Brain, Zap
+  ArrowRight, ArrowLeft, Trophy, Volume2, PenLine, History, Clock, Brain, Zap, SpellCheck2
 } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
@@ -214,10 +214,24 @@ export default function Quiz() {
                   </div>
                   <div className="font-semibold text-foreground text-sm flex items-center gap-1.5">
                     Flip It
-                    <span className="text-[10px] uppercase font-bold bg-amber-500 text-white px-1.5 py-0.5 rounded">NEW</span>
                   </div>
                   <div className="text-xs text-muted-foreground mt-1">
                     Beat the timer, then flip the card to reveal the meaning
+                  </div>
+                </Link>
+                <Link
+                  href="/spell-it"
+                  className="p-4 rounded-2xl border-2 border-border hover:border-emerald-400/50 text-left transition-all min-h-[120px] block group"
+                >
+                  <div className="w-8 h-8 rounded-lg flex items-center justify-center mb-2 bg-emerald-500/15 group-hover:bg-emerald-500/25">
+                    <SpellCheck2 className="w-4 h-4 text-emerald-500" />
+                  </div>
+                  <div className="font-semibold text-foreground text-sm flex items-center gap-1.5">
+                    Spell It
+                    <span className="text-[10px] uppercase font-bold bg-emerald-500 text-white px-1.5 py-0.5 rounded">NEW</span>
+                  </div>
+                  <div className="text-xs text-muted-foreground mt-1">
+                    Hear the word, then race the clock to spell it letter by letter
                   </div>
                 </Link>
               </div>

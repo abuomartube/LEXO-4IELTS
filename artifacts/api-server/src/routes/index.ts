@@ -12,6 +12,7 @@ import orwellRouter from "./orwell";
 import lessonsRouter from "./lessons";
 import sentenceCheckRouter from "./sentence-check";
 import sentenceSessionsRouter from "./sentence-sessions";
+import spellItRouter from "./spell-it";
 
 const router: IRouter = Router();
 
@@ -28,5 +29,6 @@ router.use(orwellRouter);
 router.use(lessonsRouter);
 router.use(sentenceCheckRouter);
 router.use(sentenceSessionsRouter);
+router.use(spellItRouter);
 
 export default router;
