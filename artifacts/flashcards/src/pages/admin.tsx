@@ -2,7 +2,8 @@ import { useState, useEffect, useCallback } from "react";
 import {
   Eye, EyeOff, Loader2, CheckCircle2, XCircle, Clock, Trash2, RefreshCw,
   Lock, KeyRound, Users, AlertCircle, Calendar, CalendarX, Search,
-  Download, Star, MessageSquare, ShieldCheck, KeySquare
+  Download, Star, MessageSquare, ShieldCheck, KeySquare, Reply, Send,
+  Pencil, Image as ImageIcon, Upload, BadgeCheck
 } from "lucide-react";
 
 // ── Types ────────────────────────────────────────────────────────────────────
@@ -25,6 +26,8 @@ interface Review {
   status: "pending" | "approved" | "rejected";
   createdAt: string;
   reviewedAt: string | null;
+  adminReply: string | null;
+  adminReplyAt: string | null;
 }
 
 type Tab = "requests" | "reviews" | "settings";
@@ -126,6 +129,15 @@ export default function AdminPage() {
   const [showNewPwd, setShowNewPwd] = useState(false);
   const [pwdMsg, setPwdMsg] = useState<{ type: "success" | "error"; text: string } | null>(null);
   const [pwdLoading, setPwdLoading] = useState(false);
+
+  const [replyEditingId, setReplyEditingId] = useState<number | null>(null);
+  const [replyDraft, setReplyDraft] = useState("");
+  const [replyLoading, setReplyLoading] = useState<number | null>(null);
+  const [replyError, setReplyError] = useState<{ id: number; text: string } | null>(null);
+
+  const [adminAvatar, setAdminAvatar] = useState<string | null>(null);
+  const [avatarUploading, setAvatarUploading] = useState(false);
+  const [avatarMsg, setAvatarMsg] = useState<{ type: "success" | "error"; text: string } | null>(null);
 
   const fetchRequests = useCallback(async (ap: string) => {
     setRefreshing(true);
@@ -256,6 +268,138 @@ export default function AdminPage() {
       });
       await fetchReviews(adminPassword);
     } finally { setReviewActionLoading(null); }
+  };
+
+  const startReply = (r: Review) => {
+    setReplyEditingId(r.id);
+    setReplyDraft(r.adminReply ?? "");
+    setReplyError(null);
+  };
+
+  const cancelReply = () => {
+    setReplyEditingId(null);
+    setReplyDraft("");
+    setReplyError(null);
+  };
+
+  const publishReply = async (id: number) => {
+    if (!replyDraft.trim()) return;
+    setReplyLoading(id);
+    setReplyError(null);
+    try {
+      const res = await fetch(`/api/admin/reviews/${id}/reply`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-admin-password": adminPassword },
+        body: JSON.stringify({ reply: replyDraft.trim() }),
+      });
+      if (res.ok) {
+        await fetchReviews(adminPassword);
+        cancelReply();
+      } else {
+        const d = await res.json().catch(() => ({}));
+        setReplyError({ id, text: d.error ?? "Failed to publish reply." });
+      }
+    } catch {
+      setReplyError({ id, text: "Connection error. Please try again." });
+    } finally { setReplyLoading(null); }
+  };
+
+  const deleteReply = async (id: number) => {
+    setReplyLoading(id);
+    setReplyError(null);
+    try {
+      const res = await fetch(`/api/admin/reviews/${id}/reply`, {
+        method: "DELETE",
+        headers: { "x-admin-password": adminPassword },
+      });
+      if (res.ok) {
+        await fetchReviews(adminPassword);
+      } else {
+        const d = await res.json().catch(() => ({}));
+        setReplyError({ id, text: d.error ?? "Failed to delete reply." });
+      }
+    } catch {
+      setReplyError({ id, text: "Connection error. Please try again." });
+    } finally { setReplyLoading(null); }
+  };
+
+  const fetchAvatar = useCallback(async () => {
+    try {
+      const res = await fetch("/api/admin/avatar");
+      if (res.ok) { const d = await res.json(); setAdminAvatar(d.dataUrl ?? null); }
+    } catch { /* ignore */ }
+  }, []);
+
+  useEffect(() => { fetchAvatar(); }, [fetchAvatar]);
+
+  const handleAvatarFile = async (file: File) => {
+    setAvatarMsg(null);
+    if (!file.type.startsWith("image/")) {
+      setAvatarMsg({ type: "error", text: "Please choose an image file." });
+      return;
+    }
+    if (file.size > 1.5 * 1024 * 1024) {
+      setAvatarMsg({ type: "error", text: "Image too large — pick one under 1.5 MB." });
+      return;
+    }
+    // Downscale to a 256x256 square so we stay well under the API's 300 KB limit.
+    const dataUrl = await new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const img = new Image();
+        img.onload = () => {
+          const size = 256;
+          const canvas = document.createElement("canvas");
+          canvas.width = size; canvas.height = size;
+          const ctx = canvas.getContext("2d");
+          if (!ctx) { reject(new Error("Canvas unsupported")); return; }
+          // Cover-fit: crop to square, scale to 256.
+          const min = Math.min(img.width, img.height);
+          const sx = (img.width - min) / 2;
+          const sy = (img.height - min) / 2;
+          ctx.drawImage(img, sx, sy, min, min, 0, 0, size, size);
+          resolve(canvas.toDataURL("image/jpeg", 0.85));
+        };
+        img.onerror = () => reject(new Error("Bad image"));
+        img.src = reader.result as string;
+      };
+      reader.onerror = () => reject(new Error("Read error"));
+      reader.readAsDataURL(file);
+    });
+
+    setAvatarUploading(true);
+    try {
+      const res = await fetch("/api/admin/avatar", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-admin-password": adminPassword },
+        body: JSON.stringify({ dataUrl }),
+      });
+      const d = await res.json().catch(() => ({}));
+      if (res.ok) {
+        setAdminAvatar(d.dataUrl);
+        setAvatarMsg({ type: "success", text: "Profile photo updated." });
+      } else {
+        setAvatarMsg({ type: "error", text: d.error ?? "Upload failed." });
+      }
+    } catch {
+      setAvatarMsg({ type: "error", text: "Connection error." });
+    } finally { setAvatarUploading(false); }
+  };
+
+  const removeAvatar = async () => {
+    setAvatarUploading(true);
+    setAvatarMsg(null);
+    try {
+      const res = await fetch("/api/admin/avatar", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-admin-password": adminPassword },
+        body: JSON.stringify({ dataUrl: null }),
+      });
+      if (res.ok) {
+        setAdminAvatar(null);
+        setAvatarMsg({ type: "success", text: "Profile photo removed." });
+      }
+    } finally { setAvatarUploading(false); }
   };
 
   const filteredRequests = requests
@@ -627,6 +771,112 @@ export default function AdminPage() {
                     <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed bg-gray-50 dark:bg-gray-800 rounded-xl px-4 py-3">
                       {r.comment}
                     </p>
+
+                    {/* Existing admin reply (if any) */}
+                    {r.adminReply && replyEditingId !== r.id && (
+                      <div className="ml-6 border-l-4 border-teal-400 dark:border-teal-600 bg-teal-50/60 dark:bg-teal-900/20 rounded-r-xl px-4 py-3">
+                        <div className="flex items-start justify-between gap-2 mb-1.5">
+                          <div className="flex items-center gap-1.5">
+                            {adminAvatar ? (
+                              <img src={adminAvatar} alt="Abu Omar" className="w-6 h-6 rounded-full object-cover ring-1 ring-teal-300 dark:ring-teal-700" />
+                            ) : (
+                              <div className="w-6 h-6 rounded-full bg-teal-600 text-white text-[10px] font-bold flex items-center justify-center">AO</div>
+                            )}
+                            <span className="text-xs font-semibold text-teal-800 dark:text-teal-300">Abu Omar</span>
+                            <BadgeCheck className="w-3.5 h-3.5 text-sky-500 fill-sky-500/15" aria-label="Verified" />
+                            <span className="text-xs text-gray-400">replied</span>
+                            {r.adminReplyAt && (
+                              <span className="text-xs text-gray-400">· {formatDate(r.adminReplyAt)}</span>
+                            )}
+                          </div>
+                          <div className="flex gap-1">
+                            <button
+                              onClick={() => startReply(r)}
+                              disabled={replyLoading === r.id}
+                              className="flex items-center gap-1 px-2 py-1 rounded-md bg-white dark:bg-gray-800 border border-teal-200 dark:border-teal-800 text-teal-700 dark:text-teal-400 text-xs hover:bg-teal-50 dark:hover:bg-teal-900/30 transition-colors disabled:opacity-50"
+                            >
+                              <Pencil className="w-3 h-3" /> Edit
+                            </button>
+                            <button
+                              onClick={() => deleteReply(r.id)}
+                              disabled={replyLoading === r.id}
+                              className="flex items-center gap-1 px-2 py-1 rounded-md bg-white dark:bg-gray-800 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 text-xs hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors disabled:opacity-50"
+                            >
+                              {replyLoading === r.id ? <Loader2 className="w-3 h-3 animate-spin" /> : <Trash2 className="w-3 h-3" />}
+                            </button>
+                          </div>
+                        </div>
+                        <p className="text-sm text-gray-800 dark:text-gray-200 whitespace-pre-wrap">{r.adminReply}</p>
+                      </div>
+                    )}
+
+                    {/* Reply editor (publish or edit) */}
+                    {replyEditingId === r.id && (
+                      <div className="ml-6 border-l-4 border-teal-400 dark:border-teal-600 bg-teal-50/60 dark:bg-teal-900/20 rounded-r-xl px-4 py-3 space-y-2">
+                        <div className="flex items-center gap-1.5">
+                          {adminAvatar ? (
+                            <img src={adminAvatar} alt="Abu Omar" className="w-6 h-6 rounded-full object-cover ring-1 ring-teal-300 dark:ring-teal-700" />
+                          ) : (
+                            <div className="w-6 h-6 rounded-full bg-teal-600 text-white text-[10px] font-bold flex items-center justify-center">AO</div>
+                          )}
+                          <span className="text-xs font-semibold text-teal-800 dark:text-teal-300">Abu Omar</span>
+                          <BadgeCheck className="w-3.5 h-3.5 text-sky-500 fill-sky-500/15" />
+                          <span className="text-xs text-gray-400">{r.adminReply ? "editing reply" : "writing a reply"}</span>
+                        </div>
+                        <textarea
+                          value={replyDraft}
+                          onChange={e => setReplyDraft(e.target.value)}
+                          rows={3}
+                          maxLength={2000}
+                          placeholder="Write a public reply that students will see…"
+                          className="w-full px-3 py-2 rounded-lg border border-teal-200 dark:border-teal-800 bg-white dark:bg-gray-900 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500 resize-none"
+                          autoFocus
+                        />
+                        <div className="flex items-center justify-between">
+                          <p className="text-xs text-gray-400">{replyDraft.length}/2000</p>
+                          <div className="flex gap-2">
+                            <button
+                              onClick={cancelReply}
+                              disabled={replyLoading === r.id}
+                              className="px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 text-xs font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors disabled:opacity-50"
+                            >
+                              Cancel
+                            </button>
+                            <button
+                              onClick={() => publishReply(r.id)}
+                              disabled={replyLoading === r.id || !replyDraft.trim()}
+                              className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-teal-600 hover:bg-teal-700 text-white text-xs font-semibold transition-colors disabled:opacity-50"
+                            >
+                              {replyLoading === r.id ? <Loader2 className="w-3 h-3 animate-spin" /> : <Send className="w-3 h-3" />}
+                              {r.adminReply ? "Save" : "Publish"}
+                            </button>
+                          </div>
+                        </div>
+                        {replyError && replyError.id === r.id && (
+                          <div className="flex items-center gap-2 text-xs rounded-lg p-2 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400">
+                            <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                            {replyError.text}
+                          </div>
+                        )}
+                      </div>
+                    )}
+                    {replyError && replyError.id === r.id && replyEditingId !== r.id && (
+                      <div className="flex items-center gap-2 text-xs rounded-lg p-2 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400">
+                        <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                        {replyError.text}
+                      </div>
+                    )}
+
+                    {/* Reply CTA: only for approved reviews without an existing reply / not currently editing */}
+                    {r.status === "approved" && !r.adminReply && replyEditingId !== r.id && (
+                      <button
+                        onClick={() => startReply(r)}
+                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-teal-50 dark:bg-teal-900/30 text-teal-700 dark:text-teal-300 border border-teal-200 dark:border-teal-800 text-xs font-medium hover:bg-teal-100 dark:hover:bg-teal-900/50 transition-colors w-fit"
+                      >
+                        <Reply className="w-3.5 h-3.5" />
+                        Reply as Abu Omar
+                      </button>
+                    )}
                   </div>
                 ))}
               </div>
@@ -710,6 +960,64 @@ export default function AdminPage() {
                   {pwdLoading ? "Saving…" : "Change Admin Password"}
                 </button>
               </form>
+            </div>
+
+            {/* Reply Profile Photo */}
+            <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-6 space-y-4">
+              <div className="flex items-center gap-2 mb-1">
+                <ImageIcon className="w-5 h-5 text-teal-600" />
+                <h2 className="font-bold text-gray-900 dark:text-white">Reply Profile Photo</h2>
+              </div>
+              <p className="text-xs text-gray-500 dark:text-gray-400">
+                Shown next to "Abu Omar" on every public reply. Square photo recommended; it will be cropped to a circle and resized to 256×256.
+              </p>
+
+              <div className="flex items-center gap-4">
+                {adminAvatar ? (
+                  <img
+                    src={adminAvatar}
+                    alt="Abu Omar"
+                    className="w-16 h-16 rounded-full object-cover ring-2 ring-teal-300 dark:ring-teal-700"
+                  />
+                ) : (
+                  <div className="w-16 h-16 rounded-full bg-teal-600 text-white font-bold text-xl flex items-center justify-center ring-2 ring-teal-300 dark:ring-teal-700">
+                    AO
+                  </div>
+                )}
+                <div className="flex flex-col gap-2">
+                  <label className={`flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-600 hover:bg-teal-700 text-white text-sm font-medium cursor-pointer transition-colors ${avatarUploading ? "opacity-50 pointer-events-none" : ""}`}>
+                    {avatarUploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
+                    {adminAvatar ? "Change Photo" : "Upload Photo"}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      disabled={avatarUploading}
+                      onChange={(e) => {
+                        const f = e.target.files?.[0];
+                        if (f) handleAvatarFile(f);
+                        e.target.value = "";
+                      }}
+                    />
+                  </label>
+                  {adminAvatar && (
+                    <button
+                      onClick={removeAvatar}
+                      disabled={avatarUploading}
+                      className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm font-medium transition-colors disabled:opacity-50"
+                    >
+                      <Trash2 className="w-4 h-4" /> Remove
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              {avatarMsg && (
+                <div className={`flex items-center gap-2 text-sm rounded-xl p-3 ${avatarMsg.type === "success" ? "bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400" : "bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400"}`}>
+                  {avatarMsg.type === "success" ? <CheckCircle2 className="w-4 h-4 shrink-0" /> : <AlertCircle className="w-4 h-4 shrink-0" />}
+                  {avatarMsg.text}
+                </div>
+              )}
             </div>
 
           </div>

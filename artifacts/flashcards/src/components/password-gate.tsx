@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef, type ReactNode } from "react";
-import { Mail, Lock, Eye, EyeOff, Loader2, Clock, CalendarX, MessageCircle, LogIn, UserPlus, KeyRound, CheckCircle2, Sparkles, Brain, Mic, PenTool, BookOpen, ArrowLeftRight, ArrowUpDown, BarChart3, Flame, Zap, Star, Quote, Headphones, ShieldAlert } from "lucide-react";
+import { Mail, Lock, Eye, EyeOff, Loader2, Clock, CalendarX, MessageCircle, LogIn, UserPlus, KeyRound, CheckCircle2, Sparkles, Brain, Mic, PenTool, BookOpen, ArrowLeftRight, ArrowUpDown, BarChart3, Flame, Zap, Star, Quote, Headphones, ShieldAlert, BadgeCheck } from "lucide-react";
 import { Onboarding, useOnboardingCheck } from "./onboarding";
 import { NotificationPrompt } from "./notification-prompt";
 import { GuidedTour, useGuidedTour } from "./guided-tour";
@@ -95,12 +95,18 @@ const landingFeatures = [
 function LandingReviews() {
   const [reviews, setReviews] = useState<Array<{
     id: number; name: string | null; comment: string; rating: number; createdAt: string;
+    adminReply: string | null; adminReplyAt: string | null;
   }>>([]);
+  const [adminAvatar, setAdminAvatar] = useState<string | null>(null);
 
   useEffect(() => {
     fetch("/api/reviews/public")
       .then(r => r.json())
       .then(data => { if (Array.isArray(data)) setReviews(data); })
+      .catch(() => {});
+    fetch("/api/admin/avatar")
+      .then(r => r.json())
+      .then(d => { if (d?.dataUrl) setAdminAvatar(d.dataUrl); })
       .catch(() => {});
   }, []);
 
@@ -136,6 +142,33 @@ function LandingReviews() {
                 {new Date(r.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
               </span>
             </div>
+
+            {r.adminReply && (
+              <div className="mt-4 ml-4 border-l-2 border-teal-400/60 pl-4 bg-teal-500/10 rounded-r-xl py-3 pr-3">
+                <div className="flex items-center gap-2 mb-1.5">
+                  {adminAvatar ? (
+                    <img
+                      src={adminAvatar}
+                      alt="Abu Omar"
+                      className="w-7 h-7 rounded-full object-cover ring-2 ring-teal-300/60"
+                    />
+                  ) : (
+                    <div className="w-7 h-7 rounded-full bg-gradient-to-br from-teal-400 to-sky-500 text-white text-[10px] font-bold flex items-center justify-center ring-2 ring-teal-300/60">
+                      AO
+                    </div>
+                  )}
+                  <span className="text-teal-100 text-xs font-bold">Abu Omar</span>
+                  <BadgeCheck className="w-4 h-4 text-sky-400 fill-sky-400/20" aria-label="Verified" />
+                  <span className="text-white/50 text-xs">replied:</span>
+                </div>
+                <p className="text-white/85 text-sm leading-relaxed whitespace-pre-wrap">{r.adminReply}</p>
+                {r.adminReplyAt && (
+                  <p className="text-white/30 text-[10px] mt-1.5">
+                    {new Date(r.adminReplyAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+                  </p>
+                )}
+              </div>
+            )}
           </div>
         ))}
       </div>

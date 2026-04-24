@@ -453,6 +453,69 @@ router.delete("/admin/reviews/:id", async (req, res): Promise<void> => {
   res.json({ success: true });
 });
 
+// Admin replies to a review (only allowed on approved reviews)
+router.post("/admin/reviews/:id/reply", async (req, res): Promise<void> => {
+  if (!await requireAdmin(req, res)) return;
+  const id = Number(req.params.id);
+  if (!Number.isFinite(id)) { res.status(400).json({ error: "Invalid id" }); return; }
+  const { reply } = req.body ?? {};
+  if (!reply || typeof reply !== "string" || reply.trim().length < 1) {
+    res.status(400).json({ error: "Reply text is required" }); return;
+  }
+  const trimmed = reply.trim().slice(0, 2000);
+  const [existing] = await db.select().from(reviewsTable).where(eq(reviewsTable.id, id)).limit(1);
+  if (!existing) { res.status(404).json({ error: "Review not found" }); return; }
+  if (existing.status !== "approved") {
+    res.status(400).json({ error: "Only approved reviews can be replied to" }); return;
+  }
+  await db.update(reviewsTable)
+    .set({ adminReply: trimmed, adminReplyAt: new Date() })
+    .where(eq(reviewsTable.id, id));
+  res.json({ success: true });
+});
+
+router.delete("/admin/reviews/:id/reply", async (req, res): Promise<void> => {
+  if (!await requireAdmin(req, res)) return;
+  const id = Number(req.params.id);
+  if (!Number.isFinite(id)) { res.status(400).json({ error: "Invalid id" }); return; }
+  await db.update(reviewsTable)
+    .set({ adminReply: null, adminReplyAt: null })
+    .where(eq(reviewsTable.id, id));
+  res.json({ success: true });
+});
+
+// Admin avatar — stored as data URL in the settings key/value table.
+// Public GET so the landing page can display it next to "Abu Omar".
+router.get("/admin/avatar", async (_req, res): Promise<void> => {
+  const [row] = await db.select().from(settingsTable)
+    .where(eq(settingsTable.key, "admin_avatar")).limit(1);
+  res.json({ dataUrl: row?.value ?? null });
+});
+
+router.post("/admin/avatar", async (req, res): Promise<void> => {
+  if (!await requireAdmin(req, res)) return;
+  const { dataUrl } = req.body ?? {};
+  if (dataUrl === null || dataUrl === "") {
+    await db.delete(settingsTable).where(eq(settingsTable.key, "admin_avatar"));
+    res.json({ success: true, dataUrl: null });
+    return;
+  }
+  if (!dataUrl || typeof dataUrl !== "string") {
+    res.status(400).json({ error: "dataUrl is required" }); return;
+  }
+  if (!/^data:image\/(png|jpeg|jpg|webp|gif);base64,/.test(dataUrl)) {
+    res.status(400).json({ error: "Must be a base64-encoded image data URL" }); return;
+  }
+  // Limit ~400 KB after base64 overhead (covers ~300 KB raw image).
+  if (dataUrl.length > 420_000) {
+    res.status(413).json({ error: "Image too large — please use a photo under 300 KB" }); return;
+  }
+  await db.insert(settingsTable)
+    .values({ key: "admin_avatar", value: dataUrl })
+    .onConflictDoUpdate({ target: settingsTable.key, set: { value: dataUrl } });
+  res.json({ success: true, dataUrl });
+});
+
 // ── Teacher Dashboard ───────────────────────────────────────────────────────
 
 router.get("/teacher/students", async (req, res): Promise<void> => {

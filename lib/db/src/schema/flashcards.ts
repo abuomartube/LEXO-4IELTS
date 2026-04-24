@@ -101,6 +101,8 @@ export const reviewsTable = pgTable("reviews", {
   status: text("status").notNull().default("pending"),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   reviewedAt: timestamp("reviewed_at", { withTimezone: true }),
+  adminReply: text("admin_reply"),
+  adminReplyAt: timestamp("admin_reply_at", { withTimezone: true }),
 });
 
 export type Review = typeof reviewsTable.$inferSelect;
