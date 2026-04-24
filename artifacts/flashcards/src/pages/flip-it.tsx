@@ -19,8 +19,8 @@ interface Flashcard {
   arabic: string;
   level: string;
   category: string;
-  example_sentence?: string;
-  example_sentence_arabic?: string;
+  exampleSentence?: string | null;
+  exampleSentenceArabic?: string | null;
 }
 
 const TIME_OPTIONS = [5, 10, 15] as const;
@@ -505,36 +505,54 @@ export default function FlipIt() {
                 </div>
 
                 {/* BACK */}
-                <div className="absolute inset-0 backface-hidden rotate-y-180 bg-card border-2 border-amber-500/40 rounded-3xl shadow-lg p-6 sm:p-7 flex flex-col">
-                  <div className="text-xs font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400 mb-3 flex items-center gap-1.5">
+                <div className="absolute inset-0 backface-hidden rotate-y-180 bg-card border-2 border-amber-500/40 rounded-3xl shadow-lg p-5 sm:p-6 flex flex-col overflow-y-auto">
+                  <div className="text-xs font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400 mb-2 flex items-center gap-1.5">
                     <CheckCircle2 className="w-3.5 h-3.5" /> Answer
                   </div>
 
-                  <div className="text-3xl sm:text-4xl font-extrabold text-foreground mb-1">
+                  {/* English word — smaller, secondary */}
+                  <div className="text-xl sm:text-2xl font-bold text-foreground mb-1">
                     {card.english}
                   </div>
-                  <div className="text-2xl font-bold text-amber-600 dark:text-amber-400 font-cairo mb-4" dir="rtl">
+                  {/* Arabic meaning — PROMINENT, larger than the English word */}
+                  <div
+                    className="text-4xl sm:text-5xl font-extrabold text-amber-600 dark:text-amber-400 font-cairo leading-tight mb-4"
+                    dir="rtl"
+                  >
                     {card.arabic}
                   </div>
 
-                  {card.example_sentence && (
-                    <div className="bg-muted/40 rounded-2xl p-4 mb-3 flex-1 overflow-y-auto">
-                      <div className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">Example</div>
-                      <p className="text-sm sm:text-base font-semibold leading-snug">
-                        {card.example_sentence}
-                      </p>
-                      {card.example_sentence_arabic && (
-                        <p className="text-sm font-cairo text-muted-foreground mt-2 pt-2 border-t border-border/50" dir="rtl">
-                          {card.example_sentence_arabic}
-                        </p>
-                      )}
+                  {/* Example sentence block (always show — fall back if missing) */}
+                  <div className="bg-muted/40 rounded-2xl p-4 mb-3 flex-1">
+                    <div className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1.5">
+                      Example
                     </div>
-                  )}
+                    {card.exampleSentence ? (
+                      <>
+                        <p className="text-base sm:text-lg font-semibold leading-snug text-foreground">
+                          {card.exampleSentence}
+                        </p>
+                        {card.exampleSentenceArabic && (
+                          <p
+                            className="text-base sm:text-lg font-bold font-cairo text-muted-foreground mt-3 pt-3 border-t border-border/50 leading-snug"
+                            dir="rtl"
+                          >
+                            {card.exampleSentenceArabic}
+                          </p>
+                        )}
+                      </>
+                    ) : (
+                      <p className="text-sm text-muted-foreground italic">
+                        No example available for this word.
+                      </p>
+                    )}
+                  </div>
 
+                  {/* Audio buttons — word + sentence (both onyx) */}
                   <div className="flex flex-wrap gap-2 mt-1">
                     <SpeakerButton text={card.english} label="Word" />
-                    {card.example_sentence && (
-                      <SpeakerButton text={card.example_sentence} label="Sentence" />
+                    {card.exampleSentence && (
+                      <SpeakerButton text={card.exampleSentence} label="Sentence" />
                     )}
                   </div>
                 </div>
