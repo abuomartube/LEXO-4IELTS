@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import {
   CheckCircle2, XCircle, RefreshCw, HelpCircle,
-  ArrowRight, Trophy, Volume2, PenLine, History, Clock, Brain, Zap
+  ArrowRight, ArrowLeft, Trophy, Volume2, PenLine, History, Clock, Brain, Zap
 } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
@@ -353,16 +353,40 @@ export default function Quiz() {
     );
   }
 
+  const exitToSetup = () => {
+    if (results.total > 0) {
+      const ok = window.confirm("Leave this quiz? Your progress will not be saved.");
+      if (!ok) return;
+    }
+    setStarted(false);
+    setCurrentIndex(0);
+    setSelectedOption(null);
+    setFillAnswer("");
+    setFillChecked(false);
+    setFillCorrect(false);
+    setResults({ total: 0, correct: 0, wrong: 0 });
+    wrongIdsRef.current = [];
+  };
+
   // ── Quiz Screen ───────────────────────────────────────────────────────────
   return (
     <Layout>
       <div className="max-w-2xl mx-auto animate-in fade-in duration-500">
-        <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-bold flex items-center gap-2">
-            <HelpCircle className="w-6 h-6 text-primary" />
+        <div className="mb-4">
+          <button
+            onClick={exitToSetup}
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-muted-foreground hover:text-foreground px-3 py-2 rounded-full hover:bg-muted/60 transition-colors min-h-[40px]"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Back to Quiz Types
+          </button>
+        </div>
+        <div className="flex items-center justify-between mb-6 gap-2">
+          <h1 className="text-xl sm:text-2xl font-bold flex items-center gap-2">
+            <HelpCircle className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
             {mode === "multiple-choice" ? "Multiple Choice" : "Fill in the Blank"}
           </h1>
-          <span className="text-sm font-medium text-muted-foreground">
+          <span className="text-sm font-medium text-muted-foreground shrink-0">
             {currentIndex + 1} / {questions.length}
           </span>
         </div>

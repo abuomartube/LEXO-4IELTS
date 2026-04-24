@@ -409,6 +409,12 @@ export default function SentenceBuilder() {
     return (
       <Layout>
         <div className="max-w-xl mx-auto mt-8 animate-in fade-in duration-300">
+          <Link
+            href="/quiz"
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-muted-foreground hover:text-foreground mb-4 px-3 py-2 rounded-full hover:bg-muted/60 transition-colors min-h-[40px]"
+          >
+            <ArrowLeft className="w-4 h-4" /> Back to Quiz Types
+          </Link>
           <div className="text-center mb-8">
             <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
               <Brain className="w-8 h-8 text-primary" />
