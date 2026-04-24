@@ -1,6 +1,7 @@
 import { Router } from "express";
 import crypto from "node:crypto";
 import cron from "node-cron";
+import webpush from "web-push";
 import { sql } from "drizzle-orm";
 import { db } from "@workspace/db";
 import { logger } from "../lib/logger";
@@ -8,6 +9,18 @@ import { logger } from "../lib/logger";
 const router = Router();
 
 const SESSION_SECRET = process.env["SESSION_SECRET"] ?? "fallback-secret";
+
+const VAPID_PUBLIC = process.env["VAPID_PUBLIC_KEY"] || "";
+const VAPID_PRIVATE = process.env["VAPID_PRIVATE_KEY"] || "";
+const VAPID_EMAIL = process.env["VAPID_EMAIL"] || "mailto:askabuomar@gmail.com";
+
+if (VAPID_PUBLIC && VAPID_PRIVATE) {
+  try {
+    webpush.setVapidDetails(VAPID_EMAIL, VAPID_PUBLIC, VAPID_PRIVATE);
+  } catch (err) {
+    logger.error({ err }, "Failed to set VAPID details for admin notifications");
+  }
+}
 
 const VALID_TYPES = new Set(["reminder", "feature", "announcement", "motivational"]);
 const VALID_LEVELS = new Set(["A1", "A2", "B1", "B2", "C1"]);
@@ -115,7 +128,16 @@ router.post("/admin/notifications", async (req, res): Promise<void> => {
       VALUES (${message}, ${type}, ${audience}, ${levelValue}, ${scheduledAt}, ${sentAt})
       RETURNING id, message, type, audience, level, scheduled_at, sent_at, created_at, created_by
     `);
-    res.json({ notification: result.rows[0] });
+    const created = result.rows[0];
+
+    // If sent immediately, fan out web push notifications (fire-and-forget).
+    if (created && created.sent_at) {
+      dispatchPushForNotification(created.id).catch((err) =>
+        logger.error({ err, id: created.id }, "Push dispatch failed (immediate)")
+      );
+    }
+
+    res.json({ notification: created });
   } catch (err) {
     logger.error({ err }, "Failed to create notification");
     res.status(500).json({ error: "Failed to create notification" });
@@ -262,6 +284,123 @@ router.post("/notifications/:id/read", async (req, res): Promise<void> => {
   }
 });
 
+// ─── Web push fan-out ────────────────────────────────────────────────────
+
+type PushTargetRow = {
+  sub_id: number;
+  endpoint: string;
+  keys: string;
+};
+
+/**
+ * Look up subscribers eligible for the given notification (by audience + level)
+ * and send a real Web Push to each of their subscribed devices. Stale
+ * subscriptions (HTTP 410/404) are removed automatically.
+ *
+ * Fire-and-forget: callers should not await result for request latency.
+ */
+async function dispatchPushForNotification(notificationId: number): Promise<void> {
+  if (!VAPID_PUBLIC || !VAPID_PRIVATE) {
+    logger.warn({ notificationId }, "VAPID keys not configured; skipping push fan-out");
+    return;
+  }
+
+  // Re-read the notification to get authoritative fields (audience, level,
+  // type, message). This also confirms it still exists (admin may have
+  // deleted it before the scheduler tick fires).
+  const nrows = await db.execute<NotificationRow>(sql`
+    SELECT id, message, type, audience, level, scheduled_at, sent_at, created_at, created_by
+    FROM notifications WHERE id = ${notificationId} LIMIT 1
+  `);
+  const notif = nrows.rows[0];
+  if (!notif || !notif.sent_at) return;
+
+  // Build the eligible-subscription list with the same audience/level rule
+  // used by the student GET endpoints.
+  let targets: { rows: PushTargetRow[] };
+  try {
+    if (notif.audience === "all") {
+      targets = await db.execute<PushTargetRow>(sql`
+        SELECT id AS sub_id, endpoint, keys
+        FROM push_subscriptions
+      `);
+    } else {
+      targets = await db.execute<PushTargetRow>(sql`
+        SELECT ps.id AS sub_id, ps.endpoint, ps.keys
+        FROM push_subscriptions ps
+        JOIN user_data ud
+          ON ud.email = ps.email
+         AND ud.key = 'current_level'
+         AND UPPER(TRIM(ud.value)) = ${notif.level}
+      `);
+    }
+  } catch (err) {
+    logger.error({ err, notificationId }, "Failed to load push targets");
+    return;
+  }
+
+  if (targets.rows.length === 0) {
+    logger.info({ notificationId, audience: notif.audience, level: notif.level }, "No push targets for notification");
+    return;
+  }
+
+  // Send the full admin message as-is. Browsers/OSes will visually clip long
+  // bodies in the collapsed notification, but the user can expand to see all.
+  const payload = JSON.stringify({
+    title: "LEXO",
+    body: notif.message,
+    icon: "/4ielts-logo.png",
+    badge: "/4ielts-logo.png",
+    tag: `lexo-notif-${notif.id}`,
+    data: {
+      url: "/",
+      notificationId: notif.id,
+      type: notif.type,
+    },
+  });
+
+  let sent = 0;
+  let removed = 0;
+  let failed = 0;
+
+  await Promise.all(
+    targets.rows.map(async (sub) => {
+      let parsedKeys: { p256dh: string; auth: string };
+      try {
+        parsedKeys = JSON.parse(sub.keys) as { p256dh: string; auth: string };
+      } catch {
+        return; // skip malformed row
+      }
+      try {
+        await webpush.sendNotification(
+          { endpoint: sub.endpoint, keys: parsedKeys },
+          payload
+        );
+        sent++;
+      } catch (err: unknown) {
+        const statusCode = (err as { statusCode?: number })?.statusCode;
+        if (statusCode === 410 || statusCode === 404) {
+          // Subscription gone (browser uninstalled, user revoked, etc.).
+          try {
+            await db.execute(sql`DELETE FROM push_subscriptions WHERE id = ${sub.sub_id}`);
+            removed++;
+          } catch (delErr) {
+            logger.error({ delErr, subId: sub.sub_id }, "Failed to delete stale push subscription");
+          }
+        } else {
+          failed++;
+          logger.error({ err, subId: sub.sub_id }, "Push send failed");
+        }
+      }
+    })
+  );
+
+  logger.info(
+    { notificationId, total: targets.rows.length, sent, removed, failed },
+    "Admin notification push fan-out complete"
+  );
+}
+
 // ─── Scheduler tick ──────────────────────────────────────────────────────
 
 async function flushDueNotifications() {
@@ -276,6 +415,12 @@ async function flushDueNotifications() {
     `);
     if (result.rows.length > 0) {
       logger.info({ count: result.rows.length }, "Delivered scheduled notifications");
+      // Fan out push for each newly-flushed notification.
+      for (const { id } of result.rows) {
+        dispatchPushForNotification(id).catch((err) =>
+          logger.error({ err, id }, "Push dispatch failed (scheduled)")
+        );
+      }
     }
   } catch (err) {
     logger.error({ err }, "Scheduled notifications tick failed");

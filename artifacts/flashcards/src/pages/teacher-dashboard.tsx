@@ -4,7 +4,7 @@ import {
   Trophy, ArrowUpDown, Search, X, LogIn, Eye, EyeOff,
   RefreshCw, Users, TrendingUp, PlayCircle, Plus, Trash2, Loader2,
   UserCheck, UserX, KeyRound, Copy, Check, Bell, Mail, Clock, ArrowRight,
-  Send, Megaphone, Sparkles, Eye as EyeIcon,
+  Send, Megaphone, Sparkles, Eye as EyeIcon, Info,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
@@ -707,6 +707,20 @@ export default function TeacherDashboard() {
               <RefreshCw className={cn("w-3.5 h-3.5", notifLoading && "animate-spin")} />
               Refresh
             </button>
+          </div>
+
+          <div className="px-5 pt-4">
+            <div className="flex items-start gap-2 px-3 py-2.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-[12px] leading-snug text-amber-900 dark:text-amber-200">
+              <Info className="w-4 h-4 shrink-0 mt-0.5 text-amber-600 dark:text-amber-400" />
+              <div>
+                <span className="font-bold">Heads up:</span>{" "}
+                Push notifications are delivered to students who tapped “Enable notifications” in the app.
+                They work great on Android Chrome and most desktop browsers.
+                On <span className="font-semibold">iPhone / iOS Safari</span> they only work for students who installed
+                LEXO as a Home Screen app on iOS 16.4+ — so iOS users will still see the message
+                in the in-app bell, but may not get a system push.
+              </div>
+            </div>
           </div>
 
           <form onSubmit={sendNotification} className="p-5 space-y-4">

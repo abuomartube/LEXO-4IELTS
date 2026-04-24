@@ -103,7 +103,7 @@ export function NotificationPrompt() {
             </div>
             <div>
               <p className="font-bold text-foreground text-sm">Notifications enabled!</p>
-              <p className="text-xs text-muted-foreground">We'll remind you to study daily at 8 PM.</p>
+              <p className="text-xs text-muted-foreground">You'll get class messages and study reminders.</p>
             </div>
           </div>
         ) : (
@@ -113,12 +113,12 @@ export function NotificationPrompt() {
                 <Bell className="w-5 h-5 text-primary" />
               </div>
               <div className="flex-1">
-                <p className="font-bold text-foreground text-sm">Stay on track with daily reminders</p>
+                <p className="font-bold text-foreground text-sm">Turn on push notifications</p>
                 <p className="text-xs text-muted-foreground mt-0.5">
-                  Get a notification at 8 PM if you haven't studied yet. Keep your streak alive!
+                  Get class messages from your teacher and daily study reminders — even when LEXO is closed.
                 </p>
                 <p className="text-xs text-muted-foreground mt-0.5" dir="rtl" lang="ar">
-                  تلقّى تذكيراً يومياً للدراسة في الساعة ٨ مساءً
+                  استقبل رسائل من معلمك وتذكيرات الدراسة، حتى عند إغلاق التطبيق
                 </p>
               </div>
               <button onClick={dismiss} className="text-muted-foreground hover:text-foreground shrink-0">
@@ -132,7 +132,7 @@ export function NotificationPrompt() {
               <button onClick={handleEnable} disabled={enabling}
                 className="flex-1 py-2 rounded-xl text-xs font-bold bg-primary text-primary-foreground hover:opacity-90 transition-opacity disabled:opacity-50 flex items-center justify-center gap-1.5"
               >
-                {enabling ? "Enabling..." : "Enable reminders"}
+                {enabling ? "Enabling..." : "Enable notifications"}
               </button>
             </div>
           </>

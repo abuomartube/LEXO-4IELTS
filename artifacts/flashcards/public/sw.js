@@ -79,22 +79,31 @@ self.addEventListener("fetch", (event) => {
   );
 });
 
-// ── Push notifications (existing functionality, unchanged) ──
+// ── Push notifications ──
+// Payload may include: { title, body, icon, badge, tag, data: { url, notificationId, type } }
 self.addEventListener("push", (event) => {
-  let data = { title: "LEXO Study Reminder", body: "Time to study! Keep your streak alive 🔥", icon: "/4ielts-logo.png" };
+  let data = {
+    title: "LEXO",
+    body: "You have a new message",
+    icon: "/4ielts-logo.png",
+    badge: "/4ielts-logo.png",
+    tag: "lexo-notif",
+    data: { url: "/" },
+  };
   try {
     if (event.data) data = { ...data, ...event.data.json() };
   } catch {}
 
   event.waitUntil(
-    self.registration.showNotification(data.title, {
+    self.registration.showNotification(data.title || "LEXO", {
       body: data.body,
       icon: data.icon || "/4ielts-logo.png",
-      badge: "/4ielts-logo.png",
+      badge: data.badge || "/4ielts-logo.png",
       vibrate: [200, 100, 200],
-      tag: "lexo-reminder",
+      // Unique tag per notification → multiple pushes stack instead of replacing each other.
+      tag: data.tag || "lexo-notif",
       renotify: true,
-      data: { url: "/" },
+      data: data.data || { url: "/" },
     })
   );
 });
@@ -102,12 +111,18 @@ self.addEventListener("push", (event) => {
 self.addEventListener("notificationclick", (event) => {
   event.notification.close();
   const url = event.notification.data?.url || "/";
+  const targetURL = new URL(url, self.location.origin).href;
   event.waitUntil(
-    clients.matchAll({ type: "window", includeUncontrolled: true }).then((list) => {
+    clients.matchAll({ type: "window", includeUncontrolled: true }).then(async (list) => {
       for (const client of list) {
-        if (client.url.includes(self.location.origin) && "focus" in client) return client.focus();
+        if (client.url.startsWith(self.location.origin)) {
+          try {
+            if ("navigate" in client) await client.navigate(targetURL);
+          } catch {}
+          if ("focus" in client) return client.focus();
+        }
       }
-      return clients.openWindow(url);
+      return clients.openWindow(targetURL);
     })
   );
 });

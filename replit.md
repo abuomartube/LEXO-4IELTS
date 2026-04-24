@@ -11,6 +11,7 @@ The project utilizes a modern web stack, emphasizing a performant and scalable a
 -   **Personalized Learning**: Daily streaks, weak-word decks, progress tracking, and an onboarding flow for customized study plans.
 -   **Teacher Dashboard**: Admin interface to monitor student progress and activity, plus an in-app Notifications composer (type, audience, send-now or schedule).
 -   **In-App Notifications**: Bell icon in the student sidebar with a red unread badge and a dropdown panel; targets All Students or a specific level (A1–C1); types (Reminder/Feature/Announcement/Motivational) are color-coded; admin sees per-notification open counts.
+-   **Web Push Notifications (OS-level)**: Admin-composed notifications are also delivered as real OS push notifications via VAPID/Web Push. Students get a slide-in prompt on first visit asking permission; on accept, the browser subscribes via the service worker (`/sw.js`) and the subscription is persisted in `push_subscriptions`. When admin sends or schedules a notification, the API fan-outs the payload (Title="LEXO", body=admin message, icon=LEXO logo, tap opens app) to all targeted subscriptions and auto-prunes any that return 404/410. Works on Android Chrome and most desktop browsers; iOS Safari requires the user to install LEXO as a Home Screen app on iOS 16.4+ (a yellow info banner in the teacher dashboard Notifications section communicates this).
 -   **Rich Content**: Phrasal verbs, grammar topics, writing templates, and speaking topic banks.
 
 ## User Preferences
