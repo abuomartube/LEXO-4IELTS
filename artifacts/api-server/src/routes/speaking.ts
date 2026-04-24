@@ -2,8 +2,32 @@ import { Router } from "express";
 import Anthropic from "@anthropic-ai/sdk";
 import OpenAI, { toFile } from "openai";
 import multer from "multer";
+import crypto from "node:crypto";
+import { recordAiUsage } from "../lib/ai-usage";
 
 const router = Router();
+
+const SESSION_SECRET = process.env["SESSION_SECRET"] ?? "fallback-secret";
+
+// Speaking endpoints are not session-gated today, but we still want to attribute
+// AI usage to the logged-in student when possible. We accept the same student
+// HMAC headers used elsewhere; when missing or invalid, the call is recorded as
+// anonymous (i.e. dropped) instead of being misattributed.
+function readStudentEmail(req: import("express").Request): string | null {
+  const email = (req.headers["x-student-email"] as string || "").trim().toLowerCase();
+  const token = (req.headers["x-student-token"] as string || "").trim();
+  if (!email || !token) return null;
+  const expected = crypto.createHmac("sha256", SESSION_SECRET).update(email + ":approved").digest("hex");
+  try {
+    const a = Buffer.from(token);
+    const b = Buffer.from(expected);
+    if (a.length !== b.length) return null;
+    if (!crypto.timingSafeEqual(a, b)) return null;
+  } catch {
+    return null;
+  }
+  return email;
+}
 
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -143,6 +167,7 @@ Keep responses under 80 words. Target B2–C1 vocabulary.`;
 }
 
 router.post("/speaking/message", async (req, res) => {
+  const studentEmail = readStudentEmail(req);
   try {
     const { messages, topic, part, questionNum, isStart } = req.body as {
       messages: { role: "user" | "assistant"; content: string }[];
@@ -188,6 +213,7 @@ router.post("/speaking/message", async (req, res) => {
 
     res.write("data: [DONE]\n\n");
     res.end();
+    void recordAiUsage({ email: studentEmail, route: "churchill", endpoint: "/speaking/message" });
   } catch (err) {
     console.error("Speaking message error:", err);
     if (!res.headersSent) {
@@ -200,6 +226,7 @@ router.post("/speaking/message", async (req, res) => {
 });
 
 router.post("/speaking/report", async (req, res) => {
+  const studentEmail = readStudentEmail(req);
   try {
     const { messages, topic } = req.body as {
       messages: { role: "user" | "assistant"; content: string }[];
@@ -261,6 +288,7 @@ Return ONLY a valid JSON object, no markdown, no extra text:
 
     const report = JSON.parse(jsonMatch[0]);
     res.json({ report });
+    void recordAiUsage({ email: studentEmail, route: "churchill", endpoint: "/speaking/report" });
   } catch (err) {
     console.error("Speaking report error:", err);
     res.status(500).json({ error: "Failed to generate report" });

@@ -1,15 +1,37 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import {
   GraduationCap, Flame, Star, AlertTriangle, BookOpen,
   Trophy, ArrowUpDown, Search, X, LogIn, Eye, EyeOff,
   RefreshCw, Users, TrendingUp, PlayCircle, Plus, Trash2, Loader2,
   UserCheck, UserX, KeyRound, Copy, Check, Bell, Mail, Clock, ArrowRight,
-  Send, Megaphone, Sparkles, Eye as EyeIcon, Info,
+  Send, Megaphone, Sparkles, Eye as EyeIcon, Info, ShieldAlert, DollarSign, Brain,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { IdleWarningModal } from "@/components/idle-warning-modal";
+import { useIdleTimeout } from "@/hooks/use-idle-timeout";
 import {
   ResponsiveContainer, LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend,
 } from "recharts";
+
+// Idle session timeouts (admin). 60 minutes total, 2-minute warning.
+const ADMIN_IDLE_TIMEOUT_MS = 60 * 60 * 1000;
+const ADMIN_IDLE_WARNING_MS = 2 * 60 * 1000;
+const ADMIN_LOGOUT_REASON_KEY = "lexo_admin_logout_reason";
+const STUDENT_DAILY_AI_THRESHOLD = 20;
+
+interface AiUsageStudentRow {
+  email: string;
+  calls: number;
+  churchillCalls: number;
+  orwellCalls: number;
+  costUsd: number;
+}
+interface AiUsageTodayResponse {
+  date: string;
+  totalCalls: number;
+  totalCostUsd: number;
+  students: AiUsageStudentRow[];
+}
 
 const API = import.meta.env.VITE_API_URL || "";
 
@@ -154,6 +176,9 @@ export default function TeacherDashboard() {
   const [notifLoading, setNotifLoading] = useState(false);
   const [deletingNotifId, setDeletingNotifId] = useState<number | null>(null);
 
+  // AI usage (today) state
+  const [aiUsage, setAiUsage] = useState<AiUsageTodayResponse | null>(null);
+
   const savedPass = typeof sessionStorage !== "undefined" ? sessionStorage.getItem("teacher_pass") : null;
 
   useEffect(() => {
@@ -171,7 +196,40 @@ export default function TeacherDashboard() {
       fetchPendingRequests();
       fetchAccessCodes();
       fetchNotifications();
+      fetchAiUsage();
     }
+  }, [authed]);
+
+  // Idle session timeout — sign the admin out after 60 minutes of inactivity,
+  // with a 2-minute "Stay logged in?" warning modal.
+  const handleAdminIdleLogout = useCallback(() => {
+    try {
+      sessionStorage.setItem(ADMIN_LOGOUT_REASON_KEY, "idle");
+      sessionStorage.removeItem("teacher_pass");
+    } catch { /* ignore */ }
+    setAuthed(false);
+    setPassword("");
+    setStudents([]);
+  }, []);
+
+  const idle = useIdleTimeout({
+    enabled: authed,
+    timeoutMs: ADMIN_IDLE_TIMEOUT_MS,
+    warningMs: ADMIN_IDLE_WARNING_MS,
+    onTimeout: handleAdminIdleLogout,
+  });
+
+  // Show the idle-logout banner once after the admin is bumped to the login screen.
+  const [adminIdleBanner, setAdminIdleBanner] = useState(false);
+  useEffect(() => {
+    if (authed) return;
+    try {
+      const r = sessionStorage.getItem(ADMIN_LOGOUT_REASON_KEY);
+      if (r === "idle") {
+        setAdminIdleBanner(true);
+        sessionStorage.removeItem(ADMIN_LOGOUT_REASON_KEY);
+      }
+    } catch { /* ignore */ }
   }, [authed]);
 
   // Auto-poll the approval queue every 20s so admins see new signups quickly.
@@ -418,6 +476,19 @@ export default function TeacherDashboard() {
     }
   }
 
+  async function fetchAiUsage() {
+    try {
+      const res = await fetch(`${API}/api/admin/ai-usage/today`, {
+        headers: { "x-admin-password": password },
+      });
+      if (!res.ok) return;
+      const data: AiUsageTodayResponse = await res.json();
+      setAiUsage(data);
+    } catch {
+      // Ignore — AI usage is supplementary; failure shouldn't break dashboard.
+    }
+  }
+
   async function fetchStudents() {
     setLoading(true);
     setError("");
@@ -493,6 +564,14 @@ export default function TeacherDashboard() {
             <h1 className="text-2xl font-extrabold text-foreground">Teacher Dashboard</h1>
             <p className="text-sm text-muted-foreground">Enter admin password to view student progress</p>
           </div>
+          {adminIdleBanner && (
+            <div className="flex items-start gap-2 px-3 py-2.5 rounded-xl bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800">
+              <ShieldAlert className="w-4 h-4 text-amber-600 dark:text-amber-400 mt-0.5 shrink-0" />
+              <p className="text-xs text-amber-800 dark:text-amber-200 leading-snug">
+                You were logged out due to inactivity. Please sign in again to continue.
+              </p>
+            </div>
+          )}
           <div className="relative">
             <input
               type={showPass ? "text" : "password"}
@@ -588,6 +667,59 @@ export default function TeacherDashboard() {
             <div className="text-xs text-muted-foreground">Active Today</div>
           </div>
         </div>
+
+        {/* AI usage today summary + heavy-user alert */}
+        {aiUsage && (
+          <div className="bg-card border border-border rounded-2xl p-4 space-y-3">
+            <div className="flex items-center justify-between flex-wrap gap-2">
+              <div className="flex items-center gap-2">
+                <Brain className="w-4 h-4 text-violet-500" />
+                <h3 className="font-extrabold text-foreground text-sm">AI Usage Today</h3>
+                <span className="text-xs text-muted-foreground">({aiUsage.date})</span>
+              </div>
+              <button
+                onClick={fetchAiUsage}
+                className="text-xs font-medium text-muted-foreground hover:text-foreground flex items-center gap-1"
+              >
+                <RefreshCw className="w-3 h-3" />
+                Refresh
+              </button>
+            </div>
+            <div className="grid grid-cols-3 gap-3">
+              <div className="rounded-xl bg-muted/40 p-3 text-center">
+                <div className="text-xl font-extrabold text-foreground">{aiUsage.totalCalls}</div>
+                <div className="text-[11px] text-muted-foreground">Total AI calls</div>
+              </div>
+              <div className="rounded-xl bg-muted/40 p-3 text-center">
+                <div className="text-xl font-extrabold text-foreground flex items-center justify-center gap-0.5">
+                  <DollarSign className="w-4 h-4 text-emerald-500" />
+                  {aiUsage.totalCostUsd.toFixed(2)}
+                </div>
+                <div className="text-[11px] text-muted-foreground">Estimated cost</div>
+              </div>
+              <div className="rounded-xl bg-muted/40 p-3 text-center">
+                <div className="text-xl font-extrabold text-foreground">
+                  {aiUsage.students.filter((s) => s.calls > STUDENT_DAILY_AI_THRESHOLD).length}
+                </div>
+                <div className="text-[11px] text-muted-foreground">Students &gt; {STUDENT_DAILY_AI_THRESHOLD}/day</div>
+              </div>
+            </div>
+            {aiUsage.students.some((s) => s.calls > STUDENT_DAILY_AI_THRESHOLD) && (
+              <div className="flex items-start gap-2 p-3 rounded-xl bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800">
+                <ShieldAlert className="w-4 h-4 text-amber-600 dark:text-amber-400 mt-0.5 shrink-0" />
+                <div className="text-xs text-amber-800 dark:text-amber-200 leading-snug">
+                  <span className="font-bold">Heads up: </span>
+                  {aiUsage.students
+                    .filter((s) => s.calls > STUDENT_DAILY_AI_THRESHOLD)
+                    .slice(0, 5)
+                    .map((s) => `${s.email} (${s.calls})`)
+                    .join(", ")}
+                  {" "}made more than {STUDENT_DAILY_AI_THRESHOLD} AI calls today.
+                </div>
+              </div>
+            )}
+          </div>
+        )}
 
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
@@ -1204,13 +1336,14 @@ export default function TeacherDashboard() {
                         </span>
                       </th>
                     ))}
+                    <th className="px-3 py-3 text-left font-bold text-muted-foreground text-xs uppercase tracking-wider whitespace-nowrap">Today's AI</th>
                     <th className="px-3 py-3 text-left font-bold text-muted-foreground text-xs uppercase tracking-wider whitespace-nowrap">Writing</th>
                   </tr>
                 </thead>
                 <tbody>
                   {filtered.length === 0 ? (
                     <tr>
-                      <td colSpan={11} className="px-4 py-12 text-center text-muted-foreground">
+                      <td colSpan={12} className="px-4 py-12 text-center text-muted-foreground">
                         {students.length === 0 ? "No approved students yet" : `No students match "${search}"`}
                       </td>
                     </tr>
@@ -1273,6 +1406,27 @@ export default function TeacherDashboard() {
                         <td className="px-3 py-3 text-muted-foreground whitespace-nowrap">
                           {formatDate(s.lastActivity)}
                         </td>
+                        <td className="px-3 py-3 whitespace-nowrap">
+                          {(() => {
+                            const u = aiUsage?.students.find((x) => x.email === s.email);
+                            if (!u || u.calls === 0) {
+                              return <span className="text-muted-foreground/50 text-xs">—</span>;
+                            }
+                            const flag = u.calls > STUDENT_DAILY_AI_THRESHOLD;
+                            return (
+                              <div className={cn(
+                                "inline-flex items-center gap-1 font-bold text-xs px-2 py-0.5 rounded-full",
+                                flag
+                                  ? "bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300"
+                                  : "bg-violet-100 text-violet-700 dark:bg-violet-900/30 dark:text-violet-300"
+                              )}
+                                title={`Speaking: ${u.churchillCalls} • Writing: ${u.orwellCalls} • Est. cost $${u.costUsd.toFixed(3)}`}>
+                                {flag ? <ShieldAlert className="w-3 h-3" /> : <Brain className="w-3 h-3" />}
+                                {u.calls}
+                              </div>
+                            );
+                          })()}
+                        </td>
                         <td className="px-3 py-3">
                           <div className="flex items-center gap-1.5 flex-wrap">
                             <button
@@ -1313,6 +1467,12 @@ export default function TeacherDashboard() {
           onClose={() => setSentenceEmail(null)}
         />
       )}
+      <IdleWarningModal
+        open={idle.warningOpen}
+        msUntilLogout={idle.msUntilLogout}
+        onStayLoggedIn={idle.stayLoggedIn}
+        onLogoutNow={handleAdminIdleLogout}
+      />
     </div>
   );
 }

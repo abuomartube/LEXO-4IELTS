@@ -272,3 +272,28 @@ export const notificationReadsTable = pgTable("notification_reads", {
 }, (t) => [unique().on(t.notificationId, t.email)]);
 
 export type NotificationRead = typeof notificationReadsTable.$inferSelect;
+
+// ── AI usage tracking (per-call audit log) ───────────────────────────────
+// Records every billable AI call to Churchill (speaking) and Orwell (writing)
+// so the teacher dashboard can show daily usage and trigger admin alerts.
+export const aiUsageEventsTable = pgTable("ai_usage_events", {
+  id: serial("id").primaryKey(),
+  email: text("email").notNull(),
+  route: text("route").notNull(), // "churchill" | "orwell"
+  endpoint: text("endpoint").notNull(), // e.g. "/orwell/submit"
+  costUsd: real("cost_usd").notNull().default(0),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export type AiUsageEvent = typeof aiUsageEventsTable.$inferSelect;
+
+// ── Admin alert dedup (so we don't spam the same alert multiple times) ────
+// alertKey example: "student_threshold:user@x.com:2026-04-24" or
+// "daily_cost:2026-04-24".
+export const adminAlertsSentTable = pgTable("admin_alerts_sent", {
+  id: serial("id").primaryKey(),
+  alertKey: text("alert_key").notNull().unique(),
+  sentAt: timestamp("sent_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export type AdminAlertSent = typeof adminAlertsSentTable.$inferSelect;

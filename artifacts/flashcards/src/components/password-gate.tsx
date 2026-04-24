@@ -1,10 +1,17 @@
 import { useState, useEffect, useCallback, useRef, type ReactNode } from "react";
-import { Mail, Lock, Eye, EyeOff, Loader2, Clock, CalendarX, MessageCircle, LogIn, UserPlus, KeyRound, CheckCircle2, Sparkles, Brain, Mic, PenTool, BookOpen, ArrowLeftRight, ArrowUpDown, BarChart3, Flame, Zap, Star, Quote, Headphones } from "lucide-react";
+import { Mail, Lock, Eye, EyeOff, Loader2, Clock, CalendarX, MessageCircle, LogIn, UserPlus, KeyRound, CheckCircle2, Sparkles, Brain, Mic, PenTool, BookOpen, ArrowLeftRight, ArrowUpDown, BarChart3, Flame, Zap, Star, Quote, Headphones, ShieldAlert } from "lucide-react";
 import { Onboarding, useOnboardingCheck } from "./onboarding";
 import { NotificationPrompt } from "./notification-prompt";
 import { GuidedTour, useGuidedTour } from "./guided-tour";
 import { LexoAiChat } from "./lexo-ai-chat";
 import { ExitCommentPopup } from "./exit-comment-popup";
+import { IdleWarningModal } from "./idle-warning-modal";
+import { useIdleTimeout } from "../hooks/use-idle-timeout";
+
+// Idle session timeouts (students). 30 minutes total, 2-minute warning.
+const STUDENT_IDLE_TIMEOUT_MS = 30 * 60 * 1000;
+const STUDENT_IDLE_WARNING_MS = 2 * 60 * 1000;
+const LOGOUT_REASON_KEY = "lexo_logout_reason";
 
 const STORAGE_KEY = "4ielts_email";
 const WHATSAPP_URL = "https://wa.me/message/KMWPDZOBBNAAB1";
@@ -261,6 +268,24 @@ function PasswordGateUnlocked({ children }: { children: ReactNode }) {
   const { needsOnboarding, checked, setNeedsOnboarding } = useOnboardingCheck();
   const { showTour, checked: tourChecked, completeTour } = useGuidedTour();
 
+  // Idle session timeout — log the student out after 30 minutes of inactivity,
+  // with a 2-minute "Stay logged in?" warning modal. Onboarding/tour wizards
+  // count as active screens, so the hook is always enabled while unlocked.
+  const handleIdleLogout = useCallback(() => {
+    try {
+      sessionStorage.setItem(LOGOUT_REASON_KEY, "idle");
+      localStorage.removeItem(STORAGE_KEY);
+    } catch { /* ignore storage failures */ }
+    window.location.reload();
+  }, []);
+
+  const { warningOpen, msUntilLogout, stayLoggedIn } = useIdleTimeout({
+    enabled: true,
+    timeoutMs: STUDENT_IDLE_TIMEOUT_MS,
+    warningMs: STUDENT_IDLE_WARNING_MS,
+    onTimeout: handleIdleLogout,
+  });
+
   return (
     <>
       {!checked ? null : needsOnboarding ? (
@@ -273,6 +298,12 @@ function PasswordGateUnlocked({ children }: { children: ReactNode }) {
       <NotificationPrompt />
       {checked && !needsOnboarding && <LexoAiChat />}
       {checked && !needsOnboarding && <ExitCommentPopup />}
+      <IdleWarningModal
+        open={warningOpen}
+        msUntilLogout={msUntilLogout}
+        onStayLoggedIn={stayLoggedIn}
+        onLogoutNow={handleIdleLogout}
+      />
     </>
   );
 }
@@ -725,6 +756,7 @@ export function PasswordGate({ children }: PasswordGateProps) {
         <button onClick={goToRegister} className="text-teal-600 hover:underline font-semibold">Create an account</button>
       </p>
     }>
+      <IdleLogoutBanner />
       <div className="text-center mb-6">
         <h2 className="text-xl font-extrabold text-gray-900 dark:text-white">Log In</h2>
         <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Welcome back. Enter your email and password.</p>
@@ -762,6 +794,29 @@ export function PasswordGate({ children }: PasswordGateProps) {
         ← Back to homepage
       </button>
     </AuthShell>
+  );
+}
+
+// ─── Idle-logout banner shown on the login screen when applicable ───
+function IdleLogoutBanner() {
+  const [reason, setReason] = useState<string | null>(null);
+  useEffect(() => {
+    try {
+      const r = sessionStorage.getItem(LOGOUT_REASON_KEY);
+      if (r) {
+        setReason(r);
+        sessionStorage.removeItem(LOGOUT_REASON_KEY);
+      }
+    } catch { /* ignore */ }
+  }, []);
+  if (reason !== "idle") return null;
+  return (
+    <div className="mb-4 flex items-start gap-2.5 px-3 py-2.5 rounded-xl bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800">
+      <ShieldAlert className="w-4 h-4 text-amber-600 dark:text-amber-400 mt-0.5 shrink-0" />
+      <p className="text-xs text-amber-800 dark:text-amber-200 leading-snug">
+        You were logged out due to inactivity. Please log in again to continue.
+      </p>
+    </div>
   );
 }
 

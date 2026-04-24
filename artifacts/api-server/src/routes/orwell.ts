@@ -7,6 +7,7 @@ import heicConvert from "heic-convert";
 import { eq, and, sql, or, lt, gt, inArray, desc, ne } from "drizzle-orm";
 import { db, orwellSubmissionsTable, orwellCoachSummariesTable, xpEventsTable, accessRequestsTable } from "@workspace/db";
 import { getOrwellEntry } from "../data/orwell-catalog.js";
+import { recordAiUsage } from "../lib/ai-usage";
 
 const SESSION_SECRET = process.env["SESSION_SECRET"] ?? "fallback-secret";
 
@@ -446,6 +447,9 @@ async function streamFreeCheck(
     console.error("Failed to persist free-check submission:", err);
   }
 
+  // Track AI usage for admin dashboard + alerts (best-effort, never throws).
+  void recordAiUsage({ email, route: "orwell", endpoint: "/orwell/freecheck" });
+
   sseSend({ done: { ...parsed, wordCount, mode } });
   res.end();
 }
@@ -859,6 +863,9 @@ router.post("/orwell/submit", async (req, res): Promise<void> => {
   } catch (err) {
     console.error("XP award failed:", err);
   }
+
+  // Track AI usage for admin dashboard + alerts (best-effort, never throws).
+  void recordAiUsage({ email, route: "orwell", endpoint: "/orwell/submit" });
 
   sseSend({ done: { ...parsed, wordCount } });
   res.end();
