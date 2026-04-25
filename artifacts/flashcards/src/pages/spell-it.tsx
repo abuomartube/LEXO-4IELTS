@@ -5,7 +5,7 @@ import { Layout } from "@/components/layout";
 import { Button } from "@/components/ui/button";
 import {
   SpellCheck2, ArrowRight, ArrowLeft, Loader2, Volume2, Square,
-  RefreshCw, StopCircle, Trophy, CheckCircle2, XCircle, Plus,
+  RefreshCw, StopCircle, Trophy, CheckCircle2, XCircle, Plus, Send,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -27,6 +27,7 @@ interface Flashcard {
 interface Clue {
   definition: string;
   hint: string;
+  example: string;
 }
 
 const TIME_OPTIONS = [5, 10, 15] as const;
@@ -34,73 +35,10 @@ type Seconds = typeof TIME_OPTIONS[number];
 
 const API_BASE = (import.meta.env.VITE_API_URL as string | undefined) || "";
 
-// ── OpenAI TTS (onyx, normal speed for spelling clarity) ────────────────
-// Cache MP3 blob URLs keyed by the exact TTS script. Survives across cards.
-// Bounded to TTS_CACHE_MAX entries (LRU) to prevent unbounded blob URL growth
-// across long sessions; evicted URLs are revoked.
-const TTS_CACHE_MAX = 50;
-const ttsCache = new Map<string, string>();
-let currentAudio: HTMLAudioElement | null = null;
-
-function ttsCacheTouch(key: string, url: string) {
-  // Re-insert to mark as MRU.
-  if (ttsCache.has(key)) ttsCache.delete(key);
-  ttsCache.set(key, url);
-  while (ttsCache.size > TTS_CACHE_MAX) {
-    const oldestKey = ttsCache.keys().next().value;
-    if (oldestKey === undefined) break;
-    const oldestUrl = ttsCache.get(oldestKey);
-    ttsCache.delete(oldestKey);
-    if (oldestUrl) {
-      try { URL.revokeObjectURL(oldestUrl); } catch {/* ignore */}
-    }
-  }
-}
-
-async function fetchTtsUrl(text: string): Promise<string> {
-  const key = text.trim();
-  const cached = ttsCache.get(key);
-  if (cached) {
-    ttsCacheTouch(key, cached); // refresh LRU position
-    return cached;
-  }
-  const res = await fetch(`${API_BASE}/api/speaking/tts`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    // Normal speed (1.0) for clear British-English spelling pronunciation.
-    body: JSON.stringify({ text: key, voice: "onyx", model: "tts-1-hd", speed: 1.0 }),
-  });
-  if (!res.ok) throw new Error("tts_failed");
-  const blob = await res.blob();
-  const url = URL.createObjectURL(blob);
-  ttsCacheTouch(key, url);
-  return url;
-}
-
-// Force the browser to actually buffer the MP3 bytes (not just have a Blob URL
-// in JS memory). Returns when the audio has enough data to start playing.
-function prebufferAudio(url: string): Promise<void> {
-  return new Promise((resolve) => {
-    const a = new Audio();
-    a.preload = "auto";
-    let done = false;
-    const finish = () => {
-      if (done) return;
-      done = true;
-      a.removeEventListener("canplaythrough", finish);
-      a.removeEventListener("error", finish);
-      resolve();
-    };
-    a.addEventListener("canplaythrough", finish, { once: true });
-    a.addEventListener("error", finish, { once: true });
-    a.src = url;
-    a.load();
-    // Safety net: never hang preload forever.
-    setTimeout(finish, 8000);
-  });
-}
-
-// ── Web Audio sound effects (synthesized — no asset files) ───────────────
+// ── Web Audio: shared AudioContext for TTS + sound effects ───────────────
+// Using AudioContext (not HTMLAudioElement) for TTS playback because it
+// guarantees zero-latency start: the MP3 is decoded into a PCM AudioBuffer
+// once, then any number of plays start instantly with no codec/network delay.
 let audioCtx: AudioContext | null = null;
 function getCtx(): AudioContext | null {
   if (typeof window === "undefined") return null;
@@ -112,6 +50,75 @@ function getCtx(): AudioContext | null {
   }
   if (audioCtx.state === "suspended") audioCtx.resume().catch(() => {});
   return audioCtx;
+}
+
+// ── TTS audio buffer cache, keyed by word ────────────────────────────────
+// AudioBuffers (decoded PCM) live in JS memory and are immediately playable.
+// Bounded LRU so a long session can't OOM the tab.
+const TTS_BUFFER_CACHE_MAX = 80;
+const ttsBufferCache = new Map<string, AudioBuffer>();
+
+function cachePut(key: string, buf: AudioBuffer) {
+  if (ttsBufferCache.has(key)) ttsBufferCache.delete(key);
+  ttsBufferCache.set(key, buf);
+  while (ttsBufferCache.size > TTS_BUFFER_CACHE_MAX) {
+    const oldestKey = ttsBufferCache.keys().next().value;
+    if (oldestKey === undefined) break;
+    ttsBufferCache.delete(oldestKey);
+  }
+}
+
+// Fetch MP3 bytes from /speaking/tts and decode into a ready-to-play AudioBuffer.
+// Always uses onyx voice. Cached by lower-cased word.
+async function fetchAndDecodeTts(word: string, scriptText: string): Promise<AudioBuffer> {
+  const key = word.toLowerCase();
+  const cached = ttsBufferCache.get(key);
+  if (cached) {
+    // Refresh LRU position.
+    ttsBufferCache.delete(key);
+    ttsBufferCache.set(key, cached);
+    return cached;
+  }
+  const ctx = getCtx();
+  if (!ctx) throw new Error("audio_context_unavailable");
+
+  const res = await fetch(`${API_BASE}/api/speaking/tts`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ text: scriptText, voice: "onyx", model: "tts-1", speed: 1.0 }),
+  });
+  if (!res.ok) throw new Error("tts_failed");
+  const arrayBuf = await res.arrayBuffer();
+  // decodeAudioData returns a fully-decoded PCM buffer. Subsequent playback
+  // via AudioBufferSourceNode starts on the next audio quantum (~3ms) — far
+  // faster than HTMLAudioElement's variable preload/decode pipeline.
+  const decoded: AudioBuffer = await new Promise((resolve, reject) => {
+    // Some Safari versions only support the callback form, so use both APIs.
+    try {
+      const p = ctx.decodeAudioData(arrayBuf.slice(0), resolve, reject);
+      if (p && typeof (p as Promise<AudioBuffer>).then === "function") {
+        (p as Promise<AudioBuffer>).then(resolve, reject);
+      }
+    } catch (e) {
+      reject(e);
+    }
+  });
+  cachePut(key, decoded);
+  return decoded;
+}
+
+// Play an AudioBuffer through the shared AudioContext. Returns the source so
+// the caller can stop it early. onended fires both for natural completion and
+// for explicit stop().
+function playBuffer(buf: AudioBuffer, onEnded: () => void): AudioBufferSourceNode | null {
+  const ctx = getCtx();
+  if (!ctx) return null;
+  const src = ctx.createBufferSource();
+  src.buffer = buf;
+  src.connect(ctx.destination);
+  src.onended = onEnded;
+  src.start(0);
+  return src;
 }
 
 function playTick() {
@@ -215,13 +222,18 @@ export default function SpellIt() {
   const [remaining, setRemaining] = useState<number>(seconds);
 
   const [letters, setLetters] = useState<string[]>([]);
-  const [reveal, setReveal] = useState<{ correct: boolean; word: string } | null>(null);
+  const [reveal, setReveal] = useState<{ correct: boolean; word: string; reason: "correct" | "submit" | "timeout" } | null>(null);
 
   // True only while the *current* card's audio is still being preloaded
-  // (clue + TTS roundtrip not yet complete). When false, Hear It plays instantly.
+  // (clue + TTS roundtrip not yet complete). For the new pipeline this is
+  // never expected to be true at click time — the first 5 cards are awaited
+  // before the card screen renders, and subsequent cards are pulled off a
+  // preloaded queue. We keep the flag as a defensive fallback.
   const [audioLoading, setAudioLoading] = useState(false);
   const [audioPlaying, setAudioPlaying] = useState(false);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+  // Currently-playing AudioBufferSourceNode (Web Audio API). Stopping it is
+  // synchronous and triggers `onended`, which kicks off the countdown.
+  const sourceRef = useRef<AudioBufferSourceNode | null>(null);
 
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState<string | null>(null);
@@ -238,13 +250,15 @@ export default function SpellIt() {
   const cardSeqRef = useRef<number>(0);
 
   // ── Preload pipeline ─────────────────────────────────────────────
-  // Up to 2 cards queued behind the current card (so total preloaded = 3).
+  // Up to 3 cards queued behind the current card (so total preloaded = 4).
+  // First 5 are preloaded in parallel at session start.
   const upcomingRef = useRef<Flashcard[]>([]);
-  // Per-card preload state. Re-uses ttsCache under the hood.
+  // Per-card preload state. Audio is stored as a decoded AudioBuffer (PCM)
+  // so playback starts on the next audio quantum (~3ms) with zero codec lag.
   type Preload = {
     state: "loading" | "ready" | "error";
     clue?: Clue;
-    audioUrl?: string;
+    audioBuffer?: AudioBuffer;
     promise: Promise<void>;
   };
   const preloadsRef = useRef<Map<number, Preload>>(new Map());
@@ -264,17 +278,16 @@ export default function SpellIt() {
     if (revealTimerRef.current) { clearTimeout(revealTimerRef.current); revealTimerRef.current = null; }
   }, []);
 
-  // Detach listeners + pause the current audio without firing the
-  // pause-handler that would otherwise auto-start the timer for a stale card.
+  // Detach the onended handler then stop the source so a card-change doesn't
+  // accidentally trigger the "first play finished" timer for a stale card.
   const stopCurrentAudio = useCallback(() => {
-    const a = audioRef.current;
-    if (a) {
-      a.onended = null;
-      a.onpause = null;
-      a.onplay = null;
-      try { a.pause(); } catch {/* ignore */}
+    const s = sourceRef.current;
+    if (s) {
+      s.onended = null;
+      try { s.stop(); } catch {/* already stopped */}
+      try { s.disconnect(); } catch {/* ignore */}
     }
-    audioRef.current = null;
+    sourceRef.current = null;
     setAudioPlaying(false);
   }, []);
 
@@ -292,20 +305,21 @@ export default function SpellIt() {
   const slots = card ? buildSlots(card.english) : [];
   const letterIdxs = letterPositions(slots);
 
-  // Build the combined TTS script for a word + its clue.
+  // Build the TTS script for a word. Format is fixed: "{word} — as in, {example}".
+  // Always this exact shape — never the verbose definition+hint form.
   function buildScript(word: string, c: Clue): string {
-    return `Spell this word. ${word}. ${word}. Definition: ${c.definition} Hint: ${c.hint}`;
+    return `${word}. As in, ${c.example.replace(/\.$/, "")}.`;
   }
 
   // Begin (or return existing) preload pipeline for a card. Idempotent.
-  // Each preload: fetch clue → build TTS script → fetch+buffer audio bytes.
+  // Each preload: fetch clue → build TTS script → fetch+decode MP3 into PCM.
   const preloadCard = useCallback((target: Flashcard, lvl: Level): Preload => {
     const existing = preloadsRef.current.get(target.id);
     if (existing) return existing;
 
     const entry: Preload = { state: "loading", promise: Promise.resolve() };
     entry.promise = (async () => {
-      // Step 1: clue (with offline fallback so we never block forever).
+      // Step 1: clue + example sentence (with offline fallback).
       let theClue: Clue;
       try {
         theClue = await customFetch<Clue>("/api/spell-it/clue", {
@@ -318,17 +332,18 @@ export default function SpellIt() {
         theClue = {
           definition: `A ${target.category} word.`,
           hint: `It has ${lettersOnly.length} letters.`,
+          example: `we use the word ${target.english} every day`,
         };
       }
       entry.clue = theClue;
 
-      // Step 2: TTS audio. Fetch the MP3 and pre-buffer it so the *first*
-      // play is byte-ready instantly, not just the second play.
+      // Step 2: TTS — fetch MP3 bytes and decode into a ready-to-play PCM
+      // AudioBuffer. After this resolves, playback start is essentially zero
+      // latency (no codec init, no progressive download).
       try {
         const script = buildScript(target.english, theClue);
-        const url = await fetchTtsUrl(script);
-        await prebufferAudio(url);
-        entry.audioUrl = url;
+        const buf = await fetchAndDecodeTts(target.english, script);
+        entry.audioBuffer = buf;
         entry.state = "ready";
       } catch {
         entry.state = "error";
@@ -342,11 +357,11 @@ export default function SpellIt() {
 
   // Reveal the answer (correct or timed-out) and stop everything.
   // Defined here (above beginCountdown) so it can be a clean dep.
-  const revealAnswerImpl = useCallback((correct: boolean, currentCard: Flashcard) => {
+  const revealAnswerImpl = useCallback((correct: boolean, currentCard: Flashcard, reason: "correct" | "submit" | "timeout" = correct ? "correct" : "timeout") => {
     clearTimers();
     stopCurrentAudio();
     setPhase("revealed");
-    setReveal({ correct, word: currentCard.english });
+    setReveal({ correct, word: currentCard.english, reason });
     setWordsAttempted((n) => n + 1);
     if (correct) {
       setWordsCorrect((n) => n + 1);
@@ -386,73 +401,75 @@ export default function SpellIt() {
     }, seconds * 1000);
   }, [seconds, revealAnswerImpl]);
 
-  async function playClue() {
+  function playClue() {
     if (!card) return;
-    // Toggle: clicking while playing acts as Stop.
+    // Toggle: clicking while playing stops playback (which triggers onended,
+    // which starts the countdown if this was the first play).
     if (audioPlaying) {
-      const a = audioRef.current;
-      if (a) { try { a.pause(); } catch {/* ignore */} }
-      // onpause handler will fire and (if needed) start the countdown.
+      stopCurrentAudio();
+      // stopCurrentAudio cleared the onended handler, so manually advance
+      // the "first play finished" latch + start the timer if needed.
+      const seq = cardSeqRef.current;
+      if (!audioPlayedRef.current) {
+        audioPlayedRef.current = true;
+        beginCountdown(card, seq);
+      }
       return;
     }
 
+    const seq = cardSeqRef.current;
     let entry = preloadsRef.current.get(card.id) ?? preloadCard(card, level);
-    // If a previous attempt failed, evict it and try again on click.
+    // If a previous attempt failed, evict it and try again immediately so
+    // the next click can succeed.
     if (entry.state === "error") {
       preloadsRef.current.delete(card.id);
       entry = preloadCard(card, level);
     }
-    const seq = cardSeqRef.current;
 
-    // If still loading, wait — show the spinner. The countdown isn't running yet
-    // (phase is "ready"), so we're not stealing time from the student.
-    if (entry.state === "loading") {
-      setAudioLoading(true);
-      try { await entry.promise; } finally { setAudioLoading(false); }
-    }
-    // The user could have advanced to the next card while waiting.
-    if (cardSeqRef.current !== seq) return;
-
-    // If the (re)try also failed, start the countdown anyway so the student
-    // isn't stuck on a deadlocked card. They can still spell from memory or
-    // press Next.
-    if (entry.state !== "ready" || !entry.audioUrl) {
-      if (!audioPlayedRef.current && card) {
+    // Happy path: AudioBuffer is ready. Play instantly via Web Audio.
+    if (entry.state === "ready" && entry.audioBuffer) {
+      setClue(entry.clue ?? null);
+      // Stop any leftover source first.
+      stopCurrentAudio();
+      const src = playBuffer(entry.audioBuffer, () => {
+        // onended fires for both natural completion and explicit stop().
+        if (sourceRef.current === src) sourceRef.current = null;
+        setAudioPlaying(false);
+        if (!audioPlayedRef.current && cardSeqRef.current === seq && card) {
+          audioPlayedRef.current = true;
+          beginCountdown(card, seq);
+        }
+      });
+      if (src) {
+        sourceRef.current = src;
+        setAudioPlaying(true);
+      } else if (!audioPlayedRef.current) {
+        // AudioContext unavailable (rare — usually after a tab suspend). Don't
+        // strand the student in a no-timer ready state; arm the countdown and
+        // let them spell from memory.
         audioPlayedRef.current = true;
         beginCountdown(card, seq);
       }
       return;
     }
 
-    // Stop any prior global audio without triggering its pause-handler.
-    if (currentAudio && currentAudio !== audioRef.current) {
-      currentAudio.onended = null;
-      currentAudio.onpause = null;
-      currentAudio.onplay = null;
-      try { currentAudio.pause(); } catch {/* ignore */}
-    }
-    setClue(entry.clue ?? null);
-
-    const audio = new Audio(entry.audioUrl);
-    audioRef.current = audio;
-    currentAudio = audio;
-    const onFinishedFirstPlay = () => {
-      setAudioPlaying(false);
-      // Start the timer the first time the audio finishes (or is stopped).
-      if (!audioPlayedRef.current && cardSeqRef.current === seq && card) {
+    // Slow / fallback path: preload not finished yet (shouldn't happen for
+    // first 5 cards, but possible if the student is racing the queue).
+    setAudioLoading(true);
+    entry.promise.finally(() => {
+      setAudioLoading(false);
+      // The user could have advanced cards while we waited.
+      if (cardSeqRef.current !== seq) return;
+      const e = preloadsRef.current.get(card.id);
+      if (e?.state === "ready" && e.audioBuffer) {
+        // Re-enter to actually play. Safe because audioPlaying is still false.
+        playClue();
+      } else if (!audioPlayedRef.current) {
+        // Audio decode failed — start the timer anyway so the student isn't stuck.
         audioPlayedRef.current = true;
         beginCountdown(card, seq);
       }
-    };
-    audio.onended = onFinishedFirstPlay;
-    audio.onpause = onFinishedFirstPlay;
-    audio.onplay = () => setAudioPlaying(true);
-    try {
-      await audio.play();
-    } catch {
-      // Autoplay/user-gesture failure — clean up.
-      setAudioPlaying(false);
-    }
+    });
   }
 
   // Show a card. Does NOT start the countdown — that begins after the
@@ -486,7 +503,8 @@ export default function SpellIt() {
       });
     }
 
-    // Keep the queue warm: ensure the two upcoming cards are also preloading.
+    // Keep the queue warm: the next 3 upcoming cards should all be preloading
+    // (or already loaded) so audio is instant when the student advances.
     for (const upc of upcomingRef.current) {
       preloadCard(upc, level);
     }
@@ -517,35 +535,33 @@ export default function SpellIt() {
       setWordsCorrect(0);
       setWeakAdded(0);
 
-      // Pick the first 3 unique words and start preloading ALL of them in
-      // parallel before the student even sees the card screen.
+      // Pick the first 5 unique words and start preloading ALL of them in
+      // parallel before the student even sees the card screen. This guarantees
+      // the first ~5 taps of "Hear It" are zero-latency.
       const seen = new Set<number>();
       const initial: Flashcard[] = [];
       for (const c of shuffled) {
         if (seen.has(c.id)) continue;
         initial.push(c);
         seen.add(c.id);
-        if (initial.length >= 3) break;
+        if (initial.length >= 5) break;
       }
       if (initial.length === 0) { setErr("No words to show."); return; }
       setSeenIds(seen);
 
-      // Kick off the preloads. The first card needs to be ready as fast as
-      // possible — we await its preload so Hear It is instant when the screen
-      // appears (with a short safety cap so a slow API doesn't trap the user).
-      const firstCard = initial[0];
-      upcomingRef.current = initial.slice(1);
-      const firstPreload = preloadCard(firstCard, level);
-      for (const c of upcomingRef.current) preloadCard(c, level);
-
-      // Warm up audio context on user gesture.
+      // Warm up audio context on user gesture (must come before any TTS decode).
       getCtx();
 
-      // Wait up to 6s for first card's preload, then proceed regardless —
-      // if it's not ready, the Hear It button shows a spinner.
+      // Kick off all 5 preloads simultaneously. The card screen does NOT
+      // appear until every one of them is ready (or hits a 10s safety cap),
+      // so first-play audio is guaranteed instant.
+      const firstCard = initial[0];
+      upcomingRef.current = initial.slice(1);
+      const allPreloads = initial.map((c) => preloadCard(c, level).promise);
+
       await Promise.race([
-        firstPreload.promise,
-        new Promise((r) => setTimeout(r, 6000)),
+        Promise.allSettled(allPreloads),
+        new Promise((r) => setTimeout(r, 10000)),
       ]);
 
       setStep("card");
@@ -558,19 +574,19 @@ export default function SpellIt() {
   }
 
   function nextRandomCard() {
-    // Pull the next preloaded card off the queue front. Then top the queue up.
+    // Pull the next preloaded card off the queue front. Then top the queue up
+    // so the next 3 cards behind the new current one are always preloaded.
     const next = upcomingRef.current.shift();
     if (!next) {
       endSession();
       return;
     }
 
-    // Top up so the queue (current + 2 ahead = 3 preloaded) stays full.
     const seen = new Set(seenIds);
     if (card) seen.add(card.id);
     seen.add(next.id);
     for (const upc of upcomingRef.current) seen.add(upc.id);
-    while (upcomingRef.current.length < 2) {
+    while (upcomingRef.current.length < 3) {
       const fresh = drawNextCard(pool, seen);
       if (!fresh) break;
       upcomingRef.current.push(fresh);
@@ -597,13 +613,6 @@ export default function SpellIt() {
   function endSession() {
     clearTimers();
     stopCurrentAudio();
-    if (currentAudio) {
-      currentAudio.onended = null;
-      currentAudio.onpause = null;
-      currentAudio.onplay = null;
-      try { currentAudio.pause(); } catch {/* ignore */}
-      currentAudio = null;
-    }
     // XP: 10 per correct + 2 per attempted (incorrect counts too) + 5 per weak.
     const wrong = wordsAttempted - wordsCorrect;
     const earned = Math.min(120, wordsCorrect * 10 + wrong * 2 + weakAdded * 5);
@@ -658,9 +667,20 @@ export default function SpellIt() {
     if (!currentLetters.every((c) => c.length === 1)) return;
     const isCorrect = currentLetters.every((l, i) => l === target[i]);
     if (isCorrect) {
-      revealAnswerImpl(true, card);
+      revealAnswerImpl(true, card, "correct");
     }
     // If wrong but timer still running, do nothing — user can keep editing.
+  }
+
+  // Explicit Submit. Reveals regardless of whether the answer is complete or
+  // correct — used by the Submit button which appears after the first letter.
+  function submitAnswer() {
+    if (!card || phase !== "playing") return;
+    const currentLetters = inputRefs.current.map((el) => (el?.value ?? "").toLowerCase());
+    const target = card.english.split("").filter((ch) => /[a-z]/i.test(ch)).map((c) => c.toLowerCase());
+    const filled = currentLetters.length === target.length && currentLetters.every((c) => c.length === 1);
+    const isCorrect = filled && currentLetters.every((l, i) => l === target[i]);
+    revealAnswerImpl(isCorrect, card, isCorrect ? "correct" : "submit");
   }
 
   function onKeyDownLetter(i: number, e: React.KeyboardEvent<HTMLInputElement>) {
@@ -940,12 +960,27 @@ export default function SpellIt() {
               })}
             </div>
 
-            {/* Reveal block */}
+            {/* Submit button — appears once at least one letter has been typed
+                during the playing phase. Reveals the correct answer (with a
+                fade-in red overlay if the answer is wrong/incomplete). */}
+            {phase === "playing" && letters.some((l) => l && l.length > 0) && (
+              <div className="flex justify-center mt-4 animate-in fade-in zoom-in-95 duration-200">
+                <Button
+                  onClick={submitAnswer}
+                  className="rounded-full h-11 px-6 bg-emerald-500 hover:bg-emerald-600 text-white font-bold"
+                >
+                  <Send className="w-4 h-4 mr-2" />
+                  Submit
+                </Button>
+              </div>
+            )}
+
+            {/* Reveal block — fade-in for correct, time's-up, and submit-wrong. */}
             {phase === "revealed" && reveal && (
-              <div className="mt-6 text-center animate-in fade-in slide-in-from-bottom-2 duration-300">
+              <div className="mt-6 text-center animate-in fade-in slide-in-from-bottom-2 duration-500">
                 <div
                   className={cn(
-                    "inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold mb-3",
+                    "inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold mb-3 transition-all",
                     reveal.correct
                       ? "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300"
                       : "bg-rose-100 dark:bg-rose-900/30 text-rose-700 dark:text-rose-300"
@@ -953,7 +988,9 @@ export default function SpellIt() {
                 >
                   {reveal.correct
                     ? <><CheckCircle2 className="w-4 h-4" /> Correct!</>
-                    : <><XCircle className="w-4 h-4" /> Time's up</>}
+                    : reveal.reason === "submit"
+                      ? <><XCircle className="w-4 h-4" /> Not quite</>
+                      : <><XCircle className="w-4 h-4" /> Time's up</>}
                 </div>
                 <div className="text-2xl sm:text-3xl font-extrabold text-foreground mb-1">
                   {reveal.word}

@@ -25,6 +25,7 @@ function getAnthropicClient() {
 interface Clue {
   definition: string;
   hint: string;
+  example: string;
 }
 
 const clueCache = new Map<string, Clue>();
@@ -50,17 +51,18 @@ router.post("/spell-it/clue", async (req, res): Promise<void> => {
     const anthropic = getAnthropicClient();
     const message = await anthropic.messages.create({
       model: "claude-sonnet-4-5",
-      max_tokens: 200,
+      max_tokens: 250,
       system: `You help an Arabic-speaking IELTS student spell a single English word.
 You will be given the word and the student's CEFR level.
 
 Return ONLY valid JSON in this exact shape:
-{ "definition": "...", "hint": "..." }
+{ "definition": "...", "hint": "...", "example": "..." }
 
 Rules:
-- "definition": one short British English sentence (<= 18 words) explaining the word's meaning. No quotes, no example sentence, no Arabic.
+- "definition": one short British English sentence (<= 18 words) explaining the word's meaning. No quotes, no Arabic.
 - "hint": one short British English clue (<= 14 words) that helps the student RECALL the word but does NOT spell it out. Use a category, synonym in simpler English, or a typical context. Never reveal individual letters or the word itself.
-- Both must be appropriate for the student's level (${level}).
+- "example": one VERY SHORT, natural British-English sentence (<= 9 words) that USES the word "${word}" naturally in everyday context, so it can be read aloud after "as in,". Examples of good "example" values: for "dessert" → "we have cake for dessert"; for "library" → "I borrow books from the library"; for "anxious" → "she felt anxious before the test". Must include the word "${word}" itself. Do NOT use quotes or capital letters at the start.
+- All must be appropriate for the student's level (${level}).
 - Tone: clear, warm, neutral British English.`,
       messages: [
         { role: "user", content: `Word: ${word}\nLevel: ${level}` },
@@ -77,12 +79,18 @@ Rules:
     const parsed = JSON.parse(jsonMatch[0]) as Partial<Clue>;
     const definition = String(parsed.definition ?? "").trim();
     const hint = String(parsed.hint ?? "").trim();
+    let example = String(parsed.example ?? "").trim().replace(/^["'`]+|["'`]+$/g, "");
+    // Safety: if the example doesn't actually contain the word, fall back to a
+    // simple deterministic sentence so the "as in" audio still makes sense.
+    if (!example || !example.toLowerCase().includes(word.toLowerCase())) {
+      example = `we use the word ${word} every day`;
+    }
     if (!definition || !hint) {
       res.status(500).json({ error: "Empty clue" });
       return;
     }
 
-    const clue: Clue = { definition, hint };
+    const clue: Clue = { definition, hint, example };
     clueCache.set(cacheKey, clue);
     res.json(clue);
   } catch (err) {
