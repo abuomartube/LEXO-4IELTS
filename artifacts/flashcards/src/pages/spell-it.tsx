@@ -648,32 +648,15 @@ export default function SpellIt() {
       // Move to next box.
       setTimeout(() => inputRefs.current[i + 1]?.focus(), 0);
     }
-    // Auto-check when all boxes filled.
-    if (v && i === letterIdxs.length - 1) {
-      setTimeout(() => {
-        const all = inputRefs.current.map((el) => (el?.value ?? "").toLowerCase());
-        if (all.length === letterIdxs.length && all.every((c) => c.length === 1)) {
-          checkAnswerNow();
-        }
-      }, 30);
-    }
-  }
-
-  function checkAnswerNow() {
-    if (!card || phase !== "playing") return;
-    const currentLetters = inputRefs.current.map((el) => (el?.value ?? "").toLowerCase());
-    const target = card.english.split("").filter((ch) => /[a-z]/i.test(ch)).map((c) => c.toLowerCase());
-    if (currentLetters.length !== target.length) return;
-    if (!currentLetters.every((c) => c.length === 1)) return;
-    const isCorrect = currentLetters.every((l, i) => l === target[i]);
-    if (isCorrect) {
-      revealAnswerImpl(true, card, "correct");
-    }
-    // If wrong but timer still running, do nothing — user can keep editing.
+    // No auto-submit: even when every box is filled, the student must press
+    // Submit (or wait for the timer) before the answer is revealed.
   }
 
   // Explicit Submit. Reveals regardless of whether the answer is complete or
-  // correct — used by the Submit button which appears after the first letter.
+  // correct — used by the Submit button which appears after the first letter
+  // and by the Enter keyboard shortcut. The student must always trigger this
+  // explicitly; the answer is never revealed automatically when the last letter
+  // box is filled.
   function submitAnswer() {
     if (!card || phase !== "playing") return;
     const currentLetters = inputRefs.current.map((el) => (el?.value ?? "").toLowerCase());
@@ -694,7 +677,7 @@ export default function SpellIt() {
       inputRefs.current[i + 1]?.focus();
     } else if (e.key === "Enter") {
       e.preventDefault();
-      checkAnswerNow();
+      submitAnswer();
     }
   }
 
