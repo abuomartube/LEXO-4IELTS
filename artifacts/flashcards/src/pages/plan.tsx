@@ -8,13 +8,16 @@ import {
   Circle,
   ClipboardList,
   Clock,
+  Download,
   Flame,
+  Loader2,
   Sparkles,
   Target,
   TrendingUp,
 } from "lucide-react";
 import { Layout } from "@/components/layout";
 import { cn } from "@/lib/utils";
+import { downloadPlanPdf } from "@/lib/plan-pdf-client";
 import {
   addDays,
   daysUntilExam,
@@ -124,6 +127,27 @@ function useUserPlan() {
 export default function PlanPage() {
   const { plan, loading } = useUserPlan();
   const [expandedDay, setExpandedDay] = useState<string | null>(todayISO());
+  const [pdfBusy, setPdfBusy] = useState(false);
+  const [pdfError, setPdfError] = useState<string | null>(null);
+
+  async function handleDownloadPdf() {
+    if (!plan) return;
+    setPdfBusy(true);
+    setPdfError(null);
+    try {
+      await downloadPlanPdf({
+        level: plan.level,
+        targetBand: plan.targetBand,
+        examDate: plan.examDate,
+        startISO: plan.startISO,
+        duration: plan.duration,
+      });
+    } catch (e) {
+      setPdfError(e instanceof Error ? e.message : "Could not download PDF.");
+    } finally {
+      setPdfBusy(false);
+    }
+  }
 
   const today = useMemo(() => {
     const d = new Date();
@@ -195,13 +219,28 @@ export default function PlanPage() {
   return (
     <Layout>
       <div className="max-w-5xl mx-auto px-4 py-6 space-y-6">
-        {/* ── Back link ── */}
-        <Link
-          href="/"
-          className="inline-flex items-center gap-1.5 text-sm font-bold text-muted-foreground hover:text-foreground transition-colors"
-        >
-          <ArrowLeft className="w-4 h-4" /> Back to dashboard
-        </Link>
+        {/* ── Back link + PDF download ── */}
+        <div className="flex items-center justify-between gap-3 flex-wrap">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-1.5 text-sm font-bold text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <ArrowLeft className="w-4 h-4" /> Back to dashboard
+          </Link>
+          <button
+            onClick={handleDownloadPdf}
+            disabled={pdfBusy || !plan.level}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-primary text-primary-foreground text-sm font-bold shadow-sm hover:opacity-90 transition-opacity disabled:opacity-50"
+          >
+            {pdfBusy ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
+            {pdfBusy ? "Preparing PDF..." : "Download Plan (PDF)"}
+          </button>
+        </div>
+        {pdfError && (
+          <div className="rounded-xl bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-800 px-4 py-2 text-sm text-red-700 dark:text-red-400">
+            {pdfError}
+          </div>
+        )}
 
         {/* ── Hero header ── */}
         <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-teal-500 via-sky-500 to-indigo-600 p-6 sm:p-8 shadow-xl text-white">

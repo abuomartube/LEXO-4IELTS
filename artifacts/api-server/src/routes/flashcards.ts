@@ -539,11 +539,39 @@ router.get("/user-data/:key", async (req, res): Promise<void> => {
   res.json({ value: row?.value ?? "" });
 });
 
+// Per-key size limits for the user_data k/v store.
+// "avatar" stores a base64 JPEG data URL (up to ~300KB raw image).
+// "name" is a short student display name.
+function userDataLimitFor(key: string): number {
+  if (key === "avatar") return 420_000;
+  if (key === "name") return 100;
+  return 10_000;
+}
+
 router.put("/user-data/:key", async (req, res): Promise<void> => {
   const email = verifyStudentEmail(req);
   if (!email) { res.status(401).json({ error: "Unauthorized" }); return; }
   const key = req.params.key;
-  const value = typeof req.body.value === "string" ? req.body.value.slice(0, 10000) : "";
+  const limit = userDataLimitFor(key);
+  let value = typeof req.body.value === "string" ? req.body.value : "";
+
+  if (key === "avatar" && value !== "") {
+    if (!/^data:image\/(png|jpeg|jpg|webp|gif);base64,/.test(value)) {
+      res.status(400).json({ error: "avatar must be a base64-encoded image data URL" }); return;
+    }
+    if (value.length > limit) {
+      res.status(413).json({ error: "Avatar image is too large — please use a smaller photo" }); return;
+    }
+  } else if (key === "name") {
+    value = value.trim();
+    if (value && !/^[A-Za-z][A-Za-z\s\-'.]{0,99}$/.test(value)) {
+      res.status(400).json({ error: "Name must use English letters only" }); return;
+    }
+    value = value.slice(0, limit);
+  } else {
+    value = value.slice(0, limit);
+  }
+
   await db.insert(userDataTable)
     .values({ email, key, value, updatedAt: new Date() })
     .onConflictDoUpdate({

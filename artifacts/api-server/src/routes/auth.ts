@@ -222,6 +222,53 @@ router.post("/access/setup-password", async (req, res): Promise<void> => {
   res.json({ status: "approved", token: makeToken(normalizedEmail) });
 });
 
+// ── Change password (logged-in students) ─────────────────────────────────
+
+router.post("/access/change-password", async (req, res): Promise<void> => {
+  // Verify the caller is the logged-in student via the same HMAC scheme used
+  // for /api/user-data. We require BOTH a valid session and the current
+  // password to defend against session theft and to follow normal change-pw UX.
+  const headerEmail = (req.headers["x-student-email"] as string || "").trim().toLowerCase();
+  const headerToken = (req.headers["x-student-token"] as string || "").trim();
+  if (!headerEmail || !headerToken || !safeEqual(headerToken, makeToken(headerEmail))) {
+    res.status(401).json({ error: "Please log in again to change your password." });
+    return;
+  }
+
+  const { currentPassword, newPassword } = req.body ?? {};
+  if (!currentPassword || typeof currentPassword !== "string") {
+    res.status(400).json({ error: "Current password is required" }); return;
+  }
+  if (!newPassword || typeof newPassword !== "string" || newPassword.length < 6) {
+    res.status(400).json({ error: "New password must be at least 6 characters" }); return;
+  }
+  if (newPassword === currentPassword) {
+    res.status(400).json({ error: "New password must be different from current password" }); return;
+  }
+
+  const [row] = await db.select().from(accessRequestsTable).where(eq(accessRequestsTable.email, headerEmail));
+  if (!row) { res.status(404).json({ error: "Account not found" }); return; }
+  if (row.status !== "approved") { res.status(403).json({ error: "Account not active" }); return; }
+  if (isExpired(row)) { res.status(403).json({ error: "Subscription expired" }); return; }
+  if (!row.passwordHash) {
+    res.status(403).json({ error: "Your account has no password yet — please use Setup Password instead." });
+    return;
+  }
+
+  const ok = await bcrypt.compare(currentPassword, row.passwordHash);
+  if (!ok) {
+    res.status(401).json({ error: "Your current password is incorrect." });
+    return;
+  }
+
+  const passwordHash = await bcrypt.hash(newPassword, 10);
+  await db.update(accessRequestsTable)
+    .set({ passwordHash })
+    .where(eq(accessRequestsTable.id, row.id));
+
+  res.json({ success: true });
+});
+
 // ── Polling endpoint (used by the pending screen) ────────────────────────
 
 router.post("/access/check", async (req, res): Promise<void> => {

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { customFetch } from "@workspace/api-client-react";
-import { Target, Calendar, ChevronRight, BookOpen, Headphones, FileText, Mic, Flame, Star, Trophy, Clock, CheckCircle2, GraduationCap, ClipboardList } from "lucide-react";
+import { Target, Calendar, ChevronRight, BookOpen, Headphones, FileText, Mic, Flame, Star, Trophy, Clock, CheckCircle2, GraduationCap, ClipboardList, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { PlanDurationPicker } from "@/components/plan-duration-picker";
 import { todayISO, type PlanDuration } from "@/lib/daily-plan";
@@ -20,9 +20,10 @@ const TARGET_BAND_OPTIONS: { band: 6 | 7 | 8; label: string; description: string
   { band: 8, label: "Band 8", description: "Very good user — top-tier programs & professions" },
 ];
 
-// Content difficulty is driven by the student's CURRENT level, not their target.
-// As the student improves they'll graduate to the next focus level — for now we
-// expose two adjacent CEFR bands as the "study zone" (current + one above).
+// English-only validation: starts with a letter; allows letters, spaces, hyphens,
+// apostrophes and periods (e.g. "Ann-Marie", "O'Brien", "John D."). 2–40 chars.
+const NAME_RE = /^[A-Za-z][A-Za-z\s'\-.]{1,39}$/;
+
 function studyZoneFor(level: CefrLevel): { primary: CefrLevel; stretch: CefrLevel } {
   switch (level) {
     case "A1": return { primary: "A1", stretch: "A2" };
@@ -33,11 +34,9 @@ function studyZoneFor(level: CefrLevel): { primary: CefrLevel; stretch: CefrLeve
   }
 }
 
-// Estimate how big the gap is between where the student is and where they want
-// to land. Used only to set study-plan intensity, never to gate content.
 function gapScore(current: CefrLevel, targetBand: 6 | 7 | 8): number {
   const currentIndex: Record<CefrLevel, number> = { A1: 0, A2: 1, B1: 2, B2: 3, C1: 4 };
-  const targetIndex = targetBand === 6 ? 2 : targetBand === 7 ? 3 : 4; // approx CEFR equivalent
+  const targetIndex = targetBand === 6 ? 2 : targetBand === 7 ? 3 : 4;
   return Math.max(0, targetIndex - currentIndex[current]);
 }
 
@@ -50,7 +49,6 @@ function generateStudyPlan(currentLevel: CefrLevel, targetBand: 6 | 7 | 8, examD
   const intensity = daysLeft <= 14 ? "intensive" : daysLeft <= 30 ? "focused" : daysLeft <= 60 ? "balanced" : "steady";
   const dailyHours = intensity === "intensive" ? "3-4" : intensity === "focused" ? "2-3" : intensity === "balanced" ? "1.5-2" : "1-1.5";
 
-  // Words/day scales with both intensity AND the gap between current and target.
   const gap = gapScore(currentLevel, targetBand);
   const baseWords = intensity === "intensive" ? 30 : intensity === "focused" ? 20 : intensity === "balanced" ? 15 : 10;
   const wordsPerDay = baseWords + gap * 5;
@@ -99,10 +97,11 @@ function generateStudyPlan(currentLevel: CefrLevel, targetBand: 6 | 7 | 8, examD
   return { daysLeft, weeksLeft, intensity, dailyHours, wordsPerDay, vocabFocus, zone, schedule, milestones };
 }
 
-type Step = 1 | 2 | 3 | 4 | 5;
+type Step = 1 | 2 | 3 | 4 | 5 | 6;
 
 export function Onboarding({ onComplete }: { onComplete: () => void }) {
   const [step, setStep] = useState<Step>(1);
+  const [name, setName] = useState("");
   const [currentLevel, setCurrentLevel] = useState<CefrLevel | null>(null);
   const [targetBand, setTargetBand] = useState<6 | 7 | 8>(7);
   const [examDate, setExamDate] = useState("");
@@ -120,12 +119,20 @@ export function Onboarding({ onComplete }: { onComplete: () => void }) {
   const canProceedExam = noExamDate || !!examDate;
   const plan = currentLevel && canProceedExam ? generateStudyPlan(currentLevel, targetBand, effectiveExamDate) : null;
 
+  const trimmedName = name.trim();
+  const nameValid = NAME_RE.test(trimmedName);
+
   async function handleSave() {
-    if (!currentLevel || !planDuration) return;
+    if (!currentLevel || !planDuration || !nameValid) return;
     setSaving(true);
     setSaveError(false);
     try {
       await Promise.all([
+        customFetch("/api/user-data/name", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ value: trimmedName }),
+        }),
         customFetch("/api/user-data/current_level", {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -163,14 +170,74 @@ export function Onboarding({ onComplete }: { onComplete: () => void }) {
 
   const Dots = ({ active }: { active: number }) => (
     <div className="flex justify-center gap-2">
-      {[1, 2, 3, 4, 5].map((n) => (
-        <div key={n} className={cn("w-8 h-1.5 rounded-full", n <= active ? "bg-primary" : "bg-muted")} />
+      {[1, 2, 3, 4, 5, 6].map((n) => (
+        <div key={n} className={cn("w-7 h-1.5 rounded-full", n <= active ? "bg-primary" : "bg-muted")} />
       ))}
     </div>
   );
 
-  // ── Step 1: Current English level ────────────────────────────────────────
+  // ── Step 1: Name ─────────────────────────────────────────────────────────
   if (step === 1) {
+    return (
+      <div className="fixed inset-0 bg-background/95 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-in fade-in duration-300 overflow-y-auto">
+        <div className="w-full max-w-md space-y-6 py-8">
+          <div className="text-center space-y-2">
+            <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto">
+              <User className="w-8 h-8 text-primary" />
+            </div>
+            <h1 className="text-2xl font-extrabold text-foreground">What should we call you?</h1>
+            <p className="text-muted-foreground text-sm">We'll use this on your study plan and PDF reports.</p>
+            <p className="text-muted-foreground text-xs" dir="rtl" lang="ar">ما اسمك؟ سنستخدمه في خطة دراستك وتقارير PDF.</p>
+          </div>
+
+          <div className="bg-card border border-border rounded-2xl p-5 space-y-3">
+            <label htmlFor="onboarding-name" className="text-sm font-bold text-foreground">
+              Your name
+            </label>
+            <input
+              id="onboarding-name"
+              type="text"
+              autoFocus
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              onKeyDown={(e) => { if (e.key === "Enter" && nameValid) setStep(2); }}
+              placeholder="e.g. Ahmed Saleh"
+              autoComplete="given-name"
+              maxLength={40}
+              className={cn(
+                "w-full px-4 py-3 bg-background border rounded-xl text-foreground text-lg font-medium focus:outline-none focus:ring-2",
+                trimmedName && !nameValid
+                  ? "border-red-400 focus:ring-red-300"
+                  : "border-border focus:ring-primary/50"
+              )}
+            />
+            {trimmedName && !nameValid ? (
+              <p className="text-xs text-red-600 dark:text-red-400">
+                Please use English letters only (2–40 chars). Hyphens and apostrophes are allowed.
+              </p>
+            ) : (
+              <p className="text-[11px] text-muted-foreground">
+                English letters only. You can change it any time from Profile.
+              </p>
+            )}
+          </div>
+
+          <button
+            onClick={() => nameValid && setStep(2)}
+            disabled={!nameValid}
+            className="w-full bg-primary text-primary-foreground font-bold py-3 rounded-xl hover:opacity-90 transition-opacity flex items-center justify-center gap-2 disabled:opacity-40"
+          >
+            Next <ChevronRight className="w-4 h-4" />
+          </button>
+
+          <Dots active={1} />
+        </div>
+      </div>
+    );
+  }
+
+  // ── Step 2: Current English level ────────────────────────────────────────
+  if (step === 2) {
     return (
       <div className="fixed inset-0 bg-background/95 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-in fade-in duration-300 overflow-y-auto">
         <div className="w-full max-w-md space-y-6 py-8">
@@ -178,7 +245,7 @@ export function Onboarding({ onComplete }: { onComplete: () => void }) {
             <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto">
               <GraduationCap className="w-8 h-8 text-primary" />
             </div>
-            <h1 className="text-2xl font-extrabold text-foreground">Welcome to LEXO!</h1>
+            <h1 className="text-2xl font-extrabold text-foreground">Welcome, {trimmedName.split(/\s+/)[0]}!</h1>
             <p className="text-muted-foreground text-sm">Let's set up your personalized study plan</p>
             <p className="text-muted-foreground text-xs" dir="rtl" lang="ar">مرحباً! دعنا نضع خطة دراسية مخصصة لك</p>
           </div>
@@ -226,22 +293,25 @@ export function Onboarding({ onComplete }: { onComplete: () => void }) {
             </p>
           </div>
 
-          <button
-            onClick={() => currentLevel && setStep(2)}
-            disabled={!currentLevel}
-            className="w-full bg-primary text-primary-foreground font-bold py-3 rounded-xl hover:opacity-90 transition-opacity flex items-center justify-center gap-2 disabled:opacity-40"
-          >
-            Next <ChevronRight className="w-4 h-4" />
-          </button>
+          <div className="flex gap-3">
+            <button onClick={() => setStep(1)} className="flex-1 bg-muted text-foreground font-bold py-3 rounded-xl hover:opacity-80 transition-opacity">Back</button>
+            <button
+              onClick={() => currentLevel && setStep(3)}
+              disabled={!currentLevel}
+              className="flex-1 bg-primary text-primary-foreground font-bold py-3 rounded-xl hover:opacity-90 transition-opacity flex items-center justify-center gap-2 disabled:opacity-40"
+            >
+              Next <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
 
-          <Dots active={1} />
+          <Dots active={2} />
         </div>
       </div>
     );
   }
 
-  // ── Step 2: Target band ──────────────────────────────────────────────────
-  if (step === 2) {
+  // ── Step 3: Target band ──────────────────────────────────────────────────
+  if (step === 3) {
     return (
       <div className="fixed inset-0 bg-background/95 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-in fade-in duration-300 overflow-y-auto">
         <div className="w-full max-w-md space-y-6 py-8">
@@ -287,20 +357,20 @@ export function Onboarding({ onComplete }: { onComplete: () => void }) {
           </div>
 
           <div className="flex gap-3">
-            <button onClick={() => setStep(1)} className="flex-1 bg-muted text-foreground font-bold py-3 rounded-xl hover:opacity-80 transition-opacity">Back</button>
-            <button onClick={() => setStep(3)} className="flex-1 bg-primary text-primary-foreground font-bold py-3 rounded-xl hover:opacity-90 transition-opacity flex items-center justify-center gap-2">
+            <button onClick={() => setStep(2)} className="flex-1 bg-muted text-foreground font-bold py-3 rounded-xl hover:opacity-80 transition-opacity">Back</button>
+            <button onClick={() => setStep(4)} className="flex-1 bg-primary text-primary-foreground font-bold py-3 rounded-xl hover:opacity-90 transition-opacity flex items-center justify-center gap-2">
               Next <ChevronRight className="w-4 h-4" />
             </button>
           </div>
 
-          <Dots active={2} />
+          <Dots active={3} />
         </div>
       </div>
     );
   }
 
-  // ── Step 3: Exam date ────────────────────────────────────────────────────
-  if (step === 3) {
+  // ── Step 4: Exam date ────────────────────────────────────────────────────
+  if (step === 4) {
     return (
       <div className="fixed inset-0 bg-background/95 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-in fade-in duration-300 overflow-y-auto">
         <div className="w-full max-w-md space-y-6 py-8">
@@ -368,8 +438,8 @@ export function Onboarding({ onComplete }: { onComplete: () => void }) {
           </div>
 
           <div className="flex gap-3">
-            <button onClick={() => setStep(2)} className="flex-1 bg-muted text-foreground font-bold py-3 rounded-xl hover:opacity-80 transition-opacity">Back</button>
-            <button onClick={() => { if (canProceedExam) setStep(4); }}
+            <button onClick={() => setStep(3)} className="flex-1 bg-muted text-foreground font-bold py-3 rounded-xl hover:opacity-80 transition-opacity">Back</button>
+            <button onClick={() => { if (canProceedExam) setStep(5); }}
               disabled={!canProceedExam}
               className="flex-1 bg-primary text-primary-foreground font-bold py-3 rounded-xl hover:opacity-90 transition-opacity disabled:opacity-40 flex items-center justify-center gap-2"
             >
@@ -377,14 +447,14 @@ export function Onboarding({ onComplete }: { onComplete: () => void }) {
             </button>
           </div>
 
-          <Dots active={3} />
+          <Dots active={4} />
         </div>
       </div>
     );
   }
 
-  // ── Step 4: Plan duration ────────────────────────────────────────────────
-  if (step === 4) {
+  // ── Step 5: Plan duration ────────────────────────────────────────────────
+  if (step === 5) {
     return (
       <div className="fixed inset-0 bg-background/95 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-in fade-in duration-300 overflow-y-auto">
         <div className="w-full max-w-md space-y-6 py-8">
@@ -411,9 +481,9 @@ export function Onboarding({ onComplete }: { onComplete: () => void }) {
           </div>
 
           <div className="flex gap-3">
-            <button onClick={() => setStep(3)} className="flex-1 bg-muted text-foreground font-bold py-3 rounded-xl hover:opacity-80 transition-opacity">Back</button>
+            <button onClick={() => setStep(4)} className="flex-1 bg-muted text-foreground font-bold py-3 rounded-xl hover:opacity-80 transition-opacity">Back</button>
             <button
-              onClick={() => { if (planDuration) setStep(5); }}
+              onClick={() => { if (planDuration) setStep(6); }}
               disabled={!planDuration}
               className="flex-1 bg-primary text-primary-foreground font-bold py-3 rounded-xl hover:opacity-90 transition-opacity disabled:opacity-40 flex items-center justify-center gap-2"
             >
@@ -421,13 +491,13 @@ export function Onboarding({ onComplete }: { onComplete: () => void }) {
             </button>
           </div>
 
-          <Dots active={4} />
+          <Dots active={5} />
         </div>
       </div>
     );
   }
 
-  // ── Step 5: Plan summary ────────────────────────────────────────────────
+  // ── Step 6: Plan summary ─────────────────────────────────────────────────
   return (
     <div className="fixed inset-0 bg-background/95 backdrop-blur-sm z-50 overflow-y-auto animate-in fade-in duration-300">
       <div className="max-w-lg mx-auto py-8 px-4 space-y-5">
@@ -531,7 +601,7 @@ export function Onboarding({ onComplete }: { onComplete: () => void }) {
         )}
 
         <div className="flex gap-3">
-          <button onClick={() => setStep(4)} className="flex-1 bg-muted text-foreground font-bold py-3 rounded-xl hover:opacity-80 transition-opacity">Back</button>
+          <button onClick={() => setStep(5)} className="flex-1 bg-muted text-foreground font-bold py-3 rounded-xl hover:opacity-80 transition-opacity">Back</button>
           <button onClick={handleSave} disabled={saving}
             className="flex-1 bg-primary text-primary-foreground font-bold py-3 rounded-xl hover:opacity-90 transition-opacity disabled:opacity-50 flex items-center justify-center gap-2"
           >
@@ -539,7 +609,93 @@ export function Onboarding({ onComplete }: { onComplete: () => void }) {
           </button>
         </div>
 
-        <Dots active={5} />
+        <Dots active={6} />
+      </div>
+    </div>
+  );
+}
+
+// ── Existing-user name prompt ──────────────────────────────────────────────
+// Shown one-time to returning users who completed onboarding before the name
+// field existed. Cannot be dismissed without entering a valid English name.
+
+export function NamePromptModal({ onSaved }: { onSaved: () => void }) {
+  const [name, setName] = useState("");
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
+
+  const trimmed = name.trim();
+  const valid = NAME_RE.test(trimmed);
+
+  async function save() {
+    if (!valid) return;
+    setSaving(true);
+    setError("");
+    try {
+      await customFetch("/api/user-data/name", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ value: trimmed }),
+      });
+      onSaved();
+    } catch {
+      setError("Could not save your name. Please try again.");
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  return (
+    <div
+      className="fixed inset-0 z-[80] flex items-center justify-center p-4 bg-background/95 backdrop-blur-sm animate-in fade-in"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="name-prompt-title"
+    >
+      <div className="w-full max-w-sm bg-card border border-border rounded-2xl shadow-2xl p-6 space-y-4 animate-in zoom-in-95 duration-200">
+        <div className="text-center space-y-2">
+          <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto">
+            <User className="w-7 h-7 text-primary" />
+          </div>
+          <h2 id="name-prompt-title" className="text-xl font-extrabold text-foreground">One quick thing</h2>
+          <p className="text-sm text-muted-foreground">What should we call you on your study plan?</p>
+          <p className="text-xs text-muted-foreground" dir="rtl" lang="ar">ما اسمك؟ سنستخدمه في خطة دراستك.</p>
+        </div>
+
+        <div className="space-y-2">
+          <input
+            type="text"
+            autoFocus
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            onKeyDown={(e) => { if (e.key === "Enter" && valid && !saving) void save(); }}
+            placeholder="e.g. Ahmed Saleh"
+            autoComplete="given-name"
+            maxLength={40}
+            className={cn(
+              "w-full px-4 py-3 bg-background border rounded-xl text-foreground text-lg font-medium focus:outline-none focus:ring-2",
+              trimmed && !valid
+                ? "border-red-400 focus:ring-red-300"
+                : "border-border focus:ring-primary/50"
+            )}
+          />
+          {trimmed && !valid && (
+            <p className="text-xs text-red-600 dark:text-red-400">
+              Please use English letters only (2–40 chars).
+            </p>
+          )}
+          {error && (
+            <p className="text-xs text-red-600 dark:text-red-400 text-center">{error}</p>
+          )}
+        </div>
+
+        <button
+          onClick={save}
+          disabled={!valid || saving}
+          className="w-full bg-primary text-primary-foreground font-bold py-3 rounded-xl hover:opacity-90 transition-opacity disabled:opacity-40"
+        >
+          {saving ? "Saving..." : "Continue"}
+        </button>
       </div>
     </div>
   );
@@ -547,23 +703,26 @@ export function Onboarding({ onComplete }: { onComplete: () => void }) {
 
 export function useOnboardingCheck() {
   const [needsOnboarding, setNeedsOnboarding] = useState(false);
+  const [needsName, setNeedsName] = useState(false);
   const [checked, setChecked] = useState(false);
 
   useEffect(() => {
     async function check() {
       try {
-        const [levelRes, bandRes, dateRes] = await Promise.all([
+        const [levelRes, bandRes, dateRes, nameRes] = await Promise.all([
           customFetch<{ value: string }>("/api/user-data/current_level"),
           customFetch<{ value: string }>("/api/user-data/target_band"),
           customFetch<{ value: string }>("/api/user-data/exam_date"),
+          customFetch<{ value: string }>("/api/user-data/name"),
         ]);
-        // Existing users (pre-current-level) won't have current_level set.
-        // Only force onboarding if BOTH band and date are missing — otherwise
-        // a returning user would be re-onboarded just to capture the new field.
-        if (!bandRes.value || !dateRes.value || !levelRes.value) {
-          // If they completed the old onboarding (band + date) but lack level,
-          // still ask once so we can set their study zone properly.
+        const hasOnboarding = !!(bandRes.value && dateRes.value && levelRes.value);
+        if (!hasOnboarding) {
+          // New (or partially-onboarded) user — full onboarding wizard handles
+          // name as Step 1, so we don't need a separate name modal here.
           setNeedsOnboarding(true);
+        } else if (!nameRes.value) {
+          // Existing user from before the name feature — prompt once for name.
+          setNeedsName(true);
         }
       } catch {
         // On API error, skip onboarding — don't force it for returning users
@@ -573,5 +732,5 @@ export function useOnboardingCheck() {
     check();
   }, []);
 
-  return { needsOnboarding, checked, setNeedsOnboarding };
+  return { needsOnboarding, needsName, checked, setNeedsOnboarding, setNeedsName };
 }

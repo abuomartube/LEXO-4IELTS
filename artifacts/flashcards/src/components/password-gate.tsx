@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef, type ReactNode } from "react";
 import { Mail, Lock, Eye, EyeOff, Loader2, Clock, CalendarX, MessageCircle, LogIn, UserPlus, KeyRound, CheckCircle2, Sparkles, Brain, Mic, PenTool, BookOpen, ArrowLeftRight, ArrowUpDown, BarChart3, Flame, Zap, Star, Quote, Headphones, ShieldAlert, BadgeCheck } from "lucide-react";
-import { Onboarding, useOnboardingCheck } from "./onboarding";
+import { Onboarding, NamePromptModal, useOnboardingCheck } from "./onboarding";
 import { NotificationPrompt } from "./notification-prompt";
 import { GuidedTour, useGuidedTour } from "./guided-tour";
 import { LexoAiChat } from "./lexo-ai-chat";
@@ -298,7 +298,7 @@ function LandingPage({ onLogin, onRegister }: { onLogin: () => void; onRegister:
 }
 
 function PasswordGateUnlocked({ children }: { children: ReactNode }) {
-  const { needsOnboarding, checked, setNeedsOnboarding } = useOnboardingCheck();
+  const { needsOnboarding, needsName, checked, setNeedsOnboarding, setNeedsName } = useOnboardingCheck();
   const { showTour, checked: tourChecked, completeTour } = useGuidedTour();
 
   // Idle session timeout — log the student out after 30 minutes of inactivity,
@@ -323,14 +323,16 @@ function PasswordGateUnlocked({ children }: { children: ReactNode }) {
     <>
       {!checked ? null : needsOnboarding ? (
         <Onboarding onComplete={() => setNeedsOnboarding(false)} />
+      ) : needsName ? (
+        <NamePromptModal onSaved={() => setNeedsName(false)} />
       ) : null}
       {children}
-      {checked && !needsOnboarding && tourChecked && showTour && (
+      {checked && !needsOnboarding && !needsName && tourChecked && showTour && (
         <GuidedTour onComplete={completeTour} />
       )}
       <NotificationPrompt />
-      {checked && !needsOnboarding && <LexoAiChat />}
-      {checked && !needsOnboarding && <ExitCommentPopup />}
+      {checked && !needsOnboarding && !needsName && <LexoAiChat />}
+      {checked && !needsOnboarding && !needsName && <ExitCommentPopup />}
       <IdleWarningModal
         open={warningOpen}
         msUntilLogout={msUntilLogout}

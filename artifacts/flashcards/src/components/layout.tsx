@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation } from "wouter";
-import { BookOpen, Home, Layers, PieChart, ExternalLink, Sun, Moon, HelpCircle, Sparkles, Shuffle, ArrowUpDown, FileText, BookMarked, Mic, LogOut, GraduationCap, Headphones, Menu, X, AlertTriangle, NotebookPen, Trophy, BookText, PlayCircle } from "lucide-react";
+import { BookOpen, Home, Layers, PieChart, ExternalLink, Sun, Moon, HelpCircle, Sparkles, Shuffle, ArrowUpDown, FileText, BookMarked, Mic, LogOut, GraduationCap, Headphones, Menu, X, AlertTriangle, NotebookPen, Trophy, BookText, PlayCircle, User } from "lucide-react";
+import { customFetch } from "@workspace/api-client-react";
 import { cn } from "@/lib/utils";
 import { useTheme } from "@/context/theme-context";
 import { Button } from "@/components/ui/button";
@@ -37,9 +38,33 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
   const { theme, toggleTheme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [avatar, setAvatar] = useState<string>("");
+  const [displayName, setDisplayName] = useState<string>("");
+
+  useEffect(() => {
+    let cancelled = false;
+    async function refreshProfile() {
+      try {
+        const [a, n] = await Promise.all([
+          customFetch<{ value: string }>("/api/user-data/avatar").catch(() => ({ value: "" })),
+          customFetch<{ value: string }>("/api/user-data/name").catch(() => ({ value: "" })),
+        ]);
+        if (cancelled) return;
+        setAvatar(a.value || "");
+        setDisplayName(n.value || "");
+      } catch { /* ignore */ }
+    }
+    refreshProfile();
+    const handler = () => refreshProfile();
+    window.addEventListener("lexo:profile-updated", handler);
+    return () => { cancelled = true; window.removeEventListener("lexo:profile-updated", handler); };
+  }, []);
+
+  const initial = (displayName || "?").trim().charAt(0).toUpperCase() || "?";
 
   const navItems = [
     { href: "/", label: "Dashboard", icon: Home },
+    { href: "/profile", label: "Profile", icon: User },
     { href: "/lessons", label: "Lessons", icon: PlayCircle },
     { href: "/study", label: "Study Mode", icon: BookOpen },
     { href: "/quiz", label: "Quiz Mode", icon: HelpCircle },
@@ -81,6 +106,23 @@ export function Layout({ children }: { children: React.ReactNode }) {
             </Link>
           </div>
           <div className="flex items-center gap-1">
+            <Link
+              href="/profile"
+              aria-label="Open your profile"
+              className="shrink-0 rounded-full ring-2 ring-transparent hover:ring-primary/40 transition-all"
+            >
+              {avatar ? (
+                <img
+                  src={avatar}
+                  alt={displayName || "Profile"}
+                  className="w-9 h-9 rounded-full object-cover"
+                />
+              ) : (
+                <div className="w-9 h-9 rounded-full bg-gradient-to-br from-teal-400 to-sky-500 text-white text-sm font-extrabold flex items-center justify-center">
+                  {initial}
+                </div>
+              )}
+            </Link>
             <NotificationsBell variant="sidebar" />
             <Button
               variant="ghost"

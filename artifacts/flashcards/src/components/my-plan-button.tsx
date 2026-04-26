@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link } from "wouter";
 import { customFetch } from "@workspace/api-client-react";
-import { CalendarDays, ClipboardList, X, CheckCircle2, Circle, Clock, ArrowRight, RotateCcw, LayoutGrid } from "lucide-react";
+import { CalendarDays, ClipboardList, X, CheckCircle2, Circle, Clock, ArrowRight, RotateCcw, LayoutGrid, Download, Loader2 } from "lucide-react";
+import { downloadPlanPdf } from "@/lib/plan-pdf-client";
 import {
   clearAllCompletions,
   ensurePlanStartDate,
@@ -73,6 +74,21 @@ export function MyPlanButton() {
   const [resetDuration, setResetDuration] = useState<PlanDuration | null>(90);
   const [resetting, setResetting] = useState(false);
   const [resetError, setResetError] = useState(false);
+  const [pdfBusy, setPdfBusy] = useState(false);
+  const [pdfError, setPdfError] = useState<string | null>(null);
+
+  async function handleDownloadPdf() {
+    if (!level) return;
+    setPdfBusy(true);
+    setPdfError(null);
+    try {
+      await downloadPlanPdf({ level, examDate, startISO: planStartISO });
+    } catch (e) {
+      setPdfError(e instanceof Error ? e.message : "Could not download PDF.");
+    } finally {
+      setPdfBusy(false);
+    }
+  }
 
   async function handleReset() {
     if (!resetDuration) return;
@@ -223,6 +239,17 @@ export function MyPlanButton() {
                   Reset
                 </button>
               </div>
+              <button
+                onClick={handleDownloadPdf}
+                disabled={pdfBusy || !level}
+                className="w-full inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-card border border-border text-foreground text-sm font-bold hover:border-primary/40 transition-colors disabled:opacity-50"
+              >
+                {pdfBusy ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
+                {pdfBusy ? "Preparing PDF..." : "Download Plan (PDF)"}
+              </button>
+              {pdfError && (
+                <p className="text-[11px] text-red-600 dark:text-red-400 text-center">{pdfError}</p>
+              )}
               <p className="text-[11px] text-muted-foreground text-center">
                 The plan rotates every day so you cover every section across the week.
               </p>

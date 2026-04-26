@@ -34,6 +34,7 @@ const SentenceBuilder = lazy(() => import("@/pages/sentence-builder"));
 const FlipIt = lazy(() => import("@/pages/flip-it"));
 const SpellIt = lazy(() => import("@/pages/spell-it"));
 const Plan = lazy(() => import("@/pages/plan"));
+const Profile = lazy(() => import("@/pages/profile"));
 const NotFound = lazy(() => import("@/pages/not-found"));
 
 setStudentEmailGetter(() => {
@@ -98,6 +99,7 @@ function Router() {
               <Route path="/flip-it" component={FlipIt} />
               <Route path="/spell-it" component={SpellIt} />
               <Route path="/plan" component={Plan} />
+              <Route path="/profile" component={Profile} />
               <Route component={NotFound} />
             </Switch>
           </PasswordGate>
