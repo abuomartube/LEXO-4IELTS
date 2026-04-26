@@ -34,6 +34,7 @@ export default function ListeningTestPage() {
   const { mutate: awardXp } = useAwardXp();
 
   // Hash deep-linking: #full / #skills / #skills-1 .. #skills-4
+  // Query deep-linking from the scheduler: ?test=listening-1 jumps into that mock.
   useEffect(() => {
     const apply = () => {
       const h = (typeof window !== "undefined" ? window.location.hash : "").toLowerCase();
@@ -47,6 +48,24 @@ export default function ListeningTestPage() {
     };
     apply();
     window.addEventListener("hashchange", apply);
+
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const testId = params.get("test");
+      if (testId) {
+        const match = listeningTests.find((t) => t.id === testId);
+        if (match) {
+          setMode("full");
+          setSelectedTest(match);
+          setPhase("intro");
+        }
+        try {
+          const url = new URL(window.location.href);
+          url.searchParams.delete("test");
+          window.history.replaceState({}, "", url.toString());
+        } catch {}
+      }
+    }
     return () => window.removeEventListener("hashchange", apply);
   }, []);
 

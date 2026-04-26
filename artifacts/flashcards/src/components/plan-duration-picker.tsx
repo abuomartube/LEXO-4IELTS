@@ -1,6 +1,16 @@
-import { AlertTriangle, Sparkles, Check } from "lucide-react";
+import { AlertTriangle, Sparkles, Check, Library } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { PLAN_DURATION_OPTIONS, type PlanDuration } from "@/lib/daily-plan";
+import { LIBRARY_SIZES } from "@/lib/plan-content";
+
+// Per-duration scope hints — hand-tuned based on the catalog rotation in
+// plan-content.ts so students can see at a glance how much they'll cover.
+const SCOPE_HINTS: Record<PlanDuration, string> = {
+  30:  `Hits ~30 of ${LIBRARY_SIZES.orwellTotal} Orwell prompts, all ${LIBRARY_SIZES.speakingThemes} speaking themes once`,
+  60:  `Covers ~50 of ${LIBRARY_SIZES.orwellTotal} essays, every speaking theme + most reading skills`,
+  90:  `Full library: all ${LIBRARY_SIZES.orwellTotal} essays, ${LIBRARY_SIZES.speakingThemes} themes, ${LIBRARY_SIZES.readingSkillsTotal} reading + ${LIBRARY_SIZES.listeningSkillsTotal} listening passages`,
+  120: `Full library twice over with extra revision and review days`,
+};
 
 interface PlanDurationPickerProps {
   value: PlanDuration | null;
@@ -80,6 +90,11 @@ export function PlanDurationPicker({ value, onSelect, className }: PlanDurationP
                 <p className="text-xs text-muted-foreground mt-1">{opt.tagline}</p>
                 <p className="text-[11px] text-muted-foreground/80 mt-0.5" dir="rtl" lang="ar">
                   {opt.taglineAr}
+                </p>
+
+                <p className="mt-1.5 text-[11px] font-semibold text-muted-foreground/90 flex items-start gap-1">
+                  <Library className="w-3 h-3 shrink-0 mt-0.5 text-primary/70" />
+                  <span>{SCOPE_HINTS[opt.days]}</span>
                 </p>
 
                 {opt.warning && (

@@ -4,7 +4,9 @@ import { customFetch } from "@workspace/api-client-react";
 import { CalendarDays, ClipboardList, X, CheckCircle2, Circle, Clock, ArrowRight, RotateCcw, LayoutGrid } from "lucide-react";
 import {
   clearAllCompletions,
-  getDailyPlan,
+  ensurePlanStartDate,
+  getPlanDayIndex,
+  getScheduledDayTasks,
   getTodayCompleted,
   markTaskDone,
   unmarkTaskDone,
@@ -12,26 +14,29 @@ import {
   levelLabel,
   todayISO,
   type PlanDuration,
-  type PlanTask,
+  type ScheduledTask,
 } from "@/lib/daily-plan";
 import { PlanDurationPicker } from "@/components/plan-duration-picker";
 
 function useUserPlanData() {
   const [level, setLevel] = useState<string | null>(null);
   const [examDate, setExamDate] = useState<string | null>(null);
+  const [planStartISO, setPlanStartISO] = useState<string>(() => ensurePlanStartDate(undefined));
   const [loading, setLoading] = useState(true);
   const [refreshTick, setRefreshTick] = useState(0);
   useEffect(() => {
     let cancelled = false;
     (async () => {
       try {
-        const [lvlRes, dateRes] = await Promise.all([
+        const [lvlRes, dateRes, startRes] = await Promise.all([
           customFetch<{ value: string }>("/api/user-data/current_level").catch(() => null),
           customFetch<{ value: string }>("/api/user-data/exam_date").catch(() => null),
+          customFetch<{ value: string }>("/api/user-data/plan_start_date").catch(() => null),
         ]);
         if (cancelled) return;
         setLevel(lvlRes?.value || null);
         setExamDate(dateRes?.value || null);
+        setPlanStartISO(ensurePlanStartDate(startRes?.value));
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -43,7 +48,7 @@ function useUserPlanData() {
     window.addEventListener("lexo:plan-updated", refresh);
     return () => window.removeEventListener("lexo:plan-updated", refresh);
   }, []);
-  return { level, examDate, loading };
+  return { level, examDate, planStartISO, loading };
 }
 
 function useCompletedSet() {
@@ -62,7 +67,7 @@ function useCompletedSet() {
 
 export function MyPlanButton() {
   const [open, setOpen] = useState(false);
-  const { level, examDate, loading } = useUserPlanData();
+  const { level, examDate, planStartISO, loading } = useUserPlanData();
   const completed = useCompletedSet();
   const [resetOpen, setResetOpen] = useState(false);
   const [resetDuration, setResetDuration] = useState<PlanDuration | null>(90);
@@ -96,7 +101,8 @@ export function MyPlanButton() {
     }
   }
 
-  const tasks = getDailyPlan(level);
+  const planDayIndex = Math.max(1, getPlanDayIndex(planStartISO, new Date()));
+  const tasks = getScheduledDayTasks(level, planStartISO, planDayIndex);
   const doneCount = tasks.filter((t) => completed.has(t.id)).length;
   const totalCount = tasks.length;
   const days = daysUntilExam(examDate);
@@ -286,13 +292,17 @@ export function MyPlanButton() {
   );
 }
 
-function PlanTaskRow({ task, index, done, onClose }: { task: PlanTask; index: number; done: boolean; onClose: () => void }) {
+function PlanTaskRow({ task, index, done, onClose }: { task: ScheduledTask; index: number; done: boolean; onClose: () => void }) {
   const toggle = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     if (done) unmarkTaskDone(task.id);
     else markTaskDone(task.id);
   };
+
+  const linkHref = task.scheduled?.href ?? (task.hash ? `${task.href}${task.hash}` : task.href);
+  const subtitle = task.scheduled?.title ?? task.arabicLabel;
+  const subtitleIsArabic = !task.scheduled;
 
   return (
     <div
@@ -314,7 +324,7 @@ function PlanTaskRow({ task, index, done, onClose }: { task: PlanTask; index: nu
         </button>
 
         <Link
-          href={task.hash ? `${task.href}${task.hash}` : task.href}
+          href={linkHref}
           onClick={onClose}
           className="flex-1 flex items-center gap-3 px-3 py-3 min-w-0"
         >
@@ -328,7 +338,13 @@ function PlanTaskRow({ task, index, done, onClose }: { task: PlanTask; index: nu
                 {task.label}
               </p>
             </div>
-            <p className="text-xs text-muted-foreground truncate" dir="rtl" lang="ar">{task.arabicLabel}</p>
+            <p
+              className="text-xs text-muted-foreground truncate"
+              {...(subtitleIsArabic ? { dir: "rtl", lang: "ar" } : {})}
+              title={subtitle}
+            >
+              {subtitle}
+            </p>
             <div className="flex items-center gap-1 mt-0.5 text-[11px] text-muted-foreground">
               <Clock className="w-3 h-3" />
               <span>~{task.estimatedMinutes} min</span>

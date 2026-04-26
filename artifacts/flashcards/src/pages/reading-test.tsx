@@ -24,7 +24,11 @@ type Phase = "select" | "intro" | "test" | "results";
 export default function ReadingTestPage() {
   const [mode, setMode] = useState<Mode>("menu");
 
+  const [phase, setPhase] = useState<Phase>("select");
+  const [selectedTest, setSelectedTest] = useState<ReadingTest | null>(null);
+
   // Hash deep-linking from the daily plan: #full / #skills
+  // Query deep-linking from the scheduler: ?test=test1 jumps into that mock.
   useEffect(() => {
     const apply = () => {
       const h = (typeof window !== "undefined" ? window.location.hash : "").toLowerCase();
@@ -33,11 +37,27 @@ export default function ReadingTestPage() {
     };
     apply();
     window.addEventListener("hashchange", apply);
+
+    // One-shot query reception
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const testId = params.get("test");
+      if (testId) {
+        const match = readingTests.find((t) => t.id === testId);
+        if (match) {
+          setMode("full");
+          setSelectedTest(match);
+          setPhase("intro");
+        }
+        try {
+          const url = new URL(window.location.href);
+          url.searchParams.delete("test");
+          window.history.replaceState({}, "", url.toString());
+        } catch {}
+      }
+    }
     return () => window.removeEventListener("hashchange", apply);
   }, []);
-
-  const [phase, setPhase] = useState<Phase>("select");
-  const [selectedTest, setSelectedTest] = useState<ReadingTest | null>(null);
   const [currentPassage, setCurrentPassage] = useState(0);
   const [answers, setAnswers] = useState<Answers>({});
   const [timeLeft, setTimeLeft] = useState(60 * 60);

@@ -1,3 +1,5 @@
+import { PLAN_CONTENT_CATALOGS, type PlanContentItem } from "./plan-content";
+
 export type CefrLevel = "A1" | "A2" | "B1" | "B2" | "C1";
 export type LevelGroup = "beginner" | "intermediate" | "advanced";
 
@@ -40,6 +42,9 @@ export const TASKS: Record<string, PlanTask> = {
   sentenceBuilder:  { id: "sentenceBuilder",  label: "Sentence Builder",           arabicLabel: "بناء الجمل",          emoji: "🧠", href: "/sentence-builder",                                estimatedMinutes: 10, color: "from-cyan-500 to-blue-500" },
   flipIt:           { id: "flipIt",           label: "Flip It",                    arabicLabel: "اقلب البطاقة",         emoji: "⚡", href: "/flip-it",                                         estimatedMinutes: 6,  color: "from-amber-500 to-orange-500" },
   spellIt:          { id: "spellIt",          label: "Spell It",                   arabicLabel: "اِكتب التهجئة",       emoji: "🔤", href: "/spell-it",                                        estimatedMinutes: 6,  color: "from-emerald-500 to-teal-500" },
+  // Full mock tests (one rotated mock per appearance — heavier, less frequent)
+  readingMock:      { id: "readingMock",      label: "Reading Mock Test",          arabicLabel: "اختبار قراءة كامل",   emoji: "📝", href: "/reading-test",                                    estimatedMinutes: 60, color: "from-emerald-500 to-lime-500" },
+  listeningMock:    { id: "listeningMock",    label: "Listening Mock Test",        arabicLabel: "اختبار استماع كامل",  emoji: "🎬", href: "/listening-test",                                  estimatedMinutes: 40, color: "from-amber-500 to-orange-500" },
 };
 
 /**
@@ -78,6 +83,8 @@ export const LEVEL_POOLS_BY_LEVEL: Record<CefrLevel, PlanTask[]> = {
     TASKS.readingSkills,
     TASKS.listeningS1,
     TASKS.listeningS2,
+    TASKS.readingMock,
+    TASKS.listeningMock,
   ],
   B2: [
     TASKS.wordOfDay,
@@ -90,6 +97,8 @@ export const LEVEL_POOLS_BY_LEVEL: Record<CefrLevel, PlanTask[]> = {
     TASKS.listeningS2,
     TASKS.listeningS3,
     TASKS.writingTemplates,
+    TASKS.readingMock,
+    TASKS.listeningMock,
   ],
   C1: [
     TASKS.wordOfDay,
@@ -102,6 +111,8 @@ export const LEVEL_POOLS_BY_LEVEL: Record<CefrLevel, PlanTask[]> = {
     TASKS.listeningS3,
     TASKS.listeningS4,
     TASKS.writingTemplates,
+    TASKS.readingMock,
+    TASKS.listeningMock,
   ],
 };
 
@@ -155,6 +166,96 @@ export function getDailyPlan(level: CefrLevel | string | null | undefined, date:
 /** Full pool for the level — used for weekly progress bars (one bar per section). */
 export function getWeeklySections(level: CefrLevel | string | null | undefined): PlanTask[] {
   return LEVEL_POOLS_BY_LEVEL[normalizeLevel(level)];
+}
+
+/** ── Per-day content scheduling ─────────────────────────────────────────── */
+
+export interface ScheduledTask extends PlanTask {
+  /** Specific catalog item assigned to this task on this plan day, if the task has finite content. */
+  scheduled?: PlanContentItem;
+}
+
+/**
+ * Compute the full day-by-day schedule for a plan, with each task assigned to
+ * a specific catalog item by occurrence-rotation. Iterates the plan once
+ * (O(duration · TASKS_PER_DAY)) so the schedule is consistent across the UI.
+ */
+export function getPlanSchedule(
+  level: CefrLevel | string | null | undefined,
+  startISO: string,
+  duration: number,
+): ScheduledTask[][] {
+  const start = parsePlanISO(startISO);
+  const counts: Record<string, number> = {};
+  const result: ScheduledTask[][] = [];
+  for (let i = 1; i <= duration; i++) {
+    const d = addDays(start, i - 1);
+    const tasks = getDailyPlan(level, d);
+    const dayTasks: ScheduledTask[] = tasks.map((t) => {
+      const occurrenceIdx = counts[t.id] ?? 0;
+      counts[t.id] = occurrenceIdx + 1;
+      const catalog = PLAN_CONTENT_CATALOGS[t.id];
+      if (!catalog || catalog.length === 0) return t;
+      return { ...t, scheduled: catalog[occurrenceIdx % catalog.length] };
+    });
+    result.push(dayTasks);
+  }
+  return result;
+}
+
+/** Tasks for a single plan-day, with each task already mapped to its scheduled catalog item. */
+export function getScheduledDayTasks(
+  level: CefrLevel | string | null | undefined,
+  startISO: string,
+  dayIndex: number,
+): ScheduledTask[] {
+  if (dayIndex < 1) return [];
+  const schedule = getPlanSchedule(level, startISO, dayIndex);
+  return schedule[dayIndex - 1] ?? [];
+}
+
+export interface TaskCoverage {
+  /** Number of times the task is scheduled in the plan (counts repeats). */
+  scheduledCount: number;
+  /** Number of distinct catalog items the student will encounter. */
+  uniqueCovered: number;
+  /** Total catalog size for this task. */
+  catalogSize: number;
+}
+
+/**
+ * Aggregate coverage per task across the entire plan. Used by the "What you'll
+ * cover" panel and the duration-picker scope hints.
+ */
+export function getPlanCoverage(
+  level: CefrLevel | string | null | undefined,
+  startISO: string,
+  duration: number,
+): Record<string, TaskCoverage> {
+  const schedule = getPlanSchedule(level, startISO, duration);
+  const counts = new Map<string, number>();
+  const seen = new Map<string, Set<string>>();
+  for (const day of schedule) {
+    for (const t of day) {
+      counts.set(t.id, (counts.get(t.id) ?? 0) + 1);
+      if (t.scheduled) {
+        const set = seen.get(t.id) ?? new Set<string>();
+        set.add(t.scheduled.id);
+        seen.set(t.id, set);
+      }
+    }
+  }
+  const out: Record<string, TaskCoverage> = {};
+  const allIds = new Set<string>([...counts.keys(), ...Object.keys(PLAN_CONTENT_CATALOGS)]);
+  for (const id of allIds) {
+    const catalog = PLAN_CONTENT_CATALOGS[id];
+    out[id] = {
+      scheduledCount: counts.get(id) ?? 0,
+      uniqueCovered: seen.get(id)?.size ?? 0,
+      catalogSize: catalog?.length ?? 0,
+    };
+  }
+  return out;
 }
 
 export function daysUntilExam(examDate: string | null | undefined): number | null {
@@ -268,7 +369,7 @@ export interface DayStatus {
   dayIndex: number;
   weekIndex: number;
   weekdayName: string;
-  tasks: PlanTask[];
+  tasks: ScheduledTask[];
   doneCount: number;
   total: number;
   state: DayState;
@@ -282,7 +383,11 @@ export function getDayStatus(
   date: Date,
   todayDate: Date = new Date(),
 ): DayStatus {
-  const tasks = getDailyPlan(level, date);
+  const dayIndex = getPlanDayIndex(startISO, date);
+  const tasks: ScheduledTask[] =
+    dayIndex >= 1
+      ? getScheduledDayTasks(level, startISO, dayIndex)
+      : getDailyPlan(level, date);
   const done = getCompletedForDate(date);
   const doneCount = tasks.filter((t) => done.has(t.id)).length;
   const total = tasks.length;
@@ -296,7 +401,6 @@ export function getDayStatus(
   else if (doneCount > 0) state = "partial";
   else state = "missed";
 
-  const dayIndex = getPlanDayIndex(startISO, date);
   return {
     date,
     iso: dIso,

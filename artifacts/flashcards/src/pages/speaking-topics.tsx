@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Layout } from "@/components/layout";
 import { SPEAKING_TOPICS, type SpeakingTopic, type TopicQuestion } from "@/data/speaking-topics";
 import {
@@ -186,8 +186,16 @@ function Part2Card({ topic }: { topic: SpeakingTopic }) {
   );
 }
 
-function TopicDetail({ topic, onBack }: { topic: SpeakingTopic; onBack: () => void }) {
-  const [activeTab, setActiveTab] = useState<1 | 2 | 3>(1);
+function TopicDetail({
+  topic,
+  onBack,
+  initialPart = 1,
+}: {
+  topic: SpeakingTopic;
+  onBack: () => void;
+  initialPart?: 1 | 2 | 3;
+}) {
+  const [activeTab, setActiveTab] = useState<1 | 2 | 3>(initialPart);
 
   const tabs = [
     { n: 1 as const, label: "Part 1", sub: "Introduction", count: topic.part1.length },
@@ -256,7 +264,31 @@ function TopicDetail({ topic, onBack }: { topic: SpeakingTopic; onBack: () => vo
 
 export default function SpeakingTopicsPage() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [initialPart, setInitialPart] = useState<1 | 2 | 3>(1);
   const [search, setSearch] = useState("");
+
+  // Deep-link reception: /speaking-topics?topic=hometown[&part=2] opens that theme directly.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    const topic = params.get("topic");
+    const part = params.get("part");
+    if (!topic) return;
+    const match = SPEAKING_TOPICS.find((t) => t.id === topic);
+    if (match) {
+      setSelectedId(match.id);
+      const parsed = part ? Number(part) : 1;
+      if (parsed === 1 || parsed === 2 || parsed === 3) {
+        setInitialPart(parsed);
+      }
+    }
+    try {
+      const url = new URL(window.location.href);
+      url.searchParams.delete("topic");
+      url.searchParams.delete("part");
+      window.history.replaceState({}, "", url.toString());
+    } catch {}
+  }, []);
 
   const selectedTopic = useMemo(
     () => SPEAKING_TOPICS.find((t) => t.id === selectedId) ?? null,
@@ -283,7 +315,11 @@ export default function SpeakingTopicsPage() {
   if (selectedTopic) {
     return (
       <Layout>
-        <TopicDetail topic={selectedTopic} onBack={() => setSelectedId(null)} />
+        <TopicDetail
+          topic={selectedTopic}
+          onBack={() => setSelectedId(null)}
+          initialPart={initialPart}
+        />
       </Layout>
     );
   }
@@ -344,7 +380,10 @@ export default function SpeakingTopicsPage() {
           {filtered.map((topic) => (
             <button
               key={topic.id}
-              onClick={() => setSelectedId(topic.id)}
+              onClick={() => {
+                setInitialPart(1);
+                setSelectedId(topic.id);
+              }}
               className="bg-card border border-border rounded-2xl p-4 text-left hover:border-primary/40 hover:shadow-md transition-all group"
             >
               <div className="flex items-center gap-3">

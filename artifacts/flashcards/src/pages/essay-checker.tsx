@@ -707,6 +707,46 @@ export default function EssayChecker() {
     paragraph: ASSIGNMENTS_BY_CATEGORY.paragraph.length,
   };
 
+  // ── Deep-link reception: /essay-checker?id=task1-7 jumps straight into that
+  // assignment so the daily-plan tile points at a specific item.
+  // Runs once on mount; we do not watch the URL after that to avoid stomping
+  // on user navigation away from the deep-linked assignment.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    const deepId = params.get("id");
+    if (!deepId) return;
+    let foundCat: Category | null = null;
+    let found: OrwellAssignment | null = null;
+    for (const cat of ["task1", "task2", "paragraph"] as const) {
+      const hit = ASSIGNMENTS_BY_CATEGORY[cat].find((a) => a.id === deepId);
+      if (hit) {
+        foundCat = cat;
+        found = hit;
+        break;
+      }
+    }
+    if (!found || !foundCat) return;
+    setCategory(foundCat);
+    if (foundCat === "task2" && found.subtype) {
+      setTask2Subtype(found.subtype as Task2Subtype);
+    }
+    setAssignment(found);
+    setEssay("");
+    setResult(null);
+    setParagraphResult(null);
+    setError(null);
+    setScreen("writing");
+    // Strip the id param so a refresh from the result screen doesn't bounce
+    // the student back to the start of the assignment.
+    try {
+      const url = new URL(window.location.href);
+      url.searchParams.delete("id");
+      window.history.replaceState({}, "", url.toString());
+    } catch {}
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   // Load global progress whenever we land on the select screen
   useEffect(() => {
     if (screen !== "select") return;

@@ -3,7 +3,9 @@ import { Link } from "wouter";
 import { customFetch } from "@workspace/api-client-react";
 import { CalendarDays, ClipboardList, CheckCircle2, Circle, ArrowRight, TrendingUp, Clock } from "lucide-react";
 import {
-  getDailyPlan,
+  ensurePlanStartDate,
+  getPlanDayIndex,
+  getScheduledDayTasks,
   getWeeklySections,
   getTodayCompleted,
   getWeeklyCompletionCount,
@@ -12,7 +14,7 @@ import {
   unmarkTaskDone,
   daysUntilExam,
   levelLabel,
-  type PlanTask,
+  type ScheduledTask,
 } from "@/lib/daily-plan";
 
 const WEEKDAY_NAMES = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -20,6 +22,7 @@ const WEEKDAY_NAMES = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "
 export function DailyPlanSection() {
   const [level, setLevel] = useState<string | null>(null);
   const [examDate, setExamDate] = useState<string | null>(null);
+  const [planStartISO, setPlanStartISO] = useState<string>(() => ensurePlanStartDate(undefined));
   const [loading, setLoading] = useState(true);
   const [completed, setCompleted] = useState<Set<string>>(() => getTodayCompleted());
   const [refreshTick, setRefreshTick] = useState(0);
@@ -28,13 +31,15 @@ export function DailyPlanSection() {
     let cancelled = false;
     (async () => {
       try {
-        const [lvlRes, dateRes] = await Promise.all([
+        const [lvlRes, dateRes, startRes] = await Promise.all([
           customFetch<{ value: string }>("/api/user-data/current_level").catch(() => null),
           customFetch<{ value: string }>("/api/user-data/exam_date").catch(() => null),
+          customFetch<{ value: string }>("/api/user-data/plan_start_date").catch(() => null),
         ]);
         if (cancelled) return;
         setLevel(lvlRes?.value ?? null);
         setExamDate(dateRes?.value ?? null);
+        setPlanStartISO(ensurePlanStartDate(startRes?.value));
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -63,7 +68,9 @@ export function DailyPlanSection() {
   }
 
   const today = new Date();
-  const tasks = getDailyPlan(level, today);
+  // Day index inside the plan (1-based). Clamp to ≥1 so pre-start peeks still render today's slot.
+  const planDayIndex = Math.max(1, getPlanDayIndex(planStartISO, today));
+  const tasks = getScheduledDayTasks(level, planStartISO, planDayIndex);
   const weeklyPool = getWeeklySections(level);
   const days = daysUntilExam(examDate);
   const doneCount = tasks.filter((t) => completed.has(t.id)).length;
@@ -192,13 +199,18 @@ export function DailyPlanSection() {
   );
 }
 
-function DailyTaskCard({ task, index, done }: { task: PlanTask; index: number; done: boolean }) {
+function DailyTaskCard({ task, index, done }: { task: ScheduledTask; index: number; done: boolean }) {
   const toggle = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     if (done) unmarkTaskDone(task.id);
     else markTaskDone(task.id);
   };
+
+  // Prefer the scheduled deep-link if a specific item was assigned for today.
+  const linkHref = task.scheduled?.href ?? (task.hash ? `${task.href}${task.hash}` : task.href);
+  const subtitle = task.scheduled?.title ?? task.arabicLabel;
+  const subtitleIsArabic = !task.scheduled;
 
   return (
     <div
@@ -219,7 +231,7 @@ function DailyTaskCard({ task, index, done }: { task: PlanTask; index: number; d
           {done ? <CheckCircle2 className="w-5 h-5" /> : <Circle className="w-5 h-5" />}
         </button>
         <Link
-          href={task.hash ? `${task.href}${task.hash}` : task.href}
+          href={linkHref}
           className="flex-1 flex items-center gap-3 px-4 py-4 min-w-0"
         >
           <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${task.color} flex items-center justify-center shrink-0 text-2xl shadow-md`}>
@@ -232,7 +244,13 @@ function DailyTaskCard({ task, index, done }: { task: PlanTask; index: number; d
                 {task.label}
               </p>
             </div>
-            <p className="text-xs text-muted-foreground truncate mt-0.5" dir="rtl" lang="ar">{task.arabicLabel}</p>
+            <p
+              className="text-xs text-muted-foreground truncate mt-0.5"
+              {...(subtitleIsArabic ? { dir: "rtl", lang: "ar" } : {})}
+              title={subtitle}
+            >
+              {subtitle}
+            </p>
             <div className="flex items-center gap-1 mt-1 text-[11px] text-muted-foreground">
               <Clock className="w-3 h-3" />
               <span>~{task.estimatedMinutes} min</span>

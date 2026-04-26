@@ -22,6 +22,7 @@ import {
   getCompletedForDate,
   getDayStatus,
   getPlanCompletionStats,
+  getPlanCoverage,
   levelLabel,
   normalizePlanDuration,
   parsePlanISO,
@@ -31,6 +32,7 @@ import {
   type DayStatus,
   type PlanDuration,
 } from "@/lib/daily-plan";
+import { LIBRARY_SIZES, PLAN_CONTENT_REFERENCE } from "@/lib/plan-content";
 
 interface UserPlan {
   level: string | null;
@@ -156,6 +158,11 @@ export default function PlanPage() {
     return getPlanCompletionStats(plan.level, plan.startISO, plan.duration, today);
   }, [plan, today]);
 
+  const coverage = useMemo(() => {
+    if (!plan) return null;
+    return getPlanCoverage(plan.level, plan.startISO, plan.duration);
+  }, [plan]);
+
   if (loading || !plan) {
     return (
       <Layout>
@@ -271,6 +278,9 @@ export default function PlanPage() {
           </div>
         )}
 
+        {/* ── Coverage panel ── */}
+        {coverage && <CoveragePanel coverage={coverage} duration={plan.duration} />}
+
         {/* ── Legend ── */}
         <div className="flex flex-wrap items-center gap-3 text-xs">
           <Legend swatch="bg-emerald-500" label="Completed" />
@@ -294,6 +304,162 @@ export default function PlanPage() {
         </div>
       </div>
     </Layout>
+  );
+}
+
+function CoveragePanel({
+  coverage,
+  duration,
+}: {
+  coverage: Record<string, { scheduledCount: number; uniqueCovered: number; catalogSize: number }>;
+  duration: PlanDuration;
+}) {
+  const orwellUnique =
+    (coverage.orwellTask1?.uniqueCovered ?? 0) +
+    (coverage.orwellTask2?.uniqueCovered ?? 0) +
+    (coverage.paragraph?.uniqueCovered ?? 0);
+  const orwellSize = LIBRARY_SIZES.orwellTotal;
+
+  const speakingUnique = Math.max(
+    coverage.topicBank?.uniqueCovered ?? 0,
+    coverage.churchillP1?.uniqueCovered ?? 0,
+    coverage.churchillP2?.uniqueCovered ?? 0,
+    coverage.churchillP3?.uniqueCovered ?? 0,
+  );
+  const speakingSize = LIBRARY_SIZES.speakingThemes;
+
+  const readingSkillsUnique =
+    (coverage.readingSkills?.uniqueCovered ?? 0) + (coverage.readingSkillsEasy?.uniqueCovered ?? 0);
+  const readingSkillsSize = LIBRARY_SIZES.readingSkillsTotal;
+
+  const listeningSkillsUnique =
+    (coverage.listeningS1?.uniqueCovered ?? 0) +
+    (coverage.listeningS2?.uniqueCovered ?? 0) +
+    (coverage.listeningS3?.uniqueCovered ?? 0) +
+    (coverage.listeningS4?.uniqueCovered ?? 0);
+  const listeningSkillsSize = LIBRARY_SIZES.listeningSkillsTotal;
+
+  const rows: {
+    key: string;
+    emoji: string;
+    label: string;
+    detail: string;
+    pct: number;
+    color: string;
+  }[] = [
+    {
+      key: "vocab",
+      emoji: "✨",
+      label: "Vocabulary deck",
+      detail: `Continuous review · ${LIBRARY_SIZES.vocabWords.toLocaleString()} words`,
+      pct: 100,
+      color: "from-purple-500 to-fuchsia-500",
+    },
+    {
+      key: "writing",
+      emoji: "✍️",
+      label: "Writing — Orwell prompts",
+      detail: `${orwellUnique} of ${orwellSize} essays scheduled across the plan`,
+      pct: orwellSize > 0 ? Math.round((orwellUnique / orwellSize) * 100) : 0,
+      color: "from-violet-500 to-purple-500",
+    },
+    {
+      key: "speaking",
+      emoji: "🎤",
+      label: "Speaking — Churchill themes",
+      detail: `${speakingUnique} of ${speakingSize} themes touched`,
+      pct: speakingSize > 0 ? Math.round((speakingUnique / speakingSize) * 100) : 0,
+      color: "from-rose-500 to-pink-500",
+    },
+    {
+      key: "readingSkills",
+      emoji: "📖",
+      label: "Reading — skill passages",
+      detail: `${readingSkillsUnique} of ${readingSkillsSize} passages scheduled`,
+      pct: readingSkillsSize > 0 ? Math.round((readingSkillsUnique / readingSkillsSize) * 100) : 0,
+      color: "from-emerald-500 to-teal-500",
+    },
+    {
+      key: "listeningSkills",
+      emoji: "🎧",
+      label: "Listening — skill sections",
+      detail: `${listeningSkillsUnique} of ${listeningSkillsSize} practices scheduled`,
+      pct: listeningSkillsSize > 0 ? Math.round((listeningSkillsUnique / listeningSkillsSize) * 100) : 0,
+      color: "from-sky-500 to-blue-500",
+    },
+    {
+      key: "readingMocks",
+      emoji: "📝",
+      label: "Reading mock tests",
+      detail:
+        (coverage.readingMock?.scheduledCount ?? 0) > 0
+          ? `${coverage.readingMock?.uniqueCovered ?? 0} of ${LIBRARY_SIZES.readingMockTests} mocks scheduled (${coverage.readingMock?.scheduledCount ?? 0} sittings)`
+          : `${LIBRARY_SIZES.readingMockTests} full mocks available — fit them in on rest days`,
+      pct:
+        LIBRARY_SIZES.readingMockTests > 0
+          ? Math.round(((coverage.readingMock?.uniqueCovered ?? 0) / LIBRARY_SIZES.readingMockTests) * 100)
+          : 0,
+      color: "from-emerald-500 to-lime-500",
+    },
+    {
+      key: "listeningMocks",
+      emoji: "🎬",
+      label: "Listening mock tests",
+      detail:
+        (coverage.listeningMock?.scheduledCount ?? 0) > 0
+          ? `${coverage.listeningMock?.uniqueCovered ?? 0} of ${LIBRARY_SIZES.listeningMockTests} mocks scheduled (${coverage.listeningMock?.scheduledCount ?? 0} sittings)`
+          : `${LIBRARY_SIZES.listeningMockTests} full mocks available — fit them in on rest days`,
+      pct:
+        LIBRARY_SIZES.listeningMockTests > 0
+          ? Math.round(((coverage.listeningMock?.uniqueCovered ?? 0) / LIBRARY_SIZES.listeningMockTests) * 100)
+          : 0,
+      color: "from-amber-500 to-orange-500",
+    },
+  ];
+
+  return (
+    <section className="rounded-3xl border border-border bg-card overflow-hidden">
+      <header className="px-5 py-4 border-b border-border bg-muted/30">
+        <div className="flex items-center gap-2">
+          <Sparkles className="w-4 h-4 text-primary" />
+          <p className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest">
+            What you'll cover
+          </p>
+        </div>
+        <h3 className="text-base font-extrabold text-foreground leading-tight mt-0.5">
+          Your {duration}-day scope across the catalog
+        </h3>
+      </header>
+      <div className="p-4 sm:p-5 grid grid-cols-1 sm:grid-cols-2 gap-3">
+        {rows.map((r) => (
+          <div
+            key={r.key}
+            className="flex items-center gap-3 p-3 rounded-2xl border border-border bg-background"
+          >
+            <div
+              className={cn(
+                "w-10 h-10 rounded-xl bg-gradient-to-br flex items-center justify-center text-lg shrink-0 shadow-sm",
+                r.color,
+              )}
+            >
+              <span aria-hidden>{r.emoji}</span>
+            </div>
+            <div className="min-w-0 flex-1">
+              <p className="text-sm font-extrabold text-foreground truncate">{r.label}</p>
+              <p className="text-[11px] text-muted-foreground truncate" title={r.detail}>
+                {r.detail}
+              </p>
+              <div className="mt-1.5 h-1.5 rounded-full bg-muted overflow-hidden">
+                <div
+                  className={cn("h-full bg-gradient-to-r transition-all duration-500", r.color)}
+                  style={{ width: `${Math.min(100, Math.max(0, r.pct))}%` }}
+                />
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
   );
 }
 
@@ -387,7 +553,7 @@ function ExpandedDayTasks({ day }: { day: DayStatus }) {
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
       {day.tasks.map((task, i) => {
         const done = completedSet.has(task.id);
-        const href = task.hash ? `${task.href}${task.hash}` : task.href;
+        const href = task.scheduled?.href ?? (task.hash ? `${task.href}${task.hash}` : task.href);
         return (
                 <Link
                   key={task.id}
@@ -419,6 +585,11 @@ function ExpandedDayTasks({ day }: { day: DayStatus }) {
                         {task.label}
                       </p>
                     </div>
+                    {task.scheduled && (
+                      <p className="text-[11px] text-muted-foreground truncate mt-0.5" title={task.scheduled.title}>
+                        {task.scheduled.title}
+                      </p>
+                    )}
                     <div className="flex items-center gap-1 mt-0.5 text-[11px] text-muted-foreground">
                       <Clock className="w-3 h-3" />~{task.estimatedMinutes} min
                     </div>
