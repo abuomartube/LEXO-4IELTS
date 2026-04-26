@@ -1,21 +1,26 @@
 import { useEffect, useState } from "react";
 import { Link } from "wouter";
 import { customFetch } from "@workspace/api-client-react";
-import { CalendarDays, ClipboardList, X, CheckCircle2, Circle, Clock, ArrowRight } from "lucide-react";
+import { CalendarDays, ClipboardList, X, CheckCircle2, Circle, Clock, ArrowRight, RotateCcw, LayoutGrid } from "lucide-react";
 import {
+  clearAllCompletions,
   getDailyPlan,
   getTodayCompleted,
   markTaskDone,
   unmarkTaskDone,
   daysUntilExam,
   levelLabel,
+  todayISO,
+  type PlanDuration,
   type PlanTask,
 } from "@/lib/daily-plan";
+import { PlanDurationPicker } from "@/components/plan-duration-picker";
 
 function useUserPlanData() {
   const [level, setLevel] = useState<string | null>(null);
   const [examDate, setExamDate] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [refreshTick, setRefreshTick] = useState(0);
   useEffect(() => {
     let cancelled = false;
     (async () => {
@@ -25,13 +30,18 @@ function useUserPlanData() {
           customFetch<{ value: string }>("/api/user-data/exam_date").catch(() => null),
         ]);
         if (cancelled) return;
-        setLevel(lvlRes?.value ?? null);
-        setExamDate(dateRes?.value ?? null);
+        setLevel(lvlRes?.value || null);
+        setExamDate(dateRes?.value || null);
       } finally {
         if (!cancelled) setLoading(false);
       }
     })();
     return () => { cancelled = true; };
+  }, [refreshTick]);
+  useEffect(() => {
+    const refresh = () => setRefreshTick((t) => t + 1);
+    window.addEventListener("lexo:plan-updated", refresh);
+    return () => window.removeEventListener("lexo:plan-updated", refresh);
   }, []);
   return { level, examDate, loading };
 }
@@ -54,6 +64,37 @@ export function MyPlanButton() {
   const [open, setOpen] = useState(false);
   const { level, examDate, loading } = useUserPlanData();
   const completed = useCompletedSet();
+  const [resetOpen, setResetOpen] = useState(false);
+  const [resetDuration, setResetDuration] = useState<PlanDuration | null>(90);
+  const [resetting, setResetting] = useState(false);
+  const [resetError, setResetError] = useState(false);
+
+  async function handleReset() {
+    if (!resetDuration) return;
+    setResetting(true);
+    setResetError(false);
+    try {
+      await Promise.all([
+        customFetch("/api/user-data/plan_duration_days", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ value: String(resetDuration) }),
+        }),
+        customFetch("/api/user-data/plan_start_date", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ value: todayISO() }),
+        }),
+      ]);
+      clearAllCompletions();
+      setResetOpen(false);
+      setOpen(false);
+    } catch {
+      setResetError(true);
+    } finally {
+      setResetting(false);
+    }
+  }
 
   const tasks = getDailyPlan(level);
   const doneCount = tasks.filter((t) => completed.has(t.id)).length;
@@ -158,10 +199,85 @@ export function MyPlanButton() {
               )}
             </div>
 
-            <div className="px-5 py-3 border-t border-border bg-muted/30">
+            <div className="px-5 py-3 border-t border-border bg-muted/30 space-y-2">
+              <div className="flex gap-2">
+                <Link
+                  href="/plan"
+                  onClick={() => setOpen(false)}
+                  className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-primary text-primary-foreground text-sm font-bold hover:opacity-90 transition-opacity"
+                >
+                  <LayoutGrid className="w-4 h-4" />
+                  View Full Plan
+                </Link>
+                <button
+                  onClick={() => { setResetError(false); setResetOpen(true); }}
+                  className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-muted text-foreground text-sm font-bold hover:bg-muted/70 transition-colors border border-border"
+                >
+                  <RotateCcw className="w-4 h-4" />
+                  Reset
+                </button>
+              </div>
               <p className="text-[11px] text-muted-foreground text-center">
                 The plan rotates every day so you cover every section across the week.
               </p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {resetOpen && (
+        <div className="fixed inset-0 z-[80] flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-label="Reset study plan">
+          <div
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm animate-in fade-in"
+            onClick={() => { if (!resetting) setResetOpen(false); }}
+          />
+          <div className="relative w-full max-w-md bg-card border border-border rounded-2xl shadow-2xl p-5 space-y-4 animate-in zoom-in-95 duration-200 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-start gap-3">
+              <div className="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center shrink-0">
+                <RotateCcw className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <h2 className="text-lg font-extrabold text-foreground">Reset your study plan?</h2>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  This clears all your task completions and starts a fresh plan today.
+                </p>
+              </div>
+              <button
+                onClick={() => { if (!resetting) setResetOpen(false); }}
+                disabled={resetting}
+                className="w-8 h-8 rounded-lg hover:bg-muted flex items-center justify-center transition-colors disabled:opacity-50"
+                aria-label="Close reset dialog"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div>
+              <p className="text-sm font-bold text-foreground mb-2">Pick a new duration:</p>
+              <PlanDurationPicker value={resetDuration} onSelect={setResetDuration} />
+            </div>
+
+            {resetError && (
+              <div className="bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-800 rounded-xl px-3 py-2 text-xs text-red-700 dark:text-red-400 text-center">
+                Failed to reset. Please try again.
+              </div>
+            )}
+
+            <div className="flex gap-2">
+              <button
+                onClick={() => setResetOpen(false)}
+                disabled={resetting}
+                className="flex-1 px-3 py-2.5 rounded-xl bg-muted text-foreground text-sm font-bold hover:bg-muted/70 transition-colors disabled:opacity-50"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleReset}
+                disabled={resetting || !resetDuration}
+                className="flex-1 px-3 py-2.5 rounded-xl bg-primary text-primary-foreground text-sm font-bold hover:opacity-90 transition-opacity disabled:opacity-50 inline-flex items-center justify-center gap-1.5"
+              >
+                {resetting ? "Resetting..." : resetError ? "Retry" : "Reset Plan"}
+              </button>
             </div>
           </div>
         </div>

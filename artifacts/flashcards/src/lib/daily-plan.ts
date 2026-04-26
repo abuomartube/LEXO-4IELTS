@@ -167,6 +167,217 @@ export function daysUntilExam(examDate: string | null | undefined): number | nul
   return Math.max(0, Math.round((exam.getTime() - today.getTime()) / 86_400_000));
 }
 
+/** ── Plan duration ──────────────────────────────────────────────────────── */
+
+export type PlanDuration = 30 | 60 | 90 | 120;
+
+export interface PlanDurationOption {
+  days: PlanDuration;
+  recommended?: boolean;
+  warning?: string;
+  tagline: string;
+  taglineAr: string;
+}
+
+export const PLAN_DURATION_OPTIONS: PlanDurationOption[] = [
+  {
+    days: 30,
+    warning: "Intensive plan — requires strong daily commitment and discipline",
+    tagline: "Sprint pace · 60–90 min/day",
+    taglineAr: "وتيرة سريعة · ٦٠–٩٠ دقيقة يومياً",
+  },
+  {
+    days: 60,
+    tagline: "Focused pace · 45–60 min/day",
+    taglineAr: "وتيرة مركّزة · ٤٥–٦٠ دقيقة يومياً",
+  },
+  {
+    days: 90,
+    recommended: true,
+    tagline: "Balanced pace · 30–45 min/day — best for most students",
+    taglineAr: "وتيرة متوازنة · ٣٠–٤٥ دقيقة يومياً — الأنسب لمعظم الطلاب",
+  },
+  {
+    days: 120,
+    tagline: "Steady pace · 20–35 min/day",
+    taglineAr: "وتيرة هادئة · ٢٠–٣٥ دقيقة يومياً",
+  },
+];
+
+export function normalizePlanDuration(value: string | number | null | undefined): PlanDuration {
+  const n = Number(value);
+  if (n === 30 || n === 60 || n === 90 || n === 120) return n;
+  return 90;
+}
+
+/** Strict ISO check `YYYY-MM-DD`. Anything else returns today's ISO. */
+export function ensurePlanStartDate(value: string | null | undefined, fallback: Date = new Date()): string {
+  if (typeof value === "string" && /^\d{4}-\d{2}-\d{2}$/.test(value)) return value;
+  return isoDate(fallback);
+}
+
+export function todayISO(): string {
+  return isoDate(new Date());
+}
+
+export function parsePlanISO(s: string): Date {
+  const [y, m, d] = s.split("-").map(Number);
+  return new Date(y, (m || 1) - 1, d || 1);
+}
+
+export function addDays(date: Date, days: number): Date {
+  const d = new Date(date);
+  d.setHours(0, 0, 0, 0);
+  d.setDate(d.getDate() + days);
+  return d;
+}
+
+/** Number of whole calendar days between two dates, computed via UTC to avoid DST drift. */
+function calendarDaysBetween(from: Date, to: Date): number {
+  const a = Date.UTC(from.getFullYear(), from.getMonth(), from.getDate());
+  const b = Date.UTC(to.getFullYear(), to.getMonth(), to.getDate());
+  return Math.round((b - a) / 86_400_000);
+}
+
+/** 1-based day index inside the plan (Day 1 = start date). May be <1 if you peek before start, or > duration if you peek after end. */
+export function getPlanDayIndex(startISO: string, date: Date = new Date()): number {
+  const start = parsePlanISO(startISO);
+  return calendarDaysBetween(start, date) + 1;
+}
+
+/** Set of completed task ids on a given calendar date. */
+export function getCompletedForDate(date: Date): Set<string> {
+  const store = readStore();
+  return new Set(store.days[isoDate(date)] ?? []);
+}
+
+/** Wipe all completion data — used when the student resets the plan. */
+export function clearAllCompletions() {
+  if (typeof window === "undefined") return;
+  try {
+    localStorage.removeItem(STORAGE_KEY);
+    window.dispatchEvent(new CustomEvent("lexo:plan-updated"));
+  } catch {}
+}
+
+export type DayState = "completed" | "today" | "upcoming" | "missed" | "partial";
+
+export interface DayStatus {
+  date: Date;
+  iso: string;
+  dayIndex: number;
+  weekIndex: number;
+  weekdayName: string;
+  tasks: PlanTask[];
+  doneCount: number;
+  total: number;
+  state: DayState;
+}
+
+const FULL_WEEKDAY_NAMES = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+export function getDayStatus(
+  level: CefrLevel | string | null | undefined,
+  startISO: string,
+  date: Date,
+  todayDate: Date = new Date(),
+): DayStatus {
+  const tasks = getDailyPlan(level, date);
+  const done = getCompletedForDate(date);
+  const doneCount = tasks.filter((t) => done.has(t.id)).length;
+  const total = tasks.length;
+  const dIso = isoDate(date);
+  const todayIso = isoDate(todayDate);
+
+  let state: DayState;
+  if (dIso === todayIso) state = "today";
+  else if (dIso > todayIso) state = "upcoming";
+  else if (total > 0 && doneCount === total) state = "completed";
+  else if (doneCount > 0) state = "partial";
+  else state = "missed";
+
+  const dayIndex = getPlanDayIndex(startISO, date);
+  return {
+    date,
+    iso: dIso,
+    dayIndex,
+    weekIndex: Math.max(1, Math.ceil(dayIndex / 7)),
+    weekdayName: FULL_WEEKDAY_NAMES[date.getDay()],
+    tasks,
+    doneCount,
+    total,
+    state,
+  };
+}
+
+export interface PlanCompletionStats {
+  percent: number;
+  doneDays: number;
+  partialDays: number;
+  missedDays: number;
+  upcomingDays: number;
+  totalDays: number;
+  todayIndex: number;
+  endDate: Date;
+}
+
+export function getPlanCompletionStats(
+  level: CefrLevel | string | null | undefined,
+  startISO: string,
+  duration: PlanDuration,
+  todayDate: Date = new Date(),
+): PlanCompletionStats {
+  const start = parsePlanISO(startISO);
+  const todayIso = isoDate(todayDate);
+  let done = 0;
+  let partial = 0;
+  let missed = 0;
+  let upcoming = 0;
+  for (let i = 0; i < duration; i++) {
+    const d = addDays(start, i);
+    const status = getDayStatus(level, startISO, d, todayDate);
+    // Bucket today by its actual completion (visual state stays "today";
+    // accounting state is derived from doneCount/total).
+    const accountingState: DayState =
+      status.state !== "today"
+        ? status.state
+        : status.total > 0 && status.doneCount === status.total
+          ? "completed"
+          : status.doneCount > 0
+            ? "partial"
+            : status.iso === todayIso
+              ? "upcoming"   // today, nothing started yet — not "missed"
+              : "missed";
+    if (accountingState === "completed") done++;
+    else if (accountingState === "partial") partial++;
+    else if (accountingState === "missed") missed++;
+    else if (accountingState === "upcoming") upcoming++;
+  }
+  const percent = duration > 0 ? Math.round((done / duration) * 100) : 0;
+  return {
+    percent,
+    doneDays: done,
+    partialDays: partial,
+    missedDays: missed,
+    upcomingDays: upcoming,
+    totalDays: duration,
+    todayIndex: Math.min(duration, Math.max(1, getPlanDayIndex(startISO, todayDate))),
+    endDate: addDays(start, duration - 1),
+  };
+}
+
+/** Friendly week label ("Foundation", "Skill building", "Revision + Mock IELTS"). */
+export function weekTitle(weekIndex: number, totalWeeks: number): string {
+  if (weekIndex === 1) return "Foundation";
+  if (weekIndex >= totalWeeks - 1) return "Revision + Mock IELTS";
+  return "Skill building";
+}
+
+/** Human-friendly date "Mon, Apr 28". */
+export function shortDate(date: Date): string {
+  return date.toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" });
+}
+
 /** ── Per-day completion tracking via localStorage ── */
 const STORAGE_KEY = "lexo:plan:v1";
 

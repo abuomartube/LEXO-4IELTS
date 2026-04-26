@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import { customFetch } from "@workspace/api-client-react";
-import { Target, Calendar, ChevronRight, BookOpen, Headphones, FileText, Mic, Flame, Star, Trophy, Clock, CheckCircle2, GraduationCap } from "lucide-react";
+import { Target, Calendar, ChevronRight, BookOpen, Headphones, FileText, Mic, Flame, Star, Trophy, Clock, CheckCircle2, GraduationCap, ClipboardList } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { PlanDurationPicker } from "@/components/plan-duration-picker";
+import { todayISO, type PlanDuration } from "@/lib/daily-plan";
 
 export type CefrLevel = "A1" | "A2" | "B1" | "B2" | "C1";
 const LEVEL_OPTIONS: { code: CefrLevel; label: string; blurb: string; blurbAr: string }[] = [
@@ -97,7 +99,7 @@ function generateStudyPlan(currentLevel: CefrLevel, targetBand: 6 | 7 | 8, examD
   return { daysLeft, weeksLeft, intensity, dailyHours, wordsPerDay, vocabFocus, zone, schedule, milestones };
 }
 
-type Step = 1 | 2 | 3 | 4;
+type Step = 1 | 2 | 3 | 4 | 5;
 
 export function Onboarding({ onComplete }: { onComplete: () => void }) {
   const [step, setStep] = useState<Step>(1);
@@ -105,6 +107,7 @@ export function Onboarding({ onComplete }: { onComplete: () => void }) {
   const [targetBand, setTargetBand] = useState<6 | 7 | 8>(7);
   const [examDate, setExamDate] = useState("");
   const [noExamDate, setNoExamDate] = useState(false);
+  const [planDuration, setPlanDuration] = useState<PlanDuration | null>(90);
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState(false);
 
@@ -118,7 +121,7 @@ export function Onboarding({ onComplete }: { onComplete: () => void }) {
   const plan = currentLevel && canProceedExam ? generateStudyPlan(currentLevel, targetBand, effectiveExamDate) : null;
 
   async function handleSave() {
-    if (!currentLevel) return;
+    if (!currentLevel || !planDuration) return;
     setSaving(true);
     setSaveError(false);
     try {
@@ -138,7 +141,18 @@ export function Onboarding({ onComplete }: { onComplete: () => void }) {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ value: noExamDate ? "not_set" : examDate }),
         }),
+        customFetch("/api/user-data/plan_duration_days", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ value: String(planDuration) }),
+        }),
+        customFetch("/api/user-data/plan_start_date", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ value: todayISO() }),
+        }),
       ]);
+      try { window.dispatchEvent(new CustomEvent("lexo:plan-updated")); } catch { /* ignore */ }
       onComplete();
     } catch {
       setSaveError(true);
@@ -149,7 +163,7 @@ export function Onboarding({ onComplete }: { onComplete: () => void }) {
 
   const Dots = ({ active }: { active: number }) => (
     <div className="flex justify-center gap-2">
-      {[1, 2, 3, 4].map((n) => (
+      {[1, 2, 3, 4, 5].map((n) => (
         <div key={n} className={cn("w-8 h-1.5 rounded-full", n <= active ? "bg-primary" : "bg-muted")} />
       ))}
     </div>
@@ -359,7 +373,7 @@ export function Onboarding({ onComplete }: { onComplete: () => void }) {
               disabled={!canProceedExam}
               className="flex-1 bg-primary text-primary-foreground font-bold py-3 rounded-xl hover:opacity-90 transition-opacity disabled:opacity-40 flex items-center justify-center gap-2"
             >
-              See My Plan <ChevronRight className="w-4 h-4" />
+              Next <ChevronRight className="w-4 h-4" />
             </button>
           </div>
 
@@ -369,7 +383,51 @@ export function Onboarding({ onComplete }: { onComplete: () => void }) {
     );
   }
 
-  // ── Step 4: Plan summary ────────────────────────────────────────────────
+  // ── Step 4: Plan duration ────────────────────────────────────────────────
+  if (step === 4) {
+    return (
+      <div className="fixed inset-0 bg-background/95 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-in fade-in duration-300 overflow-y-auto">
+        <div className="w-full max-w-md space-y-6 py-8">
+          <div className="text-center space-y-2">
+            <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto">
+              <ClipboardList className="w-8 h-8 text-primary" />
+            </div>
+            <h1 className="text-2xl font-extrabold text-foreground">How long is your plan?</h1>
+            <p className="text-muted-foreground text-sm">Pick the pace that fits your life.</p>
+            <p className="text-muted-foreground text-xs" dir="rtl" lang="ar">اختر مدة الخطة التي تناسب جدولك.</p>
+          </div>
+
+          <div className="bg-card border border-border rounded-2xl p-4 space-y-3">
+            <div className="flex items-center gap-2">
+              <Clock className="w-5 h-5 text-blue-500" />
+              <h2 className="font-bold text-foreground">Choose your study plan duration</h2>
+            </div>
+
+            <PlanDurationPicker value={planDuration} onSelect={setPlanDuration} />
+
+            <p className="text-[11px] text-muted-foreground text-center pt-1">
+              You can reset to a different length any time from <span className="font-semibold text-foreground">My Plan</span>.
+            </p>
+          </div>
+
+          <div className="flex gap-3">
+            <button onClick={() => setStep(3)} className="flex-1 bg-muted text-foreground font-bold py-3 rounded-xl hover:opacity-80 transition-opacity">Back</button>
+            <button
+              onClick={() => { if (planDuration) setStep(5); }}
+              disabled={!planDuration}
+              className="flex-1 bg-primary text-primary-foreground font-bold py-3 rounded-xl hover:opacity-90 transition-opacity disabled:opacity-40 flex items-center justify-center gap-2"
+            >
+              See My Plan <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
+
+          <Dots active={4} />
+        </div>
+      </div>
+    );
+  }
+
+  // ── Step 5: Plan summary ────────────────────────────────────────────────
   return (
     <div className="fixed inset-0 bg-background/95 backdrop-blur-sm z-50 overflow-y-auto animate-in fade-in duration-300">
       <div className="max-w-lg mx-auto py-8 px-4 space-y-5">
@@ -382,11 +440,12 @@ export function Onboarding({ onComplete }: { onComplete: () => void }) {
             Starting at <span className="font-bold text-primary">{currentLevel}</span>
             {" · "}
             Target <span className="font-bold text-primary">Band {targetBand}</span>
-            {noExamDate
-              ? <> · <span className="font-bold text-primary">3-month plan</span></>
-              : <> · <span className="font-bold text-primary">{plan!.daysLeft} days</span></>
-            }
+            {" · "}
+            <span className="font-bold text-primary">{planDuration}-day plan</span>
           </p>
+          {!noExamDate && examDate && (
+            <p className="text-xs text-muted-foreground">Exam in {plan!.daysLeft} day{plan!.daysLeft === 1 ? "" : "s"}</p>
+          )}
         </div>
 
         <div className="grid grid-cols-2 gap-3">
@@ -472,7 +531,7 @@ export function Onboarding({ onComplete }: { onComplete: () => void }) {
         )}
 
         <div className="flex gap-3">
-          <button onClick={() => setStep(3)} className="flex-1 bg-muted text-foreground font-bold py-3 rounded-xl hover:opacity-80 transition-opacity">Back</button>
+          <button onClick={() => setStep(4)} className="flex-1 bg-muted text-foreground font-bold py-3 rounded-xl hover:opacity-80 transition-opacity">Back</button>
           <button onClick={handleSave} disabled={saving}
             className="flex-1 bg-primary text-primary-foreground font-bold py-3 rounded-xl hover:opacity-90 transition-opacity disabled:opacity-50 flex items-center justify-center gap-2"
           >
@@ -480,7 +539,7 @@ export function Onboarding({ onComplete }: { onComplete: () => void }) {
           </button>
         </div>
 
-        <Dots active={4} />
+        <Dots active={5} />
       </div>
     </div>
   );
