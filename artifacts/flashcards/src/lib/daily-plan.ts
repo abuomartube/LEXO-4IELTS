@@ -42,6 +42,8 @@ export const TASKS: Record<string, PlanTask> = {
   sentenceBuilder:  { id: "sentenceBuilder",  label: "Sentence Builder",           arabicLabel: "بناء الجمل",          emoji: "🧠", href: "/sentence-builder",                                estimatedMinutes: 10, color: "from-cyan-500 to-blue-500" },
   flipIt:           { id: "flipIt",           label: "Flip It",                    arabicLabel: "اقلب البطاقة",         emoji: "⚡", href: "/flip-it",                                         estimatedMinutes: 6,  color: "from-amber-500 to-orange-500" },
   spellIt:          { id: "spellIt",          label: "Spell It",                   arabicLabel: "اِكتب التهجئة",       emoji: "🔤", href: "/spell-it",                                        estimatedMinutes: 6,  color: "from-emerald-500 to-teal-500" },
+  // Short story + comprehension quiz + written-response analysis
+  storyExercises:   { id: "storyExercises",   label: "Story + Exercises",          arabicLabel: "قصة وتمارين",          emoji: "📚", href: "/stories",                                         estimatedMinutes: 18, color: "from-rose-500 to-fuchsia-500" },
   // Full mock tests (one rotated mock per appearance — heavier, less frequent)
   readingMock:      { id: "readingMock",      label: "Reading Mock Test",          arabicLabel: "اختبار قراءة كامل",   emoji: "📝", href: "/reading-test",                                    estimatedMinutes: 60, color: "from-emerald-500 to-lime-500" },
   listeningMock:    { id: "listeningMock",    label: "Listening Mock Test",        arabicLabel: "اختبار استماع كامل",  emoji: "🎬", href: "/listening-test",                                  estimatedMinutes: 40, color: "from-amber-500 to-orange-500" },
@@ -61,6 +63,7 @@ export const LEVEL_POOLS_BY_LEVEL: Record<CefrLevel, PlanTask[]> = {
     TASKS.weakWords,
     TASKS.paragraph,
     TASKS.readingSkillsEasy,
+    TASKS.storyExercises,
   ],
   A2: [
     TASKS.wordOfDay,
@@ -71,6 +74,7 @@ export const LEVEL_POOLS_BY_LEVEL: Record<CefrLevel, PlanTask[]> = {
     TASKS.paragraph,
     TASKS.readingSkills,
     TASKS.listeningS1,
+    TASKS.storyExercises,
   ],
   B1: [
     TASKS.wordOfDay,
@@ -85,6 +89,7 @@ export const LEVEL_POOLS_BY_LEVEL: Record<CefrLevel, PlanTask[]> = {
     TASKS.listeningS2,
     TASKS.readingMock,
     TASKS.listeningMock,
+    TASKS.storyExercises,
   ],
   B2: [
     TASKS.wordOfDay,
@@ -99,6 +104,7 @@ export const LEVEL_POOLS_BY_LEVEL: Record<CefrLevel, PlanTask[]> = {
     TASKS.writingTemplates,
     TASKS.readingMock,
     TASKS.listeningMock,
+    TASKS.storyExercises,
   ],
   C1: [
     TASKS.wordOfDay,
@@ -113,6 +119,7 @@ export const LEVEL_POOLS_BY_LEVEL: Record<CefrLevel, PlanTask[]> = {
     TASKS.writingTemplates,
     TASKS.readingMock,
     TASKS.listeningMock,
+    TASKS.storyExercises,
   ],
 };
 

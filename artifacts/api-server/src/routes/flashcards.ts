@@ -160,14 +160,23 @@ router.get("/word-of-day", async (_req, res): Promise<void> => {
 router.get("/streak", async (req, res): Promise<void> => {
   const email = verifyStudentEmail(req);
   if (!email) { res.json({ streak: 0, totalDays: 0 }); return; }
-  const rows = await db
-    .select({ day: sql<string>`date(${progressTable.reviewedAt})::text` })
-    .from(progressTable)
-    .where(eq(progressTable.email, email))
-    .groupBy(sql`date(${progressTable.reviewedAt})`)
-    .orderBy(sql`date(${progressTable.reviewedAt}) desc`);
-
-  const days = rows.map((r) => r.day);
+  // Streak counts ANY day the student earned XP (flashcards, quizzes,
+  // listening, reading, essays, story exercises, etc.) — not just flashcard
+  // reviews. UNION distinct activity dates from progressTable + xpEventsTable.
+  const result = await db.execute<{ day: string }>(sql`
+    select day from (
+      select date(${progressTable.reviewedAt})::text as day
+        from ${progressTable}
+       where ${progressTable.email} = ${email}
+      union
+      select date(${xpEventsTable.createdAt})::text as day
+        from ${xpEventsTable}
+       where ${xpEventsTable.email} = ${email}
+    ) t
+    group by day
+    order by day desc
+  `);
+  const days = result.rows.map((r) => r.day);
   let streak = 0;
   const today = new Date().toISOString().slice(0, 10);
   const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
@@ -206,6 +215,8 @@ const XP_DAILY_CAP: Record<string, number> = {
   essay_check: 20,
   speaking_session: 20,
   sentence_builder: 60,
+  story_quiz: 30,
+  story_writing: 25,
 };
 
 router.get("/xp", async (req, res): Promise<void> => {

@@ -92,6 +92,19 @@ export const storiesTable = pgTable("stories", {
 
 export type Story = typeof storiesTable.$inferSelect;
 
+// AI-generated 5-question comprehension quiz cached per story so all students
+// see the same set for a given story (and we don't re-spend AI cost per visit).
+// `questions` is a JSON-encoded array of:
+//   { id: string, question: string, choices: { A,B,C,D: string }, correct: "A"|"B"|"C"|"D", explanation: string }
+export const storyQuizzesTable = pgTable("story_quizzes", {
+  id: serial("id").primaryKey(),
+  storyId: integer("story_id").notNull().references(() => storiesTable.id, { onDelete: "cascade" }),
+  questions: text("questions").notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+}, (t) => [unique().on(t.storyId)]);
+
+export type StoryQuiz = typeof storyQuizzesTable.$inferSelect;
+
 export const reviewsTable = pgTable("reviews", {
   id: serial("id").primaryKey(),
   email: text("email").notNull(),

@@ -1,5 +1,8 @@
 import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import { Layout } from "@/components/layout";
+import { StoryQuiz } from "@/components/story-quiz";
+import { StoryWriting } from "@/components/story-writing";
+import { markTaskDone } from "@/lib/daily-plan";
 import {
   BookOpen, ChevronLeft, EyeOff, Eye, Loader2, BookMarked,
   Play, Pause, Square, Volume2, Mic, CheckCircle2, Highlighter,
@@ -604,6 +607,20 @@ function VoiceReader({ content }: { content: string }) {
 
 
 function StoryReader({ story, onBack, isCompleted, onMarkComplete }: { story: Story; onBack: () => void; isCompleted: boolean; onMarkComplete: () => void }) {
+  // Track which exercises have been submitted for this story. When BOTH are
+  // done we mark the daily-plan "storyExercises" task complete.
+  const [quizDone, setQuizDone] = useState(false);
+  const [writingDone, setWritingDone] = useState(false);
+  useEffect(() => {
+    // Reset whenever the user opens a different story.
+    setQuizDone(false);
+    setWritingDone(false);
+  }, [story.id]);
+  useEffect(() => {
+    if (quizDone && writingDone) {
+      markTaskDone("storyExercises");
+    }
+  }, [quizDone, writingDone]);
   const [showArabic, setShowArabic] = useState(true);
 
   return (
@@ -672,6 +689,29 @@ function StoryReader({ story, onBack, isCompleted, onMarkComplete }: { story: St
             </div>
           </div>
         )}
+
+        {/* AI-powered exercises */}
+        <div className="border-t-2 border-dashed border-border bg-muted/20 p-6 md:p-8 space-y-6">
+          <div>
+            <h3 className="text-base font-bold mb-1 flex items-center gap-2">
+              <span aria-hidden>🧠</span> Comprehension Quiz
+            </h3>
+            <p className="text-xs text-muted-foreground mb-3">
+              Answer 5 questions about the story to test your understanding.
+            </p>
+            <StoryQuiz storyId={story.id} onComplete={() => setQuizDone(true)} />
+          </div>
+
+          <div>
+            <h3 className="text-base font-bold mb-1 flex items-center gap-2">
+              <span aria-hidden>✍️</span> Written Response
+            </h3>
+            <p className="text-xs text-muted-foreground mb-3">
+              Summarise the story in your own words and get instant AI feedback.
+            </p>
+            <StoryWriting storyId={story.id} onComplete={() => setWritingDone(true)} />
+          </div>
+        </div>
 
         {/* Mark as Complete button */}
         <div className="p-6 md:p-8 flex justify-center">
