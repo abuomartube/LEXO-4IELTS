@@ -1,0 +1,47 @@
+اكتب له:
+“Add a complete Study Plan system to LEXO:
+ONBOARDING — New Students:
+After selecting level, target band, and exam date, show a plan duration selection screen:
+- 30 days ⚠️ (show warning: ‘Intensive plan — requires strong daily commitment and discipline’)
+- 60 days
+- 90 days ✅ RECOMMENDED (highlight this option with a green badge)
+- 120 days
+EXISTING STUDENTS — My Plan:
+- Add ‘My Study Plan’ section accessible from the Dashboard
+- Show current plan with progress
+- Add ‘Reset Plan’ button — student can choose new duration and get a fresh plan
+- When reset: show the same duration selection screen with the 30-day warning and 90-day recommendation
+PLAN GENERATION:
+Generate a detailed day-by-day plan using ALL available sections in LEXO:
+Word of the Day, Study Mode, Quiz Mode, Flip It, Spell It, Sentence Builder, Weak Words, Synonyms, Antonyms, Phrasal Verbs, Grammar, Short Stories, Churchill AI (Parts 1/2/3), Orwell AI (Task 1/Task 2/Paragraph/Free Check), Writing Templates, Reading Skills Practice (all 14 types), Listening Section Practice (all 4 sections), Full Mock IELTS
+Plan structure based on level:
+A1/A2: Focus on Vocabulary + Grammar + Short Stories + Paragraph Writing + Listening Sections 1-2 + Reading basics
+B1: Vocabulary + Grammar + Orwell Task 1 + Churchill Part 1 + Reading Skills + Listening Sections 1-3 + Sentence Builder
+B2/C1: Orwell Task 2 + Churchill Parts 1-3 + Full Reading Tests + Listening Sections 3-4 + Writing Templates + Mock IELTS every 2 weeks
+Day-by-day rules:
+- Each day has 3-5 tasks maximum
+- Estimated time per day shown (e.g. 45-60 minutes)
+- Tasks rotate so student covers all sections across the week
+- Week 1: Foundation (vocabulary + grammar basics)
+- Middle weeks: Skill building (all 4 IELTS skills)
+- Final week: Revision + Mock IELTS
+PLAN DISPLAY:
+Two views:
+1. Daily View — shows today’s tasks only with direct buttons to each section
+2. Full Plan View — complete timeline showing all days, weeks, and tasks
+Visual design:
+- Green = completed days
+- Blue = today
+- Grey = upcoming days
+- Show overall completion percentage
+- If student misses a day, show catch-up suggestion
+PDF EXPORT:
+‘Print as PDF’ button exports clean professional PDF containing:
+- Student name + level + target band
+- Plan duration + start date
+- Full day-by-day schedule organized by week
+- LEXO branding (logo + website)
+- Arabic and English labels
+TEACHER DASHBOARD:
+- Admin can see each student’s chosen plan duration and completion percentage
+- Flag students who are falling behind their plan”*
