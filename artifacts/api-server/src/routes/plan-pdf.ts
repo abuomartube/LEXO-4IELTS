@@ -420,15 +420,23 @@ router.post("/plan-pdf", async (req, res): Promise<void> => {
     browser = await puppeteer.launch({
       executablePath: chromiumPath,
       headless: true,
+      // NOTE: do NOT add "--single-process" — it triggers TargetCloseError
+      // (Protocol error: Target.createTarget / setAutoAttach: Target closed)
+      // on Chromium in our deployment container. "--no-zygote" is also
+      // omitted because it forces single-process behaviour on some builds.
       args: [
         "--no-sandbox",
         "--disable-setuid-sandbox",
         "--disable-dev-shm-usage",
         "--disable-gpu",
         "--no-first-run",
-        "--no-zygote",
-        "--single-process",
+        "--disable-extensions",
+        "--disable-background-networking",
+        "--disable-default-apps",
+        "--mute-audio",
+        "--hide-scrollbars",
       ],
+      protocolTimeout: 120_000,
     });
     const page = await browser.newPage();
     await page.setContent(html, { waitUntil: "networkidle0", timeout: 60_000 });
