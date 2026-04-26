@@ -47,12 +47,7 @@ function getAnthropicClient(): Anthropic {
 const STORY_QUIZ_DAILY_CAP = 30;     // 5 questions × ~6 XP
 const STORY_WRITING_DAILY_CAP = 25;  // one paid analysis per day cap
 
-async function awardXp(
-  email: string,
-  activity: string,
-  amount: number,
-  cap: number,
-): Promise<number> {
+async function getTodayXpTotal(email: string, activity: string): Promise<number> {
   const todayStart = new Date();
   todayStart.setHours(0, 0, 0, 0);
   const [todayRow] = await db
@@ -63,10 +58,27 @@ async function awardXp(
       eq(xpEventsTable.activity, activity),
       sql`${xpEventsTable.createdAt} >= ${todayStart}`,
     ));
-  const todaySoFar = todayRow?.total ?? 0;
+  return todayRow?.total ?? 0;
+}
+
+/**
+ * Compute how much XP to award and persist it. The INSERT is fire-and-forget
+ * (returned promise resolves once we know the awarded amount, *before* the
+ * INSERT round-trip completes) so the API response isn't blocked on a write
+ * the user never directly observes.
+ */
+async function awardXp(
+  email: string,
+  activity: string,
+  amount: number,
+  cap: number,
+): Promise<number> {
+  const todaySoFar = await getTodayXpTotal(email, activity);
   const awarded = Math.max(0, Math.min(amount, cap - todaySoFar));
   if (awarded > 0) {
-    await db.insert(xpEventsTable).values({ email, activity, xp: awarded });
+    db.insert(xpEventsTable)
+      .values({ email, activity, xp: awarded })
+      .catch((err) => logger.warn({ err, email, activity, awarded }, "XP insert failed"));
   }
   return awarded;
 }
@@ -304,7 +316,14 @@ router.post("/stories/:id/quiz/grade", async (req, res) => {
     return;
   }
   try {
-    const quiz = await loadOrGenerateQuiz(storyId);
+    // Run cache lookup and today's XP total in parallel — they're independent.
+    // On a warm cache the SELECT on story_quizzes (PK on story_id) and the
+    // SELECT on xp_events (now indexed on email+activity+created_at) each
+    // take ~5ms, so doing them concurrently shaves a full round-trip.
+    const [quiz, todaySoFar] = await Promise.all([
+      loadOrGenerateQuiz(storyId),
+      getTodayXpTotal(email, "story_quiz"),
+    ]);
     const results = quiz.map((q) => {
       const chosen = (answers[q.id] as string | undefined) ?? null;
       const isRight = chosen === q.correct;
@@ -319,12 +338,16 @@ router.post("/stories/:id/quiz/grade", async (req, res) => {
       };
     });
     const correctCount = results.filter((r) => r.isRight).length;
-    const xpAwarded = await awardXp(
-      email,
-      "story_quiz",
-      correctCount * 6, // 6 XP per correct, max 30 (cap)
-      STORY_QUIZ_DAILY_CAP,
+    const xpAwarded = Math.max(
+      0,
+      Math.min(correctCount * 6, STORY_QUIZ_DAILY_CAP - todaySoFar),
     );
+    if (xpAwarded > 0) {
+      // Fire-and-forget so the response isn't blocked on the INSERT round-trip.
+      db.insert(xpEventsTable)
+        .values({ email, activity: "story_quiz", xp: xpAwarded })
+        .catch((err) => logger.warn({ err, email, xpAwarded }, "story_quiz XP insert failed"));
+    }
     res.json({
       correct: correctCount,
       total: 5,
@@ -453,19 +476,22 @@ router.post("/stories/:id/written-feedback", async (req, res) => {
   }
 
   try {
-    const [story] = await db
-      .select()
-      .from(storiesTable)
-      .where(eq(storiesTable.id, storyId));
-    if (!story) {
+    // Parallel: load story + read today's XP total. Both are independent of
+    // each other and of the AI call body (we only need the story.title /
+    // .content / .level for the prompt).
+    const [storyRow, todaySoFar] = await Promise.all([
+      db.select().from(storiesTable).where(eq(storiesTable.id, storyId)).then((r) => r[0]),
+      getTodayXpTotal(email, "story_writing"),
+    ]);
+    if (!storyRow) {
       res.status(404).json({ error: "Story not found." });
       return;
     }
 
     const anthropic = getAnthropicClient();
     const userMessage =
-      `Story title: ${story.title}\nStory CEFR level: ${story.level}\n\n` +
-      `Original story (for context only — do NOT quote it back):\n"""\n${story.content}\n"""\n\n` +
+      `Story title: ${storyRow.title}\nStory CEFR level: ${storyRow.level}\n\n` +
+      `Original story (for context only — do NOT quote it back):\n"""\n${storyRow.content}\n"""\n\n` +
       `Student's written response:\n"""\n${responseText}\n"""\n\n` +
       `Analyse the response per the system instructions and return the JSON.`;
 
@@ -483,7 +509,13 @@ router.post("/stories/:id/written-feedback", async (req, res) => {
     const parsed = parseJsonObject(block.text);
     const feedback = validateWritingFeedback(parsed);
 
-    const xpAwarded = await awardXp(email, "story_writing", 25, STORY_WRITING_DAILY_CAP);
+    const xpAwarded = Math.max(0, Math.min(25, STORY_WRITING_DAILY_CAP - todaySoFar));
+    if (xpAwarded > 0) {
+      // Fire-and-forget so the response isn't blocked on the INSERT round-trip.
+      db.insert(xpEventsTable)
+        .values({ email, activity: "story_writing", xp: xpAwarded })
+        .catch((err) => logger.warn({ err, email, xpAwarded }, "story_writing XP insert failed"));
+    }
 
     res.json({ ...feedback, xpAwarded });
   } catch (err) {

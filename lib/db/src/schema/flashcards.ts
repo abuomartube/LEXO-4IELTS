@@ -1,4 +1,4 @@
-import { pgTable, text, serial, timestamp, boolean, integer, real, unique, primaryKey, jsonb } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, timestamp, boolean, integer, real, unique, primaryKey, jsonb, index } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod/v4";
 
@@ -186,7 +186,15 @@ export const xpEventsTable = pgTable("xp_events", {
   activity: text("activity").notNull(),
   xp: integer("xp").notNull(),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-});
+}, (t) => [
+  // Hot path: per-student "what have I earned today for activity X" lookups
+  // (XP daily caps) and the streak UNION query both filter by email +
+  // created_at. Without this index those queries do a full table scan, which
+  // grows ~1s per ~10k rows and was causing 10s+ submit latency on the story
+  // quiz / written-feedback endpoints.
+  index("xp_events_email_activity_created_idx").on(t.email, t.activity, t.createdAt),
+  index("xp_events_email_created_idx").on(t.email, t.createdAt),
+]);
 
 export type XpEvent = typeof xpEventsTable.$inferSelect;
 
