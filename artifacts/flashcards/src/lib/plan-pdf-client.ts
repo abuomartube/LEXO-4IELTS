@@ -1,7 +1,7 @@
 // Client-side helper that builds the PDF payload from the user's stored plan
 // data and triggers a browser download from /api/plan-pdf.
 
-import { customFetch, ApiError } from "@workspace/api-client-react";
+import { customFetch } from "@workspace/api-client-react";
 import {
   addDays,
   ensurePlanStartDate,
@@ -195,11 +195,13 @@ export async function downloadPlanPdf(opts: DownloadPlanPdfOptions = {}): Promis
     });
   } catch (err) {
     let msg = "Could not generate PDF.";
-    if (err instanceof ApiError) {
-      const data = err.data as { error?: string } | undefined;
-      if (data?.error) msg = data.error;
-    } else if (err instanceof Error && err.message) {
-      msg = err.message;
+    // ApiError from @workspace/api-client-react isn't re-exported from the
+    // package barrel, so duck-type instead of `instanceof`.
+    const errObj = err as { data?: { error?: string }; message?: string } | null;
+    if (errObj?.data?.error) {
+      msg = errObj.data.error;
+    } else if (errObj?.message) {
+      msg = errObj.message;
     }
     throw new Error(msg);
   }
