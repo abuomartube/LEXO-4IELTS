@@ -9,9 +9,9 @@ const rawCache = new Map<string, ArrayBuffer>();
 // Track in-flight fetches so multiple buttons for the same word share one request
 const inflight = new Map<string, Promise<ArrayBuffer>>();
 
-// Oxford/Longman-style settings: British voice (fable), slow deliberate speed
+// British voice at natural speaking rate — sounds most human at 1.0×
 const TTS_VOICE = "fable";
-const TTS_SPEED = 0.75;
+const TTS_SPEED = 1.0;
 const TTS_MODEL = "tts-1-hd";
 
 export async function fetchRaw(text: string): Promise<ArrayBuffer> {
