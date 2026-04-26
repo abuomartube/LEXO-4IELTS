@@ -14,15 +14,15 @@ const TTS_VOICE = "fable";
 const TTS_SPEED = 0.75;
 const TTS_MODEL = "tts-1-hd";
 
-async function fetchRaw(word: string): Promise<ArrayBuffer> {
-  const key = word.toLowerCase().trim();
+export async function fetchRaw(text: string): Promise<ArrayBuffer> {
+  const key = text.toLowerCase().trim();
   if (rawCache.has(key)) return rawCache.get(key)!;
   if (inflight.has(key)) return inflight.get(key)!;
 
   const p = fetch("/api/speaking/tts", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ text: word, speed: TTS_SPEED, model: TTS_MODEL, voice: TTS_VOICE }),
+    body: JSON.stringify({ text, speed: TTS_SPEED, model: TTS_MODEL, voice: TTS_VOICE }),
   })
     .then(r => {
       if (!r.ok) throw new Error("tts_failed");
