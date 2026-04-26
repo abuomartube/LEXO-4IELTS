@@ -193,9 +193,14 @@ async function generateQuizForStory(
     `Story title: ${storyTitle}\nStory CEFR level: ${storyLevel}\n\nStory:\n"""\n${storyContent}\n"""\n\n` +
     `Generate the 5 comprehension questions as specified.`;
 
+  // Use Haiku for quiz generation: 5 short MCQs are a structured, low-nuance
+  // task — Haiku produces them in 2-5s vs Sonnet's 10-30s and the quality is
+  // comparable for plain comprehension questions. Written-feedback below
+  // intentionally stays on Sonnet because grammar/vocabulary critique and the
+  // bilingual Better Version need stronger reasoning.
   const message = await anthropic.messages.create({
-    model: "claude-sonnet-4-5",
-    max_tokens: 2048,
+    model: "claude-haiku-4-5",
+    max_tokens: 1500,
     system: QUIZ_SYSTEM_PROMPT,
     messages: [{ role: "user", content: userMessage }],
   });
