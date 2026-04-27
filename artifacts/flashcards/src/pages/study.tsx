@@ -1,6 +1,7 @@
 import { useState, useMemo, useEffect } from "react";
 import { useListFlashcards, useGetProgress, useUpsertProgress, useListCategories, useAddWeakWords } from "@workspace/api-client-react";
 import { useSrsDue, useUpdateSrs, useListBookmarks } from "@workspace/api-client-react";
+import { cn } from "@/lib/utils";
 import { Layout } from "@/components/layout";
 import { FlashcardView } from "@/components/flashcard";
 import { Button } from "@/components/ui/button";
