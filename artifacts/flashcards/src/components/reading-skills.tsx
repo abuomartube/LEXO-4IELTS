@@ -109,7 +109,7 @@ export function ReadingSkills({ onBack }: { onBack: () => void }) {
           </div>
           <h2 className="text-2xl sm:text-3xl font-extrabold leading-tight">Reading by Question Type</h2>
           <p className="text-white/90 text-sm mt-2 max-w-2xl">
-            Targeted exercises for each of the 14 IELTS Reading question types. Pick a type to see all its exercises.
+            Targeted exercises for each of the 16 IELTS Reading question types. Pick a type to see all its exercises.
             Each exercise has a real IELTS-style passage and a detailed analysis after you submit.
           </p>
         </div>
@@ -408,8 +408,8 @@ function ItemsRunner({
     );
   }
 
-  // Single-select-one (MCQ, choose_title)
-  if (exercise.type === "multiple_choice" || exercise.type === "choose_title") {
+  // Single-select-one (MCQ, choose_title, skimming)
+  if (exercise.type === "multiple_choice" || exercise.type === "choose_title" || exercise.type === "skimming") {
     const sel = userAnswers[0] as string | null;
     return (
       <div className="space-y-2">

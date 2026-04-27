@@ -7,6 +7,8 @@
  */
 
 export type SkillQuestionType =
+  | "skimming"
+  | "scanning"
   | "matching_headings"
   | "matching_information"
   | "matching_features"
@@ -34,20 +36,22 @@ export interface QTypeMeta {
 }
 
 export const QUESTION_TYPES: QTypeMeta[] = [
-  { id: "matching_headings",        number: 1,  label: "Matching Headings",          arabicLabel: "مطابقة العناوين",          emoji: "🗂️", shortDesc: "Match each paragraph to a heading from a list (more headings than paragraphs).",            inputKind: "single_select_per_item", color: "from-indigo-500 to-violet-500" },
-  { id: "matching_information",     number: 2,  label: "Matching Information",       arabicLabel: "مطابقة المعلومات",         emoji: "🔍", shortDesc: "Match statements to the paragraph (A, B, C…) that contains the information.",              inputKind: "single_select_per_item", color: "from-sky-500 to-blue-500" },
-  { id: "matching_features",        number: 3,  label: "Matching Features",          arabicLabel: "مطابقة الخصائص",           emoji: "🧩", shortDesc: "Match facts to categories (e.g. researcher → discovery, event → date).",                    inputKind: "single_select_per_item", color: "from-teal-500 to-cyan-500" },
-  { id: "matching_sentence_endings",number: 4,  label: "Matching Sentence Endings",  arabicLabel: "مطابقة نهايات الجمل",      emoji: "✂️", shortDesc: "Complete each sentence by picking the correct ending from a list.",                        inputKind: "single_select_per_item", color: "from-emerald-500 to-teal-500" },
-  { id: "true_false_not_given",     number: 5,  label: "True / False / Not Given",   arabicLabel: "صح / خطأ / غير مذكور",     emoji: "✅", shortDesc: "Decide whether each statement is True, False, or Not Given based on the passage.",         inputKind: "single_select_per_item", color: "from-green-500 to-emerald-500" },
-  { id: "multiple_choice",          number: 6,  label: "Multiple Choice",            arabicLabel: "اختيار من متعدد",          emoji: "🎯", shortDesc: "Choose the correct answer from four options (A, B, C, D).",                                inputKind: "single_select",          color: "from-amber-500 to-orange-500" },
-  { id: "list_selection",           number: 7,  label: "List Selection",             arabicLabel: "اختيار من قائمة",          emoji: "☑️", shortDesc: "Pick multiple correct answers from a list (e.g. THREE that are mentioned).",               inputKind: "multi_select",           color: "from-orange-500 to-red-500" },
-  { id: "choose_title",             number: 8,  label: "Choose a Title",             arabicLabel: "اختيار العنوان",           emoji: "📌", shortDesc: "Select the most appropriate title for the whole passage.",                                  inputKind: "single_select",          color: "from-rose-500 to-pink-500" },
-  { id: "short_answer",             number: 9,  label: "Short Answer Questions",     arabicLabel: "إجابات قصيرة",             emoji: "✏️", shortDesc: "Answer specific questions in a few words taken from the passage.",                          inputKind: "text",                   color: "from-fuchsia-500 to-purple-500" },
-  { id: "sentence_completion",      number: 10, label: "Sentence Completion",        arabicLabel: "إكمال الجمل",              emoji: "📝", shortDesc: "Fill the gaps in sentences with words taken directly from the passage.",                    inputKind: "text",                   color: "from-purple-500 to-indigo-500" },
-  { id: "summary_completion",       number: 11, label: "Summary Completion",         arabicLabel: "إكمال الملخص",             emoji: "📄", shortDesc: "Complete a paragraph summary using words from the passage or a word box.",                  inputKind: "text",                   color: "from-violet-500 to-fuchsia-500" },
-  { id: "table_completion",         number: 12, label: "Table Completion",           arabicLabel: "إكمال الجدول",             emoji: "📊", shortDesc: "Fill missing cells in a table using information from the passage.",                        inputKind: "text",                   color: "from-cyan-500 to-sky-500" },
-  { id: "flow_chart_completion",    number: 13, label: "Flow Chart Completion",      arabicLabel: "إكمال المخطط",             emoji: "🔁", shortDesc: "Fill missing steps in a flow chart based on the passage.",                                  inputKind: "text",                   color: "from-blue-500 to-indigo-500" },
-  { id: "diagram_completion",       number: 14, label: "Diagram Completion",         arabicLabel: "إكمال الرسم التوضيحي",     emoji: "🖼️", shortDesc: "Label parts of a diagram with information from the passage.",                              inputKind: "text",                   color: "from-pink-500 to-rose-500" },
+  { id: "skimming",                 number: 1,  label: "Skimming",                   arabicLabel: "القراءة السريعة",          emoji: "👀", shortDesc: "Quickly identify the main topic, idea, or writer's purpose of a passage.",                  inputKind: "single_select",          color: "from-pink-500 to-rose-500" },
+  { id: "scanning",                 number: 2,  label: "Scanning",                   arabicLabel: "البحث عن التفاصيل",        emoji: "🔎", shortDesc: "Find specific facts (dates, numbers, names) quickly inside a passage.",                     inputKind: "text",                   color: "from-amber-500 to-yellow-500" },
+  { id: "matching_headings",        number: 3,  label: "Matching Headings",          arabicLabel: "مطابقة العناوين",          emoji: "🗂️", shortDesc: "Match each paragraph to a heading from a list (more headings than paragraphs).",            inputKind: "single_select_per_item", color: "from-indigo-500 to-violet-500" },
+  { id: "matching_information",     number: 4,  label: "Matching Information",       arabicLabel: "مطابقة المعلومات",         emoji: "🔍", shortDesc: "Match statements to the paragraph (A, B, C…) that contains the information.",              inputKind: "single_select_per_item", color: "from-sky-500 to-blue-500" },
+  { id: "matching_features",        number: 5,  label: "Matching Features",          arabicLabel: "مطابقة الخصائص",           emoji: "🧩", shortDesc: "Match facts to categories (e.g. researcher → discovery, event → date).",                    inputKind: "single_select_per_item", color: "from-teal-500 to-cyan-500" },
+  { id: "matching_sentence_endings",number: 6,  label: "Matching Sentence Endings",  arabicLabel: "مطابقة نهايات الجمل",      emoji: "✂️", shortDesc: "Complete each sentence by picking the correct ending from a list.",                        inputKind: "single_select_per_item", color: "from-emerald-500 to-teal-500" },
+  { id: "true_false_not_given",     number: 7,  label: "True / False / Not Given",   arabicLabel: "صح / خطأ / غير مذكور",     emoji: "✅", shortDesc: "Decide whether each statement is True, False, or Not Given based on the passage.",         inputKind: "single_select_per_item", color: "from-green-500 to-emerald-500" },
+  { id: "multiple_choice",          number: 8,  label: "Multiple Choice",            arabicLabel: "اختيار من متعدد",          emoji: "🎯", shortDesc: "Choose the correct answer from four options (A, B, C, D).",                                inputKind: "single_select",          color: "from-amber-500 to-orange-500" },
+  { id: "list_selection",           number: 9,  label: "List Selection",             arabicLabel: "اختيار من قائمة",          emoji: "☑️", shortDesc: "Pick multiple correct answers from a list (e.g. THREE that are mentioned).",               inputKind: "multi_select",           color: "from-orange-500 to-red-500" },
+  { id: "choose_title",             number: 10, label: "Choose a Title",             arabicLabel: "اختيار العنوان",           emoji: "📌", shortDesc: "Select the most appropriate title for the whole passage.",                                  inputKind: "single_select",          color: "from-rose-500 to-pink-500" },
+  { id: "short_answer",             number: 11, label: "Short Answer Questions",     arabicLabel: "إجابات قصيرة",             emoji: "✏️", shortDesc: "Answer specific questions in a few words taken from the passage.",                          inputKind: "text",                   color: "from-fuchsia-500 to-purple-500" },
+  { id: "sentence_completion",      number: 12, label: "Sentence Completion",        arabicLabel: "إكمال الجمل",              emoji: "📝", shortDesc: "Fill the gaps in sentences with words taken directly from the passage.",                    inputKind: "text",                   color: "from-purple-500 to-indigo-500" },
+  { id: "summary_completion",       number: 13, label: "Summary Completion",         arabicLabel: "إكمال الملخص",             emoji: "📄", shortDesc: "Complete a paragraph summary using words from the passage or a word box.",                  inputKind: "text",                   color: "from-violet-500 to-fuchsia-500" },
+  { id: "table_completion",         number: 14, label: "Table Completion",           arabicLabel: "إكمال الجدول",             emoji: "📊", shortDesc: "Fill missing cells in a table using information from the passage.",                        inputKind: "text",                   color: "from-cyan-500 to-sky-500" },
+  { id: "flow_chart_completion",    number: 15, label: "Flow Chart Completion",      arabicLabel: "إكمال المخطط",             emoji: "🔁", shortDesc: "Fill missing steps in a flow chart based on the passage.",                                  inputKind: "text",                   color: "from-blue-500 to-indigo-500" },
+  { id: "diagram_completion",       number: 16, label: "Diagram Completion",         arabicLabel: "إكمال الرسم التوضيحي",     emoji: "🖼️", shortDesc: "Label parts of a diagram with information from the passage.",                              inputKind: "text",                   color: "from-pink-500 to-rose-500" },
 ];
 
 export interface SkillItem {
@@ -78,7 +82,251 @@ export interface SkillExercise {
 }
 
 const E: SkillExercise[] = [
-  // ───────────────────── 1. Matching Headings ─────────────────────
+  // ───────────────────── 1. Skimming ─────────────────────
+  {
+    id: "sk-001",
+    type: "skimming",
+    title: "Smartwatches in Modern Life",
+    topic: "Technology · Lifestyle",
+    passage:
+`Smartwatches have become incredibly popular over the last decade. Unlike traditional watches that only tell time, smartwatches act like mini-computers on your wrist. They can track your daily steps, monitor your heart rate, and even measure how well you sleep. In addition to health tracking, they allow users to receive text messages, answer phone calls, and control music without looking at their smartphones. While some people worry that these devices cause distractions, many users find that smartwatches help them stay organised and maintain a healthier lifestyle.`,
+    instructions: "Skim the passage quickly (don't read every word) and choose the BEST answer.",
+    options: [
+      { label: "A", text: "The history of traditional watches" },
+      { label: "B", text: "Smartwatches — their features and benefits" },
+      { label: "C", text: "How to connect a watch to a smartphone" },
+      { label: "D", text: "The negative effects of modern technology" },
+    ],
+    items: [
+      { prompt: "What is the main topic of the passage?", answer: "B" },
+    ],
+    analysis:
+`B is correct. The first sentence introduces smartwatches, and the rest of the text lists their features (tracking steps, receiving messages) and benefits (healthier lifestyle).
+
+A is wrong: traditional watches are mentioned only briefly as a contrast.
+C is wrong: connecting to a smartphone is never explained.
+D is wrong: distractions are mentioned only in passing — the overall focus is positive.
+
+Skimming tip: read the FIRST sentence (the topic sentence) and the FINAL sentence — they almost always reveal the main idea.`,
+  },
+  {
+    id: "sk-002",
+    type: "skimming",
+    title: "Working from Home",
+    topic: "Work · Lifestyle",
+    passage:
+`Working from home has changed dramatically since high-speed internet became widely available. Employees now save hours every week by avoiding long commutes, and many report having more time for family and personal hobbies. Companies, in turn, often save money on office rent and electricity. However, working from home is not without its challenges. Some people find it difficult to separate work from rest, and others miss the social atmosphere of an office. Despite these drawbacks, surveys show that a majority of remote workers would prefer to keep this arrangement, at least part of the time.`,
+    instructions: "Skim the passage and choose the BEST answer.",
+    options: [
+      { label: "A", text: "To convince readers to quit their office jobs" },
+      { label: "B", text: "To explain how to install high-speed internet at home" },
+      { label: "C", text: "To describe the benefits and challenges of remote work" },
+      { label: "D", text: "To compare salaries of remote and office workers" },
+    ],
+    items: [
+      { prompt: "The writer's main purpose is to…", answer: "C" },
+    ],
+    analysis:
+`C is correct. The text balances both sides: time saved, money saved (benefits) AND difficulty separating work from rest, missing social contact (challenges).
+
+A is wrong: the writer doesn't try to convince anyone to quit — the tone is neutral.
+B is wrong: internet is mentioned in one phrase, not explained.
+D is wrong: salary comparisons are never made.
+
+Skimming tip: when a passage gives BOTH positives and negatives, the purpose is usually to INFORM or DESCRIBE, not to PERSUADE.`,
+  },
+  {
+    id: "sk-003",
+    type: "skimming",
+    title: "Plastic in the Oceans",
+    topic: "Environment",
+    passage:
+`Every year, more than eight million tonnes of plastic end up in the world's oceans. Bottles, bags and tiny pieces of broken-down packaging now reach even the deepest parts of the sea. Marine animals frequently mistake plastic for food, and scientists have found microplastics inside fish that humans eat. Cleaning up the ocean is extremely expensive and slow, so most experts agree that the real solution lies on land — reducing the amount of plastic we produce, reusing what we already have, and recycling whenever possible. Without urgent action, the volume of plastic in the sea may soon outweigh that of fish.`,
+    instructions: "Skim the passage and choose the BEST answer.",
+    options: [
+      { label: "A", text: "To explain how plastic bottles are recycled" },
+      { label: "B", text: "To warn readers about the seriousness of ocean plastic pollution" },
+      { label: "C", text: "To advertise a new ocean-cleaning machine" },
+      { label: "D", text: "To describe the diet of marine animals" },
+    ],
+    items: [
+      { prompt: "What is the writer's main purpose?", answer: "B" },
+    ],
+    analysis:
+`B is correct. The shocking statistics ("eight million tonnes", "may soon outweigh fish") and the call for "urgent action" make this a clear warning.
+
+A is wrong: recycling is mentioned only as one possible solution, not explained.
+C is wrong: no specific machine or product is advertised.
+D is wrong: marine animals are mentioned only to show the harm caused.
+
+Skimming tip: phrases like "without urgent action" or "the real solution" often reveal that the writer's purpose is to WARN or PERSUADE.`,
+  },
+  {
+    id: "sk-004",
+    type: "skimming",
+    title: "The Rise of Online Learning",
+    topic: "Education · Technology",
+    passage:
+`Online learning has grown rapidly over the past few years. Students of all ages can now take university courses, learn a new language, or study coding from their own homes. Teachers record video lessons, share notes online, and use chat tools to answer questions in real time. Many learners enjoy the flexibility, since they can study at any hour that suits them. On the other hand, online classes require a great deal of self-discipline, and weak internet connections can make learning frustrating. Most schools today combine online and classroom teaching to give students the advantages of both.`,
+    instructions: "Skim the passage and choose the BEST answer.",
+    options: [
+      { label: "A", text: "Online learning — its growth, benefits and difficulties" },
+      { label: "B", text: "How to become a computer programmer" },
+      { label: "C", text: "The cost of university tuition fees" },
+      { label: "D", text: "Why traditional classrooms should be closed" },
+    ],
+    items: [
+      { prompt: "What is the main topic of the passage?", answer: "A" },
+    ],
+    analysis:
+`A is correct. The passage covers growth ("grown rapidly"), benefits ("flexibility") and difficulties ("self-discipline", "weak internet"), then ends with a balanced conclusion.
+
+B is wrong: coding is mentioned in just one example.
+C is wrong: tuition fees are never discussed.
+D is wrong: the passage in fact says schools COMBINE both methods, not close classrooms.
+
+Skimming tip: a balanced final sentence ("combine both") usually means the topic itself is balanced — choose a balanced title.`,
+  },
+  {
+    id: "sk-005",
+    type: "skimming",
+    title: "The Power of a Good Night's Sleep",
+    topic: "Health",
+    passage:
+`Sleep is often described as one of the most important pillars of good health, alongside diet and exercise. During sleep, the brain processes the day's experiences, strengthens memories, and clears out waste chemicals that build up while we are awake. Adults who consistently sleep fewer than six hours a night are more likely to suffer from heart disease, weakened immunity, and difficulty concentrating during the day. Doctors recommend a regular bedtime, a cool dark bedroom, and avoiding screens for at least an hour before bed. Such simple habits can have a powerful effect on both physical and mental wellbeing.`,
+    instructions: "Skim the passage and choose the BEST answer.",
+    options: [
+      { label: "A", text: "To sell a new mattress brand" },
+      { label: "B", text: "To inform readers about the importance of sleep and how to sleep better" },
+      { label: "C", text: "To compare sleep habits in different countries" },
+      { label: "D", text: "To argue that exercise is more important than sleep" },
+    ],
+    items: [
+      { prompt: "The writer's main purpose is to…", answer: "B" },
+    ],
+    analysis:
+`B is correct. The passage explains WHY sleep matters (memory, health) and HOW to sleep better (regular bedtime, cool room, no screens) — the classic structure of an informative health article.
+
+A is wrong: no product is mentioned.
+C is wrong: no countries are compared.
+D is wrong: the passage actually places sleep ALONGSIDE exercise, not above it.
+
+Skimming tip: when a passage explains BOTH a problem and practical solutions, its purpose is almost always to INFORM or ADVISE.`,
+  },
+
+  // ───────────────────── 2. Scanning ─────────────────────
+  {
+    id: "scn-001",
+    type: "scanning",
+    title: "The Great Wall of China",
+    topic: "History · Landmarks",
+    passage:
+`The Great Wall of China is one of the most famous landmarks in the world. It is not just one long wall, but a series of walls built over many centuries to protect the Chinese Empire. The first parts of the wall were constructed as early as the 7th century BC. However, the most famous and well-preserved sections were built during the Ming Dynasty, between 1368 and 1644. The total length of the wall is estimated to be about 21,196 kilometres. Today, it attracts over 10 million visitors every year. The most popular section for tourists to visit is Badaling, which is located near Beijing.`,
+    instructions: "Scan the passage to find the answer. Type your answer in the box (numbers or short words only).",
+    items: [
+      {
+        prompt: "1. In which century were the first parts of the wall constructed?",
+        answer: "7th century BC",
+        acceptable: ["7th century", "7th", "the 7th century BC", "the 7th century", "seventh century BC", "seventh century"],
+      },
+    ],
+    analysis:
+`Answer: 7th century BC.
+
+Scan for the keywords "first parts" or "constructed" → "the first parts of the wall were constructed as early as the 7th century BC."
+
+Scanning tip: when a question asks about a TIME, look for numbers, years, or words like "century", "year", "between" in the passage.`,
+  },
+  {
+    id: "scn-002",
+    type: "scanning",
+    title: "The Great Wall of China — Length",
+    topic: "History · Landmarks",
+    passage:
+`The Great Wall of China is one of the most famous landmarks in the world. It is not just one long wall, but a series of walls built over many centuries to protect the Chinese Empire. The first parts of the wall were constructed as early as the 7th century BC. However, the most famous and well-preserved sections were built during the Ming Dynasty, between 1368 and 1644. The total length of the wall is estimated to be about 21,196 kilometres. Today, it attracts over 10 million visitors every year. The most popular section for tourists to visit is Badaling, which is located near Beijing.`,
+    instructions: "Scan the passage to find the answer. Type your answer in the box.",
+    items: [
+      {
+        prompt: "2. What is the estimated total length of the Great Wall (in kilometres)?",
+        answer: "21,196",
+        acceptable: ["21196", "21,196 kilometres", "21,196 km", "21196 km", "21196 kilometres", "about 21,196", "about 21196"],
+      },
+    ],
+    analysis:
+`Answer: 21,196 kilometres.
+
+Scan for the keywords "length" or any large number → "total length of the wall is estimated to be about 21,196 kilometres."
+
+Scanning tip: a number is one of the easiest things to spot — let your eye jump straight to digits on the page instead of reading every word.`,
+  },
+  {
+    id: "scn-003",
+    type: "scanning",
+    title: "The Eiffel Tower",
+    topic: "Landmarks · Architecture",
+    passage:
+`The Eiffel Tower is one of the most recognised structures in the world and the symbol of Paris. It was designed by the engineer Gustave Eiffel and built for the 1889 World Fair, which celebrated the 100th anniversary of the French Revolution. At the time of completion, the tower stood 300 metres tall — by far the tallest building in the world — and held this record for 41 years. Today, with its broadcasting antenna, it reaches a height of 330 metres. Around 7 million people visit the Eiffel Tower every year, making it the most-visited paid monument on the planet.`,
+    instructions: "Scan the passage to find the answer. Type your answer in the box.",
+    items: [
+      {
+        prompt: "In which year was the Eiffel Tower built?",
+        answer: "1889",
+        acceptable: ["in 1889", "the year 1889"],
+      },
+    ],
+    analysis:
+`Answer: 1889.
+
+Scan for the keyword "built" or any year → "built for the 1889 World Fair."
+
+Scanning tip: dates are usually written as 4-digit numbers — your eyes can find them in seconds without reading sentences word by word.`,
+  },
+  {
+    id: "scn-004",
+    type: "scanning",
+    title: "Mount Everest",
+    topic: "Geography · Mountains",
+    passage:
+`Mount Everest, known in Nepali as Sagarmatha and in Tibetan as Chomolungma, is the highest mountain on Earth above sea level. Its summit lies on the border between Nepal and the Tibet Autonomous Region of China. According to the most recent measurement, agreed jointly by China and Nepal in 2020, Everest stands 8,849 metres tall. The first confirmed climbers to reach the summit were Edmund Hillary of New Zealand and Tenzing Norgay, a Nepalese Sherpa, on 29 May 1953. Today, hundreds of climbers attempt the dangerous ascent each spring season.`,
+    instructions: "Scan the passage to find the answer. Type your answer in the box.",
+    items: [
+      {
+        prompt: "How tall is Mount Everest, in metres?",
+        answer: "8,849",
+        acceptable: ["8849", "8,849 metres", "8849 metres", "8,849 m", "8849 m"],
+      },
+    ],
+    analysis:
+`Answer: 8,849 metres.
+
+Scan for "tall", "height", "metres" or large numbers → "Everest stands 8,849 metres tall."
+
+Scanning tip: you don't need to know what Sagarmatha or Sherpa mean to answer — just locate the number that matches the question (height in metres).`,
+  },
+  {
+    id: "scn-005",
+    type: "scanning",
+    title: "The Modern Olympic Games",
+    topic: "Sport · History",
+    passage:
+`The modern Olympic Games are the world's largest sporting event. They were revived by a French educator named Pierre de Coubertin, who believed that sport could promote peace and understanding between nations. The first modern Olympic Games were held in Athens, Greece, in 1896, with athletes from 14 countries competing in 43 events. Since then, the Games have taken place every four years, except during the two World Wars. Today, more than 200 countries take part, and the Olympics are watched by an audience of around 3 billion people worldwide.`,
+    instructions: "Scan the passage to find the answer. Type your answer in the box.",
+    items: [
+      {
+        prompt: "In which city were the first modern Olympic Games held?",
+        answer: "Athens",
+        acceptable: ["Athens, Greece", "in Athens"],
+      },
+    ],
+    analysis:
+`Answer: Athens.
+
+Scan for "first" or "Games were held" → "The first modern Olympic Games were held in Athens, Greece, in 1896."
+
+Scanning tip: for "where" questions, look for capitalised words (place names) in the passage — your eye finds them faster than full sentences.`,
+  },
+
+  // ───────────────────── 3. Matching Headings ─────────────────────
   {
     id: "mh-001",
     type: "matching_headings",
