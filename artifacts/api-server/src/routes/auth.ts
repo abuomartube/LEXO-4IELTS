@@ -563,6 +563,30 @@ router.post("/admin/avatar", async (req, res): Promise<void> => {
   res.json({ success: true, dataUrl });
 });
 
+// ── Registration page video ─────────────────────────────────────────────────
+// Public GET so the login/register page can embed it without auth.
+router.get("/registration-video", async (_req, res): Promise<void> => {
+  const [row] = await db.select().from(settingsTable)
+    .where(eq(settingsTable.key, "registration_video_url")).limit(1);
+  res.json({ url: row?.value ?? null });
+});
+
+router.post("/admin/registration-video", async (req, res): Promise<void> => {
+  if (!await requireAdmin(req, res)) return;
+  const { url } = req.body ?? {};
+  if (url === null || url === undefined || (typeof url === "string" && url.trim() === "")) {
+    await db.delete(settingsTable).where(eq(settingsTable.key, "registration_video_url"));
+    res.json({ success: true, url: null });
+    return;
+  }
+  if (typeof url !== "string") { res.status(400).json({ error: "url must be a string" }); return; }
+  const trimmed = url.trim();
+  await db.insert(settingsTable)
+    .values({ key: "registration_video_url", value: trimmed })
+    .onConflictDoUpdate({ target: settingsTable.key, set: { value: trimmed } });
+  res.json({ success: true, url: trimmed });
+});
+
 // ── Teacher Dashboard ───────────────────────────────────────────────────────
 
 router.get("/teacher/students", async (req, res): Promise<void> => {

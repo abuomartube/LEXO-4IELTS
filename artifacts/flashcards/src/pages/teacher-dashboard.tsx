@@ -176,6 +176,12 @@ export default function TeacherDashboard() {
   const [notifLoading, setNotifLoading] = useState(false);
   const [deletingNotifId, setDeletingNotifId] = useState<number | null>(null);
 
+  // Registration page video state
+  const [regVideoUrl, setRegVideoUrl] = useState<string | null>(null);
+  const [regVideoInput, setRegVideoInput] = useState("");
+  const [regVideoSaving, setRegVideoSaving] = useState(false);
+  const [regVideoError, setRegVideoError] = useState("");
+
   // AI usage (today) state
   const [aiUsage, setAiUsage] = useState<AiUsageTodayResponse | null>(null);
 
@@ -197,6 +203,7 @@ export default function TeacherDashboard() {
       fetchAccessCodes();
       fetchNotifications();
       fetchAiUsage();
+      fetchRegVideo();
     }
   }, [authed]);
 
@@ -486,6 +493,54 @@ export default function TeacherDashboard() {
       setAiUsage(data);
     } catch {
       // Ignore — AI usage is supplementary; failure shouldn't break dashboard.
+    }
+  }
+
+  async function fetchRegVideo() {
+    try {
+      const res = await fetch(`${API}/api/registration-video`);
+      if (!res.ok) return;
+      const data = await res.json();
+      setRegVideoUrl(data.url ?? null);
+      setRegVideoInput(data.url ?? "");
+    } catch { /* ignore */ }
+  }
+
+  async function saveRegVideo() {
+    setRegVideoSaving(true);
+    setRegVideoError("");
+    try {
+      const res = await fetch(`${API}/api/admin/registration-video`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-admin-password": password },
+        body: JSON.stringify({ url: regVideoInput.trim() }),
+      });
+      const data = await res.json();
+      if (!res.ok) { setRegVideoError(data.error ?? "Failed to save"); return; }
+      setRegVideoUrl(data.url ?? null);
+    } catch {
+      setRegVideoError("Connection error. Please try again.");
+    } finally {
+      setRegVideoSaving(false);
+    }
+  }
+
+  async function clearRegVideo() {
+    setRegVideoSaving(true);
+    setRegVideoError("");
+    try {
+      const res = await fetch(`${API}/api/admin/registration-video`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-admin-password": password },
+        body: JSON.stringify({ url: "" }),
+      });
+      if (!res.ok) { setRegVideoError("Failed to remove video"); return; }
+      setRegVideoUrl(null);
+      setRegVideoInput("");
+    } catch {
+      setRegVideoError("Connection error. Please try again.");
+    } finally {
+      setRegVideoSaving(false);
     }
   }
 
@@ -1298,6 +1353,79 @@ export default function TeacherDashboard() {
                   </li>
                 ))}
               </ul>
+            )}
+          </div>
+        </section>
+
+        {/* ── Registration Page Video ──────────────────────────────────── */}
+        <section className="bg-card border border-border rounded-2xl overflow-hidden">
+          <div className="px-5 py-4 border-b border-border flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl bg-red-500/10 flex items-center justify-center">
+              <PlayCircle className="w-5 h-5 text-red-500" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <h2 className="text-base font-extrabold text-foreground">Registration Page Video</h2>
+              <p className="text-xs text-muted-foreground">Paste a YouTube URL — it appears embedded above the login/register form. Leave blank to hide.</p>
+            </div>
+          </div>
+          <div className="p-5 space-y-3">
+            <div className="flex gap-2">
+              <input
+                type="url"
+                value={regVideoInput}
+                onChange={(e) => setRegVideoInput(e.target.value)}
+                placeholder="https://www.youtube.com/watch?v=..."
+                className="flex-1 px-4 py-2.5 bg-muted/40 border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+              />
+              <button
+                onClick={saveRegVideo}
+                disabled={regVideoSaving}
+                className="px-4 py-2.5 bg-primary text-primary-foreground font-bold rounded-xl hover:opacity-90 transition-opacity disabled:opacity-50 flex items-center gap-2 shrink-0"
+              >
+                {regVideoSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Check className="w-4 h-4" />}
+                Save
+              </button>
+              {regVideoUrl && (
+                <button
+                  onClick={clearRegVideo}
+                  disabled={regVideoSaving}
+                  className="px-3 py-2.5 text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/20 rounded-xl transition-colors disabled:opacity-50"
+                  title="Remove video"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              )}
+            </div>
+            {regVideoError && (
+              <p className="text-xs text-red-500">{regVideoError}</p>
+            )}
+            {regVideoUrl && (
+              <div className="rounded-xl overflow-hidden border border-border">
+                <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
+                  <iframe
+                    src={(() => {
+                      try {
+                        const u = new URL(regVideoUrl);
+                        let id: string | null = null;
+                        if (u.hostname === "youtu.be") id = u.pathname.slice(1);
+                        else if (u.hostname.includes("youtube.com")) {
+                          if (u.pathname === "/watch") id = u.searchParams.get("v");
+                          else if (u.pathname.startsWith("/embed/")) id = u.pathname.replace("/embed/", "");
+                        }
+                        return id ? `https://www.youtube.com/embed/${id}?rel=0&modestbranding=1` : regVideoUrl;
+                      } catch { return regVideoUrl; }
+                    })()}
+                    className="absolute inset-0 w-full h-full"
+                    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    title="Registration page video preview"
+                  />
+                </div>
+                <p className="px-3 py-2 text-xs text-muted-foreground bg-muted/30">Preview — this is how students will see it</p>
+              </div>
+            )}
+            {!regVideoUrl && (
+              <p className="text-xs text-muted-foreground italic">No video set — the section is hidden from students.</p>
             )}
           </div>
         </section>

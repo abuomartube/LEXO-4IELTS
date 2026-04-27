@@ -15,6 +15,22 @@ const LOGOUT_REASON_KEY = "lexo_logout_reason";
 
 const STORAGE_KEY = "4ielts_email";
 const WHATSAPP_URL = "https://wa.me/message/KMWPDZOBBNAAB1";
+
+function extractYouTubeEmbedUrl(url: string): string | null {
+  try {
+    const u = new URL(url);
+    let videoId: string | null = null;
+    if (u.hostname === "youtu.be") {
+      videoId = u.pathname.slice(1).split("?")[0];
+    } else if (u.hostname.includes("youtube.com")) {
+      if (u.pathname === "/watch") videoId = u.searchParams.get("v");
+      else if (u.pathname.startsWith("/embed/")) videoId = u.pathname.replace("/embed/", "").split("?")[0];
+      else if (u.pathname.startsWith("/shorts/")) videoId = u.pathname.replace("/shorts/", "").split("?")[0];
+    }
+    if (!videoId || !/^[\w-]{11}$/.test(videoId)) return null;
+    return `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1`;
+  } catch { return null; }
+}
 const WHATSAPP_VISITOR_URL = "https://wa.me/4ielts";
 const CONTACT_EMAIL = "askabuomar@gmail.com";
 
@@ -346,10 +362,23 @@ function PasswordGateUnlocked({ children }: { children: ReactNode }) {
 interface PasswordGateProps { children: React.ReactNode; }
 
 // Shared shell so every screen looks consistent
-function AuthShell({ children, footer }: { children: ReactNode; footer?: ReactNode }) {
+function AuthShell({ children, footer, videoEmbedUrl }: { children: ReactNode; footer?: ReactNode; videoEmbedUrl?: string | null }) {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-teal-900 via-teal-800 to-sky-900 p-4">
-      <div className="w-full max-w-sm">
+      <div className="w-full max-w-sm flex flex-col gap-4">
+        {videoEmbedUrl && (
+          <div className="rounded-2xl overflow-hidden shadow-2xl w-full">
+            <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
+              <iframe
+                src={videoEmbedUrl}
+                className="absolute inset-0 w-full h-full"
+                allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                title="LEXO intro video"
+              />
+            </div>
+          </div>
+        )}
         <div className="bg-white dark:bg-gray-900 rounded-3xl shadow-2xl p-8">
           <div className="flex flex-col items-center mb-6">
             <img src="/4ielts-logo.png" alt="4IELTS" className="h-14 w-auto object-contain" />
@@ -381,6 +410,20 @@ export function PasswordGate({ children }: PasswordGateProps) {
   const [error, setError] = useState("");
   const [info, setInfo] = useState("");
   const [loading, setLoading] = useState(false);
+
+  // Registration page video (set by admin in Teacher Dashboard)
+  const [regVideoEmbedUrl, setRegVideoEmbedUrl] = useState<string | null>(null);
+  useEffect(() => {
+    fetch("/api/registration-video")
+      .then((r) => r.json())
+      .then((d) => {
+        if (d.url) {
+          const embedUrl = extractYouTubeEmbedUrl(d.url);
+          if (embedUrl) setRegVideoEmbedUrl(embedUrl);
+        }
+      })
+      .catch(() => { /* ignore — video is optional */ });
+  }, []);
 
   const pollTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const expiredEmailRef = useRef<string>("");
@@ -732,7 +775,7 @@ export function PasswordGate({ children }: PasswordGateProps) {
 
   if (phase === "register") {
     return (
-      <AuthShell footer={
+      <AuthShell videoEmbedUrl={regVideoEmbedUrl} footer={
         <p className="text-xs text-center text-gray-500 dark:text-gray-400 mt-6">
           Already have an account?{" "}
           <button onClick={() => goToLogin()} className="text-teal-600 hover:underline font-semibold">Log in</button>
@@ -785,7 +828,7 @@ export function PasswordGate({ children }: PasswordGateProps) {
 
   // ── Login screen (default) ────────────────────────────────────────
   return (
-    <AuthShell footer={
+    <AuthShell videoEmbedUrl={regVideoEmbedUrl} footer={
       <p className="text-xs text-center text-gray-500 dark:text-gray-400 mt-6">
         New here?{" "}
         <button onClick={goToRegister} className="text-teal-600 hover:underline font-semibold">Create an account</button>
