@@ -103,19 +103,22 @@ export default function Study() {
     savePosition(currentIndex, JSON.stringify({ level: levelFilter, category: categoryFilter, mode: studyMode, known: sessionStats.known, unknown: sessionStats.unknown }));
   }, [currentIndex, levelFilter, categoryFilter, studyMode, positionLoaded, sessionStats]);
 
+  const safeIndex = cards && cards.length > 0 ? Math.min(currentIndex, cards.length - 1) : 0;
+  const currentCard = cards?.[safeIndex];
+
   const handleNext = () => {
-    if (cards && currentIndex < cards.length - 1) {
+    if (cards && safeIndex < cards.length - 1) {
       setIsFlipped(false);
-      setTimeout(() => setCurrentIndex(prev => prev + 1), 150);
+      setTimeout(() => setCurrentIndex(safeIndex + 1), 150);
     } else {
       setSessionDone(true);
     }
   };
 
   const handlePrev = () => {
-    if (currentIndex > 0) {
+    if (safeIndex > 0) {
       setIsFlipped(false);
-      setTimeout(() => setCurrentIndex(prev => prev - 1), 150);
+      setTimeout(() => setCurrentIndex(safeIndex - 1), 150);
     }
   };
 
@@ -126,8 +129,6 @@ export default function Study() {
     setSessionDone(false);
     setReviewedIds(new Set());
   };
-
-  const currentCard = cards?.[currentIndex];
 
   const currentProgress = useMemo(() => {
     if (!currentCard || !progress) return null;
@@ -156,7 +157,7 @@ export default function Study() {
     handleNext();
   };
 
-  const progressPercent = cards && cards.length > 0 ? Math.round((currentIndex / cards.length) * 100) : 0;
+  const progressPercent = cards && cards.length > 0 ? Math.round((safeIndex / cards.length) * 100) : 0;
 
   useEffect(() => {
     if (welcomeBack && cards && cards.length > 0) {
@@ -233,6 +234,8 @@ export default function Study() {
               <Button
                 onClick={() => {
                   setCurrentIndex(pos);
+                  setIsFlipped(false);
+                  setSessionDone(false);
                   setWelcomeBack(null);
                 }}
                 className="rounded-full"
@@ -340,7 +343,7 @@ export default function Study() {
           <div className="flex-1 flex flex-col">
             <div className="mb-4">
               <div className="flex justify-between text-sm font-medium text-muted-foreground mb-2 px-1">
-                <span>Card {currentIndex + 1} of {cards.length}</span>
+                <span>Card {safeIndex + 1} of {cards.length}</span>
                 <div className="flex gap-3">
                   <span className="text-green-600 font-semibold">✓ {sessionStats.known}</span>
                   <span className="text-orange-500 font-semibold">✗ {sessionStats.unknown}</span>
@@ -357,7 +360,7 @@ export default function Study() {
 
             <div className="mt-8 flex flex-col items-center gap-3">
               <div className="flex justify-center items-center gap-4">
-                <Button variant="outline" size="icon" className="rounded-full w-12 h-12" onClick={handlePrev} disabled={currentIndex === 0}>
+                <Button variant="outline" size="icon" className="rounded-full w-12 h-12" onClick={handlePrev} disabled={safeIndex === 0}>
                   <ArrowLeft className="w-5 h-5" />
                 </Button>
 
@@ -383,7 +386,7 @@ export default function Study() {
                   </Button>
                 </div>
 
-                <Button variant="outline" size="icon" className="rounded-full w-12 h-12" onClick={handleNext} disabled={currentIndex === cards.length - 1}>
+                <Button variant="outline" size="icon" className="rounded-full w-12 h-12" onClick={handleNext} disabled={safeIndex === cards.length - 1}>
                   <ArrowRight className="w-5 h-5" />
                 </Button>
               </div>
