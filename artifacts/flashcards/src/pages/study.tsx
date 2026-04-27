@@ -1,11 +1,11 @@
 import { useState, useMemo, useEffect } from "react";
-import { useListFlashcards, useGetProgress, useUpsertProgress, useListCategories } from "@workspace/api-client-react";
+import { useListFlashcards, useGetProgress, useUpsertProgress, useListCategories, useAddWeakWords } from "@workspace/api-client-react";
 import { useSrsDue, useUpdateSrs, useListBookmarks } from "@workspace/api-client-react";
 import { Layout } from "@/components/layout";
 import { FlashcardView } from "@/components/flashcard";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { CheckCircle2, XCircle, ArrowRight, ArrowLeft, RefreshCw, Filter, BookOpen, Zap, Bookmark } from "lucide-react";
+import { CheckCircle2, XCircle, ArrowRight, ArrowLeft, RefreshCw, Filter, BookOpen, Zap, Bookmark, Flag } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { useActivityPosition } from "@/hooks/use-activity-position";
@@ -45,6 +45,8 @@ export default function Study() {
   const { data: bookmarks } = useListBookmarks();
   const upsertProgress = useUpsertProgress();
   const updateSrs = useUpdateSrs();
+  const { mutate: addWeakWords } = useAddWeakWords();
+  const [markedWeakIds, setMarkedWeakIds] = useState<Set<number>>(new Set());
 
   const cards = useMemo(() => {
     if (!allCards) return [];
@@ -353,36 +355,63 @@ export default function Study() {
               onFlip={() => setIsFlipped(!isFlipped)}
             />
 
-            <div className="mt-8 flex justify-center items-center gap-4">
-              <Button variant="outline" size="icon" className="rounded-full w-12 h-12" onClick={handlePrev} disabled={currentIndex === 0}>
-                <ArrowLeft className="w-5 h-5" />
-              </Button>
-
-              <div className="flex gap-3 px-4">
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="rounded-full border-orange-200 hover:bg-orange-50 dark:hover:bg-orange-950/30 hover:text-orange-600 text-orange-600 font-semibold"
-                  onClick={(e) => { e.stopPropagation(); markCard(false); }}
-                  disabled={upsertProgress.isPending}
-                >
-                  <XCircle className="w-5 h-5 mr-2" />
-                  Still Learning
+            <div className="mt-8 flex flex-col items-center gap-3">
+              <div className="flex justify-center items-center gap-4">
+                <Button variant="outline" size="icon" className="rounded-full w-12 h-12" onClick={handlePrev} disabled={currentIndex === 0}>
+                  <ArrowLeft className="w-5 h-5" />
                 </Button>
-                <Button
-                  size="lg"
-                  className="rounded-full bg-green-500 hover:bg-green-600 text-white font-semibold shadow-sm"
-                  onClick={(e) => { e.stopPropagation(); markCard(true); }}
-                  disabled={upsertProgress.isPending}
-                >
-                  <CheckCircle2 className="w-5 h-5 mr-2" />
-                  Got it!
+
+                <div className="flex gap-3 px-4">
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    className="rounded-full border-orange-200 hover:bg-orange-50 dark:hover:bg-orange-950/30 hover:text-orange-600 text-orange-600 font-semibold"
+                    onClick={(e) => { e.stopPropagation(); markCard(false); }}
+                    disabled={upsertProgress.isPending}
+                  >
+                    <XCircle className="w-5 h-5 mr-2" />
+                    Still Learning
+                  </Button>
+                  <Button
+                    size="lg"
+                    className="rounded-full bg-green-500 hover:bg-green-600 text-white font-semibold shadow-sm"
+                    onClick={(e) => { e.stopPropagation(); markCard(true); }}
+                    disabled={upsertProgress.isPending}
+                  >
+                    <CheckCircle2 className="w-5 h-5 mr-2" />
+                    Got it!
+                  </Button>
+                </div>
+
+                <Button variant="outline" size="icon" className="rounded-full w-12 h-12" onClick={handleNext} disabled={currentIndex === cards.length - 1}>
+                  <ArrowRight className="w-5 h-5" />
                 </Button>
               </div>
 
-              <Button variant="outline" size="icon" className="rounded-full w-12 h-12" onClick={handleNext} disabled={currentIndex === cards.length - 1}>
-                <ArrowRight className="w-5 h-5" />
-              </Button>
+              {/* Weak word button */}
+              {currentCard && (() => {
+                const isWeak = markedWeakIds.has(currentCard.id);
+                return (
+                  <button
+                    onClick={() => {
+                      if (!isWeak) {
+                        addWeakWords([currentCard.id]);
+                        setMarkedWeakIds(prev => new Set([...prev, currentCard.id]));
+                        toast({ title: "Added to Weak Words", description: `"${currentCard.english}" flagged for extra review.` });
+                      }
+                    }}
+                    className={cn(
+                      "flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full border transition-colors",
+                      isWeak
+                        ? "bg-red-50 border-red-300 text-red-600 dark:bg-red-950/20 dark:border-red-800 dark:text-red-400"
+                        : "border-border text-muted-foreground hover:border-red-300 hover:text-red-500"
+                    )}
+                  >
+                    <Flag className="w-3.5 h-3.5" />
+                    {isWeak ? "Marked as Weak ✓" : "Mark as Weak"}
+                  </button>
+                );
+              })()}
             </div>
           </div>
         ) : null}

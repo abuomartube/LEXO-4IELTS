@@ -356,6 +356,74 @@ router.post("/weak-words/:id/master", async (req, res): Promise<void> => {
   res.json({ mastered: true });
 });
 
+// Add a weak word by matching its English word string.
+// Used by synonym / antonym modes that have the word but not the flashcard ID.
+router.post("/weak-words/add-by-word", async (req, res): Promise<void> => {
+  const email = verifyStudentEmail(req);
+  if (!email) { res.status(401).json({ error: "Unauthorized" }); return; }
+
+  const { word } = req.body as { word?: string };
+  if (!word || typeof word !== "string") { res.json({ added: 0 }); return; }
+
+  const [flashcard] = await db.select({ id: flashcardsTable.id })
+    .from(flashcardsTable)
+    .where(sql`lower(${flashcardsTable.english}) = lower(${word.trim()})`)
+    .limit(1);
+
+  if (!flashcard) { res.json({ added: 0 }); return; }
+
+  const existing = await db.select({ id: weakWordsTable.id })
+    .from(weakWordsTable)
+    .where(and(eq(weakWordsTable.email, email), eq(weakWordsTable.flashcardId, flashcard.id)))
+    .limit(1);
+
+  if (existing.length > 0) {
+    await db.update(weakWordsTable)
+      .set({ wrongCount: sql`${weakWordsTable.wrongCount} + 1`, lastWrongAt: new Date() })
+      .where(eq(weakWordsTable.id, existing[0].id));
+  } else {
+    await db.insert(weakWordsTable).values({ email, flashcardId: flashcard.id });
+  }
+  res.json({ added: 1 });
+});
+
+// Phrasal verb weak words — stored per-user in userDataTable as a comma-separated ID list.
+router.get("/phrasal-verbs/weak", async (req, res): Promise<void> => {
+  const email = verifyStudentEmail(req);
+  if (!email) { res.json({ ids: [] }); return; }
+  const [row] = await db.select({ value: userDataTable.value })
+    .from(userDataTable)
+    .where(and(eq(userDataTable.email, email), eq(userDataTable.key, "weak_phrasal_verbs")))
+    .limit(1);
+  const ids = row?.value ? row.value.split(",").map(Number).filter(Boolean) : [];
+  res.json({ ids });
+});
+
+router.post("/phrasal-verbs/weak/toggle", async (req, res): Promise<void> => {
+  const email = verifyStudentEmail(req);
+  if (!email) { res.status(401).json({ error: "Unauthorized" }); return; }
+  const { id } = req.body as { id?: number };
+  if (!id || typeof id !== "number") { res.json({ weak: false }); return; }
+
+  const [row] = await db.select({ value: userDataTable.value })
+    .from(userDataTable)
+    .where(and(eq(userDataTable.email, email), eq(userDataTable.key, "weak_phrasal_verbs")))
+    .limit(1);
+
+  const ids = new Set<number>(row?.value ? row.value.split(",").map(Number).filter(Boolean) : []);
+  const wasWeak = ids.has(id);
+  if (wasWeak) ids.delete(id); else ids.add(id);
+  const newValue = [...ids].join(",");
+
+  await db.insert(userDataTable)
+    .values({ email, key: "weak_phrasal_verbs", value: newValue, updatedAt: new Date() })
+    .onConflictDoUpdate({
+      target: [userDataTable.email, userDataTable.key],
+      set: { value: newValue, updatedAt: new Date() },
+    });
+  res.json({ weak: !wasWeak });
+});
+
 // ── Quiz ───────────────────────────────────────────────────────────────────
 
 router.get("/quiz", async (req, res): Promise<void> => {

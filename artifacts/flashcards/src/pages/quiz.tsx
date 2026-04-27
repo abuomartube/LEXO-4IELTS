@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import {
   CheckCircle2, XCircle, RefreshCw, HelpCircle,
-  ArrowRight, ArrowLeft, Trophy, Volume2, PenLine, History, Clock, Brain, Zap, SpellCheck2
+  ArrowRight, ArrowLeft, Trophy, Volume2, PenLine, History, Clock, Brain, Zap, SpellCheck2, Flag
 } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
@@ -419,6 +419,7 @@ export default function Quiz() {
             selectedOption={selectedOption}
             onSelect={handleMcSelect}
             onNext={goNext}
+            onMarkWeak={() => { addWeakWords([(currentQ as any).flashcard.id]); wrongIdsRef.current.push((currentQ as any).flashcard.id); }}
           />
         ) : (
           <FillBlankQuestion
@@ -429,6 +430,7 @@ export default function Quiz() {
             correct={fillCorrect}
             onCheck={checkFillAnswer}
             onNext={goNext}
+            onMarkWeak={() => { addWeakWords([(currentQ as any).flashcard.id]); wrongIdsRef.current.push((currentQ as any).flashcard.id); }}
           />
         )}
       </div>
@@ -438,16 +440,36 @@ export default function Quiz() {
 
 // ── Multiple Choice ──────────────────────────────────────────────────────────
 
+function WeakWordPill({ onMark }: { onMark: () => void }) {
+  const [marked, setMarked] = useState(false);
+  return (
+    <button
+      onClick={() => { if (!marked) { onMark(); setMarked(true); } }}
+      className={cn(
+        "flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full border transition-colors mx-auto",
+        marked
+          ? "bg-red-50 border-red-300 text-red-600 dark:bg-red-950/20 dark:border-red-800 dark:text-red-400"
+          : "border-border text-muted-foreground hover:border-red-300 hover:text-red-500"
+      )}
+    >
+      <Flag className="w-3.5 h-3.5" />
+      {marked ? "Marked as Weak ✓" : "Mark as Weak"}
+    </button>
+  );
+}
+
 function MultipleChoiceQuestion({
   question,
   selectedOption,
   onSelect,
   onNext,
+  onMarkWeak,
 }: {
   question: { flashcard: any; options: string[]; correctIndex: number };
   selectedOption: number | null;
   onSelect: (i: number) => void;
   onNext: () => void;
+  onMarkWeak?: () => void;
 }) {
   return (
     <div className="bg-card border border-border rounded-3xl p-8 shadow-sm animate-in fade-in duration-300">
@@ -510,6 +532,7 @@ function MultipleChoiceQuestion({
           <Button onClick={onNext} className="w-full rounded-full">
             Next Question <ArrowRight className="w-4 h-4 ml-2" />
           </Button>
+          {onMarkWeak && <WeakWordPill onMark={onMarkWeak} />}
         </div>
       )}
     </div>
@@ -526,6 +549,7 @@ function FillBlankQuestion({
   correct,
   onCheck,
   onNext,
+  onMarkWeak,
 }: {
   question: { flashcard: any; sentence: string };
   answer: string;
@@ -534,6 +558,7 @@ function FillBlankQuestion({
   correct: boolean;
   onCheck: () => void;
   onNext: () => void;
+  onMarkWeak?: () => void;
 }) {
   return (
     <div className="bg-card border border-border rounded-3xl p-8 shadow-sm animate-in fade-in duration-300">
@@ -585,6 +610,7 @@ function FillBlankQuestion({
           <Button onClick={onNext} className="w-full rounded-full">
             Next Question <ArrowRight className="w-4 h-4 ml-2" />
           </Button>
+          {onMarkWeak && <WeakWordPill onMark={onMarkWeak} />}
         </div>
       )}
     </div>

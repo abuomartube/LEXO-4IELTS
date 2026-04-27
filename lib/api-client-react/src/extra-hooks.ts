@@ -146,6 +146,40 @@ export const useMasterWeakWord = () => {
   });
 };
 
+// Add a weak word by its English word string — for synonym/antonym modes.
+export const useAddWeakWordByWord = () => {
+  const qc = useQueryClient();
+  return useMutation<{ added: number }, unknown, string>({
+    mutationFn: (word) =>
+      customFetch<{ added: number }>("/api/weak-words/add-by-word", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ word }),
+      }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["/api/weak-words"] }),
+  });
+};
+
+// Phrasal verb weak tracking — toggle individual phrasal verbs by their JSON id.
+export const usePhrasalVerbWeak = () => {
+  const qc = useQueryClient();
+  const query = useQuery<{ ids: number[] }>({
+    queryKey: ["/api/phrasal-verbs/weak"],
+    queryFn: () => customFetch<{ ids: number[] }>("/api/phrasal-verbs/weak"),
+    staleTime: 30_000,
+  });
+  const toggle = useMutation<{ weak: boolean }, unknown, number>({
+    mutationFn: (id) =>
+      customFetch<{ weak: boolean }>("/api/phrasal-verbs/weak/toggle", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id }),
+      }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["/api/phrasal-verbs/weak"] }),
+  });
+  return { weakIds: query.data?.ids ?? [], toggle };
+};
+
 // ── Quiz ───────────────────────────────────────────────────────────────────
 
 export const useQuiz = (level?: string, count = 10) =>

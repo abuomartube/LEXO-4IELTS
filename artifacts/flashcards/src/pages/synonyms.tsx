@@ -2,8 +2,10 @@ import { useState, useMemo, useEffect } from "react";
 import { Layout } from "@/components/layout";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
+import { useAddWeakWordByWord } from "@workspace/api-client-react";
+import { cn } from "@/lib/utils";
 import {
-  ArrowLeft, ArrowRight, RefreshCw, CheckCircle2,
+  ArrowLeft, ArrowRight, RefreshCw, CheckCircle2, Flag,
   XCircle, Sparkles, Trophy, Zap, RotateCcw
 } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -44,6 +46,8 @@ export default function Synonyms() {
   const [sessionDone, setSessionDone] = useState(false);
   const [reviewedIds, setReviewedIds] = useState<Set<number>>(new Set());
   const [positionLoaded, setPositionLoaded] = useState(false);
+  const [markedWeakWords, setMarkedWeakWords] = useState<Set<string>>(new Set());
+  const { mutate: addWeakWordByWord } = useAddWeakWordByWord();
 
   const { toast } = useToast();
   const { load: loadPosition, save: savePosition, loadedRef } = useActivityPosition("synonyms", skillFilter);
@@ -376,6 +380,33 @@ export default function Synonyms() {
                   <ArrowRight className="w-5 h-5" />
                 </Button>
               </div>
+
+              {/* Mark as Weak */}
+              {card && (() => {
+                const isWeak = markedWeakWords.has(card.word);
+                return (
+                  <div className="flex justify-center">
+                    <button
+                      onClick={() => {
+                        if (!isWeak) {
+                          addWeakWordByWord(card.word);
+                          setMarkedWeakWords(prev => new Set([...prev, card.word]));
+                          toast({ title: "Added to Weak Words", description: `"${card.word}" flagged for extra review.` });
+                        }
+                      }}
+                      className={cn(
+                        "flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full border transition-colors",
+                        isWeak
+                          ? "bg-red-50 border-red-300 text-red-600 dark:bg-red-950/20 dark:border-red-800 dark:text-red-400"
+                          : "border-border text-muted-foreground hover:border-red-300 hover:text-red-500"
+                      )}
+                    >
+                      <Flag className="w-3.5 h-3.5" />
+                      {isWeak ? "Marked as Weak ✓" : "Mark as Weak"}
+                    </button>
+                  </div>
+                );
+              })()}
             </div>
           </div>
         ) : (
