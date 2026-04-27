@@ -926,13 +926,13 @@ export default function SpellIt() {
                     spellCheck={false}
                     maxLength={1}
                     aria-label={`Letter ${letterIdx + 1} of ${letterIdxs.length}`}
-                    value={revealed ? target.toUpperCase() : value.toUpperCase()}
+                    value={revealed ? target : value}
                     disabled={revealed || isReady}
                     onChange={(e) => setLetter(letterIdx, e.target.value)}
                     onKeyDown={(e) => onKeyDownLetter(letterIdx, e)}
                     onFocus={(e) => e.target.select()}
                     className={cn(
-                      "w-9 h-14 sm:w-11 sm:h-16 text-center text-2xl sm:text-3xl font-extrabold uppercase rounded-xl border-2 bg-background transition-all",
+                      "w-9 h-14 sm:w-11 sm:h-16 text-center text-2xl sm:text-3xl font-extrabold rounded-xl border-2 bg-background transition-all",
                       "focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-emerald-500",
                       !revealed && "border-border",
                       revealed && isMatch && "border-emerald-500 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-300",
