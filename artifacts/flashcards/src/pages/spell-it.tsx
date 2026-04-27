@@ -369,7 +369,7 @@ export default function SpellIt() {
     } else {
       playWrong();
     }
-    customFetch("/api/flashcards/progress", {
+    customFetch("/api/progress", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ flashcardId: currentCard.id, known: correct }),

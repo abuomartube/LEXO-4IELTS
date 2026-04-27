@@ -221,7 +221,7 @@ export default function FlipIt() {
       setPhase("flipped");
       setCardsSeen((n) => n + 1);
       // Record a progress event so the day counts toward the daily streak.
-      customFetch("/api/flashcards/progress", {
+      customFetch("/api/progress", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ flashcardId: nextCard.id, known: false }),
