@@ -12,6 +12,12 @@
  * all exercises for a type, then filter by `level` in the UI as needed.
  */
 
+import a2Supplements from "./reading-skills-supplements-a2";
+import b1Supplements from "./reading-skills-supplements-b1";
+import b2Part1Supplements from "./reading-skills-supplements-b2-part1";
+import b2Part2Supplements from "./reading-skills-supplements-b2-part2";
+import patchSupplements from "./reading-skills-supplements-patch";
+
 export type SkillQuestionType =
   | "skimming"
   | "scanning"
@@ -3937,6 +3943,14 @@ Eruption occurs`,
 (5) aquifers — underground reservoirs.`,
   },
 ];
+
+E.push(
+  ...a2Supplements,
+  ...b1Supplements,
+  ...b2Part1Supplements,
+  ...b2Part2Supplements,
+  ...patchSupplements,
+);
 
 export const SKILL_EXERCISES: SkillExercise[] = E;
 
