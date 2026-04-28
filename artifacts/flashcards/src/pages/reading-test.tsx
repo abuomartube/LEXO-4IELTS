@@ -138,21 +138,6 @@ export default function ReadingTestPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <button
-              onClick={() => setMode("full")}
-              className="group text-left bg-card border border-border rounded-3xl p-6 hover:border-blue-400 hover:shadow-xl hover:shadow-blue-600/10 transition-all"
-            >
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white shadow-lg mb-4">
-                <ListChecks className="w-7 h-7" />
-              </div>
-              <h2 className="text-xl font-black text-foreground group-hover:text-blue-600 transition-colors">Full Reading Tests</h2>
-              <p className="text-sm text-muted-foreground mt-1">Complete 3-passage, 40-question, 60-minute Cambridge-style exams.</p>
-              <p className="text-xs text-muted-foreground mt-1" dir="rtl" lang="ar">اختبارات قراءة كاملة (٣ نصوص · ٤٠ سؤال · ٦٠ دقيقة)</p>
-              <div className="mt-4 inline-flex items-center gap-1.5 text-sm font-bold text-blue-600">
-                Start full test <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-              </div>
-            </button>
-
-            <button
               onClick={() => setMode("skills")}
               className="group text-left bg-card border border-border rounded-3xl p-6 hover:border-violet-400 hover:shadow-xl hover:shadow-violet-600/10 transition-all"
             >
@@ -167,6 +152,21 @@ export default function ReadingTestPage() {
               <p className="text-xs text-muted-foreground mt-1" dir="rtl" lang="ar">تمارين مركّزة لكل نوع من أنواع أسئلة القراءة الـ١٤</p>
               <div className="mt-4 inline-flex items-center gap-1.5 text-sm font-bold text-violet-600">
                 Choose a question type <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+              </div>
+            </button>
+
+            <button
+              onClick={() => setMode("full")}
+              className="group text-left bg-card border border-border rounded-3xl p-6 hover:border-blue-400 hover:shadow-xl hover:shadow-blue-600/10 transition-all"
+            >
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white shadow-lg mb-4">
+                <ListChecks className="w-7 h-7" />
+              </div>
+              <h2 className="text-xl font-black text-foreground group-hover:text-blue-600 transition-colors">Full Reading Tests</h2>
+              <p className="text-sm text-muted-foreground mt-1">Complete 3-passage, 40-question, 60-minute Cambridge-style exams.</p>
+              <p className="text-xs text-muted-foreground mt-1" dir="rtl" lang="ar">اختبارات قراءة كاملة (٣ نصوص · ٤٠ سؤال · ٦٠ دقيقة)</p>
+              <div className="mt-4 inline-flex items-center gap-1.5 text-sm font-bold text-blue-600">
+                Start full test <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
               </div>
             </button>
           </div>
