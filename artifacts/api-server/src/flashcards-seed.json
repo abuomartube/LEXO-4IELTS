@@ -6540,7 +6540,7 @@
     "arabic": "يختبر / يعاني من",
     "level": "A2",
     "category": "v.",
-    "example_sentence": "Many migrants genuinely experience difficulties when adjusting to a new",
+    "example_sentence": "Many migrants genuinely experience difficulties when adjusting to a new country.",
     "example_sentence_arabic": "يعاني العديد من المهاجرين من صعوبات حقيقية عند التكيف مع مكان جديد."
   },
   {
@@ -6556,7 +6556,7 @@
     "arabic": "ينصح / يوصي",
     "level": "A2",
     "category": "v.",
-    "example_sentence": "Health experts strongly recommend reducing red meat consumption",
+    "example_sentence": "Health experts strongly recommend reducing red meat consumption for better health outcomes.",
     "example_sentence_arabic": "ينصح خبراء الصحة بشدة بتقليل استهلاك لحم البقر الأحمر."
   },
   {
@@ -6564,7 +6564,7 @@
     "arabic": "يسجّل",
     "level": "A2",
     "category": "v.",
-    "example_sentence": "Scientists carefully record daily temperature changes at thousands of stations",
+    "example_sentence": "Scientists carefully record daily temperature changes at thousands of stations around the world.",
     "example_sentence_arabic": "يسجل العلماء بعناية التغييرات اليومية في درجات الحرارة في آلاف المحطات."
   },
   {
@@ -6572,7 +6572,7 @@
     "arabic": "نقل",
     "level": "A2",
     "category": "n.",
-    "example_sentence": "Efficient and affordable transport systems help greatly reduce urban air",
+    "example_sentence": "Efficient and affordable transport systems help greatly reduce urban air pollution.",
     "example_sentence_arabic": "أنظمة النقل الفعالة والميسورة تساعد كثيراً في تقليل تلوث الهواء الحضري."
   },
   {
@@ -6700,7 +6700,7 @@
     "arabic": "وفقاً لـ / حسب",
     "level": "A2",
     "category": "adv.",
-    "example_sentence": "According to recent research, regular reading improves writing skills",
+    "example_sentence": "According to recent research, regular reading improves writing skills significantly over time.",
     "example_sentence_arabic": "وفقاً للبحث الحديث، القراءة المنتظمة تحسن مهارات الكتابة"
   },
   {
@@ -6708,7 +6708,7 @@
     "arabic": "مقدمة / بداية",
     "level": "A2",
     "category": "n.",
-    "example_sentence": "The introduction should clearly state the research question and justify its",
+    "example_sentence": "The introduction should clearly state the research question and justify its significance within the field.",
     "example_sentence_arabic": "يجب أن تبين المقدمة بوضوح سؤال البحث وتبرر أهميته"
   },
   {
@@ -7764,7 +7764,7 @@
     "arabic": "اقتصادي",
     "level": "B1",
     "category": "adj.",
-    "example_sentence": "Sustainable economic development must always be carefully balanced with",
+    "example_sentence": "Sustainable economic development must always be carefully balanced with environmental preservation and social equity.",
     "example_sentence_arabic": "يجب أن يكون التطور الاقتصادي المستدام متوازناً بعناية مع الاعتبارات البيئية."
   },
   {
@@ -7932,7 +7932,7 @@
     "arabic": "أسرة/منزل",
     "level": "B1",
     "category": "n.",
-    "example_sentence": "Average household energy consumption has increased significantly in recent",
+    "example_sentence": "Average household energy consumption has increased significantly in recent years due to technological advancements and lifestyle changes.",
     "example_sentence_arabic": "متوسط استهلاك الطاقة المنزلية زاد بشكل كبير في الآونة الأخيرة."
   },
   {
@@ -8020,7 +8020,7 @@
     "arabic": "طبي",
     "level": "B1",
     "category": "adj.",
-    "example_sentence": "Major medical advances have significantly extended average global life",
+    "example_sentence": "Major medical advances have significantly extended average global life expectancy over the past century.",
     "example_sentence_arabic": "حققت التطورات الطبية الرئيسية تحسنًا كبيرًا في متوسط العمر المتوقع عالميًا."
   },
   {
@@ -8284,7 +8284,7 @@
     "arabic": "ثابت",
     "level": "B1",
     "category": "adj.",
-    "example_sentence": "There was a steady and consistent increase in temperatures throughout the",
+    "example_sentence": "There was a steady and consistent increase in temperatures throughout the entire decade.",
     "example_sentence_arabic": "حدثت زيادة ثابتة ومستمرة في درجات الحرارة طوال الفترة."
   },
   {
@@ -8300,7 +8300,7 @@
     "arabic": "صارم",
     "level": "B1",
     "category": "adj.",
-    "example_sentence": "Much stricter laws are urgently needed to adequately protect endangered",
+    "example_sentence": "Much stricter laws are urgently needed to adequately protect endangered species from extinction.",
     "example_sentence_arabic": "هناك حاجة ماسة إلى قوانين أصرم بكثير لحماية الأنواع المهددة بالانقراض."
   },
   {
@@ -8396,7 +8396,7 @@
     "arabic": "يتطوع",
     "level": "B1",
     "category": "v.",
-    "example_sentence": "Many dedicated students regularly volunteer for worthwhile environmental",
+    "example_sentence": "Many dedicated students regularly volunteer for worthwhile environmental conservation projects in their communities.",
     "example_sentence_arabic": "يتطوع العديد من الطلاب المخلصين بانتظام للعمل في مشاريع بيئية مفيدة."
   },
   {
@@ -8508,7 +8508,7 @@
     "arabic": "صراع",
     "level": "B1",
     "category": "n.",
-    "example_sentence": "Many unnecessary conflicts arise from poor communication and",
+    "example_sentence": "Many unnecessary conflicts arise from poor communication and misunderstandings between individuals.",
     "example_sentence_arabic": "ينشأ الكثير من الصراعات غير الضرورية من سوء التواصل."
   },
   {
@@ -8524,7 +8524,7 @@
     "arabic": "يقنع",
     "level": "B1",
     "category": "v.",
-    "example_sentence": "The scientific evidence convinced many governments to urgently act on",
+    "example_sentence": "The scientific evidence convinced many governments to urgently act on climate change mitigation strategies.",
     "example_sentence_arabic": "الأدلة العلمية أقنعت عدداً من الحكومات باتخاذ إجراء عاجل بشأن المناخ."
   },
   {
@@ -8588,7 +8588,7 @@
     "arabic": "يحقق / يبحث",
     "level": "B1",
     "category": "v.",
-    "example_sentence": "Researchers thoroughly investigated the long-term effects of urban air",
+    "example_sentence": "Researchers thoroughly investigated the long-term effects of urban air pollution on respiratory health.",
     "example_sentence_arabic": "قام الباحثون بالتحقيق الشامل في الآثار طويلة الأجل لتلوث الهواء في المناطق الحضرية."
   },
   {
@@ -8604,7 +8604,7 @@
     "arabic": "يطلق / يطرح",
     "level": "B1",
     "category": "v.",
-    "example_sentence": "The company successfully launched an innovative new range of electric",
+    "example_sentence": "The company successfully launched an innovative new range of electric vehicles last quarter.",
     "example_sentence_arabic": "أطلقت الشركة بنجاح خطاً جديداً ومبتكراً من سيارات السيارات الكهربائية."
   },
   {
@@ -8636,7 +8636,7 @@
     "arabic": "يعزز / يروّج",
     "level": "B1",
     "category": "v.",
-    "example_sentence": "The government actively promotes the wider use of sustainable public",
+    "example_sentence": "The government actively promotes the wider use of sustainable public transportation systems.",
     "example_sentence_arabic": "تعزز الحكومة بنشاط الاستخدام الأوسع للنقل العام المستدام."
   },
   {
@@ -8660,7 +8660,7 @@
     "arabic": "يتعافى",
     "level": "B1",
     "category": "v.",
-    "example_sentence": "The national economy is slowly and gradually recovering from the deep",
+    "example_sentence": "The national economy is slowly and gradually recovering from the deep recession experienced last year.",
     "example_sentence_arabic": "الاقتصاد الوطني يتعافى ببطء وتدريج من الأزمة العميقة."
   },
   {
@@ -8684,7 +8684,7 @@
     "arabic": "مورد",
     "level": "B1",
     "category": "n.",
-    "example_sentence": "Fresh water is increasingly recognised as a precious and finite natural",
+    "example_sentence": "Fresh water is increasingly recognised as a precious and finite natural resource essential for human survival.",
     "example_sentence_arabic": "المياه العذبة يتم الاعتراف بها بشكل متزايد كمورد طبيعي ثمين ومحدود."
   },
   {
@@ -8700,7 +8700,7 @@
     "arabic": "يكشف",
     "level": "B1",
     "category": "v.",
-    "example_sentence": "The large-scale survey reveals some interesting and unexpected behavioural",
+    "example_sentence": "The large-scale survey reveals some interesting and unexpected behavioural patterns among participants.",
     "example_sentence_arabic": "الاستطلاع الواسع النطاق يكشف عن بعض البيانات السلوكية المثيرة للاهتمام والمفاجئة."
   },
   {
@@ -8748,7 +8748,7 @@
     "arabic": "حل",
     "level": "B1",
     "category": "n.",
-    "example_sentence": "There is no single simple solution to the enormous challenge of climate",
+    "example_sentence": "There is no single simple solution to the enormous challenge of climate change.",
     "example_sentence_arabic": "لا يوجد حل واحد بسيط لمشكلة تغير المناخ الضخمة."
   },
   {
@@ -8756,7 +8756,7 @@
     "arabic": "نظرية",
     "level": "B1",
     "category": "n.",
-    "example_sentence": "Darwin&#39;s groundbreaking theory of evolution transformed our understanding of",
+    "example_sentence": "Darwin's groundbreaking theory of evolution transformed our understanding of biological diversity and human origins.",
     "example_sentence_arabic": "نظرية التطور الرائدة لداروين غيرت فهمنا للحياة بشكل جذري."
   },
   {
@@ -8772,7 +8772,7 @@
     "arabic": "ينقل",
     "level": "B1",
     "category": "v.",
-    "example_sentence": "Advanced clean energy technology should be transferred to developing",
+    "example_sentence": "Advanced clean energy technology should be transferred to developing countries to accelerate their sustainable development.",
     "example_sentence_arabic": "يجب نقل تكنولوجيا الطاقة النظيفة المتقدمة إلى الدول النامية."
   },
   {
@@ -8892,7 +8892,7 @@
     "arabic": "عالمياً",
     "level": "B1",
     "category": "adv.",
-    "example_sentence": "Temperatures are rising worldwide as a direct result of greenhouse gas",
+    "example_sentence": "Temperatures are rising worldwide as a direct result of greenhouse gas emissions.",
     "example_sentence_arabic": "ترتفع درجات الحرارة عالمياً كنتيجة مباشرة لانبعاثات غازات الاحتباس الحراري."
   },
   {
@@ -9108,7 +9108,7 @@
     "arabic": "حماس / شغف",
     "level": "B1",
     "category": "n.",
-    "example_sentence": "Enthusiasm for the research question is an important but not sufficient quality in",
+    "example_sentence": "Enthusiasm for the research question is an important but not sufficient quality in academic inquiry.",
     "example_sentence_arabic": "الشغف تجاه سؤال البحث صفة مهمة لكن غير كافية في حد ذاتها"
   },
   {
@@ -9116,7 +9116,7 @@
     "arabic": "تعليقات / آراء بناءة",
     "level": "B1",
     "category": "n.",
-    "example_sentence": "Constructive feedback from peer reviewers consistently improves the quality of",
+    "example_sentence": "Constructive feedback from peer reviewers consistently improves the quality of academic research and publications.",
     "example_sentence_arabic": "تعليقات الزملاء البناءة تحسن باستمرار جودة البحث المنشور"
   },
   {
@@ -9140,7 +9140,7 @@
     "arabic": "الصحافة / العمل الصحفي",
     "level": "B1",
     "category": "n.",
-    "example_sentence": "Responsible journalism plays a critical role in communicating scientific findings",
+    "example_sentence": "Responsible journalism plays a critical role in communicating scientific findings to the general public.",
     "example_sentence_arabic": "العمل الصحفي المسؤول يلعب دوراً حيوياً في توصيل النتائج العلمية"
   },
   {
@@ -9148,7 +9148,7 @@
     "arabic": "محو الأمية / القدرة على القراءة والكتابة",
     "level": "B1",
     "category": "n.",
-    "example_sentence": "Data literacy is now a core skill required in most professional and academic",
+    "example_sentence": "Data literacy is now a core skill required in most professional and academic settings.",
     "example_sentence_arabic": "ثقافة البيانات أصبحت الآن مهارة أساسية في معظم المجالات المهنية والأكاديمية"
   },
   {
@@ -9156,7 +9156,7 @@
     "arabic": "إدارة / تسيير",
     "level": "B1",
     "category": "n.",
-    "example_sentence": "Effective project management ensures that research is completed on time and",
+    "example_sentence": "Effective project management ensures that research is completed on time and within the allocated budget.",
     "example_sentence_arabic": "الإدارة الفعالة للمشروع تضمن إكمال البحث في الوقت المحدد وفي حدود الميزانية"
   },
   {
@@ -9164,7 +9164,7 @@
     "arabic": "القياس / التقدير",
     "level": "B1",
     "category": "n.",
-    "example_sentence": "Accurate measurement of the key variables is fundamental to any quantitative",
+    "example_sentence": "Accurate measurement of the key variables is fundamental to any quantitative research study or investigation.",
     "example_sentence_arabic": "القياس الدقيق للمتغيرات الرئيسية أساسي لأي دراسة كمية"
   },
   {
@@ -9196,7 +9196,7 @@
     "arabic": "التنوع، التعددية",
     "level": "B1",
     "category": "n.",
-    "example_sentence": "Intellectual diversity within research teams consistently produces more",
+    "example_sentence": "Intellectual diversity within research teams consistently produces more innovative and comprehensive solutions.",
     "example_sentence_arabic": "يعمل التنوع الفكري داخل فرق البحث على إنتاج نتائج أفضل بشكل مستمر"
   },
   {
@@ -9204,7 +9204,7 @@
     "arabic": "نظري",
     "level": "B1",
     "category": "adj.",
-    "example_sentence": "The paper is primarily theoretical, though it draws on a range of empirical",
+    "example_sentence": "The paper is primarily theoretical, though it draws on a range of empirical studies to support its arguments.",
     "example_sentence_arabic": "الورقة نظرية بشكل أساسي، رغم أنها تستند على مجموعة من الدراسات التجريبية"
   },
   {
@@ -9212,7 +9212,7 @@
     "arabic": "في الوقت المناسب / مناسب توقيتاً",
     "level": "B1",
     "category": "adj.",
-    "example_sentence": "A timely and well-targeted intervention can prevent minor problems from",
+    "example_sentence": "A timely and well-targeted intervention can prevent minor problems from escalating into major issues.",
     "example_sentence_arabic": "تدخل في الوقت المناسب وموجه بشكل جيد يمكن أن يمنع المشاكل البسيطة من التفاقم"
   },
   {
@@ -9308,7 +9308,7 @@
     "arabic": "انقراض",
     "level": "B2",
     "category": "n.",
-    "example_sentence": "Many important species now face extinction if deforestation continues",
+    "example_sentence": "Many important species now face extinction if deforestation continues at its current rate.",
     "example_sentence_arabic": "تواجه العديد من الأنواع المهمة خطر الانقراض إذا استمرت إزالة الغابات."
   },
   {
@@ -9364,7 +9364,7 @@
     "arabic": "يشتري",
     "level": "B2",
     "category": "v.",
-    "example_sentence": "Many environmentally conscious consumers now purchase eco-friendly",
+    "example_sentence": "Many environmentally conscious consumers now purchase eco-friendly products to reduce their carbon footprint.",
     "example_sentence_arabic": "يشتري العديد من المستهلكين الواعين بيئيًا الآن منتجات صديقة للبيئة."
   },
   {
@@ -9660,7 +9660,7 @@
     "arabic": "جدل",
     "level": "B2",
     "category": "n.",
-    "example_sentence": "The new energy policy caused considerable and widespread political",
+    "example_sentence": "The new energy policy caused considerable and widespread political debate across various sectors.",
     "example_sentence_arabic": "سياسة الطاقة الجديدة تسببت في جدل سياسي واسع ومعتبر."
   },
   {
@@ -9812,7 +9812,7 @@
     "arabic": "يستغل",
     "level": "B2",
     "category": "v.",
-    "example_sentence": "Some multinational companies exploit natural resources in an unsustainable",
+    "example_sentence": "Some multinational companies exploit natural resources in an unsustainable manner, causing long-term environmental damage.",
     "example_sentence_arabic": "تستغل بعض الشركات متعددة الجنسيات الموارد الطبيعية بطريقة غير مستدامة."
   },
   {
@@ -9972,7 +9972,7 @@
     "arabic": "نتيجة",
     "level": "B2",
     "category": "n.",
-    "example_sentence": "The actual outcome of the experiment was completely unexpected by",
+    "example_sentence": "The actual outcome of the experiment was completely unexpected by the research team and required further analysis.",
     "example_sentence_arabic": "كانت النتيجة الفعلية للتجربة مفاجئة تماماً لفريق البحث."
   },
   {
@@ -10020,7 +10020,7 @@
     "arabic": "يقترح",
     "level": "B2",
     "category": "v.",
-    "example_sentence": "The lead researcher proposed an innovative and practical solution to the",
+    "example_sentence": "The lead researcher proposed an innovative and practical solution to the environmental challenges faced by urban areas.",
     "example_sentence_arabic": "اقترح الباحث الرئيسي حلاً مبتكراً وعملياً للمشكلة."
   },
   {
@@ -10028,7 +10028,7 @@
     "arabic": "يسعى",
     "level": "B2",
     "category": "v.",
-    "example_sentence": "After graduating, she decided to pursue a rewarding career in environmental",
+    "example_sentence": "After graduating, she decided to pursue a rewarding career in environmental science and sustainability.",
     "example_sentence_arabic": "قررت بعد التخرج متابعة مهنة مجزية في مجال حماية البيئة."
   },
   {
@@ -10092,7 +10092,7 @@
     "arabic": "توتر",
     "level": "B2",
     "category": "n.",
-    "example_sentence": "There is a growing tension between economic development and environmental",
+    "example_sentence": "There is a growing tension between economic development and environmental sustainability that requires careful policy planning.",
     "example_sentence_arabic": "هناك توتر متزايد بين التطور الاقتصادي والحماية البيئية."
   },
   {
@@ -10132,7 +10132,7 @@
     "arabic": "يتباين",
     "level": "B2",
     "category": "v.",
-    "example_sentence": "Individual test scores vary considerably depending on how well students",
+    "example_sentence": "Individual test scores vary considerably depending on how well students prepare for the exam.",
     "example_sentence_arabic": "درجات الاختبار الفردية تختلف بشكل كبير حسب أداء الطلاب."
   },
   {
@@ -10156,7 +10156,7 @@
     "arabic": "واسع الانتشار",
     "level": "B2",
     "category": "adj.",
-    "example_sentence": "There is now widespread international concern about rising levels of air",
+    "example_sentence": "There is now widespread international concern about rising levels of air pollution and its impact on public health.",
     "example_sentence_arabic": "هناك الآن قلق دولي واسع الانتشار بشأن مستويات تلوث الهواء المرتفعة."
   },
   {
@@ -10284,7 +10284,7 @@
     "arabic": "جانب",
     "level": "B2",
     "category": "prep.",
-    "example_sentence": "Renewable energy must expand alongside improvements in overall energy",
+    "example_sentence": "Renewable energy must expand alongside improvements in overall energy efficiency and infrastructure development.",
     "example_sentence_arabic": "يجب أن تتوسع الطاقة المتجددة جنباً إلى جنب مع تحسينات الطاقة الشاملة."
   },
   {
@@ -10340,7 +10340,7 @@
     "arabic": "ابتكار",
     "level": "B2",
     "category": "n.",
-    "example_sentence": "Technological innovation is one of the most powerful drivers of economic",
+    "example_sentence": "Technological innovation is one of the most powerful drivers of economic growth and development.",
     "example_sentence_arabic": "الابتكار التكنولوجي هو أحد أقوى محركات النمو الاقتصادي."
   },
   {
@@ -10572,7 +10572,7 @@
     "arabic": "يعوض",
     "level": "B2",
     "category": "v.",
-    "example_sentence": "Higher wages partially compensate workers for difficult or dangerous",
+    "example_sentence": "Higher wages partially compensate workers for difficult or dangerous working conditions.",
     "example_sentence_arabic": "الأجور الأعلى تعوض جزئياً العمال عن الأعمال الصعبة أو الخطرة."
   },
   {
@@ -10588,7 +10588,7 @@
     "arabic": "شامل",
     "level": "B2",
     "category": "adj.",
-    "example_sentence": "The report provides a comprehensive overview of the main environmental",
+    "example_sentence": "The report provides a comprehensive overview of the main environmental issues facing modern society.",
     "example_sentence_arabic": "يقدم التقرير نظرة عامة شاملة على المشاكل البيئية الرئيسية."
   },
   {
@@ -10604,7 +10604,7 @@
     "arabic": "يتناقض",
     "level": "B2",
     "category": "v.",
-    "example_sentence": "The newly discovered evidence directly contradicts the findings of earlier",
+    "example_sentence": "The newly discovered evidence directly contradicts the findings of earlier studies on the subject.",
     "example_sentence_arabic": "الأدلة المكتشفة حديثاً تتناقض بشكل مباشر مع نتائج الدراسات السابقة."
   },
   {
@@ -10620,7 +10620,7 @@
     "arabic": "متعمد",
     "level": "B2",
     "category": "adj.",
-    "example_sentence": "The government made a deliberate and sustained effort to reduce industrial",
+    "example_sentence": "The government made a deliberate and sustained effort to reduce industrial pollution over the past decade.",
     "example_sentence_arabic": "قامت الحكومة ببذل جهد متعمد ومستمر للحد من الانبعاثات الصناعية."
   },
   {
@@ -10668,7 +10668,7 @@
     "arabic": "يوضح",
     "level": "B2",
     "category": "v.",
-    "example_sentence": "Please elaborate on your central argument with specific and relevant",
+    "example_sentence": "Please elaborate on your central argument with specific and relevant examples from the text.",
     "example_sentence_arabic": "يرجى توضيح حجتك الأساسية بأمثلة وأدلة محددة وملائمة."
   },
   {
@@ -10676,7 +10676,7 @@
     "arabic": "يحسّن",
     "level": "B2",
     "category": "v.",
-    "example_sentence": "The effective use of technology can significantly enhance the quality of",
+    "example_sentence": "The effective use of technology can significantly enhance the quality of education and learning outcomes.",
     "example_sentence_arabic": "الاستخدام الفعال للتكنولوجيا يمكن أن يحسّن نوعية الحياة بشكل كبير."
   },
   {
@@ -10716,7 +10716,7 @@
     "arabic": "واسع",
     "level": "B2",
     "category": "adj.",
-    "example_sentence": "Extensive and systematic research has been conducted globally on climate",
+    "example_sentence": "Extensive and systematic research has been conducted globally on climate change and its impacts.",
     "example_sentence_arabic": "تم إجراء بحث واسع ومنهجي على مستوى عالمي حول تغير المناخ."
   },
   {
@@ -10724,7 +10724,7 @@
     "arabic": "هش",
     "level": "B2",
     "category": "adj.",
-    "example_sentence": "Many natural ecosystems are extremely fragile and easily disturbed by human",
+    "example_sentence": "Many natural ecosystems are extremely fragile and easily disturbed by human activities and interventions.",
     "example_sentence_arabic": "العديد من الأنظمة البيئية الطبيعية هشة للغاية وسهل الإخلال بها."
   },
   {
@@ -10764,7 +10764,7 @@
     "arabic": "جذري",
     "level": "B2",
     "category": "adj.",
-    "example_sentence": "A radical and fundamental change in our lifestyle is necessary to reduce",
+    "example_sentence": "A radical and fundamental change in our lifestyle is necessary to reduce environmental degradation and promote sustainability.",
     "example_sentence_arabic": "يلزم إجراء تغيير جذري وأساسي في أسلوب حياتنا لتقليل الانبعاثات."
   },
   {
@@ -10780,7 +10780,7 @@
     "arabic": "مرن",
     "level": "B2",
     "category": "adj.",
-    "example_sentence": "Resilient communities recover more quickly and effectively from natural",
+    "example_sentence": "Resilient communities recover more quickly and effectively from natural disasters and crises.",
     "example_sentence_arabic": "المجتمعات المرنة تتعافى بسرعة وفعالية أكبر من الكوارث الطبيعية."
   },
   {
@@ -10804,7 +10804,7 @@
     "arabic": "نطاق",
     "level": "B2",
     "category": "n.",
-    "example_sentence": "The scope of the research was limited by available time and financial",
+    "example_sentence": "The scope of the research was limited by available time and financial constraints.",
     "example_sentence_arabic": "كان نطاق البحث محدوداً بالوقت المتاح والموارد المالية."
   },
   {
@@ -10812,7 +10812,7 @@
     "arabic": "يحفز",
     "level": "B2",
     "category": "v.",
-    "example_sentence": "Investment in public infrastructure can powerfully stimulate long-term economic",
+    "example_sentence": "Investment in public infrastructure can powerfully stimulate long-term economic growth and development.",
     "example_sentence_arabic": "الاستثمار في البنية التحتية العامة يمكن أن يحفز النمو الاقتصادي طويل الأمد بقوة."
   },
   {
@@ -10820,7 +10820,7 @@
     "arabic": "منهجي",
     "level": "B2",
     "category": "adj.",
-    "example_sentence": "A systematic and well-planned approach to revision consistently improves",
+    "example_sentence": "A systematic and well-planned approach to revision consistently improves academic performance and knowledge retention.",
     "example_sentence_arabic": "نهج منهجي وموضح جيداً للمراجعة يحسن النتائج باستمرار."
   },
   {
@@ -10836,7 +10836,7 @@
     "arabic": "عالمي",
     "level": "B2",
     "category": "adj.",
-    "example_sentence": "Access to affordable clean water should be recognised as a universal human",
+    "example_sentence": "Access to affordable clean water should be recognised as a universal human right.",
     "example_sentence_arabic": "يجب الاعتراف بالوصول إلى المياه النظيفة الميسورة كحق إنساني عالمي."
   },
   {
@@ -10852,7 +10852,7 @@
     "arabic": "ينتج",
     "level": "B2",
     "category": "v.",
-    "example_sentence": "New and improved agricultural methods consistently yield significantly higher",
+    "example_sentence": "New and improved agricultural methods consistently yield significantly higher crop production and enhanced food security.",
     "example_sentence_arabic": "طرق زراعية جديدة ومحسنة تنتج محاصيل أعلى بكثير بشكل متسق."
   },
   {
@@ -10868,7 +10868,7 @@
     "arabic": "قلق، خوف",
     "level": "B2",
     "category": "n.",
-    "example_sentence": "There is growing public apprehension about the long-term consequences of",
+    "example_sentence": "There is growing public apprehension about the long-term consequences of environmental degradation and climate change.",
     "example_sentence_arabic": "هناك قلق متزايد من الجمهور بشأن العواقب طويلة الأجل."
   },
   {
@@ -10876,7 +10876,7 @@
     "arabic": "يوحّد، يدمج",
     "level": "B2",
     "category": "v.",
-    "example_sentence": "Merging overlapping departments helped significantly consolidate scarce",
+    "example_sentence": "Merging overlapping departments helped significantly consolidate scarce resources and improve operational efficiency.",
     "example_sentence_arabic": "ساعد دمج الأقسام المتداخلة على توحيد الموارد النادرة بشكل كبير."
   },
   {
@@ -10908,7 +10908,7 @@
     "arabic": "ينتشر",
     "level": "B2",
     "category": "v.",
-    "example_sentence": "Misinformation can circulate with alarming rapidity through large online",
+    "example_sentence": "Misinformation can circulate with alarming rapidity through large online communities and social media platforms.",
     "example_sentence_arabic": "يمكن للمعلومات المضللة أن تنتشر بسرعة مذهلة عبر المنصات الإلكترونية الكبيرة."
   },
   {
@@ -10916,7 +10916,7 @@
     "arabic": "ينهار",
     "level": "B2",
     "category": "v.",
-    "example_sentence": "Several fragile ecosystems are at risk of collapsing under continued human",
+    "example_sentence": "Several fragile ecosystems are at risk of collapsing under continued human pressure and environmental degradation.",
     "example_sentence_arabic": "تواجه العديد من النظم البيئية الهشة خطر الانهيار تحت الضغط البشري المستمر."
   },
   {
@@ -10924,7 +10924,7 @@
     "arabic": "ينسق",
     "level": "B2",
     "category": "v.",
-    "example_sentence": "Several international agencies coordinate their efforts to tackle cross-border",
+    "example_sentence": "Several international agencies coordinate their efforts to tackle cross-border environmental and social issues.",
     "example_sentence_arabic": "تنسق عدة وكالات دولية جهودها لمعالجة القضايا العابرة للحدود."
   },
   {
@@ -10932,7 +10932,7 @@
     "arabic": "يُهجّر",
     "level": "B2",
     "category": "v.",
-    "example_sentence": "Large-scale industrial development has permanently displaced many local",
+    "example_sentence": "Large-scale development has permanently displaced many local farming communities from their ancestral lands.",
     "example_sentence_arabic": "أدى التطوير الصناعي واسع النطاق إلى تشريد العديد من السكان المحليين بشكل دائم."
   },
   {
@@ -10940,7 +10940,7 @@
     "arabic": "يمكن",
     "level": "B2",
     "category": "v.",
-    "example_sentence": "Access to quality education empowers individuals to meaningfully improve their",
+    "example_sentence": "Access to quality education fundamentally empowers individuals to improve their socioeconomic status.",
     "example_sentence_arabic": "يمنح الوصول إلى التعليم الجيد الأفراد القدرة على تحسين ظروفهم بشكل معنوي."
   },
   {
@@ -10948,7 +10948,7 @@
     "arabic": "لا هوادة فيه / مستمر",
     "level": "B2",
     "category": "adj.",
-    "example_sentence": "The relentless and accelerating growth of urbanisation poses major long-term",
+    "example_sentence": "The relentless, unceasing, and rapidly accelerating growth of global urbanisation poses formidable, complex, and genuinely urgent long-term challenges for sustainable development.",
     "example_sentence_arabic": "النمو المتسارع والمستمر للتحضر يشكل تهديداً رئيسياً طويل الأجل."
   },
   {
@@ -10956,7 +10956,7 @@
     "arabic": "مضطرب / غير مستقر",
     "level": "B2",
     "category": "adj.",
-    "example_sentence": "The turbulent and unstable political environment made long-term strategic",
+    "example_sentence": "The turbulent political environment made long-term strategic planning challenging for many organizations.",
     "example_sentence_arabic": "البيئة السياسية المضطربة وغير المستقرة جعلت التخطيط الاستراتيجي طويل الأجل صعباً"
   },
   {
@@ -10980,7 +10980,7 @@
     "arabic": "تفاوض",
     "level": "B2",
     "category": "n.",
-    "example_sentence": "Successful negotiation between stakeholders is often necessary in applied",
+    "example_sentence": "Successful negotiation between stakeholders is often necessary in applied research to achieve mutually beneficial outcomes.",
     "example_sentence_arabic": "التفاوض الناجح بين أصحاب المصلحة ضروري غالباً في المجالات التطبيقية."
   },
   {
@@ -11036,7 +11036,7 @@
     "arabic": "كمي",
     "level": "B2",
     "category": "adj.",
-    "example_sentence": "Quantitative methods allow for precise statistical comparison and",
+    "example_sentence": "Quantitative methods allow for precise statistical comparison and analysis of data across different populations.",
     "example_sentence_arabic": "تسمح الطرق الكمية بالمقارنة الإحصائية الدقيقة والتحليل الشامل."
   },
   {
@@ -11044,7 +11044,7 @@
     "arabic": "يستنتج",
     "level": "B2",
     "category": "v.",
-    "example_sentence": "Researchers can deduce important patterns from the careful analysis of large",
+    "example_sentence": "Researchers can deduce important patterns from the careful analysis of large datasets.",
     "example_sentence_arabic": "يمكن للباحثين استنتاج أنماط مهمة من التحليل الدقيق للبيانات الكبيرة"
   },
   {
@@ -11052,7 +11052,7 @@
     "arabic": "هائل / شاق",
     "level": "B2",
     "category": "adj.",
-    "example_sentence": "The challenge of genuinely reversing the effects of climate change is",
+    "example_sentence": "The challenge of genuinely reversing the effects of climate change is increasingly recognized as one of the most pressing global issues.",
     "example_sentence_arabic": "تحدي عكس آثار تغير المناخ بشكل حقيقي هائل وشاق."
   },
   {
@@ -11084,7 +11084,7 @@
     "arabic": "بسيط، اقتصادي",
     "level": "B2",
     "category": "adj.",
-    "example_sentence": "A genuinely frugal approach to resource use is absolutely central to sustainable",
+    "example_sentence": "A genuinely frugal approach to resource use is absolutely central to sustainable development and environmental preservation.",
     "example_sentence_arabic": "نهج بسيط حقا لاستخدام الموارد أساسي تماما للتنمية..."
   },
   {
@@ -11108,7 +11108,7 @@
     "arabic": "دقيق في عمله",
     "level": "B2",
     "category": "adj.",
-    "example_sentence": "A conscientious researcher always checks data for errors before drawing",
+    "example_sentence": "A conscientious researcher always checks data for errors before drawing any conclusions.",
     "example_sentence_arabic": "الباحث الضميري يتحقق دائماً من البيانات للأخطاء قبل استخلاص النتائج."
   },
   {
@@ -11116,7 +11116,7 @@
     "arabic": "مثير للجدل",
     "level": "B2",
     "category": "adj.",
-    "example_sentence": "The publication of the controversial findings sparked an immediate global",
+    "example_sentence": "The publication of the controversial findings sparked an immediate global debate among experts and policymakers.",
     "example_sentence_arabic": "نشر النتائج المثيرة للجدل أثار رد فعل عالمي فوري."
   },
   {
@@ -11132,7 +11132,7 @@
     "arabic": "احترام",
     "level": "B2",
     "category": "n.",
-    "example_sentence": "She was widely and consistently held in the highest professional esteem by all",
+    "example_sentence": "She was widely and consistently held in the highest professional esteem by all her colleagues and clients.",
     "example_sentence_arabic": "كانت تحظى باحترام مهني عالي جداً من قبل جميع زملائها المتخصصين."
   },
   {
@@ -11140,7 +11140,7 @@
     "arabic": "يُعرقل، يُعيق",
     "level": "B2",
     "category": "v.",
-    "example_sentence": "Inadequate and inconsistent research funding can significantly and seriously",
+    "example_sentence": "Inadequate and inconsistent research funding can significantly and seriously hinder scientific progress and innovation.",
     "example_sentence_arabic": "تمويل البحث غير الكافي والمتسق يمكنه أن يعرقل بشكل كبير التقدم."
   },
   {
@@ -11148,7 +11148,7 @@
     "arabic": "يوضح، ينير",
     "level": "B2",
     "category": "v.",
-    "example_sentence": "This elegantly and precisely designed study effectively illuminates the",
+    "example_sentence": "This elegantly and precisely designed study effectively illuminates the complex relationship between environmental factors and cognitive development.",
     "example_sentence_arabic": "هذه الدراسة المصممة بأناقة وبدقة توضح بفعالية الآليات الأساسية."
   },
   {
@@ -11156,7 +11156,7 @@
     "arabic": "يثبط، يعيق",
     "level": "B2",
     "category": "v.",
-    "example_sentence": "Overly restrictive and bureaucratic ethical guidelines can sometimes inhibit",
+    "example_sentence": "Overly restrictive and bureaucratic ethical guidelines can sometimes inhibit innovative research and progress.",
     "example_sentence_arabic": "الإرشادات الأخلاقية المقيدة بشكل مفرط قد تثبط أحياناً البحث الضروري."
   },
   {
@@ -11164,7 +11164,7 @@
     "arabic": "مبكر جداً",
     "level": "B2",
     "category": "adj.",
-    "example_sentence": "Drawing conclusions from such a small sample would be premature and",
+    "example_sentence": "Drawing conclusions from such a small sample would be premature and potentially misleading.",
     "example_sentence_arabic": "استخلاص النتائج من عينة صغيرة كهذه سيكون مبكراً جداً وغير موثوق."
   },
   {
@@ -11188,7 +11188,7 @@
     "arabic": "تأملي",
     "level": "B2",
     "category": "adj.",
-    "example_sentence": "A reflective practitioner regularly and honestly examines their own assumptions",
+    "example_sentence": "A reflective practitioner regularly and honestly examines their own assumptions to improve their professional practice.",
     "example_sentence_arabic": "الممارس التأملي يفحص بانتظام وصراحة افتراضاته الخاصة"
   },
   {
@@ -11196,7 +11196,7 @@
     "arabic": "يُشبع",
     "level": "B2",
     "category": "v.",
-    "example_sentence": "A market that is fully saturated with similar products leaves little room for new",
+    "example_sentence": "A market that is fully saturated with similar products leaves little room for new entrants to thrive.",
     "example_sentence_arabic": "السوق المشبعة بالكامل بمنتجات متشابهة تترك مجالاً قليلاً للمنتجات الجديدة"
   },
   {
@@ -11204,7 +11204,7 @@
     "arabic": "متشكك",
     "level": "B2",
     "category": "adj.",
-    "example_sentence": "Peer reviewers are trained to be appropriately skeptical of extraordinary new",
+    "example_sentence": "Peer reviewers are trained to be appropriately skeptical of extraordinary new claims in research.",
     "example_sentence_arabic": "يتم تدريب المراجعين على أن يكونوا متشككين بشكل مناسب من الادعاءات الجديدة غير العادية"
   },
   {
@@ -11212,7 +11212,7 @@
     "arabic": "متطور",
     "level": "B2",
     "category": "adj.",
-    "example_sentence": "A sophisticated understanding of statistics is increasingly expected in applied",
+    "example_sentence": "A sophisticated understanding of statistics is increasingly expected in applied research and data analysis.",
     "example_sentence_arabic": "يتوقع بشكل متزايد فهم متطور للإحصائيات في العلوم التطبيقية"
   },
   {
@@ -11220,7 +11220,7 @@
     "arabic": "بشكل ثابت",
     "level": "B2",
     "category": "adv.",
-    "example_sentence": "Public support for renewable energy has steadily and consistently increased",
+    "example_sentence": "Public support for renewable energy has steadily and consistently increased over the past decade.",
     "example_sentence_arabic": "تزايد الدعم العام للطاقة المتجددة بشكل ثابت ومستمر"
   },
   {
@@ -11228,7 +11228,7 @@
     "arabic": "سطحي",
     "level": "B2",
     "category": "adj.",
-    "example_sentence": "A superficial engagement with the literature is insufficient for doctoral-level",
+    "example_sentence": "A superficial engagement with the literature is insufficient for doctoral-level research and analysis.",
     "example_sentence_arabic": "الاشتباك السطحي مع الأدبيات غير كافٍ لمستوى الدكتوراه"
   },
   {
@@ -11236,7 +11236,7 @@
     "arabic": "غير مسبوق",
     "level": "B2",
     "category": "adj.",
-    "example_sentence": "The scale of the challenge is unprecedented in the entire history of the",
+    "example_sentence": "The scale of the challenge is unprecedented in the entire history of the modern world.",
     "example_sentence_arabic": "نطاق التحدي غير مسبوق في كل التاريخ."
   },
   {
@@ -11244,7 +11244,7 @@
     "arabic": "نابض بالحياة، حيوي",
     "level": "B2",
     "category": "adj.",
-    "example_sentence": "A vibrant and open intellectual culture encourages risk-taking and creative",
+    "example_sentence": "A vibrant and open intellectual culture encourages risk-taking and creative thinking among individuals.",
     "example_sentence_arabic": "ثقافة فكرية نابضة بالحياة ومنفتحة تشجع على تحمل المخاطر والإبداع."
   },
   {
@@ -11252,7 +11252,7 @@
     "arabic": "يحرض، يثير",
     "level": "B2",
     "category": "v.",
-    "example_sentence": "The report agitated for a fundamental overhaul of the ethical review",
+    "example_sentence": "The report agitated for a fundamental overhaul of the ethical review process to ensure greater transparency and accountability.",
     "example_sentence_arabic": "طالب التقرير بإعادة هيكلة جذرية لعملية المراجعة الأخلاقية."
   },
   {
@@ -11268,7 +11268,7 @@
     "arabic": "يسترضي، يهدئ",
     "level": "B2",
     "category": "v.",
-    "example_sentence": "Minor concessions were offered to appease critics without addressing their",
+    "example_sentence": "Minor concessions were offered to appease critics without addressing their fundamental concerns.",
     "example_sentence_arabic": "تم تقديم تنازلات طفيفة لاسترضاء النقاد دون معالجة."
   },
   {
@@ -11276,7 +11276,7 @@
     "arabic": "رائع، بالغ الجمال",
     "level": "B2",
     "category": "adj.",
-    "example_sentence": "The exquisite precision of the measurement instrument was its principal",
+    "example_sentence": "The exquisite precision of the measurement instrument was its principal advantage in scientific research.",
     "example_sentence_arabic": "الدقة البالغة لأداة القياس كانت ميزتها الرئيسية."
   },
   {
@@ -11284,7 +11284,7 @@
     "arabic": "التواضع، الاتضاع",
     "level": "B2",
     "category": "n.",
-    "example_sentence": "Intellectual humility — the recognition that one may be wrong — is a",
+    "example_sentence": "Intellectual humility — the recognition that one may be wrong — is a crucial trait for effective learning and open-minded discussion.",
     "example_sentence_arabic": "التواضع الفكري — الاعتراف بأن المرء قد يكون مخطئاً — هو"
   },
   {
@@ -11292,7 +11292,7 @@
     "arabic": "يحرض، يثير",
     "level": "B2",
     "category": "v.",
-    "example_sentence": "Sensationalised reporting of preliminary findings can incite unfounded public",
+    "example_sentence": "Sensationalised reporting of preliminary findings can incite unfounded public fear and misunderstanding.",
     "example_sentence_arabic": "الإبلاغ المثير عن النتائج الأولية يمكن أن يثير قلقاً عاماً لا أساس له"
   },
   {
@@ -11300,7 +11300,7 @@
     "arabic": "الإبداع، الذكاء",
     "level": "B2",
     "category": "n.",
-    "example_sentence": "Methodological ingenuity is often required when the research question defies",
+    "example_sentence": "Methodological ingenuity is often required when the research question defies conventional approaches.",
     "example_sentence_arabic": "غالباً ما يلزم الإبداع في التصميم الكلاسيكي عندما يتحدى السؤال البحثي التصاميم التقليدية"
   },
   {
@@ -11324,7 +11324,7 @@
     "arabic": "منهج دراسي",
     "level": "C1",
     "category": "n.",
-    "example_sentence": "The national school curriculum should include comprehensive environmental",
+    "example_sentence": "The national school curriculum should include comprehensive environmental education to promote sustainable development.",
     "example_sentence_arabic": "يجب أن يتضمن المنهج الدراسي الوطني للمدارس التعليم البيئي الشامل."
   },
   {
@@ -11444,7 +11444,7 @@
     "arabic": "الفرضية",
     "level": "C1",
     "category": "n.",
-    "example_sentence": "The researcher carefully formulated and then tested a new scientific",
+    "example_sentence": "The researcher carefully formulated and then tested a new scientific hypothesis to validate the theory.",
     "example_sentence_arabic": "صاغ الباحث بعناية فرضية علمية جديدة ثم اختبرها."
   },
   {
@@ -11452,7 +11452,7 @@
     "arabic": "يفرض",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "The government imposed much stricter regulations on industrial carbon",
+    "example_sentence": "The government imposed much stricter regulations on industrial carbon emissions to combat climate change effectively.",
     "example_sentence_arabic": "فرضت الحكومة لوائح أكثر صرامة بشأن انبعاثات الكربون الصناعية."
   },
   {
@@ -11484,7 +11484,7 @@
     "arabic": "يعدّل",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "The research team modified the original experimental design for greater",
+    "example_sentence": "The research team modified the original experimental design for greater accuracy and reliability.",
     "example_sentence_arabic": "قام فريق البحث بتعديل التصميم التجريبي الأصلي لتحقيق دقة أكبر."
   },
   {
@@ -11684,7 +11684,7 @@
     "arabic": "حافز",
     "level": "C1",
     "category": "n.",
-    "example_sentence": "Financial incentives can effectively encourage businesses to adopt green",
+    "example_sentence": "Financial incentives can effectively encourage businesses to adopt green practices and technologies.",
     "example_sentence_arabic": "يمكن للحوافز المالية أن تشجع الشركات بفعالية على اعتماد الممارسات الخضراء."
   },
   {
@@ -11828,7 +11828,7 @@
     "arabic": "تراكمي",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The cumulative effects of long-term environmental pollution are extremely",
+    "example_sentence": "The cumulative effects of long-term environmental pollution are extremely detrimental to ecosystems and human health.",
     "example_sentence_arabic": "الآثار التراكمية للتلوث البيئي طويل الأمد قاسية جداً."
   },
   {
@@ -11852,7 +11852,7 @@
     "arabic": "تفاوت",
     "level": "C1",
     "category": "n.",
-    "example_sentence": "There is a deeply troubling and growing disparity between wealthy and poor",
+    "example_sentence": "There is a deeply troubling and growing disparity between wealthy and poor communities worldwide.",
     "example_sentence_arabic": "هناك عدم مساواة عميق ومقلق وآخذ في الازدياد بين الأغنياء والفقراء."
   },
   {
@@ -11868,7 +11868,7 @@
     "arabic": "يعدد",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "The detailed report enumerates the primary causes of environmental",
+    "example_sentence": "The detailed report enumerates the primary causes of environmental degradation and their impacts.",
     "example_sentence_arabic": "يعدد التقرير المفصل الأسباب الرئيسية للتدهور البيئي."
   },
   {
@@ -11876,7 +11876,7 @@
     "arabic": "توازن",
     "level": "C1",
     "category": "n.",
-    "example_sentence": "Healthy natural ecosystems maintain a complex and delicate internal",
+    "example_sentence": "Healthy natural ecosystems maintain a complex and delicate internal balance that supports biodiversity.",
     "example_sentence_arabic": "تحافظ الأنظمة البيئية الصحية على توازن معقد وحساس داخلي."
   },
   {
@@ -11908,7 +11908,7 @@
     "arabic": "يصيغ",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "National governments must urgently formulate effective long-term",
+    "example_sentence": "National governments must urgently formulate effective long-term strategies to address climate change.",
     "example_sentence_arabic": "يجب على الحكومات الوطنية أن تصيغ بسرعة سياسات فعالة طويلة الأجل."
   },
   {
@@ -11924,7 +11924,7 @@
     "arabic": "وشيك",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "Leading scientists warn of an imminent and potentially catastrophic climate",
+    "example_sentence": "Leading scientists warn of an imminent and potentially catastrophic climate crisis.",
     "example_sentence_arabic": "يحذر العلماء البارزون من كارثة مناخية وشيكة وكارثية محتملة."
   },
   {
@@ -11932,7 +11932,7 @@
     "arabic": "ضروري",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "It is absolutely imperative that all governments take immediate and decisive",
+    "example_sentence": "It is absolutely imperative that all governments take immediate and decisive action to address climate change.",
     "example_sentence_arabic": "من الضروري تماماً أن تتخذ جميع الحكومات إجراءات فورية وحاسمة."
   },
   {
@@ -11956,7 +11956,7 @@
     "arabic": "جوهري",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "Education has intrinsic value that extends far beyond its direct economic",
+    "example_sentence": "Education has profound intrinsic value that extends far beyond its direct economic benefits to society.",
     "example_sentence_arabic": "للتعليم قيمة جوهرية تتجاوز فوائده الاقتصادية المباشرة."
   },
   {
@@ -11964,7 +11964,7 @@
     "arabic": "لا يمكن عكسه",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "Scientists warn that some of the most serious environmental damage is",
+    "example_sentence": "Scientists repeatedly warn that some of the most serious environmental problems require immediate global action.",
     "example_sentence_arabic": "يحذر العلماء من أن بعض أخطر الأضرار البيئية لا يمكن عكسها."
   },
   {
@@ -11972,7 +11972,7 @@
     "arabic": "يستغل",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "Schools can strategically leverage digital technology to significantly improve",
+    "example_sentence": "Schools can strategically leverage digital technology to significantly improve student engagement and learning outcomes.",
     "example_sentence_arabic": "يمكن للمدارس أن تستفيد بشكل استراتيجي من التكنولوجيا الرقمية لتحسين الأداء بشكل كبير."
   },
   {
@@ -11980,7 +11980,7 @@
     "arabic": "هامشي",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The statistical difference between the two comparison groups was only",
+    "example_sentence": "The statistical difference between the two comparison groups was only marginally significant.",
     "example_sentence_arabic": "الفرق الإحصائي بين مجموعتي المقارنة كان هامشياً فقط."
   },
   {
@@ -12084,7 +12084,7 @@
     "arabic": "توقع",
     "level": "C1",
     "category": "n.",
-    "example_sentence": "Current population projections strongly suggest that cities will grow",
+    "example_sentence": "Current demographic projections strongly suggest that major cities will continue to experience significant population growth in the coming decades.",
     "example_sentence_arabic": "التوقعات السكانية الحالية تشير بقوة إلى أن المدن ستنمو."
   },
   {
@@ -12100,7 +12100,7 @@
     "arabic": "نوعي",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The study employs both quantitative statistical methods and qualitative case",
+    "example_sentence": "Qualitative research explores meaning, lived experience, and interpretation in depth.",
     "example_sentence_arabic": "تستخدم الدراسة كلاً من الأساليب الإحصائية الكمية والدراسات الحالة النوعية."
   },
   {
@@ -12124,7 +12124,7 @@
     "arabic": "بسهولة",
     "level": "C1",
     "category": "adv.",
-    "example_sentence": "High-quality academic information is now more readily available online than",
+    "example_sentence": "High-quality academic information is now more readily available online than ever before.",
     "example_sentence_arabic": "المعلومات الأكاديمية عالية الجودة متاحة الآن بسهولة أكثر عبر الإنترنت."
   },
   {
@@ -12132,7 +12132,7 @@
     "arabic": "يستنسخ",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "All scientific experiments should be independently replicable to ensure",
+    "example_sentence": "All scientific experiments should be independently replicable to ensure the validity and reliability of the results.",
     "example_sentence_arabic": "يجب أن تكون جميع التجارب العلمية قابلة للتكرار بشكل مستقل لضمان الموثوقية."
   },
   {
@@ -12148,7 +12148,7 @@
     "arabic": "صارم",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "A rigorous and transparent research methodology greatly improves academic",
+    "example_sentence": "A rigorous and entirely transparent research methodology greatly and significantly enhances the credibility of the study.",
     "example_sentence_arabic": "منهجية بحثية صارمة وشفافة تحسن بشكل كبير من جودة البحث الأكاديمي."
   },
   {
@@ -12156,7 +12156,7 @@
     "arabic": "قوي",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The central argument of the essay is supported by robust and convincing",
+    "example_sentence": "The central argument of the essay is supported by genuinely robust and well-researched evidence.",
     "example_sentence_arabic": "تدعم الحجة الأساسية للمقالة أدلة قوية ومقنعة."
   },
   {
@@ -12164,7 +12164,7 @@
     "arabic": "فحص دقيق",
     "level": "C1",
     "category": "n.",
-    "example_sentence": "All government policies and spending decisions should be subject to close",
+    "example_sentence": "All government policies and spending decisions should be subject to close scrutiny and public accountability.",
     "example_sentence_arabic": "يجب أن تخضع جميع سياسات الحكومة وقرارات الإنفاق للفحص الدقيق."
   },
   {
@@ -12172,7 +12172,7 @@
     "arabic": "يحاكي",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "Scientists use sophisticated models to accurately simulate the effects of",
+    "example_sentence": "Scientists use sophisticated models to accurately simulate the effects of climate change on global ecosystems.",
     "example_sentence_arabic": "يستخدم العلماء نماذج متطورة لمحاكاة تأثيرات التغير المناخي بدقة."
   },
   {
@@ -12180,7 +12180,7 @@
     "arabic": "تضامن",
     "level": "C1",
     "category": "n.",
-    "example_sentence": "International solidarity and cooperation are essential in addressing global",
+    "example_sentence": "International solidarity and genuine cooperation are absolutely essential in addressing global challenges effectively.",
     "example_sentence_arabic": "التضامن والتعاون الدولي ضروريان في معالجة المشاكل العالمية."
   },
   {
@@ -12188,7 +12188,7 @@
     "arabic": "يتكهن",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "Some researchers speculate that early diet may affect long-term memory",
+    "example_sentence": "Some researchers speculate that early diet may affect long-term memory development and cognitive function.",
     "example_sentence_arabic": "يتكهن بعض الباحثين بأن النظام الغذائي المبكر قد يؤثر على الذاكرة طويلة الأمد."
   },
   {
@@ -12196,7 +12196,7 @@
     "arabic": "صارخ",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "There is a stark and deeply troubling contrast between wealthy and",
+    "example_sentence": "There is a stark, deeply troubling, and undeniable contrast between wealthy and impoverished communities worldwide.",
     "example_sentence_arabic": "هناك تباين صارخ ومثير للقلق بين الدول الغنية والفقيرة."
   },
   {
@@ -12212,7 +12212,7 @@
     "arabic": "ذاتي",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "Personal opinions are inherently subjective and vary greatly between",
+    "example_sentence": "Personal opinions are inherently subjective and vary greatly between individuals and cultures.",
     "example_sentence_arabic": "الآراء الشخصية ذاتية بطبيعتها وتختلف بشكل كبير بين الأفراد."
   },
   {
@@ -12220,7 +12220,7 @@
     "arabic": "لاحق",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "Subsequent independent research fully confirmed the validity of the initial",
+    "example_sentence": "Subsequent independent research fully confirmed the validity of the initial findings.",
     "example_sentence_arabic": "أكدت الأبحاث المستقلة اللاحقة صحة الفرضية الأولية."
   },
   {
@@ -12236,7 +12236,7 @@
     "arabic": "يكمل",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "Students are encouraged to supplement their studies with additional",
+    "example_sentence": "Students are encouraged to supplement their studies with additional reading materials and online resources.",
     "example_sentence_arabic": "يُشجع الطلاب على إكمال دراستهم بمواد إضافية."
   },
   {
@@ -12244,7 +12244,7 @@
     "arabic": "يُركّب",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "Effective academic writers synthesise information from multiple credible",
+    "example_sentence": "Effective academic writers synthesise information from multiple credible sources to support their arguments.",
     "example_sentence_arabic": "يدمج الكتاب الأكاديميون الفعالون المعلومات من مصادر موثوقة متعددة."
   },
   {
@@ -12252,7 +12252,7 @@
     "arabic": "المصطلحات",
     "level": "C1",
     "category": "n.",
-    "example_sentence": "All academic writing requires the use of precise and appropriate technical",
+    "example_sentence": "All academic writing requires the use of precise and appropriate technical terminology to convey complex ideas clearly.",
     "example_sentence_arabic": "يتطلب جميع الكتابة الأكاديمية استخدام المصطلحات التقنية الدقيقة والمناسبة."
   },
   {
@@ -12260,7 +12260,7 @@
     "arabic": "عتبة",
     "level": "C1",
     "category": "n.",
-    "example_sentence": "Achieving IELTS Band 7 is a very demanding and competitive threshold for",
+    "example_sentence": "Achieving IELTS Band 7 is a very demanding and competitive threshold for many international students seeking academic and professional opportunities.",
     "example_sentence_arabic": "تحقيق الفرقة 7 في الآيلتس يمثل حداً أدنى صعباً وتنافسياً جداً."
   },
   {
@@ -12268,7 +12268,7 @@
     "arabic": "يقوض",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "Widespread corruption fundamentally undermines public trust in democratic",
+    "example_sentence": "Widespread corruption fundamentally undermines public trust in democratic institutions and processes.",
     "example_sentence_arabic": "الفساد الواسع يقوض الثقة العامة في المؤسسات الديمقراطية بشكل أساسي."
   },
   {
@@ -12276,7 +12276,7 @@
     "arabic": "يكشف",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "Scientists are beginning to unravel the extraordinary complexities of the human",
+    "example_sentence": "Scientists are beginning to unravel the extraordinary complexities of the human brain.",
     "example_sentence_arabic": "يبدأ العلماء في كشف تعقيدات الدماغ البشري الاستثنائية."
   },
   {
@@ -12284,7 +12284,7 @@
     "arabic": "يُتحقق من صحة",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "The independent results successfully validate the central hypothesis of the",
+    "example_sentence": "The independent results successfully validate the central hypothesis of the study.",
     "example_sentence_arabic": "أكدت النتائج المستقلة فرضية الدراسة الأساسية بنجاح."
   },
   {
@@ -12292,7 +12292,7 @@
     "arabic": "قابل للتطبيق",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "Solar energy is now a fully viable and cost-competitive alternative to fossil",
+    "example_sentence": "Solar energy is now a fully viable and cost-competitive alternative to fossil fuels worldwide.",
     "example_sentence_arabic": "الطاقة الشمسية الآن بديل قابل للتطبيق وتنافسي من حيث التكلفة للوقود الأحفوري."
   },
   {
@@ -12340,7 +12340,7 @@
     "arabic": "يحسن",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "Sustained investment in public health can help ameliorate the worst effects of",
+    "example_sentence": "Sustained investment in public health can ameliorate the worst effects of widespread disease and socio-economic disparities.",
     "example_sentence_arabic": "يمكن للاستثمار المستدام في الصحة العامة أن يساعد في تحسين أسوأ آثار الفقر."
   },
   {
@@ -12348,7 +12348,7 @@
     "arabic": "متناقض مع العصر، خارج عن زمنه",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "Critics argue that the current regulatory framework is anachronistic and",
+    "example_sentence": "Critics argue that the current regulatory framework is fundamentally inadequate for addressing emerging challenges.",
     "example_sentence_arabic": "ينتقد النقاد الإطار التنظيمي الحالي باعتباره متزامناً مع الزمن وعفا عليه."
   },
   {
@@ -12356,7 +12356,7 @@
     "arabic": "مشابه",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "This complex process is analogous to the way the human immune system",
+    "example_sentence": "This complex process is analogous to the way the human immune system identifies and neutralizes foreign pathogens.",
     "example_sentence_arabic": "هذه العملية المعقدة مشابهة للطريقة التي يعمل بها الجهاز المناعي البشري."
   },
   {
@@ -12364,7 +12364,7 @@
     "arabic": "شذوذ",
     "level": "C1",
     "category": "n.",
-    "example_sentence": "The outlying data point was treated as a statistical anomaly and excluded from",
+    "example_sentence": "The outlying data point was treated as a statistical anomaly and excluded from the final analysis to ensure accuracy.",
     "example_sentence_arabic": "تم التعامل مع نقطة البيانات الشاذة باعتبارها شذوذاً إحصائياً وتم استبعادها."
   },
   {
@@ -12372,7 +12372,7 @@
     "arabic": "معاكس تماماً",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "Excessive consumerism is antithetical to the principles of sustainable",
+    "example_sentence": "Excessive consumerism is directly antithetical to sustainable development and must be addressed through comprehensive policy measures.",
     "example_sentence_arabic": "الاستهلاك المفرط معاكس تماماً لمبادئ التنمية المستدامة."
   },
   {
@@ -12380,7 +12380,7 @@
     "arabic": "استنزاف، تآكل",
     "level": "C1",
     "category": "n.",
-    "example_sentence": "Staff attrition rates were unusually and worryingly high throughout the",
+    "example_sentence": "Staff attrition rates remained problematically high throughout the entire fiscal year.",
     "example_sentence_arabic": "معدلات استنزاف الموظفين كانت عالية بشكل غير معتاد ومقلق طوال الفترة."
   },
   {
@@ -12388,7 +12388,7 @@
     "arabic": "يزيد، يعزز",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "Research capacity can be significantly augmented through genuine",
+    "example_sentence": "Research capacity can be significantly augmented through genuine international collaboration and resource sharing.",
     "example_sentence_arabic": "يمكن زيادة القدرة البحثية بشكل كبير من خلال التعاون الحقيقي."
   },
   {
@@ -12396,7 +12396,7 @@
     "arabic": "بديهية، حقيقة مسلمة",
     "level": "C1",
     "category": "n.",
-    "example_sentence": "It is a widely accepted axiom in development economics that education drives",
+    "example_sentence": "It is a widely accepted axiom in development economics that education drives economic growth and social progress.",
     "example_sentence_arabic": "إنها بديهية مقبولة على نطاق واسع في اقتصاديات التنمية بأن التعليم يدفع النمو."
   },
   {
@@ -12404,7 +12404,7 @@
     "arabic": "خيّر، إنساني",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The charitable organisation played a genuinely benevolent role in the local",
+    "example_sentence": "The charitable organisation played a genuinely benevolent role in the local community by providing essential support to those in need.",
     "example_sentence_arabic": "لعبت المنظمة الخيرية دوراً إنسانياً حقيقياً في المجتمع المحلي."
   },
   {
@@ -12412,7 +12412,7 @@
     "arabic": "ثنائي",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The two neighbouring countries concluded a landmark bilateral trade",
+    "example_sentence": "The two nations concluded a landmark bilateral trade and environmental agreement to promote sustainable development.",
     "example_sentence_arabic": "أبرمت الدولتان الحدوديتان اتفاقية تجارية ثنائية تاريخية."
   },
   {
@@ -12420,7 +12420,7 @@
     "arabic": "ينمو بسرعة، يزدهر",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "The renewable energy sector is burgeoning rapidly in direct response to climate",
+    "example_sentence": "The renewable energy sector is burgeoning rapidly in response to climate change concerns worldwide.",
     "example_sentence_arabic": "قطاع الطاقة المتجددة ينمو بسرعة استجابة مباشرة لتغير المناخ."
   },
   {
@@ -12428,7 +12428,7 @@
     "arabic": "يتجاوز، يلتف حول",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "Some corporations attempt to circumvent environmental regulations through",
+    "example_sentence": "Some corporations attempt to circumvent environmental regulations through loopholes in the law.",
     "example_sentence_arabic": "تحاول بعض الشركات الالتفاف حول اللوائح البيئية من خلال طرق غير قانونية."
   },
   {
@@ -12436,7 +12436,7 @@
     "arabic": "مقنع، قوي الحجة",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The published paper presents a cogent, well-evidenced, and logically coherent",
+    "example_sentence": "The paper presents a cogent, well-evidenced, and thoroughly coherent argument on the subject matter.",
     "example_sentence_arabic": "تقدم الورقة المنشورة حجة مقنعة وموثقة بشكل جيد ومنطقية بشكل متسق."
   },
   {
@@ -12444,7 +12444,7 @@
     "arabic": "اتساق",
     "level": "C1",
     "category": "n.",
-    "example_sentence": "Logical coherence is arguably the most important single feature of effective",
+    "example_sentence": "Logical coherence is arguably the single most important feature of academic writing.",
     "example_sentence_arabic": "الاتساق المنطقي هو ربما أهم ميزة واحدة للكتابة الفعالة."
   },
   {
@@ -12452,7 +12452,7 @@
     "arabic": "إضافي، ثانوي",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "Significant collateral damage to biodiversity was an unintended consequence",
+    "example_sentence": "Significant collateral damage to biodiversity was an unintended policy consequence.",
     "example_sentence_arabic": "كانت الأضرار الإضافية على التنوع البيولوجي عاقبة غير مقصودة."
   },
   {
@@ -12460,7 +12460,7 @@
     "arabic": "مصاحب، متزامن",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "Economic growth was accompanied by concomitant and troubling rises in",
+    "example_sentence": "Economic growth was accompanied by concomitant and deeply troubling rises in inequality and environmental degradation.",
     "example_sentence_arabic": "صحب النمو الاقتصادي زيادات متزامنة ومثيرة للقلق في البطالة."
   },
   {
@@ -12468,7 +12468,7 @@
     "arabic": "مشجع، ملائم",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "A stable and transparent political environment is highly conducive to",
+    "example_sentence": "A stable and transparent political environment is highly conducive to sustainable economic growth and social development.",
     "example_sentence_arabic": "بيئة سياسية مستقرة وشفافة مشجعة جداً للاستثمار الأجنبي."
   },
   {
@@ -12476,7 +12476,7 @@
     "arabic": "تخمين، افتراض",
     "level": "C1",
     "category": "n.",
-    "example_sentence": "Without robust empirical evidence, the claim must be regarded as mere",
+    "example_sentence": "Without robust empirical evidence, the claim must be regarded as mere speculation.",
     "example_sentence_arabic": "بدون أدلة تجريبية قوية، يجب اعتبار الادعاء مجرد تخمين."
   },
   {
@@ -12484,7 +12484,7 @@
     "arabic": "مثير للجدل، مختلف فيه",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The proposed redistribution of wealth remains a deeply contentious and",
+    "example_sentence": "The proposed redistribution of wealth remains a deeply contentious political issue in many countries.",
     "example_sentence_arabic": "إعادة توزيع الثروة المقترحة تبقى قضية مثيرة للجدل بشكل عميق."
   },
   {
@@ -12492,7 +12492,7 @@
     "arabic": "مشروط، يعتمد على",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The ultimate outcome is highly contingent upon several currently unpredictable",
+    "example_sentence": "The ultimate outcome is highly contingent upon several currently unpredictable factors.",
     "example_sentence_arabic": "النتيجة النهائية مشروطة جداً بعدة عوامل غير متنبأ بها حالياً."
   },
   {
@@ -12500,7 +12500,7 @@
     "arabic": "يتقارب، يتجمع",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "Multiple independent lines of research are now converging on a single",
+    "example_sentence": "Multiple independent lines of research are converging on a single compelling conclusion.",
     "example_sentence_arabic": "خطوط بحثية مستقلة متعددة تتقارب الآن على فهم واحد."
   },
   {
@@ -12508,7 +12508,7 @@
     "arabic": "يؤيد، يؤكد",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "The new findings clearly corroborate the central hypothesis that was proposed",
+    "example_sentence": "The new findings clearly corroborate the central hypothesis proposed a decade ago.",
     "example_sentence_arabic": "تؤيد النتائج الجديدة بوضوح الفرضية الأساسية التي تم اقتراحها في البداية."
   },
   {
@@ -12516,7 +12516,7 @@
     "arabic": "ساذج، مصدق بسهولة",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "Credulous and uncritical readers may readily accept misinformation without",
+    "example_sentence": "Credulous readers may readily accept misinformation without adequate critical evaluation or verification.",
     "example_sentence_arabic": "القراء الساذجون وغير الناقدون قد يقبلون المعلومات الخاطئة بسهولة."
   },
   {
@@ -12524,7 +12524,7 @@
     "arabic": "يبلغ ذروته، ينتهي بـ",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "Years of dedicated and painstaking research finally culminated in a landmark",
+    "example_sentence": "Years of dedicated research finally culminated in a landmark scientific discovery that transformed our understanding of genetics.",
     "example_sentence_arabic": "سنوات من البحث المخصص والدقيق انتهت أخيراً إلى اكتشاف تاريخي."
   },
   {
@@ -12540,7 +12540,7 @@
     "arabic": "نقص، قلة",
     "level": "C1",
     "category": "n.",
-    "example_sentence": "There is a notable and concerning dearth of rigorous longitudinal studies on",
+    "example_sentence": "There is a notable dearth of rigorous longitudinal studies on this important subject matter.",
     "example_sentence_arabic": "هناك نقص ملحوظ ومقلق في الدراسات الطولية الصارمة على هذا الموضوع."
   },
   {
@@ -12548,7 +12548,7 @@
     "arabic": "يحدد، يوضح حدود",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "The paper carefully and precisely delineates the conceptual boundaries of the",
+    "example_sentence": "The paper carefully delineates the conceptual boundaries of the proposed framework.",
     "example_sentence_arabic": "توضح الورقة بعناية وبدقة حدود المفهوم الأساسي للدراسة."
   },
   {
@@ -12556,7 +12556,7 @@
     "arabic": "السكان، التركيبة السكانية",
     "level": "C1",
     "category": "n.",
-    "example_sentence": "The rapidly ageing demographic presents major long-term challenges for",
+    "example_sentence": "The rapidly ageing demographic presents major long-term challenges for public health and social care systems.",
     "example_sentence_arabic": "التركيبة السكانية المتقادمة بسرعة تشكل تحديات طويلة الأجل كبرى."
   },
   {
@@ -12564,7 +12564,7 @@
     "arabic": "مشتق، غير أصلي",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "Critics widely argued that the research was largely derivative and lacked",
+    "example_sentence": "Critics argued that the research was largely derivative and lacked genuine originality or insight.",
     "example_sentence_arabic": "يجادل النقاد على نطاق واسع بأن البحث كان غير أصلي في الغالب."
   },
   {
@@ -12572,7 +12572,7 @@
     "arabic": "ثنائية، انقسام",
     "level": "C1",
     "category": "n.",
-    "example_sentence": "There is a fundamentally false dichotomy between economic growth and",
+    "example_sentence": "There is a fundamentally false dichotomy between economic growth and environmental sustainability.",
     "example_sentence_arabic": "هناك انقسام أساسي خاطئ بين النمو الاقتصادي والحفاظ على البيئة."
   },
   {
@@ -12580,7 +12580,7 @@
     "arabic": "تنتشر، تتسع",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "Information diffuses extraordinarily rapidly through large-scale social media",
+    "example_sentence": "Information can diffuse with extraordinary rapidity through large-scale social networks and digital platforms.",
     "example_sentence_arabic": "تنتشر المعلومات بسرعة غير عادية عبر منصات وسائل التواصل الاجتماعي الضخمة."
   },
   {
@@ -12588,7 +12588,7 @@
     "arabic": "تناقض، عدم توافق",
     "level": "C1",
     "category": "n.",
-    "example_sentence": "There is a significant and unexplained discrepancy between the two sets of",
+    "example_sentence": "There is a significant and unexplained discrepancy between the two sets of data presented in the report.",
     "example_sentence_arabic": "هناك تناقض كبير وغير مشروح بين مجموعتي البيانات."
   },
   {
@@ -12596,7 +12596,7 @@
     "arabic": "ينشر، يعمم",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "Peer-reviewed academic journals disseminate important research findings to a",
+    "example_sentence": "Peer-reviewed journals effectively disseminate important research findings to a broad academic and professional audience.",
     "example_sentence_arabic": "تنشر المجلات الأكاديمية المحكمة نتائج البحث المهمة لجمهور واسع."
   },
   {
@@ -12604,7 +12604,7 @@
     "arabic": "متباعد، مختلف",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "Deeply divergent political opinions make achieving genuine international",
+    "example_sentence": "Deeply divergent political opinions make achieving genuine international consensus particularly challenging.",
     "example_sentence_arabic": "الآراء السياسية المتباعدة بشدة تجعل تحقيق توافق دولي حقيقي صعباً."
   },
   {
@@ -12636,7 +12636,7 @@
     "arabic": "مستقل ذاتياً",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "Autonomous vehicles may fundamentally transform urban transportation",
+    "example_sentence": "Autonomous vehicles may fundamentally transform urban transportation by improving safety and reducing congestion.",
     "example_sentence_arabic": "قد تحول المركبات المستقلة ذاتياً النقل الحضري بشكل جذري."
   },
   {
@@ -12644,7 +12644,7 @@
     "arabic": "مزمن",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "Chronic underfunding of public health systems leads to consistently poor",
+    "example_sentence": "Chronic underfunding of public health systems leads to consistently poor health outcomes for vulnerable populations.",
     "example_sentence_arabic": "يؤدي التمويل المزمن الناقص لأنظمة الصحة العامة إلى نتائج سيئة متسقة."
   },
   {
@@ -12652,7 +12652,7 @@
     "arabic": "مقنع",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The documentary presents a genuinely compelling case for fundamental",
+    "example_sentence": "The documentary presents a genuinely compelling case for fundamental reforms in environmental policy.",
     "example_sentence_arabic": "يقدم الفيلم الوثائقي حالة مقنعة حقاً لإجراء تغيير جذري."
   },
   {
@@ -12676,7 +12676,7 @@
     "arabic": "ناقص",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "A diet chronically deficient in essential vitamins can lead to serious health",
+    "example_sentence": "A diet chronically deficient in essential vitamins can lead to serious health complications and disorders.",
     "example_sentence_arabic": "النظام الغذائي الذي يعاني من نقص مزمن في الفيتامينات الأساسية قد يؤدي إلى مشاكل صحية خطيرة."
   },
   {
@@ -12684,7 +12684,7 @@
     "arabic": "ماهر",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The author was remarkably deft in weaving together multiple strands of",
+    "example_sentence": "The author was remarkably deft in weaving together multiple strands of narrative and analysis.",
     "example_sentence_arabic": "كان المؤلف ماهراً بشكل ملحوظ في نسج خيوط متعددة من السرد معاً."
   },
   {
@@ -12692,7 +12692,7 @@
     "arabic": "ضار",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The deleterious long-term effects of air pollution on child development are well",
+    "example_sentence": "The deleterious long-term effects of air pollution on child development are well documented in numerous scientific studies.",
     "example_sentence_arabic": "الآثار الضارة طويلة الأجل لتلوث الهواء على نمو الأطفال موثقة جيداً."
   },
   {
@@ -12700,7 +12700,7 @@
     "arabic": "يتعمق",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "The doctoral thesis delves deeply into the philosophical underpinnings of",
+    "example_sentence": "The doctoral thesis delves deeply into the philosophical underpinnings of modern ethical theory.",
     "example_sentence_arabic": "تتعمق أطروحة الدكتوراه في الأسس الفلسفية للنظرية الحديثة."
   },
   {
@@ -12708,7 +12708,7 @@
     "arabic": "يندد",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "Several leading scientists publicly denounced the deliberate misrepresentation",
+    "example_sentence": "Several leading scientists publicly denounced the deliberate misrepresentation of research findings in the media.",
     "example_sentence_arabic": "أدان عدة علماء بارزين الحجج المتعمدة والمضللة في العلن."
   },
   {
@@ -12724,7 +12724,7 @@
     "arabic": "يتوقف",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "Governments must desist from subsidising the fossil fuel industries",
+    "example_sentence": "Governments must desist from subsidising the fossil fuel industries to promote sustainable energy alternatives.",
     "example_sentence_arabic": "يجب على الحكومات أن تتوقف عن دعم صناعات الوقود الأحفوري."
   },
   {
@@ -12748,7 +12748,7 @@
     "arabic": "يشوه",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "Political bias and vested interests can distort the public&#39;s understanding of",
+    "example_sentence": "Political bias and vested interests can distort the public's understanding of important social and economic issues.",
     "example_sentence_arabic": "يمكن للانحياز السياسي والمصالح الخاصة أن تشوه فهم الجمهور للقضايا."
   },
   {
@@ -12756,7 +12756,7 @@
     "arabic": "الفعالية",
     "level": "C1",
     "category": "n.",
-    "example_sentence": "The efficacy of the innovative new treatment has been confirmed by multiple",
+    "example_sentence": "The efficacy of the new treatment has been confirmed and replicated by multiple independent studies.",
     "example_sentence_arabic": "تم تأكيد فعالية العلاج المبتكر الجديد من خلال دراسات متعددة."
   },
   {
@@ -12764,7 +12764,7 @@
     "arabic": "متفشٍّ",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "Corruption is unfortunately endemic in some poorly governed and unstable",
+    "example_sentence": "Corruption is unfortunately endemic in some poorly governed and institutionally weak countries.",
     "example_sentence_arabic": "الفساد متفشي للأسف في بعض الدول المحكومة بشكل سيء وغير المستقرة."
   },
   {
@@ -12772,7 +12772,7 @@
     "arabic": "يمجد",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "The comprehensive report extols the numerous virtues of a predominantly",
+    "example_sentence": "The comprehensive report extols the numerous virtues of a predominantly sustainable and eco-friendly approach.",
     "example_sentence_arabic": "يمجد التقرير الشامل العديد من فضائل النظام الاقتصادي السائد."
   },
   {
@@ -12780,7 +12780,7 @@
     "arabic": "سطحي",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "A facile response to a genuinely complex problem often creates further",
+    "example_sentence": "A facile response to a genuinely complex problem often creates further and unintended complications.",
     "example_sentence_arabic": "غالباً ما ينتج الرد السطحي على مشكلة معقدة حقاً عن مزيد من المشاكل."
   },
   {
@@ -12788,7 +12788,7 @@
     "arabic": "الحماس",
     "level": "C1",
     "category": "n.",
-    "example_sentence": "The dedicated researchers approached the entire project with remarkable",
+    "example_sentence": "The dedicated research team approached the entire ambitious project with meticulous planning and unwavering commitment.",
     "example_sentence_arabic": "اقترب الباحثون المكرسون من المشروع برمته بحماس ملحوظ."
   },
   {
@@ -12796,7 +12796,7 @@
     "arabic": "صارخ",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The company&#39;s flagrant disregard for safety regulations was widely and",
+    "example_sentence": "The company's flagrant disregard for established safety regulations was widely condemned by industry experts and regulatory authorities.",
     "example_sentence_arabic": "كان تجاهل الشركة الصارخ لقواعد السلامة موضوع انتقاد واسع النطاق."
   },
   {
@@ -12804,7 +12804,7 @@
     "arabic": "تذبذب، حالة عدم استقرار",
     "level": "C1",
     "category": "n.",
-    "example_sentence": "The global economy is currently in a state of considerable and unpredictable",
+    "example_sentence": "The global economy is currently in a sustained state of considerable and unprecedented uncertainty.",
     "example_sentence_arabic": "الاقتصاد العالمي يمر حالياً بحالة من التذبذب الكبير وغير المتوقع."
   },
   {
@@ -12812,7 +12812,7 @@
     "arabic": "ذو صلة مباشرة، وثيق الصلة",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "Only the most directly germane evidence should be presented in any academic",
+    "example_sentence": "Only the most directly germane evidence should be carefully presented in an academic essay or research paper.",
     "example_sentence_arabic": "يجب تقديم الأدلة الأكثر ارتباطاً مباشرة فقط في أي بحث أكاديمي."
   },
   {
@@ -12820,7 +12820,7 @@
     "arabic": "يستخلص، يستنبط",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "Important insights can often be gleaned from careful analysis of qualitative",
+    "example_sentence": "Important insights can often be gleaned from careful analysis of qualitative data and participant feedback.",
     "example_sentence_arabic": "يمكن غالباً استخلاص رؤى مهمة من التحليل الدقيق للبيانات النوعية."
   },
   {
@@ -12828,7 +12828,7 @@
     "arabic": "غير ضروري، لا مبرر له",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "Gratuitous complexity in academic writing always obscures rather than",
+    "example_sentence": "Gratuitous complexity in academic writing always obscures rather than clarifies the intended message.",
     "example_sentence_arabic": "التعقيد غير الضروري في الكتابة الأكاديمية يحجب الرسالة بدلاً من توضيحها."
   },
   {
@@ -12836,7 +12836,7 @@
     "arabic": "مؤشر، بادرة",
     "level": "C1",
     "category": "n.",
-    "example_sentence": "A significant drop in bee populations is a troubling harbinger of ecological",
+    "example_sentence": "A significant drop in bee populations is a deeply troubling harbinger of ecological collapse and widespread agricultural failure.",
     "example_sentence_arabic": "الانخفاض الكبير في أعداد النحل يعتبر مؤشراً مقلقاً على الانهيار البيئي."
   },
   {
@@ -12852,7 +12852,7 @@
     "arabic": "محايد، غير متحيز",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "An impartial and thorough review of all the evidence is essential for good",
+    "example_sentence": "An impartial and thorough review of all the evidence is essential for good decision-making in any judicial process.",
     "example_sentence_arabic": "المراجعة المحايدة والشاملة لجميع الأدلة ضرورية للحكم الجيد."
   },
   {
@@ -12860,7 +12860,7 @@
     "arabic": "لا تشوبه شائبة، خالي من العيوب",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "Her entire academic record throughout her undergraduate career was",
+    "example_sentence": "Her entire academic record throughout her undergraduate career was exceptional and earned her numerous scholarships.",
     "example_sentence_arabic": "سجلها الأكاديمي بأكمله طوال فترة دراستها الجامعية كان لا تشوبه شائبة."
   },
   {
@@ -12868,7 +12868,7 @@
     "arabic": "معزول عن، غير متأثر بـ",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "Some policymakers appear completely impervious to the evidence on",
+    "example_sentence": "Some policymakers appear completely impervious to the overwhelming evidence presented by scientific experts.",
     "example_sentence_arabic": "بعض صناع السياسات يبدون معزولين تماماً عن الأدلة العلمية."
   },
   {
@@ -12876,7 +12876,7 @@
     "arabic": "غير مقصود، عرضي",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The inadvertent release of sensitive research data raised serious and",
+    "example_sentence": "The inadvertent release of sensitive data raised serious and immediate ethical concerns within the organization.",
     "example_sentence_arabic": "الكشف غير المقصود عن بيانات بحثية حساسة أثار مخاوف جدية."
   },
   {
@@ -12884,7 +12884,7 @@
     "arabic": "حفز، شجع",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "Governments should incentivise companies to invest heavily in sustainable",
+    "example_sentence": "Governments should incentivise companies to invest heavily in sustainable technologies and practices.",
     "example_sentence_arabic": "يجب على الحكومات أن تحفز الشركات على الاستثمار بكثافة في التنمية المستدامة."
   },
   {
@@ -12892,7 +12892,7 @@
     "arabic": "غير متماسك، مشوش",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "An incoherent and poorly structured argument will fail to persuade even",
+    "example_sentence": "An incoherent and poorly structured argument will fail to persuade even the most open-minded audience.",
     "example_sentence_arabic": "الحجة غير المتماسكة والضعيفة البناء ستفشل في إقناع حتى المستمعين المتسامحين."
   },
   {
@@ -12908,7 +12908,7 @@
     "arabic": "واجب، ملزم",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "It is incumbent upon all researchers to disclose any potential conflicts of",
+    "example_sentence": "It is incumbent upon all researchers to disclose any potential conflicts of interest to maintain transparency.",
     "example_sentence_arabic": "من واجب جميع الباحثين الكشف عن أي تضارب محتمل في المصالح."
   },
   {
@@ -12916,7 +12916,7 @@
     "arabic": "غاضب، مستاء",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "Many scientists were justifiably indignant at the widespread misrepresentation",
+    "example_sentence": "Many scientists were justifiably indignant at the widespread misrepresentation of their research findings in the media.",
     "example_sentence_arabic": "العديد من العلماء كانوا مستاءين بحق من تحريف المعلومات العلمية على نطاق واسع."
   },
   {
@@ -12924,7 +12924,7 @@
     "arabic": "معاد، ضار",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "Short-termism is fundamentally inimical to sustainable and responsible",
+    "example_sentence": "Short-termism is fundamentally inimical to sustainable and responsible development in any sector.",
     "example_sentence_arabic": "التركيز على المدى القصير معاد بطبيعته للتنمية المستدامة والمسؤولة."
   },
   {
@@ -12932,7 +12932,7 @@
     "arabic": "غير ضار، براء",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "What appears innocuous on the surface may have serious and far-reaching",
+    "example_sentence": "What appears innocuous on the surface may have serious and far-reaching consequences for society.",
     "example_sentence_arabic": "ما يبدو غير ضار على السطح قد يكون له عواقب خطيرة وبعيدة المدى."
   },
   {
@@ -12940,7 +12940,7 @@
     "arabic": "يُثير، يُحرِّض",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "New and compelling data instigated a complete and thorough review of the",
+    "example_sentence": "New and compelling data instigated a complete and thorough review of the existing research methodologies.",
     "example_sentence_arabic": "البيانات الجديدة والمقنعة أثارت مراجعة شاملة وكاملة للسياسة السابقة."
   },
   {
@@ -12948,7 +12948,7 @@
     "arabic": "مربح، ذو عائد مالي كبير",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The renewable energy sector is rapidly becoming increasingly lucrative for",
+    "example_sentence": "The renewable energy sector is rapidly becoming increasingly lucrative for investors and governments worldwide.",
     "example_sentence_arabic": "قطاع الطاقة المتجددة أصبح سريعاً مربحاً بشكل متزايد للمستثمرين."
   },
   {
@@ -12956,7 +12956,7 @@
     "arabic": "قابل للتشكل، مرن",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "Public opinion is surprisingly malleable and can be effectively shaped by media",
+    "example_sentence": "Public opinion is surprisingly malleable and can be effectively shaped by media coverage and political messaging.",
     "example_sentence_arabic": "الرأي العام قابل للتشكل بشكل مفاجئ ويمكن تشكيله بفعالية من قبل وسائل الإعلام."
   },
   {
@@ -12964,7 +12964,7 @@
     "arabic": "كاذب، مخادع",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "Mendacious reporting of scientific data has serious and far-reaching",
+    "example_sentence": "Mendacious reporting of scientific data has serious and far-reaching consequences for the entire research community.",
     "example_sentence_arabic": "الإبلاغ الكاذب عن البيانات العلمية له عواقب خطيرة وبعيدة المدى."
   },
   {
@@ -12972,7 +12972,7 @@
     "arabic": "قائم على الكفاءة، تنافسي عادل",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "A truly meritocratic education system should always reward genuine talent and",
+    "example_sentence": "A truly meritocratic education system should always reward genuine talent and hard work regardless of socioeconomic background.",
     "example_sentence_arabic": "نظام تعليمي قائم حقاً على الكفاءة يجب أن يكافئ المواهب الحقيقية والجهد."
   },
   {
@@ -12980,7 +12980,7 @@
     "arabic": "عادي، روتيني",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "Even seemingly mundane data can reveal highly significant trends when",
+    "example_sentence": "Even seemingly mundane and unremarkable data can reveal highly significant patterns when analyzed systematically.",
     "example_sentence_arabic": "حتى البيانات التي تبدو عادية يمكن أن تكشف عن اتجاهات مهمة جداً عند تحليلها."
   },
   {
@@ -12988,7 +12988,7 @@
     "arabic": "غامض، غير واضح",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The stated policy goals were far too nebulous to be meaningfully measured or",
+    "example_sentence": "The stated policy goals were far too nebulous and vague to be meaningfully implemented or evaluated.",
     "example_sentence_arabic": "أهداف السياسة المعلنة كانت غامضة جداً بحيث لا يمكن قياسها بشكل معنوي."
   },
   {
@@ -12996,7 +12996,7 @@
     "arabic": "يُلغي، يَنفي",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "The compelling new evidence entirely negated the previously widely accepted",
+    "example_sentence": "The compelling new evidence entirely negated the previously widely accepted theory.",
     "example_sentence_arabic": "الأدلة الجديدة والمقنعة ألغت تماماً الفرضية المقبولة على نطاق واسع سابقاً."
   },
   {
@@ -13004,7 +13004,7 @@
     "arabic": "شرير، فاسق",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The nefarious and illegal activities of some corporations have caused",
+    "example_sentence": "The nefarious and illegal activities of some corporations have caused truly devastating environmental and social consequences.",
     "example_sentence_arabic": "الأنشطة الشريرة والغير قانونية لبعض الشركات تسببت في أضرار واسعة."
   },
   {
@@ -13012,7 +13012,7 @@
     "arabic": "عنيد، مستعصٍ على الإقناع",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "Obdurate resistance to necessary change within institutions slows progress",
+    "example_sentence": "Obdurate institutional resistance to necessary change consistently and predictably impedes progress.",
     "example_sentence_arabic": "المقاومة العنيدة للتغيير الضروري داخل المؤسسات يبطئ التقدم."
   },
   {
@@ -13020,7 +13020,7 @@
     "arabic": "خاضع، متملق",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "Obsequious agreement with authority is not the same as genuine intellectual",
+    "example_sentence": "Obsequious agreement with authority is entirely distinct from genuine and principled engagement with ideas.",
     "example_sentence_arabic": "الموافقة المتملقة على السلطة ليست الشيء ذاته كالتفكير الفكري الحقيقي."
   },
   {
@@ -13028,7 +13028,7 @@
     "arabic": "معتم، غير شفاف",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The opaque nature of government decision-making processes fundamentally",
+    "example_sentence": "The deliberately opaque nature of government decision-making processes often undermines public trust and democratic accountability.",
     "example_sentence_arabic": "الطبيعة المعتمة لعمليات اتخاذ القرار الحكومية تضر بشكل أساسي بالديمقراطية."
   },
   {
@@ -13036,7 +13036,7 @@
     "arabic": "صريح، واضح",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "There is now an overt acknowledgement of the role of human activity in climate",
+    "example_sentence": "There is now an overt and unambiguous acknowledgement of the role of technology in shaping modern society.",
     "example_sentence_arabic": "هناك الآن اعترافاً صريحاً بدور النشاط البشري في تغير المناخ."
   },
   {
@@ -13044,7 +13044,7 @@
     "arabic": "دواء شامل، حل سحري",
     "level": "C1",
     "category": "n.",
-    "example_sentence": "Technology alone is not a panacea for all of society&#39;s deepest and most",
+    "example_sentence": "Technology alone is definitely not a panacea for all of society's deepest, most complex challenges.",
     "example_sentence_arabic": "التكنولوجيا وحدها ليست حلاً شاملاً لجميع مشاكل المجتمع الأعمق."
   },
   {
@@ -13052,7 +13052,7 @@
     "arabic": "ضيق الأفق، محدود النظر",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "A parochial perspective severely limits our broader understanding of genuinely",
+    "example_sentence": "A parochial and narrow perspective severely and fundamentally limits our ability to understand complex global issues.",
     "example_sentence_arabic": "المنظور الضيق يحد بشدة من فهمنا للقضايا العالمية الأوسع."
   },
   {
@@ -13060,7 +13060,7 @@
     "arabic": "متحذلق، مفرط في الدقة الشكلية",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "Overly pedantic criticism of minor errors can obscure the real value of a strong",
+    "example_sentence": "Overly pedantic criticism of minor errors can obscure the genuine value and impact of the work.",
     "example_sentence_arabic": "الانتقاد المتطرف للأخطاء البسيطة قد يحجب القيمة الحقيقية للحجة القوية."
   },
   {
@@ -13068,7 +13068,7 @@
     "arabic": "شكلي، سطحي",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "A perfunctory and superficial review of the literature is wholly inadequate for",
+    "example_sentence": "A perfunctory and superficial review of the literature is wholly inadequate for conducting rigorous academic research.",
     "example_sentence_arabic": "المراجعة الشكلية والسطحية للدراسات السابقة غير كافية تماماً لبحث جيد."
   },
   {
@@ -13076,7 +13076,7 @@
     "arabic": "منتشر، واسع الانتشار",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The pervasive and far-reaching influence of technology on modern daily life is",
+    "example_sentence": "The pervasive and inescapable influence of technology on modern daily life is undeniable and continues to reshape society.",
     "example_sentence_arabic": "التأثير المنتشر والواسع للتكنولوجيا على الحياة اليومية الحديثة لا يمكن إنكاره."
   },
   {
@@ -13084,7 +13084,7 @@
     "arabic": "يُهدِّئ، يُرضي",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "Short-term measures were hurriedly introduced to placate growing public",
+    "example_sentence": "Short-term and largely cosmetic measures were hurriedly introduced to placate public concerns about environmental degradation.",
     "example_sentence_arabic": "تم إدخال تدابير قصيرة الأجل على عجل لإرضاء الجمهور المتنامي."
   },
   {
@@ -13092,7 +13092,7 @@
     "arabic": "وفرة / كثرة",
     "level": "C1",
     "category": "n.",
-    "example_sentence": "A plethora of peer-reviewed studies now confirms the link between diet and",
+    "example_sentence": "A plethora of peer-reviewed studies now strongly confirms the link between diet and long-term health outcomes.",
     "example_sentence_arabic": "وفرة من الدراسات المحكمة تؤكد الآن الرابط بين النظام الغذائي و..."
   },
   {
@@ -13100,7 +13100,7 @@
     "arabic": "مؤثر / حزين",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The documentary offered a deeply poignant account of irreversible",
+    "example_sentence": "The powerful documentary offered a deeply poignant and moving account of the refugees' harrowing journey across the border.",
     "example_sentence_arabic": "قدم الفيلم الوثائقي سردًا عميق التأثير للتغييرات التي لا يمكن عكسها."
   },
   {
@@ -13108,7 +13108,7 @@
     "arabic": "ثقيل / معقد",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "A ponderous and overly dense writing style can completely obscure an",
+    "example_sentence": "A ponderous and unnecessarily dense writing style can completely and fatally undermine the effectiveness of academic communication.",
     "example_sentence_arabic": "أسلوب الكتابة الثقيل والكثيف جدًا يمكن أن يخفي المعنى تماماً."
   },
   {
@@ -13116,7 +13116,7 @@
     "arabic": "غير آمن / حرج",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The ecological balance of the planet is in an increasingly precarious and fragile",
+    "example_sentence": "The ecological balance of our planet is now in an increasingly precarious and vulnerable state.",
     "example_sentence_arabic": "التوازن البيئي للكوكب في وضع متزايد الخطورة والهشاشة."
   },
   {
@@ -13124,7 +13124,7 @@
     "arabic": "يَمنع، يَحول دون",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "High and prohibitive costs should not preclude access to quality education for",
+    "example_sentence": "High and prohibitive costs should not preclude anyone from accessing quality education and healthcare services.",
     "example_sentence_arabic": "التكاليف العالية والممنوعة لا يجب أن تحول دون الوصول إلى التعليم الجيد."
   },
   {
@@ -13132,7 +13132,7 @@
     "arabic": "صاحب بصيرة / نبوي",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The early and repeated warnings of climate scientists proved remarkably",
+    "example_sentence": "The early and repeated warnings of leading climate scientists have proved to be accurate and prescient.",
     "example_sentence_arabic": "تحذيرات علماء المناخ المبكرة والمتكررة أثبتت أنها بارعة بشكل ملحوظ."
   },
   {
@@ -13148,7 +13148,7 @@
     "arabic": "منتج / غزير الإنتاج",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "She was an exceptionally prolific researcher who published over two hundred",
+    "example_sentence": "She was an exceptionally prolific and highly influential researcher who contributed significantly to the advancement of her field.",
     "example_sentence_arabic": "كانت باحثة منتجة استثنائياً نشرت أكثر من مائتي..."
   },
   {
@@ -13156,7 +13156,7 @@
     "arabic": "نشر / ينشر",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "It is deeply irresponsible to propagate deliberate misinformation in public",
+    "example_sentence": "It is deeply irresponsible and harmful to propagate deliberate misinformation in public discourse.",
     "example_sentence_arabic": "من المسؤول جداً أن ننشر المعلومات المضللة المتعمدة في الساحة العامة."
   },
   {
@@ -13164,7 +13164,7 @@
     "arabic": "يحظر / يمنع",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "The use of deceptive or manipulative research methods is proscribed by",
+    "example_sentence": "The use of deceptive or manipulative research methods is firmly proscribed by established ethical guidelines and professional standards.",
     "example_sentence_arabic": "استخدام أساليب البحث الخادعة أو المتلاعبة محظور بموجب..."
   },
   {
@@ -13172,7 +13172,7 @@
     "arabic": "أساسي / نموذجي",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "This landmark paper is the quintessential example of truly interdisciplinary",
+    "example_sentence": "This landmark paper is widely regarded as the quintessential example of truly groundbreaking research in the field.",
     "example_sentence_arabic": "هذه الورقة البحثية الأساسية هي المثال النموذجي للبحث متعدد التخصصات الحقيقي."
   },
   {
@@ -13180,7 +13180,7 @@
     "arabic": "عنيد / متمرد",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "Recalcitrant institutions are often the greatest single obstacle to meaningful",
+    "example_sentence": "Recalcitrant institutions and organisations are often the single greatest obstacle to meaningful social progress.",
     "example_sentence_arabic": "المؤسسات العنيدة غالباً ما تكون أكبر عائق منفرد للتغيير الحقيقي."
   },
   {
@@ -13188,7 +13188,7 @@
     "arabic": "يُصلِح، يُصحِّح",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "Urgent steps must be taken to rectify the serious damage caused by past",
+    "example_sentence": "Urgent and decisive steps must be taken immediately to rectify the serious issues affecting the community.",
     "example_sentence_arabic": "يجب اتخاذ خطوات عاجلة لإصلاح الضرر الجسيم الذي سببته..."
   },
   {
@@ -13196,7 +13196,7 @@
     "arabic": "يُعالج، يُصحِّح",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "New and comprehensive legislation aims to redress longstanding historical",
+    "example_sentence": "New and comprehensive legislation aims to redress longstanding and deeply entrenched social inequalities.",
     "example_sentence_arabic": "تهدف التشريعات الجديدة والشاملة إلى معالجة الظلم التاريخي القديم."
   },
   {
@@ -13204,7 +13204,7 @@
     "arabic": "يَحتج، يَعترض",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "Environmental activists publicly remonstrated with senior government officials",
+    "example_sentence": "Environmental activists publicly and passionately remonstrated with senior government officials during the conference.",
     "example_sentence_arabic": "احتج الناشطون البيئيون علناً مع كبار المسؤولين الحكوميين."
   },
   {
@@ -13220,7 +13220,7 @@
     "arabic": "متبقي / عالق",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "Some residual uncertainty about the precise rate of warming still remains",
+    "example_sentence": "Some residual uncertainty about the precise rate of warming still remains among climate scientists.",
     "example_sentence_arabic": "لا يزال هناك بعض عدم اليقين المتبقي حول المعدل الدقيق للاحترار."
   },
   {
@@ -13228,7 +13228,7 @@
     "arabic": "حازم / قاطع",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "A resolute and unwavering commitment to evidence-based policy is essential",
+    "example_sentence": "A resolute and unwavering commitment to evidence-based policy is essential for achieving sustainable development goals.",
     "example_sentence_arabic": "الالتزام الحازم والراسخ بالسياسة القائمة على الأدلة ضروري."
   },
   {
@@ -13236,7 +13236,7 @@
     "arabic": "صامت / متحفظ",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "Some governments remain frustratingly reticent about committing to binding",
+    "example_sentence": "Some key governments remain frustratingly reticent about committing to fully implement the proposed reforms.",
     "example_sentence_arabic": "تبقى بعض الحكومات صامتة بشكل محبط حول الالتزام بالاتفاقيات الملزمة."
   },
   {
@@ -13244,7 +13244,7 @@
     "arabic": "احترام / تقديس",
     "level": "C1",
     "category": "n.",
-    "example_sentence": "The groundbreaking findings were received with genuine reverence by the",
+    "example_sentence": "The extraordinary findings were received with genuine reverence and widespread acclaim.",
     "example_sentence_arabic": "تلقيت الاكتشافات الرائدة باحترام حقيقي من قبل..."
   },
   {
@@ -13252,7 +13252,7 @@
     "arabic": "أساسي / بدائي",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "A rudimentary understanding of basic statistics is essential for correctly",
+    "example_sentence": "A rudimentary understanding of basic statistics is essential for correctly interpreting research data.",
     "example_sentence_arabic": "الفهم الأساسي للإحصائيات البسيطة ضروري لتفسير البيانات بشكل صحيح."
   },
   {
@@ -13260,7 +13260,7 @@
     "arabic": "مقدس / لا يمس",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The fundamental principle of academic freedom should be treated as",
+    "example_sentence": "The fundamental and widely accepted principle of academic freedom should be upheld to foster innovation and critical thinking.",
     "example_sentence_arabic": "يجب معاملة المبدأ الأساسي لحرية البحث العلمي كمقدس."
   },
   {
@@ -13276,7 +13276,7 @@
     "arabic": "دقيق / مدقق",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "A truly scrupulous researcher documents all data transparently, even when",
+    "example_sentence": "A truly scrupulous researcher documents all data fully and transparently, even when the results are unexpected or unfavorable.",
     "example_sentence_arabic": "الباحث الدقيق يوثق جميع البيانات بشفافية، حتى عندما..."
   },
   {
@@ -13284,7 +13284,7 @@
     "arabic": "فريد / نادر",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The discovery was of truly singular and far-reaching importance to the entire",
+    "example_sentence": "The remarkable discovery was of truly singular and far-reaching importance to the advancement of scientific knowledge.",
     "example_sentence_arabic": "كان الاكتشاف ذو أهمية فريدة بعيدة المدى لجميع..."
   },
   {
@@ -13292,7 +13292,7 @@
     "arabic": "مُقلِق، يدعو إلى التأمل الجاد",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The very latest climate projections provide a deeply sobering reminder of the",
+    "example_sentence": "The very latest climate projections provide a deeply sobering and urgent call for immediate global action.",
     "example_sentence_arabic": "إن أحدث التوقعات المناخية توفر تذكيراً مقلقاً بعمق بـ..."
   },
   {
@@ -13300,7 +13300,7 @@
     "arabic": "يَطلب، يَستجدي",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "Researchers carefully solicited feedback from a broad and genuinely",
+    "example_sentence": "Researchers carefully and systematically solicited feedback from a broad and diverse range of participants.",
     "example_sentence_arabic": "طلب الباحثون بعناية الملاحظات من مجموعة واسعة وحقيقية من..."
   },
   {
@@ -13308,7 +13308,7 @@
     "arabic": "تخميني / نظري",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "Without adequate empirical support, the central argument must be regarded as",
+    "example_sentence": "Without adequate empirical support, the central and controversial argument remains unsubstantiated.",
     "example_sentence_arabic": "بدون دعم تجريبي كافٍ، يجب اعتبار الحجة المركزية تخمينية."
   },
   {
@@ -13316,7 +13316,7 @@
     "arabic": "ثابت / راسخ",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "A steadfast commitment to evidence is the defining mark of a reliable and",
+    "example_sentence": "A steadfast and unwavering commitment to evidence is the defining mark of a credible researcher.",
     "example_sentence_arabic": "الالتزام الثابت بالأدلة هو السمة المميزة للباحث الموثوق."
   },
   {
@@ -13324,7 +13324,7 @@
     "arabic": "يوصم / يلصق العار",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "It is both harmful and unjust to stigmatise communities based on their",
+    "example_sentence": "It is both harmful and profoundly unjust to stigmatise entire communities based on the actions of a few individuals.",
     "example_sentence_arabic": "من الضار والظالم أن نوصم المجتمعات بناءً على معتقداتها."
   },
   {
@@ -13340,7 +13340,7 @@
     "arabic": "حاد / صارخ",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "Strident opposition to necessary reform often delays important and ultimately",
+    "example_sentence": "Strident and uncompromising opposition to necessary reform often delays progress and undermines effective governance.",
     "example_sentence_arabic": "المعارضة الحادة للإصلاح الضروري غالباً ما تؤخر التغييرات المهمة."
   },
   {
@@ -13348,7 +13348,7 @@
     "arabic": "جوهري / مادي",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The comprehensive review produced substantive and immediately actionable",
+    "example_sentence": "The comprehensive and thorough review produced substantive and insightful conclusions.",
     "example_sentence_arabic": "أسفرت المراجعة الشاملة عن توصيات جوهرية وقابلة للتطبيق فوراً."
   },
   {
@@ -13356,7 +13356,7 @@
     "arabic": "يستسلم / يخضع",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "Some species will inevitably succumb to the cumulative effects of accelerating",
+    "example_sentence": "Some vulnerable species will inevitably succumb to the cumulative and irreversible effects of habitat destruction.",
     "example_sentence_arabic": "ستستسلم بعض الأنواع حتماً لتأثيرات التسارع المتراكمة"
   },
   {
@@ -13364,7 +13364,7 @@
     "arabic": "يحل محل / يستبدل",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "Digital media is rapidly and comprehensively supplanting traditional print",
+    "example_sentence": "Digital media is rapidly and comprehensively supplanting traditional print as the primary source of information.",
     "example_sentence_arabic": "وسائل الإعلام الرقمية تستبدل بسرعة وشمولية وسائل الطباعة التقليدية"
   },
   {
@@ -13372,7 +13372,7 @@
     "arabic": "تكافلي / متبادل النفع",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "There is a mutually beneficial and symbiotic relationship between scientific",
+    "example_sentence": "There is a mutually beneficial and deeply symbiotic relationship between humans and their natural environment.",
     "example_sentence_arabic": "توجد علاقة متبادلة النفع وتكافلية بين العلم والتطبيق"
   },
   {
@@ -13380,7 +13380,7 @@
     "arabic": "تهوُّر، جرأة متهورة",
     "level": "C1",
     "category": "n.",
-    "example_sentence": "It requires considerable intellectual temerity to openly challenge deeply",
+    "example_sentence": "It requires considerable intellectual temerity to openly and publicly challenge established scientific theories.",
     "example_sentence_arabic": "يتطلب الأمر جرأة فكرية كبيرة لتحدي المعتقدات العميقة علناً"
   },
   {
@@ -13388,7 +13388,7 @@
     "arabic": "معتدل / متوازن",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "A temperate and carefully measured tone is always far more persuasive than",
+    "example_sentence": "A temperate and carefully measured tone is invariably and significantly more effective in persuasive communication.",
     "example_sentence_arabic": "النبرة المعتدلة والمقاسة بعناية دائماً أكثر إقناعاً من النبرة الحادة"
   },
   {
@@ -13396,7 +13396,7 @@
     "arabic": "مثابر / عنيد",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The most tenacious researchers continue to pursue their hypotheses even",
+    "example_sentence": "The most tenacious and determined researchers continue to pursue their goals despite numerous challenges.",
     "example_sentence_arabic": "الباحثون الأكثر مثابرة يستمرون في متابعة فرضياتهم حتى عندما يواجهون معارضة"
   },
   {
@@ -13404,7 +13404,7 @@
     "arabic": "فاتر / ضعيف الحماس",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The international political response to the crisis was widely and justifiably",
+    "example_sentence": "The international political response to the escalating crisis was widely and critically analyzed by experts.",
     "example_sentence_arabic": "كان الرد السياسي الدولي على الأزمة فاتراً وبحق يستحق الانتقاد"
   },
   {
@@ -13412,7 +13412,7 @@
     "arabic": "خجول / متردد",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "A timorous and overly cautious approach to policy reform produces only",
+    "example_sentence": "A timorous and overly cautious approach to essential policy reform produces minimal progress and persistent inefficiencies.",
     "example_sentence_arabic": "النهج المتردد والحذر بشكل مفرط تجاه إصلاح السياسة ينتج عنه فقط نتائج محدودة"
   },
   {
@@ -13420,7 +13420,7 @@
     "arabic": "عابر / مؤقت",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The apparent economic recovery proved surprisingly transient and was quickly",
+    "example_sentence": "The apparent and initially encouraging economic recovery ultimately proved to be unsustainable.",
     "example_sentence_arabic": "تبين أن التعافي الاقتصادي الظاهري مؤقتاً بشكل مفاجئ وسرعان ما تراجع"
   },
   {
@@ -13428,7 +13428,7 @@
     "arabic": "مبتذل / سطحي",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "Trite and predictable conclusions significantly undermine the overall impact of",
+    "example_sentence": "Trite and entirely predictable conclusions significantly and unnecessarily diminish the impact of the argument.",
     "example_sentence_arabic": "الاستنتاجات المبتذلة والمتوقعة تقلل بشكل كبير من التأثير العام للدراسة"
   },
   {
@@ -13436,7 +13436,7 @@
     "arabic": "غير قابل للدفاع / لا يمكن الاستمرار به",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "Under sustained scrutiny, the government&#39;s original position became politically",
+    "example_sentence": "Under sustained and rigorous critical scrutiny, the government's original policies were found to require significant revision.",
     "example_sentence_arabic": "تحت التدقيق المستمر، أصبح الموقف الأصلي للحكومة سياسياً لا يمكن الاستمرار به"
   },
   {
@@ -13444,7 +13444,7 @@
     "arabic": "يجل / يحترم",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "Most societies tend to venerate original thinkers who challenge conventional",
+    "example_sentence": "Most intellectually open societies tend to venerate genuinely original thinkers for their contributions to knowledge and progress.",
     "example_sentence_arabic": "معظم المجتمعات تحترم المفكرين الأصليين الذين يطعنون في الأفكار التقليدية"
   },
   {
@@ -13452,7 +13452,7 @@
     "arabic": "مسهب / طويل الكلام",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "Verbose and unnecessarily long writing often obscures rather than clarifies the",
+    "example_sentence": "Unnecessarily verbose and repetitive writing consistently and fatally obscures the clarity of the main argument.",
     "example_sentence_arabic": "الكتابة المسهبة والطويلة بلا ضرورة غالباً ما تخفي بدلاً من توضيح الفكرة الأساسية"
   },
   {
@@ -13460,7 +13460,7 @@
     "arabic": "صادق / أمين",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "A veracious and honest account of the data is the absolute foundation of good",
+    "example_sentence": "A fully veracious and wholly honest account of the data is the absolute and essential foundation for credible research.",
     "example_sentence_arabic": "الحساب الصادق والأمين للبيانات هو الأساس المطلق للعمل البحثي الجيد"
   },
   {
@@ -13468,7 +13468,7 @@
     "arabic": "يبرر / ينصف",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "Subsequent events fully and comprehensively vindicated the original",
+    "example_sentence": "Subsequent and widely observed events fully and comprehensively vindicated the initial hypothesis proposed by the researchers.",
     "example_sentence_arabic": "الأحداث اللاحقة برّرت بشكل كامل وشامل النتيجة الأصلية"
   },
   {
@@ -13476,7 +13476,7 @@
     "arabic": "غريزي / عاطفي عميق",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The powerful documentary provoked a deeply visceral and emotional reaction",
+    "example_sentence": "The powerful and unflinching documentary provoked a deeply visceral and emotional response from viewers.",
     "example_sentence_arabic": "أثار الفيلم الوثائقي القوي رد فعل غريزياً وعاطفياً عميقاً لدى المشاهدين"
   },
   {
@@ -13484,7 +13484,7 @@
     "arabic": "حاد / ساخر لاذع",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "Vitriolic and personalised public debate rarely leads to constructive or lasting",
+    "example_sentence": "Vitriolic and unnecessarily personalised public debate rarely leads to constructive outcomes or mutual understanding.",
     "example_sentence_arabic": "النقاش العام الحاد والشخصاني نادراً ما يؤدي إلى نتائج بناءة أو دائمة"
   },
   {
@@ -13492,7 +13492,7 @@
     "arabic": "ضخم / وافر",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The voluminous and ever-growing evidence in favour of immediate climate",
+    "example_sentence": "The voluminous and constantly growing body of evidence in favour of climate change mitigation is increasingly compelling.",
     "example_sentence_arabic": "الأدلة الضخمة والمتزايدة باستمرار لصالح اتخاذ إجراء مناخي فوري قوية جداً"
   },
   {
@@ -13500,7 +13500,7 @@
     "arabic": "يتلاشى / يقل",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "Public interest in the critical issue began to wane after the initial media attention",
+    "example_sentence": "Public interest in the critical issue began to wane once the initial and intense media coverage subsided.",
     "example_sentence_arabic": "بدأ الاهتمام العام بهذه القضية الحرجة يتلاشى بعد الاهتمام الإعلامي الأولي"
   },
   {
@@ -13508,7 +13508,7 @@
     "arabic": "مبرر / له ما يبرره",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The high degree of public alarm about rising pollution levels is entirely and",
+    "example_sentence": "The high degree of widespread public alarm about continuously rising pollution demands immediate governmental intervention.",
     "example_sentence_arabic": "درجة القلق العام حول تلوث الهواء المتزايد مبررة تماماً وحتمية"
   },
   {
@@ -13516,7 +13516,7 @@
     "arabic": "يصمد / يقاوم",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "Strong and resilient democratic institutions must always be able to withstand",
+    "example_sentence": "Strong, well-designed, and genuinely resilient democratic institutions must be established to ensure sustainable governance and social stability.",
     "example_sentence_arabic": "المؤسسات الديمقراطية القوية والمرنة يجب أن تكون قادرة على مقاومة التهديدات"
   },
   {
@@ -13524,7 +13524,7 @@
     "arabic": "تعصب / غلو",
     "level": "C1",
     "category": "n.",
-    "example_sentence": "Zealotry, even in the service of a good cause, can ultimately undermine a",
+    "example_sentence": "Zealotry, even in the service of an entirely worthy cause, can ultimately and inadvertently lead to negative consequences.",
     "example_sentence_arabic": "التعصب، حتى في خدمة قضية نبيلة، يمكن أن يقوض المصداقية في النهاية"
   },
   {
@@ -13564,7 +13564,7 @@
     "arabic": "يجسد",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "A democratic constitution should embody the most fundamental values of",
+    "example_sentence": "A truly democratic constitution should embody the most fundamental values of justice, equality, and freedom.",
     "example_sentence_arabic": "يجب أن تجسد الدستور الديمقراطي أهم قيم المجتمع."
   },
   {
@@ -13572,7 +13572,7 @@
     "arabic": "يلخص",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "A strong conclusion should effectively encapsulate the central argument of the",
+    "example_sentence": "A strong conclusion should effectively encapsulate the central argument of the essay.",
     "example_sentence_arabic": "يجب أن تلخص الخاتمة القوية الحجة الرئيسية للبحث بفعالية."
   },
   {
@@ -13620,7 +13620,7 @@
     "arabic": "يستقرئ، يستنتج",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "Researchers carefully extrapolated future trends from decades of historical",
+    "example_sentence": "Researchers carefully and systematically extrapolated future long-term trends to inform policy decisions.",
     "example_sentence_arabic": "قام الباحثون بحذر باستقراء الاتجاهات المستقبلية من عقود من البيانات التاريخية."
   },
   {
@@ -13652,7 +13652,7 @@
     "arabic": "الحوكمة، الإدارة الرشيدة",
     "level": "C1",
     "category": "n.",
-    "example_sentence": "Effective governance is absolutely essential for achieving sustainable",
+    "example_sentence": "Effective and genuinely transparent governance is absolutely essential for maintaining public trust and democratic institutions.",
     "example_sentence_arabic": "الحوكمة الفعالة ضرورية تماماً لتحقيق التنمية المستدامة."
   },
   {
@@ -13660,7 +13660,7 @@
     "arabic": "شامل، متكامل",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "A holistic approach to health considers physical, mental, and social",
+    "example_sentence": "A genuinely holistic approach considers physical, mental, and broader social dimensions of human wellbeing.",
     "example_sentence_arabic": "النهج الشامل للصحة يأخذ في الاعتبار الجوانب البدنية والعقلية والاجتماعية."
   },
   {
@@ -13668,7 +13668,7 @@
     "arabic": "الأيديولوجية",
     "level": "C1",
     "category": "n.",
-    "example_sentence": "Government policy is inevitably shaped by both ideology and empirical",
+    "example_sentence": "Government policy is inevitably and inescapably shaped by both ideological and practical considerations.",
     "example_sentence_arabic": "تتأثر السياسة الحكومية حتماً بالأيديولوجية والأدلة التجريبية."
   },
   {
@@ -13692,7 +13692,7 @@
     "arabic": "يضع جنباً إلى جنب / يقارن بين",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "The essay effectively juxtaposes two opposing theoretical viewpoints to",
+    "example_sentence": "The essay effectively and illuminatingly juxtaposes two opposing theoretical frameworks to highlight their fundamental differences.",
     "example_sentence_arabic": "تقارن المقالة بشكل فعال بين وجهات نظر نظرية معارضة."
   },
   {
@@ -13724,7 +13724,7 @@
     "arabic": "يهمش / يقلل من أهمية",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "Economic policies that marginalise the poorest are ultimately",
+    "example_sentence": "Economic policies that consistently marginalise the poorest communities are detrimental to overall societal development and stability.",
     "example_sentence_arabic": "السياسات الاقتصادية التي تهمش الفقراء هي في النهاية مدمرة."
   },
   {
@@ -13740,7 +13740,7 @@
     "arabic": "يخفف / يقلل من",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "Tree-planting programmes can help significantly mitigate the effects of climate",
+    "example_sentence": "Strategic and ambitious tree-planting programmes can help significantly reduce carbon emissions and combat climate change.",
     "example_sentence_arabic": "يمكن لبرامج زراعة الأشجار أن تساعد بشكل كبير في تخفيف آثار تغير المناخ."
   },
   {
@@ -13748,7 +13748,7 @@
     "arabic": "متعدد الجوانب",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "Climate change is an extraordinarily multifaceted problem requiring many",
+    "example_sentence": "Climate change is an extraordinarily multifaceted and complex problem that requires urgent global cooperation and action.",
     "example_sentence_arabic": "تغير المناخ مشكلة غير عادية متعددة الجوانب تتطلب عدة حلول."
   },
   {
@@ -13756,7 +13756,7 @@
     "arabic": "وليد / ناشئ",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The nascent renewable energy industry still requires substantial government",
+    "example_sentence": "The nascent renewable energy industry still requires substantial and sustained government investment and policy support.",
     "example_sentence_arabic": "صناعة الطاقة المتجددة الناشئة لا تزال تتطلب دعماً حكومياً كبيراً."
   },
   {
@@ -13788,7 +13788,7 @@
     "arabic": "موجود في كل مكان / منتشر في كل مكان",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "Digital technology has become genuinely omnipresent in every aspect of",
+    "example_sentence": "Digital technology has now become genuinely omnipresent in virtually every aspect of modern life.",
     "example_sentence_arabic": "أصبحت التكنولوجيا الرقمية موجودة بحقيقة في كل جوانب الحياة."
   },
   {
@@ -13812,7 +13812,7 @@
     "arabic": "متحيز / انحيازي",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "Openly partisan reporting significantly distorts public understanding of policy",
+    "example_sentence": "Openly partisan and ideologically biased reporting significantly distorts public understanding of complex political issues.",
     "example_sentence_arabic": "التقارير المتحيزة بشكل واضح تشوه بشكل كبير فهم الجمهور للسياسات."
   },
   {
@@ -13820,7 +13820,7 @@
     "arabic": "علم التربية / الطرق التعليمية",
     "level": "C1",
     "category": "n.",
-    "example_sentence": "Effective pedagogy is always carefully adapted to the diverse needs of",
+    "example_sentence": "Genuinely effective pedagogy is always carefully and thoughtfully adapted to the specific needs and contexts of learners.",
     "example_sentence_arabic": "الطرق التعليمية الفعالة تتكيف دائماً مع الاحتياجات المتنوعة للطلاب."
   },
   {
@@ -13860,7 +13860,7 @@
     "arabic": "استقطاب / انقسام",
     "level": "C1",
     "category": "n.",
-    "example_sentence": "Growing political polarisation makes effective international cooperation",
+    "example_sentence": "Growing and deepening political polarisation makes effective international cooperation increasingly difficult to achieve.",
     "example_sentence_arabic": "يجعل الاستقطاب السياسي المتزايد التعاون الدولي الفعال أكثر صعوبة."
   },
   {
@@ -13876,7 +13876,7 @@
     "arabic": "يفترض / يضع افتراضاً",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "Classical economists postulate that free markets tend naturally towards",
+    "example_sentence": "Classical economists traditionally postulate that fully free markets naturally tend toward equilibrium.",
     "example_sentence_arabic": "يفترض الاقتصاديون الكلاسيكيون أن الأسواق الحرة تميل بشكل طبيعي نحو التوازن."
   },
   {
@@ -13884,7 +13884,7 @@
     "arabic": "عملي / واقعي",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "A pragmatic solution carefully balances idealism with real-world practical",
+    "example_sentence": "A genuinely pragmatic solution always carefully balances idealism with practical implementation and real-world constraints.",
     "example_sentence_arabic": "يحقق الحل العملي توازناً حذراً بين المثالية والجوانب العملية الواقعية."
   },
   {
@@ -13900,7 +13900,7 @@
     "arabic": "يُهمل / يُهمِّش",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "Environmental concerns have been consistently relegated to the margins of the",
+    "example_sentence": "Environmental concerns have been consistently and irresponsibly relegated to the background in policy discussions.",
     "example_sentence_arabic": "تم تهميش الاهتمامات البيئية باستمرار على هامش النقاش."
   },
   {
@@ -13924,7 +13924,7 @@
     "arabic": "يُبرز / يُشدد على",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "The report accentuates the widening inequality gap between rich and poor",
+    "example_sentence": "The report accentuates the widening inequality gap between rich and poor in modern society.",
     "example_sentence_arabic": "التقرير يؤكد على اتساع الفجوة في عدم المساواة بين الأغنياء والفقراء"
   },
   {
@@ -13932,7 +13932,7 @@
     "arabic": "حاد/مرير",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The policy debate became acrimonious as neither side was willing to",
+    "example_sentence": "The policy debate became deeply acrimonious as neither side was willing to compromise on key issues.",
     "example_sentence_arabic": "أصبح النقاش حول السياسة حاداً عندما رفضت كلا الجانبين التنازل"
   },
   {
@@ -13972,7 +13972,7 @@
     "arabic": "التجريبية",
     "level": "C1",
     "category": "n.",
-    "example_sentence": "Empiricism holds that all genuine knowledge must be grounded in observable",
+    "example_sentence": "Empiricism holds that all genuine knowledge must ultimately be grounded in sensory experience and observation.",
     "example_sentence_arabic": "تؤكد التجريبية أن جميع المعرفة الحقيقية يجب أن تكون مستندة إلى الملاحظة"
   },
   {
@@ -13996,7 +13996,7 @@
     "arabic": "يُبرِّئ / يُعفي",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "Newly discovered evidence completely exonerated the researcher of any",
+    "example_sentence": "Newly discovered forensic evidence completely exonerated the researcher of all allegations.",
     "example_sentence_arabic": "برّأت الأدلة المكتشفة حديثاً الباحث تماماً من أي اتهام."
   },
   {
@@ -14004,7 +14004,7 @@
     "arabic": "عجّل / أسرّع",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "Digital tools can greatly expedite the time-consuming process of data",
+    "example_sentence": "Digital tools can greatly expedite the often time-consuming process of primary data collection and analysis.",
     "example_sentence_arabic": "يمكن للأدوات الرقمية أن تسرّع بشكل كبير من العملية المستهلكة للوقت في معالجة البيانات."
   },
   {
@@ -14020,7 +14020,7 @@
     "arabic": "مجزأ / منقسم",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "A highly fragmented policy framework significantly reduces overall",
+    "example_sentence": "A highly fragmented policy framework significantly reduces the overall effectiveness of governmental initiatives.",
     "example_sentence_arabic": "إطار السياسة المجزأ بشكل كبير يقلل بشكل كبير من الفعالية الكلية."
   },
   {
@@ -14044,7 +14044,7 @@
     "arabic": "هيمنة / سيطرة",
     "level": "C1",
     "category": "n.",
-    "example_sentence": "Cultural hegemony can systematically suppress minority voices and",
+    "example_sentence": "Cultural hegemony can systematically and insidiously suppress minority voices throughout society.",
     "example_sentence_arabic": "الهيمنة الثقافية يمكن أن تقمع بشكل منهجي أصوات الأقليات."
   },
   {
@@ -14060,7 +14060,7 @@
     "arabic": "مبالغة / تهويل",
     "level": "C1",
     "category": "n.",
-    "example_sentence": "Political speeches frequently rely on deliberate hyperbole to stir strong",
+    "example_sentence": "Political speeches frequently and cynically rely on deliberate hyperbole to manipulate public opinion and emotions.",
     "example_sentence_arabic": "تعتمد الخطابات السياسية كثيراً على المبالغة المتعمدة لإثارة مشاعر قوية."
   },
   {
@@ -14068,7 +14068,7 @@
     "arabic": "هادم للأيقونات / منتقد جريء",
     "level": "C1",
     "category": "n.",
-    "example_sentence": "The iconoclastic researcher challenged many firmly accepted theoretical",
+    "example_sentence": "The iconoclastic researcher bravely challenged many of the most firmly entrenched beliefs in the scientific community.",
     "example_sentence_arabic": "طعّن الباحث المنتقد الجريء في العديد من الافتراضات النظرية المقبولة بثبات."
   },
   {
@@ -14076,7 +14076,7 @@
     "arabic": "الإمبريالية / السيطرة الاقتصادية",
     "level": "C1",
     "category": "n.",
-    "example_sentence": "Economic imperialism can undermine the sovereignty of weaker developing",
+    "example_sentence": "Economic imperialism can severely undermine the political and economic sovereignty of developing nations.",
     "example_sentence_arabic": "الإمبريالية الاقتصادية يمكن أن تقوض سيادة الدول النامية الأضعف."
   },
   {
@@ -14092,7 +14092,7 @@
     "arabic": "غير متاح / عصي على الفهم",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "Dense technical jargon can render academic texts largely inaccessible to",
+    "example_sentence": "Dense technical jargon can render academic texts largely inaccessible to readers without specialized knowledge.",
     "example_sentence_arabic": "المصطلحات التقنية الكثيفة يمكن أن تجعل النصوص الأكاديمية غير متاحة إلى حد كبير."
   },
   {
@@ -14100,7 +14100,7 @@
     "arabic": "حاد / نافذ",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The journal article offers a remarkably incisive critique of current education",
+    "example_sentence": "The journal article offers a remarkably incisive and penetrating critique of contemporary economic policy and its societal implications.",
     "example_sentence_arabic": "المقال يقدم نقداً حاداً وملحوظاً لنظام التعليم الحالي."
   },
   {
@@ -14124,7 +14124,7 @@
     "arabic": "ألزم / فرض",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "The updated legislation mandates the use of appropriate safety equipment at",
+    "example_sentence": "The updated legislation mandates the use of appropriate safety equipment at all construction sites.",
     "example_sentence_arabic": "يفرض التشريع المحدّث استخدام معدات السلامة المناسبة في جميع الأوقات."
   },
   {
@@ -14132,7 +14132,7 @@
     "arabic": "معياري / متعلق بالقيم",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The report makes explicit normative claims about what governments have a",
+    "example_sentence": "The report makes explicit normative claims about what governments have a responsibility to implement.",
     "example_sentence_arabic": "يقدم التقرير ادعاءات معيارية واضحة حول ما يجب على الحكومات فعله."
   },
   {
@@ -14140,7 +14140,7 @@
     "arabic": "أغمّى / أخفى",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "Unnecessarily dense jargon can obfuscate rather than clarify a complex",
+    "example_sentence": "Unnecessarily dense and specialised jargon can obfuscate rather than helpfully illuminate the subject matter.",
     "example_sentence_arabic": "المصطلحات الغامضة بلا ضرورة يمكن أن تخفي بدلاً من توضيح موضوع معقد."
   },
   {
@@ -14148,7 +14148,7 @@
     "arabic": "أنطولوجي / متعلق بطبيعة الوجود",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The research raises fundamental ontological questions about the nature of",
+    "example_sentence": "The research raises fundamental and profound ontological questions about the nature of human consciousness and existence.",
     "example_sentence_arabic": "يثير البحث أسئلة أساسية حول طبيعة الواقع والوجود."
   },
   {
@@ -14156,7 +14156,7 @@
     "arabic": "على ما يبدو / ظاهرياً",
     "level": "C1",
     "category": "adv.",
-    "example_sentence": "The controversial policy was ostensibly introduced to protect consumer",
+    "example_sentence": "The controversial policy was ostensibly introduced to protect important environmental resources from further degradation.",
     "example_sentence_arabic": "تم تقديم السياسة المثيرة للجدل على ما يبدو لحماية حقوق المستهلك."
   },
   {
@@ -14164,7 +14164,7 @@
     "arabic": "مؤيد، داعم",
     "level": "C1",
     "category": "n.",
-    "example_sentence": "She is widely regarded as one of the most influential proponents of",
+    "example_sentence": "She is widely regarded as one of the most influential proponents of sustainable development in modern society.",
     "example_sentence_arabic": "تُعتبر من أبرز المؤيدين للتعليم الرقمي في المنطقة."
   },
   {
@@ -14172,7 +14172,7 @@
     "arabic": "ينتشر، يتكاثر",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "Social media platforms have proliferated with extraordinary and unprecedented",
+    "example_sentence": "Social media platforms have proliferated with extraordinary and unprecedented speed in recent years.",
     "example_sentence_arabic": "منصات وسائل التواصل الاجتماعي انتشرت بشكل غير مسبوق."
   },
   {
@@ -14180,7 +14180,7 @@
     "arabic": "يجسد، يحول إلى واقع ملموس",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "Language can subtly reify social distinctions and make arbitrary categories",
+    "example_sentence": "Academic language can subtly reify social distinctions and make fundamentally unequal power relations appear natural.",
     "example_sentence_arabic": "اللغة يمكنها أن تجسد التمييزات الاجتماعية بطريقة خفية وتجعل الفئات التعسفية تبدو حقيقية."
   },
   {
@@ -14188,7 +14188,7 @@
     "arabic": "يفحص، يدقق في",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "The committee agreed to scrutinise all new evidence before revising its",
+    "example_sentence": "The independent committee agreed to carefully scrutinise all new evidence before making a final decision.",
     "example_sentence_arabic": "وافقت اللجنة على فحص جميع الأدلة الجديدة قبل تعديل موقفها."
   },
   {
@@ -14196,7 +14196,7 @@
     "arabic": "ينسخ، يلغي",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "The government moved swiftly to abrogate the outdated and wholly ineffective",
+    "example_sentence": "The government moved to abrogate the outdated and ineffective environmental regulations to promote sustainable development.",
     "example_sentence_arabic": "تحركت الحكومة بسرعة لإلغاء القوانين القديمة والغير فعالة تماماً."
   },
   {
@@ -14204,7 +14204,7 @@
     "arabic": "تعليق، تأجيل",
     "level": "C1",
     "category": "n.",
-    "example_sentence": "The controversial development plans were held in abeyance pending further",
+    "example_sentence": "The controversial development plans were held in abeyance pending further review by the planning committee.",
     "example_sentence_arabic": "تم تعليق خطط التطوير المثيرة للجدل في انتظار مزيد من التحقيقات."
   },
   {
@@ -14212,7 +14212,7 @@
     "arabic": "تقارب، ألفة",
     "level": "C1",
     "category": "n.",
-    "example_sentence": "There is a clear and compelling affinity between linguistic ability and academic",
+    "example_sentence": "There is a clear affinity between linguistic ability and academic writing skills in higher education.",
     "example_sentence_arabic": "هناك تقارب واضح بين القدرة اللغوية والنجاح الأكاديمي."
   },
   {
@@ -14220,7 +14220,7 @@
     "arabic": "يخفف / يهدئ",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "Clearer and more transparent communication from authorities significantly",
+    "example_sentence": "Stronger and clearer communication from authorities helped allay public fears effectively.",
     "example_sentence_arabic": "التواصل الأوضح والأكثر شفافية من السلطات يخفف بشكل كبير..."
   },
   {
@@ -14228,7 +14228,7 @@
     "arabic": "استحسان، موافقة",
     "level": "C1",
     "category": "n.",
-    "example_sentence": "The groundbreaking study received widespread and warm approbation from",
+    "example_sentence": "The groundbreaking study received widespread approbation from the academic community.",
     "example_sentence_arabic": "تلقت الدراسة الرائدة استحسانًا واسع النطاق وحارًا من..."
   },
   {
@@ -14236,7 +14236,7 @@
     "arabic": "غامض، سري",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The highly arcane and specialised nature of the research severely limited its",
+    "example_sentence": "The highly arcane nature of the research limited its accessibility to specialists in the field.",
     "example_sentence_arabic": "الطبيعة الغامضة والمتخصصة جدًا للبحث حدت بشكل كبير من..."
   },
   {
@@ -14244,7 +14244,7 @@
     "arabic": "مجتهد، دؤوب",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "Her notably assiduous and systematic approach to reviewing all available",
+    "example_sentence": "Her notably assiduous and systematic approach to reviewing all available evidence greatly enhanced the accuracy of her conclusions.",
     "example_sentence_arabic": "نهجها المجتهد والمنهجي الملحوظ في مراجعة جميع..."
   },
   {
@@ -14252,7 +14252,7 @@
     "arabic": "يكرر، يلح على",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "There is little scholarly value in continuing to belabour a point that has already",
+    "example_sentence": "There is little scholarly value in continuing to belabour a point that has already been thoroughly addressed.",
     "example_sentence_arabic": "لا توجد قيمة علمية في الاستمرار في الإلحاح على نقطة تم..."
   },
   {
@@ -14260,7 +14260,7 @@
     "arabic": "معقد، متشابك",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The unnecessarily byzantine and complex regulatory framework consistently",
+    "example_sentence": "The byzantine complexity of the regulatory framework frustrated even the most experienced legal professionals.",
     "example_sentence_arabic": "الإطار التنظيمي المعقد والمتشابك بلا داع يؤثر بشكل مستمر..."
   },
   {
@@ -14268,7 +14268,7 @@
     "arabic": "جلبة، ضوضاء",
     "level": "C1",
     "category": "n.",
-    "example_sentence": "The competing and wholly irreconcilable voices in the ongoing policy debate",
+    "example_sentence": "The competing voices in the policy debate created a cacophony of conflicting opinions and perspectives.",
     "example_sentence_arabic": "الأصوات المتنافسة والمتناقضة تماما في النقاش السياسي الجاري..."
   },
   {
@@ -14276,7 +14276,7 @@
     "arabic": "يستسلم / يذعن",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "Under intense and sustained public and media pressure, the government",
+    "example_sentence": "Under sustained pressure from the public, the government eventually implemented new policies to address the concerns.",
     "example_sentence_arabic": "تحت ضغط مكثف وممتد من الجمهور والإعلام، استسلمت الحكومة..."
   },
   {
@@ -14284,7 +14284,7 @@
     "arabic": "لاذع / قارص",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The caustic and sharply worded editorial drew considerable and entirely",
+    "example_sentence": "The caustic editorial drew considerable attention to the government's handling of the recent economic crisis.",
     "example_sentence_arabic": "افتتاحية حادة ولاذعة استقطبت اعتراضات كبيرة وتماما..."
   },
   {
@@ -14292,7 +14292,7 @@
     "arabic": "سري، خفي",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The deliberately clandestine and secretive nature of the sensitive ongoing",
+    "example_sentence": "The clandestine nature of the negotiations undermined subsequent public trust and confidence in the process.",
     "example_sentence_arabic": "الطبيعة السرية والخفية المتعمدة للعملية الحساسة الجارية..."
   },
   {
@@ -14300,7 +14300,7 @@
     "arabic": "يتوحد / يندمج",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "Multiple previously separate and divergent research streams are now",
+    "example_sentence": "Multiple research streams are beginning to coalesce into a single unified framework for understanding complex phenomena.",
     "example_sentence_arabic": "تيارات البحث المنفصلة والمختلفة سابقًا تجتمع الآن..."
   },
   {
@@ -14308,7 +14308,7 @@
     "arabic": "الندم، الاستياء",
     "level": "C1",
     "category": "n.",
-    "example_sentence": "The corporation showed absolutely no compunction whatsoever in systematically and consistently prioritising short-term profit over all other",
+    "example_sentence": "The corporation showed no compunction in prioritising profit over environmental sustainability.",
     "example_sentence_arabic": "لم تبدِ الشركة أي ندم أو استياء على الإطلاق في إعطاء الأولوية بشكل منهجي ومستمر للأرباح قصيرة الأجل على حساب كل شيء آخر."
   },
   {
@@ -14316,7 +14316,7 @@
     "arabic": "نادم، آسف",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "A genuinely and sincerely contrite public acknowledgement of all past failures",
+    "example_sentence": "A genuinely contrite acknowledgement of past failures is essential for fostering trust and facilitating meaningful progress.",
     "example_sentence_arabic": "اعتراف عام صادق وصحيح بالندم على جميع الفشل السابق..."
   },
   {
@@ -14324,7 +14324,7 @@
     "arabic": "خجل، حياء",
     "level": "C1",
     "category": "n.",
-    "example_sentence": "Her characteristic and somewhat surprising diffidence entirely and misleadingly",
+    "example_sentence": "Her characteristic diffidence belied the sheer breadth and depth of her scholarly expertise.",
     "example_sentence_arabic": "خجلها المميز والمفاجئ إلى حد ما أخفى تماما بشكل مضلل..."
   },
   {
@@ -14332,7 +14332,7 @@
     "arabic": "محايد، نزيه",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "All truly serious and credible scientific inquiry should ideally and always be",
+    "example_sentence": "All scientific inquiry should ideally be conducted by disinterested and impartial researchers to ensure objective and reliable results.",
     "example_sentence_arabic": "يجب أن يكون كل استقصاء علمي جاد وموثوق دائمًا محايدًا وحقيقيًا..."
   },
   {
@@ -14340,7 +14340,7 @@
     "arabic": "متحمس، مفعم بالحيوية",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The research team was genuinely and infectiously ebullient and excited",
+    "example_sentence": "The research team was ebullient following the unexpected and highly promising results of the experiment.",
     "example_sentence_arabic": "فريق البحث كان متحمسًا وعفويًا بحق ومعديًا في تفاؤله..."
   },
   {
@@ -14348,7 +14348,7 @@
     "arabic": "البناء، الهيكل",
     "level": "C1",
     "category": "n.",
-    "example_sentence": "The entire complex and outdated legislative edifice currently underpinning existing environmental law now urgently and comprehensively requires",
+    "example_sentence": "The entire legislative edifice underpinning current environmental law urgently requires comprehensive reform to address emerging global challenges.",
     "example_sentence_arabic": "البناء التشريعي المعقد والقديم الذي يدعم قانون البيئة الحالي يتطلب الآن بشكل عاجل وشامل إعادة النظر فيه."
   },
   {
@@ -14356,7 +14356,7 @@
     "arabic": "فاضح، شنيع",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The comprehensive and wide-ranging independent report documented several truly egregious and wholly inexcusable violations of all fundamental and",
+    "example_sentence": "The report documented several egregious violations of fundamental human rights and freedoms.",
     "example_sentence_arabic": "وثقت التقارير المستقلة الشاملة والواسعة النطاق عدة انتهاكات فاضحة وغير مقبولة تماماً لجميع الحقوق الأساسية."
   },
   {
@@ -14364,7 +14364,7 @@
     "arabic": "متناقض، غير متوافق",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The wholly anomalous and completely unexpected result was entirely",
+    "example_sentence": "The anomalous result was entirely incongruent with all of the previous findings and theories.",
     "example_sentence_arabic": "النتيجة الشاذة والمتوقعة تماما كانت متناقضة تماما..."
   },
   {
@@ -14372,7 +14372,7 @@
     "arabic": "غير محدد، غامض",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The precise long-term outcome of the complex and multi-faceted policy intervention remains stubbornly and frustratingly indeterminate at this early",
+    "example_sentence": "The precise long-term outcome of the intervention remains stubbornly uncertain despite extensive research efforts.",
     "example_sentence_arabic": "النتيجة طويلة الأجل للتدخل السياسي المعقد تبقى غامضة وغير محددة في هذه المرحلة المبكرة."
   },
   {
@@ -14380,7 +14380,7 @@
     "arabic": "يستوعب، يتمثل",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "Students must deeply and thoroughly internalise all key grammatical rules and essential structures for truly accurate and genuinely fluent language",
+    "example_sentence": "Students must deeply and thoroughly internalise key grammatical rules for effective written communication.",
     "example_sentence_arabic": "يجب على الطلاب استيعاب جميع القواعد النحوية الأساسية بعمق لتحقيق لغة دقيقة وطليقة."
   },
   {
@@ -14396,7 +14396,7 @@
     "arabic": "غامض، صعب المنال",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "A truly satisfactory solution to the problem has so far proven frustratingly",
+    "example_sentence": "A truly satisfactory solution to the problem has so far proven frustratingly elusive.",
     "example_sentence_arabic": "حل مرضٍ حقا للمشكلة أثبت أنه بطريقة محبطة..."
   },
   {
@@ -14404,7 +14404,7 @@
     "arabic": "غامض، متناقض",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The overall evidence on this important point remains equivocal and genuinely",
+    "example_sentence": "The overall evidence on this important theoretical point remains genuinely inconclusive at this stage.",
     "example_sentence_arabic": "الأدلة الإجمالية على هذه النقطة المهمة تظل غامضة وحقيقية..."
   },
   {
@@ -14412,7 +14412,7 @@
     "arabic": "عالم، مثقف",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The erudite professor explained even the most complex concepts with",
+    "example_sentence": "The erudite professor consistently explained even the most complex concepts with remarkable clarity and insight.",
     "example_sentence_arabic": "شرح الأستاذ المثقف حتى أعقد المفاهيم ب..."
   },
   {
@@ -14420,7 +14420,7 @@
     "arabic": "يتخلى، يهجر",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "Society must not forsake long-term environmental sustainability for short-term",
+    "example_sentence": "Society must not forsake long-term environmental sustainability for short-term economic gains.",
     "example_sentence_arabic": "لا يجب على المجتمع أن يتخلى عن الاستدامة البيئية طويلة الأجل من أجل..."
   },
   {
@@ -14428,7 +14428,7 @@
     "arabic": "سمة مميزة، خصيصة",
     "level": "C1",
     "category": "n.",
-    "example_sentence": "Precision of language is widely regarded as the hallmark of strong academic",
+    "example_sentence": "Precision and clarity of language are widely and consistently regarded as the cornerstones of effective communication.",
     "example_sentence_arabic": "تعتبر دقة اللغة على نطاق واسع السمة المميزة للكتابة الأكاديمية القوية."
   },
   {
@@ -14436,7 +14436,7 @@
     "arabic": "متنوع، متغاير",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "A more heterogeneous sample would be far more representative of the wider",
+    "example_sentence": "A more genuinely heterogeneous sample would be far more representative of the broader population being studied.",
     "example_sentence_arabic": "عينة أكثر تنوعا ستكون أكثر تمثيلا للمجموعة الأوسع..."
   },
   {
@@ -14444,7 +14444,7 @@
     "arabic": "استكشافي",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "A heuristic approach allows researchers to solve complex problems through",
+    "example_sentence": "A heuristic approach allows researchers to solve complex problems through simplified methods and practical strategies.",
     "example_sentence_arabic": "يسمح النهج الاستكشافي للباحثين بحل المشاكل المعقدة من خلال"
   },
   {
@@ -14460,7 +14460,7 @@
     "arabic": "متصلب، غير متنازل",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "Intransigent political opposition significantly delayed the passage of essential",
+    "example_sentence": "Deeply intransigent political opposition to reform significantly delayed the implementation of crucial policy changes.",
     "example_sentence_arabic": "أخّر المعارضة السياسية المتصلبة بشكل كبير إقرار التدابير الأساسية."
   },
   {
@@ -14468,7 +14468,7 @@
     "arabic": "لا يقبل الجدل، قاطع",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The evidence against the continued widespread use of fossil fuels is now",
+    "example_sentence": "The accumulated scientific evidence against the continued widespread use of fossil fuels has led to increased calls for renewable energy adoption.",
     "example_sentence_arabic": "الأدلة ضد الاستخدام الواسع المستمر للوقود الأحفوري لا تقبل الجدل الآن."
   },
   {
@@ -14476,7 +14476,7 @@
     "arabic": "حكيم، متبصر",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "A judicious and careful selection of reliable sources greatly strengthens any",
+    "example_sentence": "A judicious and careful selection of reliable sources greatly strengthens any academic argument or research paper.",
     "example_sentence_arabic": "الاختيار الحكيم والحذر للمصادر الموثوقة يعزز أي دراسة بشكل كبير."
   },
   {
@@ -14484,7 +14484,7 @@
     "arabic": "كامن",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "There is enormous latent potential in many underserved communities that",
+    "example_sentence": "There is considerable latent potential in many underserved and disadvantaged communities that remains largely untapped.",
     "example_sentence_arabic": "هناك إمكانيات كامنة ضخمة في العديد من المجتمعات المحرومة."
   },
   {
@@ -14492,7 +14492,7 @@
     "arabic": "يشيد، يثني على",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "The groundbreaking study was widely lauded by experts for its rigorous and",
+    "example_sentence": "The groundbreaking study was widely lauded by experts for its rigorous and comprehensive methodology.",
     "example_sentence_arabic": "حظيت الدراسة الرائدة بثناء واسع من الخبراء لصرامتها."
   },
   {
@@ -14500,7 +14500,7 @@
     "arabic": "فعال",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The intervention proved efficacious across a wide range of demographic",
+    "example_sentence": "The intervention proved efficacious across a wide range of demographic groups and settings.",
     "example_sentence_arabic": "أثبتت التدخل فعاليته عبر مجموعة واسعة من المجموعات السكانية."
   },
   {
@@ -14588,7 +14588,7 @@
     "arabic": "شاق، متعب",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The process of longitudinal data collection was arduous but ultimately",
+    "example_sentence": "The process of longitudinal data collection was arduous but ultimately rewarding for the research outcomes.",
     "example_sentence_arabic": "كانت عملية جمع البيانات الطولية شاقة لكنها كانت مفيدة في النهاية."
   },
   {
@@ -14620,7 +14620,7 @@
     "arabic": "جشع",
     "level": "C1",
     "category": "n.",
-    "example_sentence": "Corporate avarice has too often been prioritised over environmental",
+    "example_sentence": "Corporate avarice has too often been prioritised over environmental sustainability and social responsibility.",
     "example_sentence_arabic": "تم إعطاء الأولوية للجشع الشركاتي على حساب البيئة مراراً وتكراراً."
   },
   {
@@ -14636,7 +14636,7 @@
     "arabic": "تافه، مبتذل",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "A banal conclusion suggests that the writer has not engaged deeply with the",
+    "example_sentence": "A banal conclusion suggests that the writer has not engaged deeply with the subject matter or critical analysis.",
     "example_sentence_arabic": "الخلاصة التافهة تشير إلى أن الكاتب لم يتعمق في الموضوع."
   },
   {
@@ -14644,7 +14644,7 @@
     "arabic": "ينافي، يناقض",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "The simplicity of the model belied the profound complexity of the underlying",
+    "example_sentence": "The simplicity of the model belied the profound complexity of the underlying processes involved.",
     "example_sentence_arabic": "بساطة النموذج تنافي التعقيد العميق للمنطق الأساسي."
   },
   {
@@ -14660,7 +14660,7 @@
     "arabic": "صريح، مباشر",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "A candid acknowledgement of limitations always strengthens academic",
+    "example_sentence": "A candid acknowledgement of limitations always strengthens academic credibility and fosters trust.",
     "example_sentence_arabic": "الاعتراف الصريح بالقيود يعزز دائماً العمل الأكاديمي."
   },
   {
@@ -14716,7 +14716,7 @@
     "arabic": "التماسك",
     "level": "C1",
     "category": "n.",
-    "example_sentence": "The essay lacks cohesion — the ideas do not connect smoothly between",
+    "example_sentence": "The essay lacks cohesion — the ideas do not connect smoothly between paragraphs.",
     "example_sentence_arabic": "المقالة تفتقر إلى التماسك — الأفكار لا تتصل بسلاسة بين الفقرات."
   },
   {
@@ -14724,7 +14724,7 @@
     "arabic": "متناسب",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The level of funding should be commensurate with the scale of the proposed",
+    "example_sentence": "The level of funding should be commensurate with the scale of the proposed project.",
     "example_sentence_arabic": "يجب أن يكون مستوى التمويل متناسباً مع حجم المشروع المقترح."
   },
   {
@@ -14756,7 +14756,7 @@
     "arabic": "المصداقية",
     "level": "C1",
     "category": "n.",
-    "example_sentence": "The new data lends considerable credence to the previously contested",
+    "example_sentence": "The new data lends considerable credence to the previously contested hypothesis.",
     "example_sentence_arabic": "البيانات الجديدة توفر مصداقية كبيرة للنظرية المطعون فيها سابقاً."
   },
   {
@@ -14772,7 +14772,7 @@
     "arabic": "يفند",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "The paper systematically debunked several long-standing misconceptions in",
+    "example_sentence": "The paper systematically debunked several long-standing misconceptions in the field of environmental science.",
     "example_sentence_arabic": "الورقة بحثية فندت بشكل منهجي عدة مفاهيم خاطئة راسخة في المجال."
   },
   {
@@ -14780,7 +14780,7 @@
     "arabic": "انقسامي",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The divisive nature of the ongoing debate has made it extremely difficult to",
+    "example_sentence": "The divisive nature of the ongoing debate has made it extremely difficult to reach a consensus among experts.",
     "example_sentence_arabic": "الطبيعة الانقسامية للنقاش الجاري جعلت من الصعب جداً الوصول إلى توافق."
   },
   {
@@ -14788,7 +14788,7 @@
     "arabic": "العقيدة",
     "level": "C1",
     "category": "n.",
-    "example_sentence": "Scientific dogma, however well-established, must always remain open to",
+    "example_sentence": "Scientific dogma, however well-established, must always remain open to revision and critical scrutiny.",
     "example_sentence_arabic": "العقيدة العلمية، مهما كانت راسخة، يجب أن تبقى دائماً مفتوحة للنقاش."
   },
   {
@@ -14796,7 +14796,7 @@
     "arabic": "كامن",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "Dormant environmental risks can become suddenly critical if preventative",
+    "example_sentence": "Dormant environmental risks can become suddenly critical if preventative measures are neglected.",
     "example_sentence_arabic": "المخاطر البيئية الكامنة يمكن أن تصبح حرجة فجأة إذا فشلت التدابير الوقائية."
   },
   {
@@ -14804,7 +14804,7 @@
     "arabic": "مريب",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The methodology of the original study was widely regarded as dubious and",
+    "example_sentence": "The methodology of the original study was widely regarded as dubious and lacked sufficient empirical support.",
     "example_sentence_arabic": "منهجية الدراسة الأصلية اعتبرت على نطاق واسع مريبة وغير موثوقة."
   },
   {
@@ -14812,7 +14812,7 @@
     "arabic": "الخداع",
     "level": "C1",
     "category": "n.",
-    "example_sentence": "Any form of duplicity in the reporting of research data constitutes a serious",
+    "example_sentence": "Any form of duplicity in the reporting of research data constitutes a serious breach of academic integrity.",
     "example_sentence_arabic": "أي شكل من أشكال الخداع في الإبلاغ عن بيانات البحث يشكل انتهاكاً خطيراً."
   },
   {
@@ -14820,7 +14820,7 @@
     "arabic": "انتقائي",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "Her eclectic research methodology drew productively on methods from several",
+    "example_sentence": "Her eclectic research methodology drew productively on methods from several disciplines to enhance the study's robustness.",
     "example_sentence_arabic": "منهجيتها البحثية الانتقائية استفادت بشكل منتج من طرق من عدة تخصصات."
   },
   {
@@ -14828,7 +14828,7 @@
     "arabic": "ينور",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "The primary purpose of academic publication is ultimately to edify and advance",
+    "example_sentence": "The primary purpose of academic publication is ultimately to edify and advance knowledge within the scholarly community.",
     "example_sentence_arabic": "الهدف الأساسي للنشر الأكاديمي هو في النهاية تنوير والمساهمة في التقدم."
   },
   {
@@ -14836,7 +14836,7 @@
     "arabic": "بارز",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The paper was authored jointly by two of the most eminent and widely",
+    "example_sentence": "The paper was authored jointly by two of the most eminent and widely respected scholars in the field.",
     "example_sentence_arabic": "تمت كتابة الورقة بشكل مشترك من قبل اثنين من أبرز الباحثين المعروفين عالمياً."
   },
   {
@@ -14844,7 +14844,7 @@
     "arabic": "غامض",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The enigmatic and puzzling results of the initial experiment prompted a much",
+    "example_sentence": "The enigmatic and puzzling results of the initial experiment prompted a much deeper investigation into the underlying mechanisms.",
     "example_sentence_arabic": "النتائج الغامضة والمحيرة للتجربة الأولية دفعت إلى إعادة فحص أعمق بكثير."
   },
   {
@@ -14852,7 +14852,7 @@
     "arabic": "زائل",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The positive impact of poorly designed short-term interventions is often",
+    "example_sentence": "The positive impact of poorly designed short-term interventions is often limited and unsustainable.",
     "example_sentence_arabic": "التأثير الإيجابي للتدخلات قصيرة الأجل المصممة بشكل سيء عادة ما يكون زائلاً."
   },
   {
@@ -14860,7 +14860,7 @@
     "arabic": "الهدوء",
     "level": "C1",
     "category": "n.",
-    "example_sentence": "The most effective researchers consistently approach unexpected setbacks",
+    "example_sentence": "The most effective researchers consistently approach unexpected setbacks with resilience and adaptability.",
     "example_sentence_arabic": "أكثر الباحثين فعالية يتعاملون باستمرار مع النكسات غير المتوقعة بهدوء وسكينة."
   },
   {
@@ -14868,7 +14868,7 @@
     "arabic": "ضال، خاطئ",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The errant methodology in the original study inevitably led to seriously",
+    "example_sentence": "The errant methodology in the original study inevitably led to seriously flawed conclusions.",
     "example_sentence_arabic": "المنهجية غير الصحيحة في الدراسة الأصلية أدت حتماً إلى نتائج خطيرة الخطأ."
   },
   {
@@ -14876,7 +14876,7 @@
     "arabic": "يتفادى",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "Some powerful corporations continue to evade meaningful regulatory",
+    "example_sentence": "Some powerful corporations continue to evade meaningful regulatory oversight and accountability.",
     "example_sentence_arabic": "بعض الشركات القوية تستمر في التفادي من الخضوع لتنظيم حقيقي وفعال."
   },
   {
@@ -14884,7 +14884,7 @@
     "arabic": "يستحضر",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "The powerful and carefully designed visual data immediately evoked a strong",
+    "example_sentence": "The powerful and carefully designed visual data immediately evoked a strong emotional response from the audience.",
     "example_sentence_arabic": "البيانات المرئية القوية والمصممة بعناية استحضرت فوراً استجابة عاطفية قوية."
   },
   {
@@ -14892,7 +14892,7 @@
     "arabic": "صارم",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The exacting and uncompromising standards of the peer review process",
+    "example_sentence": "The exacting and uncompromising standards of the peer review process ensure the quality and credibility of academic publications.",
     "example_sentence_arabic": "المعايير الصارمة والثابتة لعملية المراجعة من قبل الأقران مهمة جداً."
   },
   {
@@ -14900,7 +14900,7 @@
     "arabic": "يجسد",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "This carefully designed study effectively exemplifies all the best practices in",
+    "example_sentence": "This carefully designed study effectively exemplifies all the best practices in research methodology and data analysis.",
     "example_sentence_arabic": "هذه الدراسة المصممة بعناية تجسد بفعالية جميع أفضل الممارسات في المجال."
   },
   {
@@ -14908,7 +14908,7 @@
     "arabic": "مناسب للظرف، براغماتي",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "An expedient and short-term solution that deliberately ignores root causes will",
+    "example_sentence": "An expedient and short-term solution that deliberately ignores root causes will ultimately fail to provide lasting benefits.",
     "example_sentence_arabic": "الحل الانتهازي قصير الأجل الذي يتجاهل عن قصد الأسباب الجذرية سيفشل حتماً."
   },
   {
@@ -14916,7 +14916,7 @@
     "arabic": "الممثل",
     "level": "C1",
     "category": "n.",
-    "example_sentence": "She was widely regarded as the most prominent and influential exponent of an",
+    "example_sentence": "She was widely regarded as the most prominent and influential exponent of an emerging artistic movement.",
     "example_sentence_arabic": "كانت تعتبر على نطاق واسع أبرز ممثل ومؤثر لنهج تحليلي جديد تماماً."
   },
   {
@@ -14924,7 +14924,7 @@
     "arabic": "يختلق",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "The researcher was found to have deliberately fabricated key data points in",
+    "example_sentence": "The researcher was found to have deliberately fabricated key data points in the final report submitted for peer review.",
     "example_sentence_arabic": "اكتُشف أن الباحث اختلق عن قصد نقاط بيانات رئيسية."
   },
   {
@@ -14932,7 +14932,7 @@
     "arabic": "قابل للخطأ",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "All researchers are inherently fallible, which is precisely why rigorous and",
+    "example_sentence": "All researchers are inherently fallible, which is precisely why rigorous and systematic methodologies are essential.",
     "example_sentence_arabic": "جميع الباحثين قابلون بطبيعتهم للخطأ، وهو السبب بالضبط في أهمية المراجعة الصارمة."
   },
   {
@@ -14940,7 +14940,7 @@
     "arabic": "دقيق ومتشدد",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "A fastidious and meticulous approach to all aspects of data collection is the",
+    "example_sentence": "A fastidious and meticulous approach to all aspects of data collection is the key to ensuring accuracy and reliability.",
     "example_sentence_arabic": "النهج الدقيق والمتشدد في جميع جوانب جمع البيانات هو الأساس."
   },
   {
@@ -14948,7 +14948,7 @@
     "arabic": "تخمر، اضطراب",
     "level": "C1",
     "category": "n.",
-    "example_sentence": "The new and unexpected findings created considerable and wide-ranging",
+    "example_sentence": "The new and unexpected findings created considerable and wide-ranging implications for future research.",
     "example_sentence_arabic": "النتائج الجديدة والمفاجئة أحدثت تخمراً واعتباراً كبيراً وواسع النطاق."
   },
   {
@@ -14956,7 +14956,7 @@
     "arabic": "متحمس، غيور",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "She was a fervent and passionate lifelong advocate for open-access academic",
+    "example_sentence": "She was a fervent and passionate lifelong advocate for open-access academic publishing and knowledge sharing.",
     "example_sentence_arabic": "كانت مناصرة متحمسة وشغوفة مدى الحياة للوصول المفتوح للأبحاث الأكاديمية."
   },
   {
@@ -14964,7 +14964,7 @@
     "arabic": "براعة، دقة",
     "level": "C1",
     "category": "n.",
-    "example_sentence": "Handling the sensitive and complex ethical dimensions of the study required",
+    "example_sentence": "Handling the sensitive and complex ethical dimensions of the study required careful consideration and adherence to established guidelines.",
     "example_sentence_arabic": "التعامل مع الجوانب الأخلاقية الحساسة والمعقدة للدراسة تطلب براعة."
   },
   {
@@ -14972,7 +14972,7 @@
     "arabic": "يثير، يشعل",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "Deliberate and calculated misinformation can effectively foment dangerous",
+    "example_sentence": "Deliberate and calculated misinformation can effectively foment dangerous social unrest and division.",
     "example_sentence_arabic": "المعلومات المضللة المتعمدة والمحسوبة يمكنها أن تثير بفعالية تهديدات خطيرة."
   },
   {
@@ -14980,7 +14980,7 @@
     "arabic": "صريح، مباشر",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "A forthright and fully transparent account of all significant methodological",
+    "example_sentence": "A forthright and fully transparent account of all significant methodological considerations is essential for the validity of the research.",
     "example_sentence_arabic": "يجب أن يكون الحساب صريحاً وشفافاً تماماً لجميع الخطوات المنهجية الهامة."
   },
   {
@@ -14988,7 +14988,7 @@
     "arabic": "هشاشة",
     "level": "C1",
     "category": "n.",
-    "example_sentence": "The fragility of the complex and interconnected ecosystem was not fully",
+    "example_sentence": "The fragility of the complex and interconnected ecosystem was not fully understood until significant damage had occurred.",
     "example_sentence_arabic": "لم يتم فهم هشاشة النظام البيئي المعقد والمترابط بالكامل."
   },
   {
@@ -14996,7 +14996,7 @@
     "arabic": "عبثي، بلا جدوى",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "Without significant and sustained political will, isolated efforts to meaningfully",
+    "example_sentence": "Without significant and sustained political will, isolated efforts to meaningfully address complex social issues are unlikely to succeed.",
     "example_sentence_arabic": "بدون إرادة سياسية كبيرة ومستدامة، الجهود المعزولة ستكون عبثية."
   },
   {
@@ -15004,7 +15004,7 @@
     "arabic": "حصل على، استقطب",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "The innovative and well-designed study successfully managed to garner",
+    "example_sentence": "The innovative and well-designed study successfully managed to garner significant attention from the academic community.",
     "example_sentence_arabic": "الدراسة المبتكرة والمصممة جيداً نجحت في استقطاب اهتماماً واسعاً."
   },
   {
@@ -15012,7 +15012,7 @@
     "arabic": "خطورة، جسامة",
     "level": "C1",
     "category": "n.",
-    "example_sentence": "The genuine gravity of the escalating climate crisis demands an immediate and",
+    "example_sentence": "The genuine gravity of the escalating climate crisis demands an immediate and coordinated global response.",
     "example_sentence_arabic": "خطورة أزمة المناخ المتفاقمة تتطلب استجابة فورية وحاسمة."
   },
   {
@@ -15020,7 +15020,7 @@
     "arabic": "غرور، تكبر",
     "level": "C1",
     "category": "n.",
-    "example_sentence": "Intellectual hubris, or excessive and unjustified confidence in one&#39;s own",
+    "example_sentence": "Intellectual hubris, or excessive and unjustified confidence in one's own knowledge, can hinder critical thinking and learning.",
     "example_sentence_arabic": "الغرور الفكري، أو الثقة المفرطة والمبالغ فيها بقدرات المرء، مضر."
   },
   {
@@ -15028,7 +15028,7 @@
     "arabic": "غير مقبول",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "Evidence obtained through unethical or coercive means is entirely inadmissible",
+    "example_sentence": "Evidence obtained through unethical or coercive means is entirely inadmissible in a court of law.",
     "example_sentence_arabic": "الأدلة التي تم الحصول عليها من خلال وسائل غير أخلاقية أو قسرية غير مقبولة تماماً."
   },
   {
@@ -15036,7 +15036,7 @@
     "arabic": "لا يفسد، نزيه",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The long-term integrity of science depends fundamentally on fully incorruptible",
+    "example_sentence": "The long-term integrity of science depends fundamentally on fully incorruptible research practices and ethical standards.",
     "example_sentence_arabic": "يعتمد السلامة طويلة الأجل للعلم بشكل أساسي على باحثين نزهاء تماماً."
   },
   {
@@ -15044,7 +15044,7 @@
     "arabic": "لا يكل، دؤوب",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "An indefatigable and unwavering personal commitment to accuracy and",
+    "example_sentence": "An indefatigable and unwavering personal commitment to accuracy and excellence is essential for success in any professional field.",
     "example_sentence_arabic": "الالتزام الشخصي الدؤوب والثابت بالدقة والأمانة ضروري تماماً."
   },
   {
@@ -15052,7 +15052,7 @@
     "arabic": "لا يقبل النقاش، حاسم",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The accumulated evidence that sustained human activity is the primary driver",
+    "example_sentence": "The accumulated evidence that sustained human activity is the primary driver supports urgent environmental policy reforms.",
     "example_sentence_arabic": "الأدلة المتراكمة على أن النشاط البشري هو المحرك الأساسي حاسمة تماماً."
   },
   {
@@ -15060,7 +15060,7 @@
     "arabic": "حتمي، لا مفر منه",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The ineluctable conclusion drawn from all available data is that truly immediate",
+    "example_sentence": "The ineluctable conclusion drawn from all available data is that truly immediate action is necessary to mitigate the crisis.",
     "example_sentence_arabic": "الاستنتاج الحتمي المستخلص من جميع البيانات المتاحة هو أن عملاً فورياً ضروري."
   },
   {
@@ -15068,7 +15068,7 @@
     "arabic": "لا يرحم، لا يلين",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The inexorable and accelerating rise in average global temperatures demands",
+    "example_sentence": "The inexorable and accelerating rise in average global temperatures demands urgent and coordinated international action.",
     "example_sentence_arabic": "الارتفاع المتسارع لا يقاوم في درجات الحرارة العالمية يتطلب عملاً حاسماً."
   },
   {
@@ -15076,7 +15076,7 @@
     "arabic": "معصوم عن الخطأ",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "No scientific method or framework is ever fully infallible; all findings must",
+    "example_sentence": "No scientific method or framework is ever fully infallible; all findings must be critically evaluated and tested.",
     "example_sentence_arabic": "لا توجد طريقة أو إطار علمي معصوم تماماً عن الخطأ؛ يجب التحقق من جميع النتائج."
   },
   {
@@ -15084,7 +15084,7 @@
     "arabic": "فطري، طبيعي",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "A genuine love of learning and an innate intellectual curiosity are widely",
+    "example_sentence": "A genuine love of learning and an innate intellectual curiosity are widely regarded as essential qualities for academic success.",
     "example_sentence_arabic": "حب التعلم والفضول الفكري الفطري يعتبران أساسيين للنجاح الأكاديمي."
   },
   {
@@ -15092,7 +15092,7 @@
     "arabic": "بصير، ثاقب النظر",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "Her insightful and original analysis of the complex data revealed important",
+    "example_sentence": "Her insightful and original analysis of the complex data revealed important trends and correlations.",
     "example_sentence_arabic": "تحليلها البصير والأصلي للبيانات المعقدة كشف عن اكتشافات مهمة."
   },
   {
@@ -15100,7 +15100,7 @@
     "arabic": "شجاع، جريء",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The intrepid and dedicated researcher determinedly continued her demanding",
+    "example_sentence": "The intrepid and dedicated researcher determinedly continued her demanding pursuit of groundbreaking discoveries.",
     "example_sentence_arabic": "الباحثة الشجاعة والمكرسة واصلت بثبات عملها الشاق والمطول."
   },
   {
@@ -15108,7 +15108,7 @@
     "arabic": "شاق، متعب",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The laborious and time-consuming process of primary data collection required",
+    "example_sentence": "The laborious and time-consuming process of primary data collection required careful planning and substantial resources to ensure accuracy.",
     "example_sentence_arabic": "العملية الشاقة والمستهلكة لجمع البيانات الأساسية تطلبت موارد كبيرة."
   },
   {
@@ -15116,7 +15116,7 @@
     "arabic": "موجز، قصير",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "His characteristically laconic writing style made even the most demanding",
+    "example_sentence": "His characteristically laconic writing style made even the most demanding readers appreciate his clarity.",
     "example_sentence_arabic": "أسلوبه الموجز المميز جعل حتى أكثر المقالات تعقيداً يسهل فهمها."
   },
   {
@@ -15124,7 +15124,7 @@
     "arabic": "جدير بالإشادة",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The strong institutional commitment to open-access publishing is a laudable",
+    "example_sentence": "The strong institutional commitment to open-access publishing is a laudable effort to promote knowledge dissemination.",
     "example_sentence_arabic": "التزام المؤسسة القوي بالنشر المفتوح الوصول خطوة جديرة بالإشادة."
   },
   {
@@ -15132,7 +15132,7 @@
     "arabic": "متساهل، لين",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The assessment committee was somewhat lenient in its evaluation of the first",
+    "example_sentence": "The assessment committee was somewhat lenient in its evaluation of the first draft submitted by the students.",
     "example_sentence_arabic": "كانت لجنة التقييم متساهلة إلى حد ما في تقييمها للمسودة الأولى."
   },
   {
@@ -15140,7 +15140,7 @@
     "arabic": "وضوح",
     "level": "C1",
     "category": "n.",
-    "example_sentence": "The remarkable lucidity of her writing allowed even a non-specialist audience to",
+    "example_sentence": "The remarkable lucidity of her writing allowed even a non-specialist audience to grasp complex concepts easily.",
     "example_sentence_arabic": "الوضوح الرائع في كتابتها سمح حتى للقارئ غير المتخصص بفهم المحتوى."
   },
   {
@@ -15148,7 +15148,7 @@
     "arabic": "يتحول، يتعرج",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "A well-structured academic essay should never meander aimlessly; every",
+    "example_sentence": "A well-structured academic essay should never meander aimlessly; every paragraph must contribute to the central argument.",
     "example_sentence_arabic": "لا ينبغي لمقالة أكاديمية منظمة جيداً أن تتعرج بلا هدف؛ كل جزء له غرض."
   },
   {
@@ -15156,7 +15156,7 @@
     "arabic": "عنيد",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "An obstinate refusal to engage with contradictory evidence is intellectually",
+    "example_sentence": "An obstinate refusal to engage with contradictory evidence is intellectually counterproductive and limits critical thinking.",
     "example_sentence_arabic": "الرفض العنيد للتعامل مع الأدلة المتناقضة يعتبر نقصاً فكرياً."
   },
   {
@@ -15164,7 +15164,7 @@
     "arabic": "متباهٍ",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "Ostentatious use of obscure vocabulary rarely improves the quality of",
+    "example_sentence": "Ostentatious use of obscure vocabulary rarely improves the quality of written communication.",
     "example_sentence_arabic": "الاستخدام المتباهي للمفردات الغامضة نادراً ما يحسّن جودة الكتابة."
   },
   {
@@ -15180,7 +15180,7 @@
     "arabic": "دقيق، متقن",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The painstaking reconstruction of the original dataset took over a year to",
+    "example_sentence": "The painstaking reconstruction of the original dataset took over a year to complete and verify for accuracy.",
     "example_sentence_arabic": "إعادة البناء الدقيقة لمجموعة البيانات الأصلية استغرقت أكثر من سنة."
   },
   {
@@ -15188,7 +15188,7 @@
     "arabic": "محسوس، ملموس",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "There was a palpable sense of anticipation when the landmark results were",
+    "example_sentence": "There was a palpable sense of anticipation when the landmark results were announced to the eager audience.",
     "example_sentence_arabic": "كان هناك شعور محسوس بالترقب عندما تم الإعلان عن النتائج المهمة."
   },
   {
@@ -15204,7 +15204,7 @@
     "arabic": "تزمت حرفي",
     "level": "C1",
     "category": "n.",
-    "example_sentence": "Excessive pedantry about minor technicalities obscures the substance of the",
+    "example_sentence": "Excessive pedantry about minor technicalities obscures the substance of the argument and hinders effective communication.",
     "example_sentence_arabic": "التزمت الحرفي المفرط حول التفاصيل الصغيرة يخفي جوهر الموضوع."
   },
   {
@@ -15212,7 +15212,7 @@
     "arabic": "ذو بصيرة",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The most perceptive researchers notice patterns that others consistently",
+    "example_sentence": "The most perceptive researchers notice patterns that others consistently overlook in their analyses.",
     "example_sentence_arabic": "الباحثون الأكثر ذو بصيرة يلاحظون أنماطاً لا يرى غيرهم."
   },
   {
@@ -15220,7 +15220,7 @@
     "arabic": "مستمر، دائم",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "Underfunding of education is a perennial problem in many developing",
+    "example_sentence": "Underfunding of education is a perennial problem in many developing countries that hampers progress.",
     "example_sentence_arabic": "نقص التمويل في التعليم مشكلة دائمة في العديد من الدول النامية."
   },
   {
@@ -15228,7 +15228,7 @@
     "arabic": "حكيم، ذو فهم عميق",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "Her perspicacious reading of the data revealed a previously unrecognised",
+    "example_sentence": "Her perspicacious reading of the data revealed a previously unrecognised pattern in the results.",
     "example_sentence_arabic": "قراءتها الحكيمة للبيانات كشفت عن نمط لم يُعترف به من قبل."
   },
   {
@@ -15236,7 +15236,7 @@
     "arabic": "يُزعج، يُقلق",
     "level": "C1",
     "category": "v.",
-    "example_sentence": "The unexpected findings perturbed the existing theoretical consensus",
+    "example_sentence": "The unexpected findings perturbed the existing theoretical consensus significantly.",
     "example_sentence_arabic": "النتائج غير المتوقعة أقلقت الإجماع النظري الموجود."
   },
   {
@@ -15244,7 +15244,7 @@
     "arabic": "المعقولية، الاحتمالية",
     "level": "C1",
     "category": "n.",
-    "example_sentence": "The plausibility of the proposed mechanism was immediately challenged by",
+    "example_sentence": "The plausibility of the proposed mechanism was immediately challenged by several experts in the field.",
     "example_sentence_arabic": "طُعن في معقولية الآلية المقترحة فوراً من قبل الخبراء."
   },
   {
@@ -15252,7 +15252,7 @@
     "arabic": "جدلي",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The polemical tone of the essay undermined its potential impact on serious",
+    "example_sentence": "The polemical tone of the essay undermined its potential impact on serious academic discourse.",
     "example_sentence_arabic": "النبرة الجدلية للمقالة قللت من تأثيرها المحتمل على الباحثين الجادين."
   },
   {
@@ -15260,7 +15260,7 @@
     "arabic": "ديباجة، مقدمة طويلة",
     "level": "C1",
     "category": "n.",
-    "example_sentence": "The lengthy preamble delayed the reader from reaching the paper&#39;s central",
+    "example_sentence": "The lengthy preamble delayed the reader from reaching the paper's central argument.",
     "example_sentence_arabic": "المقدمة الطويلة أخرت القارئ عن الوصول إلى النقطة المركزية للبحث."
   },
   {
@@ -15268,7 +15268,7 @@
     "arabic": "بارز، متفوق",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "She is the preeminent authority on this specific aspect of cognitive",
+    "example_sentence": "She is the preeminent authority on this specific aspect of cognitive psychology.",
     "example_sentence_arabic": "هي السلطة البارزة في هذا الجانب المحدد من العلوم المعرفية."
   },
   {
@@ -15276,7 +15276,7 @@
     "arabic": "استقصائي، مفصل",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The committee&#39;s probing questions exposed several inconsistencies in the",
+    "example_sentence": "The committee's probing questions exposed several inconsistencies in the witness's testimony.",
     "example_sentence_arabic": "الأسئلة الاستقصائية للجنة كشفت عن عدة تناقضات في النتائج."
   },
   {
@@ -15284,7 +15284,7 @@
     "arabic": "ميل، نزعة",
     "level": "C1",
     "category": "n.",
-    "example_sentence": "There is a propensity among some researchers to overstate the certainty of",
+    "example_sentence": "There is a propensity among some researchers to overstate the certainty of their findings in order to gain greater recognition.",
     "example_sentence_arabic": "هناك نزعة بين بعض الباحثين للمبالغة في تأكيد يقينية النتائج."
   },
   {
@@ -15292,7 +15292,7 @@
     "arabic": "مناسب، موات",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "The timing was propitious — public and political attention was focused",
+    "example_sentence": "The timing was propitious — public and political attention was focused on the issue.",
     "example_sentence_arabic": "التوقيت كان موات - الاهتمام العام والسياسي كان منصباً على القضية."
   },
   {
@@ -15300,7 +15300,7 @@
     "arabic": "متناسب",
     "level": "C1",
     "category": "adj.",
-    "example_sentence": "A proportionate response to emerging evidence neither overstates nor",
+    "example_sentence": "A proportionate response to emerging evidence neither overstates nor underestimates the significance of the findings.",
     "example_sentence_arabic": "الاستجابة المتناسبة للأدلة الناشئة لا تبالغ ولا تقلل من أهميتها."
   },
   {
