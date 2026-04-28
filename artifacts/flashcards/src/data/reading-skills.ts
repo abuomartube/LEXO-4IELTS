@@ -3962,6 +3962,8 @@ export function getExerciseById(id: string): SkillExercise | undefined {
   return SKILL_EXERCISES.find((e) => e.id === id);
 }
 
+import { answerMatches } from "./answer-matching";
+
 /** Score one exercise: returns {correct, total, perItem: boolean[]}. */
 export function scoreExercise(
   exercise: SkillExercise,
@@ -3978,10 +3980,10 @@ export function scoreExercise(
       const sortedProv = [...provided].map((s) => s.trim().toLowerCase()).sort();
       return sortedExp.every((v, idx) => v === sortedProv[idx]);
     }
-    const userStr = (Array.isArray(ua) ? ua.join(",") : ua).trim().toLowerCase();
-    if (userStr === expected.trim().toLowerCase()) return true;
-    if (item.acceptable?.some((alt) => alt.trim().toLowerCase() === userStr)) return true;
-    return false;
+    const userStr = Array.isArray(ua) ? ua.join(",") : ua;
+    if (typeof userStr !== "string" || !userStr.trim()) return false;
+    const candidates = [expected, ...(item.acceptable ?? [])];
+    return answerMatches(userStr, candidates);
   });
   const correct = perItem.filter(Boolean).length;
   return { correct, total: exercise.items.length, perItem };

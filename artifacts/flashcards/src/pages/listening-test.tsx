@@ -16,6 +16,7 @@ import {
 } from "@/data/listening-test";
 import { useAwardXp } from "@workspace/api-client-react";
 import ListeningSkills from "@/components/listening-skills";
+import { answerMatches } from "@/data/answer-matching";
 
 type Answers = Record<number, string>;
 type Phase = "select" | "intro" | "test" | "results";
@@ -660,11 +661,10 @@ function ResultsView({
       const matchCount = userParts.filter(u => correctParts.includes(u)).length;
       return { ...q, userAnswer: answers[q.num] || "", isCorrect: matchCount === correctParts.length, partialCount: matchCount, totalParts: correctParts.length, isMulti: true as const };
     }
-    const userAnswer = (answers[q.num] || "").trim().toLowerCase();
-    const correct = q.answer.toLowerCase();
-    const alts = q.alternateAnswers?.map(a => a.toLowerCase()) || [];
-    const isCorrect = userAnswer === correct || alts.includes(userAnswer);
-    return { ...q, userAnswer: answers[q.num] || "", isCorrect, partialCount: isCorrect ? 1 : 0, totalParts: 1, isMulti: false as const };
+    const rawUserAnswer = answers[q.num] || "";
+    const candidates = [q.answer, ...(q.alternateAnswers ?? [])];
+    const isCorrect = answerMatches(rawUserAnswer, candidates);
+    return { ...q, userAnswer: rawUserAnswer, isCorrect, partialCount: isCorrect ? 1 : 0, totalParts: 1, isMulti: false as const };
   });
 
   const correctCount = results.reduce((sum, r) => sum + (r.isMulti ? r.partialCount : (r.isCorrect ? 1 : 0)), 0);

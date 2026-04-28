@@ -1220,9 +1220,7 @@ Tip: Section 4 short-answer questions reward EXACT vocabulary from the lecture. 
 
 // ─────────────────── Scoring ───────────────────
 
-function norm(s: string): string {
-  return s.trim().toLowerCase().replace(/[.,!?;:"']/g, "").replace(/\s+/g, " ");
-}
+import { answerMatches, strictAnswer } from "./answer-matching";
 
 export function scoreListeningItem(item: LItem, ua: string | string[] | null): boolean {
   if (ua === null || ua === undefined) return false;
@@ -1230,15 +1228,15 @@ export function scoreListeningItem(item: LItem, ua: string | string[] | null): b
   if (Array.isArray(expected)) {
     if (!Array.isArray(ua)) return false;
     if (ua.length !== expected.length) return false;
-    const a = [...ua].map(norm).sort();
-    const b = [...expected].map(norm).sort();
+    // Multi-select labels — strict compare is appropriate (these are option labels).
+    const a = [...ua].map(strictAnswer).sort();
+    const b = [...expected].map(strictAnswer).sort();
     return a.every((v, i) => v === b[i]);
   }
   const userText = Array.isArray(ua) ? ua.join(",") : ua;
-  const u = norm(userText);
-  if (u === norm(expected)) return true;
-  if (item.acceptable) return item.acceptable.some(a => norm(a) === u);
-  return false;
+  if (typeof userText !== "string" || !userText.trim()) return false;
+  const candidates = [expected, ...(item.acceptable ?? [])];
+  return answerMatches(userText, candidates);
 }
 
 export function getTestsBySection(section: LSection): LSkillTest[] {
