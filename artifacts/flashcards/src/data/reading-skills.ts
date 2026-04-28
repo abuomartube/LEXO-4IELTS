@@ -1,7 +1,7 @@
 /**
  * IELTS Reading Skills Practice — targeted exercises by question type.
  *
- * Organised across 16 question types × 3 CEFR levels (A2, B1, B2):
+ * Organised across 17 question types × 3 CEFR levels (A2, B1, B2):
  *   • A2 — short, simple passages on everyday topics for elementary learners.
  *   • B1 — clear, factual passages on familiar topics (intermediate).
  *   • B2 — Cambridge IELTS-style passages: academic register, complex syntax,
@@ -17,10 +17,12 @@ import b1Supplements from "./reading-skills-supplements-b1";
 import b2Part1Supplements from "./reading-skills-supplements-b2-part1";
 import b2Part2Supplements from "./reading-skills-supplements-b2-part2";
 import patchSupplements from "./reading-skills-supplements-patch";
+import coherenceCohesion from "./reading-skills-coherence-cohesion";
 
 export type SkillQuestionType =
   | "skimming"
   | "scanning"
+  | "coherence_and_cohesion"
   | "matching_headings"
   | "matching_information"
   | "matching_features"
@@ -50,20 +52,21 @@ export interface QTypeMeta {
 export const QUESTION_TYPES: QTypeMeta[] = [
   { id: "skimming",                 number: 1,  label: "Skimming",                   arabicLabel: "القراءة السريعة",          emoji: "👀", shortDesc: "Quickly identify the main topic, idea, or writer's purpose of a passage.",                  inputKind: "single_select",          color: "from-pink-500 to-rose-500" },
   { id: "scanning",                 number: 2,  label: "Scanning",                   arabicLabel: "البحث عن التفاصيل",        emoji: "🔎", shortDesc: "Find specific facts (dates, numbers, names) quickly inside a passage.",                     inputKind: "text",                   color: "from-amber-500 to-yellow-500" },
-  { id: "matching_headings",        number: 3,  label: "Matching Headings",          arabicLabel: "مطابقة العناوين",          emoji: "🗂️", shortDesc: "Match each paragraph to a heading from a list (more headings than paragraphs).",            inputKind: "single_select_per_item", color: "from-indigo-500 to-violet-500" },
-  { id: "matching_information",     number: 4,  label: "Matching Information",       arabicLabel: "مطابقة المعلومات",         emoji: "🔍", shortDesc: "Match statements to the paragraph (A, B, C…) that contains the information.",              inputKind: "single_select_per_item", color: "from-sky-500 to-blue-500" },
-  { id: "matching_features",        number: 5,  label: "Matching Features",          arabicLabel: "مطابقة الخصائص",           emoji: "🧩", shortDesc: "Match facts to categories (e.g. researcher → discovery, event → date).",                    inputKind: "single_select_per_item", color: "from-teal-500 to-cyan-500" },
-  { id: "matching_sentence_endings",number: 6,  label: "Matching Sentence Endings",  arabicLabel: "مطابقة نهايات الجمل",      emoji: "✂️", shortDesc: "Complete each sentence by picking the correct ending from a list.",                        inputKind: "single_select_per_item", color: "from-emerald-500 to-teal-500" },
-  { id: "true_false_not_given",     number: 7,  label: "True / False / Not Given",   arabicLabel: "صح / خطأ / غير مذكور",     emoji: "✅", shortDesc: "Decide whether each statement is True, False, or Not Given based on the passage.",         inputKind: "single_select_per_item", color: "from-green-500 to-emerald-500" },
-  { id: "multiple_choice",          number: 8,  label: "Multiple Choice",            arabicLabel: "اختيار من متعدد",          emoji: "🎯", shortDesc: "Choose the correct answer from four options (A, B, C, D).",                                inputKind: "single_select",          color: "from-amber-500 to-orange-500" },
-  { id: "list_selection",           number: 9,  label: "List Selection",             arabicLabel: "اختيار من قائمة",          emoji: "☑️", shortDesc: "Pick multiple correct answers from a list (e.g. THREE that are mentioned).",               inputKind: "multi_select",           color: "from-orange-500 to-red-500" },
-  { id: "choose_title",             number: 10, label: "Choose a Title",             arabicLabel: "اختيار العنوان",           emoji: "📌", shortDesc: "Select the most appropriate title for the whole passage.",                                  inputKind: "single_select",          color: "from-rose-500 to-pink-500" },
-  { id: "short_answer",             number: 11, label: "Short Answer Questions",     arabicLabel: "إجابات قصيرة",             emoji: "✏️", shortDesc: "Answer specific questions in a few words taken from the passage.",                          inputKind: "text",                   color: "from-fuchsia-500 to-purple-500" },
-  { id: "sentence_completion",      number: 12, label: "Sentence Completion",        arabicLabel: "إكمال الجمل",              emoji: "📝", shortDesc: "Fill the gaps in sentences with words taken directly from the passage.",                    inputKind: "text",                   color: "from-purple-500 to-indigo-500" },
-  { id: "summary_completion",       number: 13, label: "Summary Completion",         arabicLabel: "إكمال الملخص",             emoji: "📄", shortDesc: "Complete a paragraph summary using words from the passage or a word box.",                  inputKind: "text",                   color: "from-violet-500 to-fuchsia-500" },
-  { id: "table_completion",         number: 14, label: "Table Completion",           arabicLabel: "إكمال الجدول",             emoji: "📊", shortDesc: "Fill missing cells in a table using information from the passage.",                        inputKind: "text",                   color: "from-cyan-500 to-sky-500" },
-  { id: "flow_chart_completion",    number: 15, label: "Flow Chart Completion",      arabicLabel: "إكمال المخطط",             emoji: "🔁", shortDesc: "Fill missing steps in a flow chart based on the passage.",                                  inputKind: "text",                   color: "from-blue-500 to-indigo-500" },
-  { id: "diagram_completion",       number: 16, label: "Diagram Completion",         arabicLabel: "إكمال الرسم التوضيحي",     emoji: "🖼️", shortDesc: "Label parts of a diagram with information from the passage.",                              inputKind: "text",                   color: "from-pink-500 to-rose-500" },
+  { id: "coherence_and_cohesion",   number: 3,  label: "Coherence and Cohesion",     arabicLabel: "ترابط الأفكار وأدوات الربط", emoji: "🪡", shortDesc: "Logical flow of ideas (coherence) and the linking words and pronouns that tie sentences together (cohesion).", inputKind: "single_select_per_item", color: "from-lime-500 to-green-600" },
+  { id: "matching_headings",        number: 4,  label: "Matching Headings",          arabicLabel: "مطابقة العناوين",          emoji: "🗂️", shortDesc: "Match each paragraph to a heading from a list (more headings than paragraphs).",            inputKind: "single_select_per_item", color: "from-indigo-500 to-violet-500" },
+  { id: "matching_information",     number: 5,  label: "Matching Information",       arabicLabel: "مطابقة المعلومات",         emoji: "🔍", shortDesc: "Match statements to the paragraph (A, B, C…) that contains the information.",              inputKind: "single_select_per_item", color: "from-sky-500 to-blue-500" },
+  { id: "matching_features",        number: 6,  label: "Matching Features",          arabicLabel: "مطابقة الخصائص",           emoji: "🧩", shortDesc: "Match facts to categories (e.g. researcher → discovery, event → date).",                    inputKind: "single_select_per_item", color: "from-teal-500 to-cyan-500" },
+  { id: "matching_sentence_endings",number: 7,  label: "Matching Sentence Endings",  arabicLabel: "مطابقة نهايات الجمل",      emoji: "✂️", shortDesc: "Complete each sentence by picking the correct ending from a list.",                        inputKind: "single_select_per_item", color: "from-emerald-500 to-teal-500" },
+  { id: "true_false_not_given",     number: 8,  label: "True / False / Not Given",   arabicLabel: "صح / خطأ / غير مذكور",     emoji: "✅", shortDesc: "Decide whether each statement is True, False, or Not Given based on the passage.",         inputKind: "single_select_per_item", color: "from-green-500 to-emerald-500" },
+  { id: "multiple_choice",          number: 9,  label: "Multiple Choice",            arabicLabel: "اختيار من متعدد",          emoji: "🎯", shortDesc: "Choose the correct answer from four options (A, B, C, D).",                                inputKind: "single_select",          color: "from-amber-500 to-orange-500" },
+  { id: "list_selection",           number: 10, label: "List Selection",             arabicLabel: "اختيار من قائمة",          emoji: "☑️", shortDesc: "Pick multiple correct answers from a list (e.g. THREE that are mentioned).",               inputKind: "multi_select",           color: "from-orange-500 to-red-500" },
+  { id: "choose_title",             number: 11, label: "Choose a Title",             arabicLabel: "اختيار العنوان",           emoji: "📌", shortDesc: "Select the most appropriate title for the whole passage.",                                  inputKind: "single_select",          color: "from-rose-500 to-pink-500" },
+  { id: "short_answer",             number: 12, label: "Short Answer Questions",     arabicLabel: "إجابات قصيرة",             emoji: "✏️", shortDesc: "Answer specific questions in a few words taken from the passage.",                          inputKind: "text",                   color: "from-fuchsia-500 to-purple-500" },
+  { id: "sentence_completion",      number: 13, label: "Sentence Completion",        arabicLabel: "إكمال الجمل",              emoji: "📝", shortDesc: "Fill the gaps in sentences with words taken directly from the passage.",                    inputKind: "text",                   color: "from-purple-500 to-indigo-500" },
+  { id: "summary_completion",       number: 14, label: "Summary Completion",         arabicLabel: "إكمال الملخص",             emoji: "📄", shortDesc: "Complete a paragraph summary using words from the passage or a word box.",                  inputKind: "text",                   color: "from-violet-500 to-fuchsia-500" },
+  { id: "table_completion",         number: 15, label: "Table Completion",           arabicLabel: "إكمال الجدول",             emoji: "📊", shortDesc: "Fill missing cells in a table using information from the passage.",                        inputKind: "text",                   color: "from-cyan-500 to-sky-500" },
+  { id: "flow_chart_completion",    number: 16, label: "Flow Chart Completion",      arabicLabel: "إكمال المخطط",             emoji: "🔁", shortDesc: "Fill missing steps in a flow chart based on the passage.",                                  inputKind: "text",                   color: "from-blue-500 to-indigo-500" },
+  { id: "diagram_completion",       number: 17, label: "Diagram Completion",         arabicLabel: "إكمال الرسم التوضيحي",     emoji: "🖼️", shortDesc: "Label parts of a diagram with information from the passage.",                              inputKind: "text",                   color: "from-pink-500 to-rose-500" },
 ];
 
 export interface SkillItem {
@@ -73,6 +76,14 @@ export interface SkillItem {
   answer: string | string[];
   /** Optional acceptable alternate spellings (case-insensitive, trimmed) for text inputs. */
   acceptable?: string[];
+  /**
+   * Optional per-item options (used by question types where every question has its
+   * OWN choices, e.g. coherence_and_cohesion). When present, the runner shows these
+   * directly under the item rather than from a shared `exercise.options` list.
+   */
+  options?: { label: string; text: string }[];
+  /** Optional brief explanation shown next to this item on the results screen. */
+  explanation?: string;
 }
 
 /** CEFR level for an exercise. A2 = elementary, B1 = intermediate, B2 = upper-intermediate (Cambridge IELTS standard). */
@@ -3950,6 +3961,7 @@ E.push(
   ...b2Part1Supplements,
   ...b2Part2Supplements,
   ...patchSupplements,
+  ...coherenceCohesion,
 );
 
 export const SKILL_EXERCISES: SkillExercise[] = E;

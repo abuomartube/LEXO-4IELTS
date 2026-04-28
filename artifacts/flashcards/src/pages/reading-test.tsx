@@ -148,8 +148,8 @@ export default function ReadingTestPage() {
                 Skills Practice by Question Type
                 <Sparkles className="w-4 h-4 text-violet-500" />
               </h2>
-              <p className="text-sm text-muted-foreground mt-1">Targeted exercises for each of the 14 IELTS Reading question types — with detailed analysis after every submission.</p>
-              <p className="text-xs text-muted-foreground mt-1" dir="rtl" lang="ar">تمارين مركّزة لكل نوع من أنواع أسئلة القراءة الـ١٤</p>
+              <p className="text-sm text-muted-foreground mt-1">Targeted exercises for each of the 17 IELTS Reading question types — with detailed analysis after every submission.</p>
+              <p className="text-xs text-muted-foreground mt-1" dir="rtl" lang="ar">تمارين مركّزة لكل نوع من أنواع أسئلة القراءة الـ١٧</p>
               <div className="mt-4 inline-flex items-center gap-1.5 text-sm font-bold text-violet-600">
                 Choose a question type <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
               </div>

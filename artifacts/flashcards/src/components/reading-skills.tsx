@@ -105,9 +105,15 @@ export function ReadingSkills({ onBack }: { onBack: () => void }) {
     s.done[selectedExercise.id] = { correct: result.correct, total: result.total, ts: Date.now() };
     writeStore(s);
     setDoneTick((t) => t + 1);
-    // XP: 1 XP per correct answer, capped reasonably
+    // XP: 1 XP per correct answer, capped reasonably.
+    // Coherence & Cohesion exercises have 20 items, so we use a higher cap
+    // and award 2 XP per correct answer to reflect the longer practice.
     if (result.correct > 0) {
-      awardXp({ activity: "reading_skill", amount: Math.min(20, result.correct * 3) });
+      const isLong = selectedExercise.type === "coherence_and_cohesion";
+      const amount = isLong
+        ? Math.min(40, result.correct * 2)
+        : Math.min(20, result.correct * 3);
+      awardXp({ activity: "reading_skill", amount });
     }
     // Daily plan: mark Reading Practice as done today
     markTaskDone("reading");
@@ -140,7 +146,7 @@ export function ReadingSkills({ onBack }: { onBack: () => void }) {
           </div>
           <h2 className="text-2xl sm:text-3xl font-extrabold leading-tight">Reading by Question Type</h2>
           <p className="text-white/90 text-sm mt-2 max-w-2xl">
-            Targeted exercises for each of the 16 IELTS Reading question types, now organised into 3 CEFR levels.
+            Targeted exercises for each of the 17 IELTS Reading question types, now organised into 3 CEFR levels.
             Pick your level below, then choose a type to start practising.
           </p>
         </div>
@@ -364,9 +370,15 @@ function ExerciseRunner({
   onBack: () => void;
 }) {
   const meta = QUESTION_TYPES.find((q) => q.id === exercise.type)!;
-  const allAnswered = userAnswers.every((v) =>
+  const answeredCount = userAnswers.filter((v) =>
     v !== null && v !== undefined && (typeof v === "string" ? v.trim().length > 0 : v.length > 0)
-  );
+  ).length;
+  const totalCount = exercise.items.length;
+  const allAnswered = answeredCount === totalCount;
+  // For long, independent multiple-choice practices (Coherence & Cohesion),
+  // allow the learner to submit at any time without answering every item.
+  const allowPartialSubmit = exercise.type === "coherence_and_cohesion";
+  const canSubmit = allowPartialSubmit ? answeredCount > 0 : allAnswered;
 
   return (
     <div className="space-y-5">
@@ -421,14 +433,20 @@ function ExerciseRunner({
         <ItemsRunner exercise={exercise} userAnswers={userAnswers} setItemAnswer={setItemAnswer} />
       </div>
 
-      <div className="flex justify-end">
+      <div className="flex items-center justify-between gap-3 flex-wrap">
+        {allowPartialSubmit ? (
+          <p className="text-xs text-muted-foreground">
+            <span className="font-bold text-foreground">{answeredCount}</span> of{" "}
+            <span className="font-bold text-foreground">{totalCount}</span> answered. You can submit at any time.
+          </p>
+        ) : <span />}
         <button
           onClick={onSubmit}
-          disabled={!allAnswered}
+          disabled={!canSubmit}
           className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold disabled:opacity-40 disabled:cursor-not-allowed transition-colors shadow-lg shadow-emerald-600/25"
         >
           <CheckCircle2 className="w-4 h-4" />
-          Submit Answers
+          {allowPartialSubmit ? "Submit & See Results" : "Submit Answers"}
         </button>
       </div>
     </div>
@@ -551,6 +569,43 @@ function ItemsRunner({
     );
   }
 
+  // Per-item MCQ where every item has its OWN options + explanation
+  // (e.g. coherence_and_cohesion). Each question is rendered as a self-contained
+  // multiple-choice card with full-text option buttons.
+  if (exercise.type === "coherence_and_cohesion") {
+    return (
+      <div className="space-y-5">
+        {exercise.items.map((item, i) => {
+          const sel = userAnswers[i] as string | null;
+          const opts = item.options ?? [];
+          return (
+            <div key={i} className="border-t border-border/60 pt-4 first:border-t-0 first:pt-0">
+              <p className="text-sm sm:text-[15px] font-semibold text-foreground whitespace-pre-line mb-2">{item.prompt}</p>
+              <div className="flex flex-col gap-2">
+                {opts.map((o) => {
+                  const isSel = sel === o.label;
+                  return (
+                    <button
+                      key={o.label}
+                      onClick={() => setItemAnswer(i, o.label)}
+                      className={`text-left px-3 py-2.5 rounded-lg border text-sm transition-colors ${
+                        isSel
+                          ? "bg-blue-600 text-white border-blue-600"
+                          : "bg-background border-border text-foreground hover:border-blue-400"
+                      }`}
+                    >
+                      <span className="font-extrabold mr-2">{o.label}.</span>{o.text}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    );
+  }
+
   // Per-item single-select (matching variants, summary_completion w/ word box)
   if (
     exercise.type === "matching_headings" ||
@@ -654,21 +709,57 @@ function ResultView({
           {exercise.items.map((item, i) => {
             const ok = result.perItem[i];
             const ua = userAnswers[i];
-            const userStr = ua === null || ua === undefined ? "—" : Array.isArray(ua) ? ua.join(", ") : ua;
+            const skipped = ua === null || ua === undefined || (typeof ua === "string" && ua.trim().length === 0) || (Array.isArray(ua) && ua.length === 0);
+            const userStr = skipped ? "—" : Array.isArray(ua) ? ua.join(", ") : (ua as string);
             const corr = Array.isArray(item.answer) ? item.answer.join(", ") : item.answer;
+            // Find the full text of the user's chosen option (and the correct one) when item.options is available.
+            const findOptionText = (label: string) =>
+              item.options?.find((o) => o.label === label)?.text;
+            const userOptText = !skipped && typeof ua === "string" ? findOptionText(ua) : undefined;
+            const correctOptText = typeof item.answer === "string" ? findOptionText(item.answer) : undefined;
             return (
-              <div key={i} className={`rounded-xl border p-3 ${ok ? "border-emerald-200 bg-emerald-50/50 dark:border-emerald-800 dark:bg-emerald-900/15" : "border-rose-200 bg-rose-50/50 dark:border-rose-800 dark:bg-rose-900/15"}`}>
+              <div key={i} className={`rounded-xl border p-3 ${
+                skipped
+                  ? "border-amber-200 bg-amber-50/50 dark:border-amber-800 dark:bg-amber-900/15"
+                  : ok
+                    ? "border-emerald-200 bg-emerald-50/50 dark:border-emerald-800 dark:bg-emerald-900/15"
+                    : "border-rose-200 bg-rose-50/50 dark:border-rose-800 dark:bg-rose-900/15"
+              }`}>
                 <div className="flex items-start gap-2">
-                  {ok ? <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" /> : <XCircle className="w-4 h-4 text-rose-600 shrink-0 mt-0.5" />}
+                  {skipped ? (
+                    <span className="w-4 h-4 rounded-full bg-amber-500 text-white text-[9px] font-extrabold flex items-center justify-center shrink-0 mt-0.5">!</span>
+                  ) : ok ? (
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                  ) : (
+                    <XCircle className="w-4 h-4 text-rose-600 shrink-0 mt-0.5" />
+                  )}
                   <div className="flex-1 min-w-0 text-sm">
-                    <p className="font-semibold text-foreground">{item.prompt}</p>
+                    <p className="font-semibold text-foreground whitespace-pre-line">{item.prompt}</p>
                     <div className="mt-1 space-y-0.5">
-                      <p className={ok ? "text-emerald-700 dark:text-emerald-400" : "text-rose-700 dark:text-rose-400"}>
-                        <span className="font-bold">Your answer:</span> {userStr || "—"}
+                      <p className={
+                        skipped
+                          ? "text-amber-700 dark:text-amber-400"
+                          : ok
+                            ? "text-emerald-700 dark:text-emerald-400"
+                            : "text-rose-700 dark:text-rose-400"
+                      }>
+                        <span className="font-bold">Your answer:</span>{" "}
+                        {skipped ? "(skipped)" : (
+                          <>
+                            {userStr}
+                            {userOptText ? ` — ${userOptText}` : ""}
+                          </>
+                        )}
                       </p>
                       {!ok && (
                         <p className="text-emerald-700 dark:text-emerald-400">
                           <span className="font-bold">Correct:</span> {corr}
+                          {correctOptText ? ` — ${correctOptText}` : ""}
+                        </p>
+                      )}
+                      {item.explanation && (
+                        <p className="mt-1.5 text-foreground/85 italic">
+                          <span className="font-bold not-italic">Why:</span> {item.explanation}
                         </p>
                       )}
                     </div>
