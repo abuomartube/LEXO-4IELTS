@@ -7,17 +7,41 @@ import {
 import {
   QUESTION_TYPES,
   SKILL_EXERCISES,
+  LEVELS,
   getExercisesForType,
   scoreExercise,
   type SkillQuestionType,
   type SkillExercise,
+  type SkillLevel,
   type QTypeMeta,
 } from "@/data/reading-skills";
 import { markTaskDone } from "@/lib/daily-plan";
 
 type Phase = "type-list" | "exercise-list" | "exercise" | "result";
+type LevelFilter = SkillLevel | "ALL";
 
 const STORAGE_KEY = "lexo:reading-skills:v1";
+const LEVEL_FILTER_KEY = "lexo:reading-skills:level-filter:v1";
+
+function readLevelFilter(): LevelFilter {
+  if (typeof window === "undefined") return "ALL";
+  try {
+    const raw = localStorage.getItem(LEVEL_FILTER_KEY);
+    if (raw === "A2" || raw === "B1" || raw === "B2" || raw === "ALL") return raw;
+  } catch {}
+  return "ALL";
+}
+
+function writeLevelFilter(v: LevelFilter) {
+  if (typeof window === "undefined") return;
+  try { localStorage.setItem(LEVEL_FILTER_KEY, v); } catch {}
+}
+
+const LEVEL_PILL_CLASS: Record<SkillLevel, string> = {
+  A2: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400",
+  B1: "bg-sky-100 text-sky-700 dark:bg-sky-900/30 dark:text-sky-400",
+  B2: "bg-violet-100 text-violet-700 dark:bg-violet-900/30 dark:text-violet-400",
+};
 
 interface SkillsStore {
   /** Map of exerciseId → { correct, total, ts }. */
@@ -48,9 +72,15 @@ export function ReadingSkills({ onBack }: { onBack: () => void }) {
   const [userAnswers, setUserAnswers] = useState<(string | string[] | null)[]>([]);
   const [resultData, setResultData] = useState<{ correct: number; total: number; perItem: boolean[] } | null>(null);
   const [doneTick, setDoneTick] = useState(0);
+  const [levelFilter, setLevelFilterState] = useState<LevelFilter>(() => readLevelFilter());
   const { mutate: awardXp } = useAwardXp();
 
   const store = useMemo(() => { void doneTick; return readStore(); }, [doneTick]);
+
+  const setLevelFilter = (v: LevelFilter) => {
+    setLevelFilterState(v);
+    writeLevelFilter(v);
+  };
 
   const pickType = (type: SkillQuestionType) => {
     setSelectedType(type);
@@ -96,6 +126,7 @@ export function ReadingSkills({ onBack }: { onBack: () => void }) {
 
   // ── Type-list ──
   if (phase === "type-list") {
+    const activeLevelMeta = levelFilter !== "ALL" ? LEVELS.find((l) => l.id === levelFilter) : null;
     return (
       <div className="space-y-6">
         <div className="flex items-center justify-between gap-3">
@@ -109,15 +140,30 @@ export function ReadingSkills({ onBack }: { onBack: () => void }) {
           </div>
           <h2 className="text-2xl sm:text-3xl font-extrabold leading-tight">Reading by Question Type</h2>
           <p className="text-white/90 text-sm mt-2 max-w-2xl">
-            Targeted exercises for each of the 16 IELTS Reading question types. Pick a type to see all its exercises.
-            Each exercise has a real IELTS-style passage and a detailed analysis after you submit.
+            Targeted exercises for each of the 16 IELTS Reading question types, now organised into 3 CEFR levels.
+            Pick your level below, then choose a type to start practising.
           </p>
         </div>
 
+        {/* Level filter */}
+        <LevelTabs value={levelFilter} onChange={setLevelFilter} showAll />
+        {activeLevelMeta && (
+          <div className={`rounded-2xl p-4 text-white shadow-md bg-gradient-to-br ${activeLevelMeta.color}`}>
+            <p className="text-xs font-bold uppercase tracking-widest text-white/80">{activeLevelMeta.label}</p>
+            <p className="text-sm text-white/95 mt-1">{activeLevelMeta.shortDesc}</p>
+          </div>
+        )}
+
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {QUESTION_TYPES.map((qt) => {
-            const exs = getExercisesForType(qt.id);
+            const allExs = getExercisesForType(qt.id);
+            const exs = levelFilter === "ALL" ? allExs : allExs.filter((e) => e.level === levelFilter);
             const completed = exs.filter((e) => store.done[e.id]).length;
+            const counts: Record<SkillLevel, number> = {
+              A2: allExs.filter((e) => e.level === "A2").length,
+              B1: allExs.filter((e) => e.level === "B1").length,
+              B2: allExs.filter((e) => e.level === "B2").length,
+            };
             return (
               <button
                 key={qt.id}
@@ -137,7 +183,20 @@ export function ReadingSkills({ onBack }: { onBack: () => void }) {
                     </div>
                     <h3 className="font-extrabold text-foreground text-base leading-tight mt-0.5">{qt.label}</h3>
                     <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{qt.shortDesc}</p>
-                    <p className="text-[11px] text-muted-foreground mt-1" dir="rtl" lang="ar">{qt.arabicLabel}</p>
+                    <div className="flex items-center justify-between gap-2 mt-2">
+                      <p className="text-[11px] text-muted-foreground" dir="rtl" lang="ar">{qt.arabicLabel}</p>
+                      <div className="flex gap-1 shrink-0">
+                        {(["A2","B1","B2"] as const).map((lvl) => (
+                          <span
+                            key={lvl}
+                            className={`text-[9px] font-extrabold px-1.5 py-0.5 rounded ${LEVEL_PILL_CLASS[lvl]} ${counts[lvl] === 0 ? "opacity-30" : ""}`}
+                            title={`${counts[lvl]} ${lvl} exercise${counts[lvl] === 1 ? "" : "s"}`}
+                          >
+                            {lvl} · {counts[lvl]}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
                   </div>
                   <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all shrink-0" />
                 </div>
@@ -152,7 +211,13 @@ export function ReadingSkills({ onBack }: { onBack: () => void }) {
   // ── Exercise-list for one type ──
   if (phase === "exercise-list" && selectedType) {
     const meta = QUESTION_TYPES.find((q) => q.id === selectedType)!;
-    const exs = getExercisesForType(selectedType);
+    const allExs = getExercisesForType(selectedType);
+    const exs = levelFilter === "ALL" ? allExs : allExs.filter((e) => e.level === levelFilter);
+    const counts: Record<SkillLevel, number> = {
+      A2: allExs.filter((e) => e.level === "A2").length,
+      B1: allExs.filter((e) => e.level === "B1").length,
+      B2: allExs.filter((e) => e.level === "B2").length,
+    };
     return (
       <div className="space-y-6">
         <button onClick={exitToTypes} className="inline-flex items-center gap-2 text-sm font-semibold text-muted-foreground hover:text-foreground">
@@ -164,9 +229,12 @@ export function ReadingSkills({ onBack }: { onBack: () => void }) {
           <p className="text-white/90 text-sm mt-2 max-w-2xl">{meta.shortDesc}</p>
         </div>
 
+        {/* Level filter */}
+        <LevelTabs value={levelFilter} onChange={setLevelFilter} showAll counts={counts} />
+
         {exs.length === 0 ? (
           <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-2xl p-5 text-sm text-amber-700 dark:text-amber-300">
-            More exercises coming soon for this type.
+            No exercises at this level yet. Try a different level above, or check back later.
           </div>
         ) : (
           <div className="grid grid-cols-1 gap-3">
@@ -182,7 +250,10 @@ export function ReadingSkills({ onBack }: { onBack: () => void }) {
                     {i + 1}
                   </div>
                   <div className="min-w-0 flex-1">
-                    <h3 className="font-extrabold text-foreground text-sm sm:text-base truncate">{ex.title}</h3>
+                    <div className="flex items-center gap-2 mb-0.5">
+                      <span className={`text-[10px] font-extrabold px-1.5 py-0.5 rounded ${LEVEL_PILL_CLASS[ex.level]}`}>{ex.level}</span>
+                      <h3 className="font-extrabold text-foreground text-sm sm:text-base truncate">{ex.title}</h3>
+                    </div>
                     <p className="text-xs text-muted-foreground truncate">{ex.topic}</p>
                   </div>
                   {result ? (
@@ -236,6 +307,51 @@ export function ReadingSkills({ onBack }: { onBack: () => void }) {
   return null;
 }
 
+// ─────────────────────────── Level Tabs ───────────────────────────
+
+function LevelTabs({
+  value, onChange, showAll, counts,
+}: {
+  value: LevelFilter;
+  onChange: (v: LevelFilter) => void;
+  showAll?: boolean;
+  /** Optional per-level exercise counts to display next to each tab. */
+  counts?: Record<SkillLevel, number>;
+}) {
+  const tabs: { id: LevelFilter; label: string }[] = [
+    ...(showAll ? [{ id: "ALL" as LevelFilter, label: "All" }] : []),
+    ...LEVELS.map((l) => ({ id: l.id as LevelFilter, label: l.label.split(" · ")[0] })),
+  ];
+  return (
+    <div className="flex flex-wrap gap-2">
+      {tabs.map((t) => {
+        const active = value === t.id;
+        const isLevel = t.id !== "ALL";
+        const lvl = isLevel ? (t.id as SkillLevel) : null;
+        const count = lvl && counts ? counts[lvl] : null;
+        return (
+          <button
+            key={t.id}
+            onClick={() => onChange(t.id)}
+            className={`px-3 py-1.5 rounded-full text-xs font-extrabold border transition-colors flex items-center gap-1.5 ${
+              active
+                ? lvl
+                  ? `${LEVEL_PILL_CLASS[lvl]} border-transparent ring-2 ring-offset-1 ring-offset-background ring-current`
+                  : "bg-foreground text-background border-foreground"
+                : "bg-background text-muted-foreground border-border hover:border-primary/40 hover:text-foreground"
+            }`}
+          >
+            {t.label}
+            {count !== null && count !== undefined && (
+              <span className={`text-[10px] tabular-nums px-1.5 rounded-full ${active ? "bg-white/30" : "bg-muted"}`}>{count}</span>
+            )}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
 // ─────────────────────────── Runner ───────────────────────────
 
 function ExerciseRunner({
@@ -263,6 +379,7 @@ function ExerciseRunner({
           <span className={`text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full text-white bg-gradient-to-br ${meta.color}`}>
             {meta.emoji} {meta.label}
           </span>
+          <span className={`text-[10px] font-extrabold px-1.5 py-0.5 rounded ${LEVEL_PILL_CLASS[exercise.level]}`}>{exercise.level}</span>
           <span className="text-[10px] font-semibold text-muted-foreground">{exercise.topic}</span>
         </div>
         <h2 className="text-xl sm:text-2xl font-extrabold text-foreground">{exercise.title}</h2>

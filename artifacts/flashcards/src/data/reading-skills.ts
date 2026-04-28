@@ -1,9 +1,15 @@
 /**
  * IELTS Reading Skills Practice — targeted exercises by question type.
  *
- * Currently seeded with 2 high-quality exercises per type (28 total).
- * Each exercise: real IELTS-Academic-style passage (~200–260 words), one question
- * matching the type, correct answer(s), and a detailed analysis.
+ * Organised across 16 question types × 3 CEFR levels (A2, B1, B2):
+ *   • A2 — short, simple passages on everyday topics for elementary learners.
+ *   • B1 — clear, factual passages on familiar topics (intermediate).
+ *   • B2 — Cambridge IELTS-style passages: academic register, complex syntax,
+ *          abstract or specialised topics (upper-intermediate).
+ *
+ * Each exercise has a passage, instructions, items with correct answers, and a
+ * detailed analysis shown after submission. Use `getExercisesForType()` to load
+ * all exercises for a type, then filter by `level` in the UI as needed.
  */
 
 export type SkillQuestionType =
@@ -63,9 +69,20 @@ export interface SkillItem {
   acceptable?: string[];
 }
 
+/** CEFR level for an exercise. A2 = elementary, B1 = intermediate, B2 = upper-intermediate (Cambridge IELTS standard). */
+export type SkillLevel = "A2" | "B1" | "B2";
+
+export const LEVELS: { id: SkillLevel; label: string; arabicLabel: string; shortDesc: string; color: string }[] = [
+  { id: "A2", label: "A2 · Elementary",          arabicLabel: "مبتدئ",          shortDesc: "Short, simple passages on everyday topics. Basic grammar and high-frequency vocabulary.",                color: "from-emerald-500 to-teal-500" },
+  { id: "B1", label: "B1 · Intermediate",        arabicLabel: "متوسط",          shortDesc: "Clear, factual passages on familiar topics. Standard register, some abstract ideas.",                  color: "from-sky-500 to-blue-500"     },
+  { id: "B2", label: "B2 · Upper-Intermediate",  arabicLabel: "متوسط متقدم",    shortDesc: "Cambridge IELTS-style passages: academic register, complex syntax, abstract and specialised topics.", color: "from-violet-500 to-purple-600" },
+];
+
 export interface SkillExercise {
   id: string;
   type: SkillQuestionType;
+  /** CEFR level of the passage and questions. */
+  level: SkillLevel;
   title: string;
   topic: string;
   /** Passage text. Use `\n\n` between paragraphs. Prefix paragraphs with "[A] ", "[B] " etc. when paragraph labels matter. */
@@ -86,6 +103,7 @@ const E: SkillExercise[] = [
   {
     id: "sk-001",
     type: "skimming",
+    level: "B1",
     title: "Smartwatches in Modern Life",
     topic: "Technology · Lifestyle",
     passage:
@@ -112,6 +130,7 @@ Skimming tip: read the FIRST sentence (the topic sentence) and the FINAL sentenc
   {
     id: "sk-002",
     type: "skimming",
+    level: "B1",
     title: "Working from Home",
     topic: "Work · Lifestyle",
     passage:
@@ -138,6 +157,7 @@ Skimming tip: when a passage gives BOTH positives and negatives, the purpose is 
   {
     id: "sk-003",
     type: "skimming",
+    level: "B1",
     title: "Plastic in the Oceans",
     topic: "Environment",
     passage:
@@ -164,6 +184,7 @@ Skimming tip: phrases like "without urgent action" or "the real solution" often 
   {
     id: "sk-004",
     type: "skimming",
+    level: "B1",
     title: "The Rise of Online Learning",
     topic: "Education · Technology",
     passage:
@@ -190,6 +211,7 @@ Skimming tip: a balanced final sentence ("combine both") usually means the topic
   {
     id: "sk-005",
     type: "skimming",
+    level: "B1",
     title: "The Power of a Good Night's Sleep",
     topic: "Health",
     passage:
@@ -218,6 +240,7 @@ Skimming tip: when a passage explains BOTH a problem and practical solutions, it
   {
     id: "scn-001",
     type: "scanning",
+    level: "B1",
     title: "The Great Wall of China",
     topic: "History · Landmarks",
     passage:
@@ -252,6 +275,7 @@ Scanning tip: when a question asks about a TIME, NUMBER or QUANTITY, your eyes c
   {
     id: "scn-002",
     type: "scanning",
+    level: "B1",
     title: "The Eiffel Tower",
     topic: "Landmarks · Architecture",
     passage:
@@ -286,6 +310,7 @@ Scanning tip: dates appear as 4-digit numbers and names start with capital lette
   {
     id: "scn-003",
     type: "scanning",
+    level: "B1",
     title: "Mount Everest",
     topic: "Geography · Mountains",
     passage:
@@ -320,6 +345,7 @@ Scanning tip: you don't need to understand every word in the passage — just ma
   {
     id: "scn-004",
     type: "scanning",
+    level: "B1",
     title: "The Modern Olympic Games",
     topic: "Sport · History",
     passage:
@@ -354,6 +380,7 @@ Scanning tip: when two numbers appear close together, read the words AROUND each
   {
     id: "scn-005",
     type: "scanning",
+    level: "B1",
     title: "The Amazon Rainforest",
     topic: "Geography · Environment",
     passage:
@@ -390,6 +417,7 @@ Scanning tip: words like "around", "about" and "roughly" often appear right next
   {
     id: "mh-001",
     type: "matching_headings",
+    level: "B1",
     title: "The Spread of Coffee Cultivation",
     topic: "History · Agriculture",
     passage:
@@ -430,6 +458,7 @@ Distractors ii (accidental discovery), v (health research) and vii (immigration)
   {
     id: "mh-002",
     type: "matching_headings",
+    level: "B1",
     title: "How Cities Shape Their Climate",
     topic: "Environment · Urban science",
     passage:
@@ -465,6 +494,7 @@ Distractors iv (future temperatures) and v (economic cost of AC) are tempting be
   {
     id: "mi-001",
     type: "matching_information",
+    level: "B1",
     title: "The Forgotten History of the Bicycle",
     topic: "History · Technology",
     passage:
@@ -493,6 +523,7 @@ Tip: with Matching Information, scan for SPECIFIC details (proper nouns, dates, 
   {
     id: "mi-002",
     type: "matching_information",
+    level: "B1",
     title: "Saving the World's Seed Diversity",
     topic: "Agriculture · Conservation",
     passage:
@@ -523,6 +554,7 @@ Common trap: in question 4, paragraph A also mentions seed banks, but only parag
   {
     id: "mf-001",
     type: "matching_features",
+    level: "B1",
     title: "Pioneers of Antibiotics",
     topic: "Science · Medicine",
     passage:
@@ -558,6 +590,7 @@ Distractors E and F are not mentioned in the passage at all — never pick a fea
   {
     id: "mf-002",
     type: "matching_features",
+    level: "B1",
     title: "Three Schools of Architectural Thought",
     topic: "Architecture · Design history",
     passage:
@@ -593,6 +626,7 @@ Distractors D (Gothic ornament) and E (underground construction) are not mention
   {
     id: "mse-001",
     type: "matching_sentence_endings",
+    level: "B1",
     title: "Why Bees Dance",
     topic: "Biology · Animal behaviour",
     passage:
@@ -627,6 +661,7 @@ Matching Sentence Endings tests both reading and grammar: the chosen ending must
   {
     id: "mse-002",
     type: "matching_sentence_endings",
+    level: "B1",
     title: "The Origins of Paper",
     topic: "History · Materials",
     passage:
@@ -663,6 +698,7 @@ Trap to avoid: option D mentions Egyptian tomb paintings — that sounds histori
   {
     id: "tfng-001",
     type: "true_false_not_given",
+    level: "B1",
     title: "The Discovery of Vitamin C",
     topic: "Science · Medicine",
     passage:
@@ -695,6 +731,7 @@ Golden rule for TFNG: a statement is FALSE only if the passage clearly contradic
   {
     id: "tfng-002",
     type: "true_false_not_given",
+    level: "B1",
     title: "Sleep and Memory",
     topic: "Neuroscience · Psychology",
     passage:
@@ -727,6 +764,7 @@ Researchers caution, however, that the precise mechanisms remain poorly understo
   {
     id: "mc-001",
     type: "multiple_choice",
+    level: "B1",
     title: "How Volcanoes Cool the Climate",
     topic: "Earth science",
     passage:
@@ -759,6 +797,7 @@ In MCQ, eliminate options that contradict the passage (A, B), then options that 
   {
     id: "mc-002",
     type: "multiple_choice",
+    level: "B1",
     title: "The Octopus's Distributed Brain",
     topic: "Marine biology",
     passage:
@@ -791,6 +830,7 @@ D is wrong: the passage describes the octopus body as "near-boneless" — it has
   {
     id: "ls-001",
     type: "list_selection",
+    level: "B1",
     title: "Designing for Walkable Cities",
     topic: "Urban planning",
     passage:
@@ -828,6 +868,7 @@ In List Selection, the test usually pairs a few correct items with at least one 
   {
     id: "ls-002",
     type: "list_selection",
+    level: "B1",
     title: "Why Coral Reefs Are Dying",
     topic: "Marine ecology",
     passage:
@@ -863,6 +904,7 @@ Why not E or F: neither volcanic eruptions nor polar species migration appears i
   {
     id: "ct-001",
     type: "choose_title",
+    level: "B1",
     title: "(See passage)",
     topic: "Linguistics",
     passage:
@@ -893,6 +935,7 @@ A title must cover the WHOLE passage, not just one paragraph. If a title only fi
   {
     id: "ct-002",
     type: "choose_title",
+    level: "B1",
     title: "(See passage)",
     topic: "Engineering · History",
     passage:
@@ -923,6 +966,7 @@ D is wrong — Portland cement is mentioned only briefly as a contrast; its inve
   {
     id: "sa-001",
     type: "short_answer",
+    level: "B1",
     title: "The Story of Penicillin",
     topic: "Medicine · History",
     passage:
@@ -947,6 +991,7 @@ Always use the EXACT words from the passage, and respect the word limit precisel
   {
     id: "sa-002",
     type: "short_answer",
+    level: "B1",
     title: "The Atacama Desert",
     topic: "Geography",
     passage:
@@ -971,6 +1016,7 @@ Despite these conditions, the desert is far from lifeless. Lichens cling to coas
   {
     id: "sc-001",
     type: "sentence_completion",
+    level: "B1",
     title: "The Great Library of Alexandria",
     topic: "History",
     passage:
@@ -995,6 +1041,7 @@ Sentence Completion ALWAYS uses words copied directly from the passage. Do not p
   {
     id: "sc-002",
     type: "sentence_completion",
+    level: "B1",
     title: "Carbon Dating",
     topic: "Science · Archaeology",
     passage:
@@ -1019,6 +1066,7 @@ Once an organism dies, however, no new carbon-14 is taken in, and the isotope al
   {
     id: "smc-001",
     type: "summary_completion",
+    level: "B1",
     title: "How Dolphins Sleep",
     topic: "Marine biology",
     passage:
@@ -1055,6 +1103,7 @@ Distractors E (kilometres), F (fish) and G (weeks) all sound plausible but are n
   {
     id: "smc-002",
     type: "summary_completion",
+    level: "B1",
     title: "The Spread of Tea",
     topic: "History · Trade",
     passage:
@@ -1084,6 +1133,7 @@ When Summary Completion has no word box, you copy directly from the passage — 
   {
     id: "tc-001",
     type: "table_completion",
+    level: "B1",
     title: "Renewable Energy in Three Countries",
     topic: "Environment · Policy",
     passage:
@@ -1116,6 +1166,7 @@ In Table Completion, the table headings tell you what TYPE of word you need (a p
   {
     id: "tc-002",
     type: "table_completion",
+    level: "B1",
     title: "Three Famous Long Walks",
     topic: "Geography · Tourism",
     passage:
@@ -1148,6 +1199,7 @@ In New Zealand, the Te Araroa is much newer: officially opened only in 2011, it 
   {
     id: "fc-001",
     type: "flow_chart_completion",
+    level: "B1",
     title: "How Lightning Forms",
     topic: "Atmospheric science",
     passage:
@@ -1184,6 +1236,7 @@ Flow charts test your ability to follow a SEQUENCE. The order of the boxes alway
   {
     id: "fc-002",
     type: "flow_chart_completion",
+    level: "B1",
     title: "How Bread Is Made in a Bakery",
     topic: "Food science",
     passage:
@@ -1222,6 +1275,7 @@ Step 7: Cool on racks, then slice and package.`,
   {
     id: "dc-001",
     type: "diagram_completion",
+    level: "B1",
     title: "The Structure of a Wind Turbine",
     topic: "Engineering",
     passage:
@@ -1259,6 +1313,7 @@ In Diagram Completion the visual position of each label hints at the part of the
   {
     id: "dc-002",
     type: "diagram_completion",
+    level: "B1",
     title: "The Layers of the Atmosphere",
     topic: "Earth science",
     passage:
@@ -1299,6 +1354,7 @@ Earth's surface`,
   {
     id: "mh-003",
     type: "matching_headings",
+    level: "B1",
     title: "The Rise of Electric Vehicles",
     topic: "Technology · Transport",
     passage:
@@ -1334,6 +1390,7 @@ Distractor ii is tempting because A briefly mentions cheaper petrol pushing EVs 
   {
     id: "mi-003",
     type: "matching_information",
+    level: "B1",
     title: "Reviving the Wolf",
     topic: "Ecology · Conservation",
     passage:
@@ -1362,6 +1419,7 @@ Distractor ii is tempting because A briefly mentions cheaper petrol pushing EVs 
   {
     id: "mf-003",
     type: "matching_features",
+    level: "B1",
     title: "Three Pioneers of Flight",
     topic: "Engineering · History",
     passage:
@@ -1395,6 +1453,7 @@ Distractors B (helicopter) and E (parachute) are not mentioned in the passage at
   {
     id: "mse-003",
     type: "matching_sentence_endings",
+    level: "B1",
     title: "Why We Yawn",
     topic: "Biology · Psychology",
     passage:
@@ -1428,6 +1487,7 @@ Don't choose B for question 3: cooling the brain is a personal, physiological th
   {
     id: "tfng-003",
     type: "true_false_not_given",
+    level: "B1",
     title: "Easter Island's Statues",
     topic: "Archaeology",
     passage:
@@ -1454,6 +1514,7 @@ How the islanders moved the heavy figures from the quarry to their final platfor
   {
     id: "mc-003",
     type: "multiple_choice",
+    level: "B1",
     title: "Memory and Music",
     topic: "Neuroscience",
     passage:
@@ -1482,6 +1543,7 @@ D is wrong: it's been "observed in many cultures", not only Western ones.`,
   {
     id: "ls-003",
     type: "list_selection",
+    level: "B1",
     title: "Effective Language Learning",
     topic: "Education",
     passage:
@@ -1512,6 +1574,7 @@ B, D and F are all explicitly listed under "less helpful than they appear" — c
   {
     id: "ct-003",
     type: "choose_title",
+    level: "B1",
     title: "(See passage)",
     topic: "History · Food",
     passage:
@@ -1538,6 +1601,7 @@ B is too narrow (capsaicin is one detail). C is the means, not the topic. D isn'
   {
     id: "sa-003",
     type: "short_answer",
+    level: "B1",
     title: "The Story of Aspirin",
     topic: "Medicine · History",
     passage:
@@ -1560,6 +1624,7 @@ The breakthrough came in 1897 at the German chemical firm Bayer, where the chemi
   {
     id: "sc-003",
     type: "sentence_completion",
+    level: "B1",
     title: "The Mona Lisa",
     topic: "Art · History",
     passage:
@@ -1582,6 +1647,7 @@ The painting was acquired by the French king François I and has hung in the Lou
   {
     id: "smc-003",
     type: "summary_completion",
+    level: "B1",
     title: "Why Glaciers Are Retreating",
     topic: "Environment · Geology",
     passage:
@@ -1606,6 +1672,7 @@ The consequences extend far beyond the mountains themselves. Roughly two billion
   {
     id: "tc-003",
     type: "table_completion",
+    level: "B1",
     title: "Three of the World's Tallest Buildings",
     topic: "Architecture · Engineering",
     passage:
@@ -1636,6 +1703,7 @@ The Shanghai Tower, completed in 2015, has a twisted form that engineers calcula
   {
     id: "fc-003",
     type: "flow_chart_completion",
+    level: "B1",
     title: "Recycling an Aluminium Can",
     topic: "Industry · Environment",
     passage:
@@ -1672,6 +1740,7 @@ Step 7: Sheets sold to can makers and pressed into new cans.`,
   {
     id: "dc-003",
     type: "diagram_completion",
+    level: "B1",
     title: "The Human Ear",
     topic: "Biology",
     passage:
@@ -1703,7 +1772,7 @@ The amplified vibrations then enter the cochlea, a fluid-filled spiral structure
 
   // ───────── 1. Matching Headings ─────────
   {
-    id: "mh-004", type: "matching_headings", title: "Plastic in the Ocean", topic: "Environment",
+    id: "mh-004", type: "matching_headings", level: "B1", title: "Plastic in the Ocean", topic: "Environment",
     passage:
 `[A] Around 8 million tonnes of plastic enter the world's oceans each year. Most of it originates not at sea but on land, washed down rivers from poorly managed waste in coastal cities. The five rivers responsible for the largest share of this flow are all in Asia.
 
@@ -1730,7 +1799,7 @@ C → iv (effects on wildlife and possibly humans).
 iii and v don't appear in the passage.`,
   },
   {
-    id: "mh-005", type: "matching_headings", title: "Antarctic Exploration", topic: "History",
+    id: "mh-005", type: "matching_headings", level: "B1", title: "Antarctic Exploration", topic: "History",
     passage:
 `[A] For most of human history, Antarctica was unknown. Although ancient Greek geographers had speculated about a great southern continent, the first confirmed sighting was made by a Russian naval expedition in 1820.
 
@@ -1756,7 +1825,7 @@ B → i (Scott vs Amundsen vs Shackleton — competing expeditions).
 C → iv (the 1959 treaty and 46 nations cooperating).`,
   },
   {
-    id: "mh-006", type: "matching_headings", title: "The Origins of Writing", topic: "History · Linguistics",
+    id: "mh-006", type: "matching_headings", level: "B1", title: "The Origins of Writing", topic: "History · Linguistics",
     passage:
 `[A] Writing was invented independently in only a handful of places. The earliest known system, cuneiform, appeared in Mesopotamia around 3200 BCE and used wedge-shaped marks pressed into wet clay. Egyptian hieroglyphs and Chinese script developed later but probably without contact with cuneiform.
 
@@ -1782,7 +1851,7 @@ B → i (administration, taxes — the first reasons people wrote).
 C → iv (the move from elaborate scripts to a small-sign alphabet around 1500 BCE).`,
   },
   {
-    id: "mh-007", type: "matching_headings", title: "Storing Renewable Energy", topic: "Engineering · Environment",
+    id: "mh-007", type: "matching_headings", level: "B1", title: "Storing Renewable Energy", topic: "Engineering · Environment",
     passage:
 `[A] Wind and solar power share an awkward feature: they generate electricity only when the wind blows or the sun shines. To match supply with demand, modern grids must store surplus energy and release it later. Without storage, much renewable generation is simply lost.
 
@@ -1810,7 +1879,7 @@ C → iii (pumped hydro, compressed air, molten salt — older ideas reused for 
 
   // ───────── 2. Matching Information ─────────
   {
-    id: "mi-004", type: "matching_information", title: "A Brief History of Vaccination", topic: "Medicine",
+    id: "mi-004", type: "matching_information", level: "B1", title: "A Brief History of Vaccination", topic: "Medicine",
     passage:
 `[A] Long before modern medicine, observers in China and Turkey noticed that people who had survived smallpox never caught it again. By the seventeenth century, parents in both regions were deliberately exposing children to mild cases of the disease in the hope of protecting them — a practice known as variolation.
 
@@ -1833,7 +1902,7 @@ C → iii (pumped hydro, compressed air, molten salt — older ideas reused for 
 4 → C (Pasteur weakening microbes).`,
   },
   {
-    id: "mi-005", type: "matching_information", title: "Exploring Mars", topic: "Science · Space",
+    id: "mi-005", type: "matching_information", level: "B1", title: "Exploring Mars", topic: "Science · Space",
     passage:
 `[A] The first successful flyby of Mars was carried out by NASA's Mariner 4 in 1965. The mission returned 21 grainy photographs that showed a cratered, dry surface and put an end to popular speculation about Martian canals.
 
@@ -1856,7 +1925,7 @@ C → iii (pumped hydro, compressed air, molten salt — older ideas reused for 
 4 → C (rover labs test for water and life).`,
   },
   {
-    id: "mi-006", type: "matching_information", title: "The Mediterranean Diet", topic: "Nutrition",
+    id: "mi-006", type: "matching_information", level: "B1", title: "The Mediterranean Diet", topic: "Nutrition",
     passage:
 `[A] In the 1950s, the American physiologist Ancel Keys noticed that men in southern Italy and Greece had unusually low rates of heart disease compared with their counterparts in the United States. His Seven Countries Study, launched in 1958, was the first large research programme to link diet directly with cardiovascular health.
 
@@ -1879,7 +1948,7 @@ C → iii (pumped hydro, compressed air, molten salt — older ideas reused for 
 4 → A (Keys's Seven Countries Study).`,
   },
   {
-    id: "mi-007", type: "matching_information", title: "The Birth of the Internet", topic: "Technology",
+    id: "mi-007", type: "matching_information", level: "B1", title: "The Birth of the Internet", topic: "Technology",
     passage:
 `[A] The internet's earliest ancestor, ARPANET, was funded by the US Department of Defense in the late 1960s. Its goal was practical: to allow computers at different research universities to share data without constantly being routed through a single central machine.
 
@@ -1904,7 +1973,7 @@ C → iii (pumped hydro, compressed air, molten salt — older ideas reused for 
 
   // ───────── 3. Matching Features ─────────
   {
-    id: "mf-004", type: "matching_features", title: "Three Great Composers", topic: "Music · History",
+    id: "mf-004", type: "matching_features", level: "B1", title: "Three Great Composers", topic: "Music · History",
     passage:
 `Johann Sebastian Bach, born in 1685 in the small German town of Eisenach, spent most of his career as a church organist and choirmaster. His enormous output of religious music, including the St Matthew Passion and hundreds of cantatas, was largely forgotten for almost a century after his death until Mendelssohn revived it in 1829.
 
@@ -1931,7 +2000,7 @@ Beethoven → C (Ninth Symphony composed while deaf).
 D and E aren't supported by the passage.`,
   },
   {
-    id: "mf-005", type: "matching_features", title: "Founders of Modern Economics", topic: "Economics · History",
+    id: "mf-005", type: "matching_features", level: "B1", title: "Founders of Modern Economics", topic: "Economics · History",
     passage:
 `The Scottish philosopher Adam Smith published The Wealth of Nations in 1776. In it he argued that an "invisible hand" of self-interested exchange in free markets tended to produce outcomes that benefited the whole of society — provided that markets were not distorted by monopoly or unjust laws.
 
@@ -1957,7 +2026,7 @@ Marx → B (capitalism's contradictions, eventual collapse).
 Keynes → C (government spending during recessions).`,
   },
   {
-    id: "mf-006", type: "matching_features", title: "Inventors of Communication", topic: "Technology",
+    id: "mf-006", type: "matching_features", level: "B1", title: "Inventors of Communication", topic: "Technology",
     passage:
 `Samuel Morse, an American painter turned inventor, demonstrated his electric telegraph in 1844 with the famous message "What hath God wrought?" sent from Washington to Baltimore. Within decades, Morse code and the telegraph had connected continents through undersea cables.
 
@@ -1983,7 +2052,7 @@ Bell → A (telephone patent 1876).
 Marconi → B (transatlantic radio 1901).`,
   },
   {
-    id: "mf-007", type: "matching_features", title: "Pioneers of Climate Science", topic: "Science",
+    id: "mf-007", type: "matching_features", level: "B1", title: "Pioneers of Climate Science", topic: "Science",
     passage:
 `As early as 1824, the French mathematician Joseph Fourier suggested that the Earth's atmosphere acts like a glass enclosure, trapping heat from the Sun. He was the first to describe what we now call the greenhouse effect, although he could not measure it.
 
@@ -2011,7 +2080,7 @@ Arrhenius → A (1896 calculation of warming from CO₂ doubling).`,
 
   // ───────── 4. Matching Sentence Endings ─────────
   {
-    id: "mse-004", type: "matching_sentence_endings", title: "How Birds Migrate", topic: "Biology",
+    id: "mse-004", type: "matching_sentence_endings", level: "B1", title: "How Birds Migrate", topic: "Biology",
     passage:
 `Each year, billions of birds undertake long migrations between breeding and wintering grounds, sometimes covering more than ten thousand kilometres. How they navigate has fascinated biologists for over a century.
 
@@ -2038,7 +2107,7 @@ Migration is not entirely instinctive. Young birds raised in captivity often sta
 C is wrong because young birds need experience; E isn't mentioned.`,
   },
   {
-    id: "mse-005", type: "matching_sentence_endings", title: "What Coffee Does to the Brain", topic: "Biology",
+    id: "mse-005", type: "matching_sentence_endings", level: "B1", title: "What Coffee Does to the Brain", topic: "Biology",
     passage:
 `The active ingredient in coffee, caffeine, works by blocking the brain's adenosine receptors. Adenosine normally accumulates throughout the day and produces a feeling of drowsiness; blocking it makes us feel more alert. Caffeine reaches peak concentration in the blood about 45 minutes after consumption and is broken down by enzymes in the liver over the following four to six hours.
 
@@ -2062,7 +2131,7 @@ Regular drinkers develop tolerance, producing more receptors so that the same do
 3 → C (tolerance: more receptors).`,
   },
   {
-    id: "mse-006", type: "matching_sentence_endings", title: "Stages of Sleep", topic: "Neuroscience",
+    id: "mse-006", type: "matching_sentence_endings", level: "B1", title: "Stages of Sleep", topic: "Neuroscience",
     passage:
 `A typical adult passes through four or five sleep cycles each night, with each cycle lasting roughly 90 minutes. The first stages of every cycle are known as non-REM sleep and are dominated by slow brain waves. During the deepest non-REM stage the body releases growth hormone, repairs tissues and consolidates factual memories.
 
@@ -2088,7 +2157,7 @@ Both kinds of sleep are essential. Subjects deprived of REM in laboratory studie
 3 → D (REM-deprived: weaker creativity).`,
   },
   {
-    id: "mse-007", type: "matching_sentence_endings", title: "The Ancient Olympics", topic: "History",
+    id: "mse-007", type: "matching_sentence_endings", level: "B1", title: "The Ancient Olympics", topic: "History",
     passage:
 `The original Olympic Games were held at Olympia in southern Greece every four years from 776 BCE for nearly twelve centuries. They began as a religious festival in honour of Zeus and only gradually expanded into the multi-event athletics competition recorded by later Greek writers.
 
@@ -2116,7 +2185,7 @@ The Roman emperor Theodosius I banned the games in 393 CE as part of a wider cam
 
   // ───────── 5. True / False / Not Given ─────────
   {
-    id: "tfng-004", type: "true_false_not_given", title: "Stonehenge", topic: "Archaeology",
+    id: "tfng-004", type: "true_false_not_given", level: "B1", title: "Stonehenge", topic: "Archaeology",
     passage:
 `The stone circle at Stonehenge, on Salisbury Plain in southern England, was built in several phases between roughly 3000 and 1500 BCE. Its largest stones, called sarsens, weigh up to 25 tonnes and were dragged from a quarry about 30 kilometres away. The smaller "bluestones" set inside the circle are far more remarkable: geological analysis has shown they came from quarries in west Wales, more than 200 kilometres distant.
 
@@ -2137,7 +2206,7 @@ The exact purpose of the monument remains uncertain. Its main axis is aligned wi
 5 → NOT GIVEN (no information about modern tickets).`,
   },
   {
-    id: "tfng-005", type: "true_false_not_given", title: "The Industrial Revolution", topic: "History",
+    id: "tfng-005", type: "true_false_not_given", level: "B1", title: "The Industrial Revolution", topic: "History",
     passage:
 `The Industrial Revolution began in the British Midlands in the second half of the eighteenth century and spread across Europe and North America over the following hundred years. James Watt's improved steam engine of 1769 transformed mining, manufacturing and, eventually, transport, by replacing animal and water power with a movable source of mechanical energy.
 
@@ -2160,7 +2229,7 @@ Wages, however, gradually rose. By 1900, a British factory worker earned roughly
 5 → TRUE (four times an 1800 labourer's pay).`,
   },
   {
-    id: "tfng-006", type: "true_false_not_given", title: "Photosynthesis", topic: "Biology",
+    id: "tfng-006", type: "true_false_not_given", level: "B1", title: "Photosynthesis", topic: "Biology",
     passage:
 `All green plants produce their own food through photosynthesis, a chemical reaction that takes place mainly in their leaves. Tiny structures called chloroplasts capture energy from sunlight using a green pigment, chlorophyll. The captured energy is used to convert water drawn up by the roots and carbon dioxide absorbed from the air into glucose, releasing oxygen as a by-product.
 
@@ -2181,7 +2250,7 @@ The rate at which a plant photosynthesises depends on three main factors: light 
 5 → TRUE ("releasing oxygen as a by-product").`,
   },
   {
-    id: "tfng-007", type: "true_false_not_given", title: "Antarctic Ice", topic: "Earth science",
+    id: "tfng-007", type: "true_false_not_given", level: "B1", title: "Antarctic Ice", topic: "Earth science",
     passage:
 `Antarctica holds about 90 per cent of the world's fresh water, locked up in an ice sheet that averages two kilometres in thickness. Despite the ice's vast size, satellite measurements taken since the 1990s show that it is losing mass at an accelerating rate, particularly along the western coast.
 
@@ -2206,7 +2275,7 @@ If all the ice on the continent were to melt, global sea level would rise by app
 
   // ───────── 6. Multiple Choice ─────────
   {
-    id: "mc-004", type: "multiple_choice", title: "Why Sharks Don't Get Cancer", topic: "Biology",
+    id: "mc-004", type: "multiple_choice", level: "B1", title: "Why Sharks Don't Get Cancer", topic: "Biology",
     passage:
 `A persistent popular belief, particularly common in the 1990s, claims that sharks "do not get cancer" and that powdered shark cartilage may therefore prevent or treat the disease in humans. Researchers have investigated both halves of this claim, and both turn out to be wrong.
 
@@ -2227,7 +2296,7 @@ Clinical trials of shark-cartilage supplements as cancer treatments have shown n
 `C is correct (40+ documented tumours in sharks). A is the myth being debunked. B is contradicted ("no benefit"). D is the opposite of the truth.`,
   },
   {
-    id: "mc-005", type: "multiple_choice", title: "DNA: The Double Helix", topic: "Science",
+    id: "mc-005", type: "multiple_choice", level: "B1", title: "DNA: The Double Helix", topic: "Science",
     passage:
 `In April 1953 the journal Nature published a one-page paper by James Watson and Francis Crick, then both at the University of Cambridge, proposing that the molecule of inheritance — DNA — has the shape of a double helix. The model elegantly explained how genetic information could be both stored and copied: each strand carries a sequence of four chemical bases, and the rules by which the bases pair up mean that one strand can act as a template for replicating the other.
 
@@ -2249,7 +2318,7 @@ B wrong: Franklin died in 1958, before the prize.
 D wrong: published in Nature, not Science.`,
   },
   {
-    id: "mc-006", type: "multiple_choice", title: "Honeybee Colony Collapse", topic: "Biology",
+    id: "mc-006", type: "multiple_choice", level: "B1", title: "Honeybee Colony Collapse", topic: "Biology",
     passage:
 `Since around 2006, beekeepers across North America and Europe have reported sudden, unexplained losses of entire honeybee colonies — a phenomenon labelled colony collapse disorder. Affected hives are typically empty of adult workers, although the queen and brood are left behind, suggesting that the workers fly off and fail to return.
 
@@ -2273,7 +2342,7 @@ B wrong: hives are EMPTY of workers, not full of dead bees.
 D wrong: passage says trucking is one of the stresses, not that it has stopped.`,
   },
   {
-    id: "mc-007", type: "multiple_choice", title: "Quantum Computing", topic: "Technology",
+    id: "mc-007", type: "multiple_choice", level: "B1", title: "Quantum Computing", topic: "Technology",
     passage:
 `Conventional computers store information as bits — switches that are either 0 or 1. A quantum computer, by contrast, uses qubits that can occupy a combination of the two states simultaneously, a property known as superposition. When a quantum algorithm is run, the machine in effect explores many possible solutions in parallel before "collapsing" to a single answer when measured.
 
@@ -2299,7 +2368,7 @@ D wrong: passage says quantum machines could in theory crack current encryption.
 
   // ───────── 7. List Selection ─────────
   {
-    id: "ls-004", type: "list_selection", title: "What Makes a Tree Useful for Cities", topic: "Urban planning",
+    id: "ls-004", type: "list_selection", level: "B1", title: "What Makes a Tree Useful for Cities", topic: "Urban planning",
     passage:
 `Urban foresters select street trees with care, because not every species thrives among traffic and pavement. Researchers consistently rank a few qualities at the top of their list. A useful city tree should tolerate compacted, polluted soil; have a deep root system that does not damage drains; offer a broad canopy that shades pavements in summer; and be tough enough to resist common pests and diseases.
 
@@ -2322,7 +2391,7 @@ Beauty matters less than people often assume. Surveys of residents show that ove
 `A, C, E are listed as desirable. B (heavy fruit), D (shallow roots) and F (heavy pruning) are explicitly listed as unsuitable.`,
   },
   {
-    id: "ls-005", type: "list_selection", title: "What Helps Children Learn to Read", topic: "Education",
+    id: "ls-005", type: "list_selection", level: "B1", title: "What Helps Children Learn to Read", topic: "Education",
     passage:
 `Decades of research into early literacy have identified several practices that reliably help young children become confident readers. Daily shared reading at home, even just twenty minutes, dramatically expands a child's vocabulary. Systematic phonics teaching — explicit, structured instruction in the relationship between letters and sounds — produces especially strong gains for early readers. Access to a wide range of books, fiction and non-fiction alike, sustains motivation and broadens background knowledge.
 
@@ -2343,7 +2412,7 @@ Other widely tried approaches show little or no benefit. Forcing children to mem
 `A, C, E are the effective practices. B, D, F are listed under "little or no benefit".`,
   },
   {
-    id: "ls-006", type: "list_selection", title: "What Improves Workplace Productivity", topic: "Business",
+    id: "ls-006", type: "list_selection", level: "B1", title: "What Improves Workplace Productivity", topic: "Business",
     passage:
 `Researchers studying workplace performance have repeatedly identified several conditions that boost productivity in office work. Predictable, uninterrupted blocks of focused time — usually called "deep work" — are strongly associated with higher output. Adequate natural daylight in the workspace measurably reduces fatigue and errors. And clear, measurable goals, agreed in advance, help employees set sensible priorities.
 
@@ -2364,7 +2433,7 @@ Some commonly tried interventions show little effect. Rearranging an office into
 `A, C, E are described as effective. B, D, F are listed under "little effect" or even counterproductive.`,
   },
   {
-    id: "ls-007", type: "list_selection", title: "Reducing Household Food Waste", topic: "Environment",
+    id: "ls-007", type: "list_selection", level: "B1", title: "Reducing Household Food Waste", topic: "Environment",
     passage:
 `Roughly a third of all food produced for human consumption is thrown away, and a significant share of that waste happens in homes. Studies of households that successfully reduce their waste have identified several practical habits. Planning meals in advance for the week dramatically reduces over-buying. Storing fruit and vegetables correctly extends their useful life by days or even weeks. And using a "first in, first out" rule when filling the refrigerator helps ensure older items are eaten before they spoil.
 
@@ -2387,7 +2456,7 @@ A few popular tactics are less effective. Buying in bulk to "save money" routine
 
   // ───────── 8. Choose a Title ─────────
   {
-    id: "ct-004", type: "choose_title", title: "(See passage)", topic: "Cryptozoology",
+    id: "ct-004", type: "choose_title", level: "B1", title: "(See passage)", topic: "Cryptozoology",
     passage:
 `The story of the Loch Ness Monster, said to inhabit a long, deep lake in the Scottish Highlands, has become one of the world's most enduring modern legends. The first widely reported "sighting" appeared in a local newspaper in 1933, and within months the loch had drawn hundreds of curious visitors, photographers and amateur monster-hunters.
 
@@ -2409,7 +2478,7 @@ Despite the negative results, tourism around the loch flourishes. Local business
 A is a detail. C and D are contradicted by the passage.`,
   },
   {
-    id: "ct-005", type: "choose_title", title: "(See passage)", topic: "Science · History",
+    id: "ct-005", type: "choose_title", level: "B1", title: "(See passage)", topic: "Science · History",
     passage:
 `Before the late eighteenth century, almost every region of Europe used its own units of length, weight and volume — and even within a single country these often varied between cities. A bushel of grain in one French town might be twenty per cent larger than a bushel in another, making trade slow and prone to dispute.
 
@@ -2431,7 +2500,7 @@ Adoption was uneven. France itself reverted briefly to older units under Napoleo
 B is a single detail. C is background, not the topic. D isn't discussed.`,
   },
   {
-    id: "ct-006", type: "choose_title", title: "(See passage)", topic: "Environment",
+    id: "ct-006", type: "choose_title", level: "B1", title: "(See passage)", topic: "Environment",
     passage:
 `Microplastics are tiny fragments of plastic, typically smaller than five millimetres, that have appeared in alarming quantities in oceans, rivers, soils and even the atmosphere. They come from many sources: the breakdown of larger plastic litter, the abrasion of tyres on roads, fibres released when synthetic clothes are washed, and microbeads added to some cosmetics until recent bans.
 
@@ -2453,7 +2522,7 @@ Mitigation strategies include filters on washing machines, cleaner alternatives 
 B, C, D are off-topic for this passage.`,
   },
   {
-    id: "ct-007", type: "choose_title", title: "(See passage)", topic: "History · Engineering",
+    id: "ct-007", type: "choose_title", level: "B1", title: "(See passage)", topic: "History · Engineering",
     passage:
 `At its height in the second century CE, the Roman road network covered more than 80,000 kilometres and connected every part of an empire that stretched from the Atlantic coast of Spain to the deserts of modern Iraq. The roads were built primarily for the rapid movement of legions and government couriers; trade and tourism benefited as a side-effect.
 
@@ -2476,7 +2545,7 @@ Some Roman roads remain in use today, often as the foundations of modern motorwa
 
   // ───────── 9. Short Answer ─────────
   {
-    id: "sa-004", type: "short_answer", title: "Inventing the Telephone", topic: "Technology · History",
+    id: "sa-004", type: "short_answer", level: "B1", title: "Inventing the Telephone", topic: "Technology · History",
     passage:
 `Alexander Graham Bell, born in Scotland in 1847, emigrated first to Canada and later to the United States to teach the deaf. His interest in the mechanics of speech led him to experiment with sending vibrations along an electric wire. On 10 March 1876, in his Boston laboratory, he transmitted the first intelligible telephone message — "Mr Watson, come here, I want to see you" — to his assistant in the next room.
 
@@ -2491,7 +2560,7 @@ Bell narrowly beat the rival inventor Elisha Gray to the patent office; Gray fil
 `1 → Boston. 2 → Elisha Gray. 3 → 1885.`,
   },
   {
-    id: "sa-005", type: "short_answer", title: "Discovery of the South Pole", topic: "History",
+    id: "sa-005", type: "short_answer", level: "B1", title: "Discovery of the South Pole", topic: "History",
     passage:
 `The first person confirmed to have reached the geographic South Pole was the Norwegian explorer Roald Amundsen, who arrived with a small team of dog sledges on 14 December 1911. Amundsen's expedition had carefully studied earlier polar journeys and prioritised speed, equipment that worked in extreme cold, and reliance on dog teams.
 
@@ -2506,7 +2575,7 @@ The British party led by Robert Falcon Scott reached the same spot just over a m
 `1 → Roald Amundsen. 2 → dogs / dog teams. 3 → four ("Scott and his four companions died").`,
   },
   {
-    id: "sa-006", type: "short_answer", title: "The Black Death", topic: "History",
+    id: "sa-006", type: "short_answer", level: "B1", title: "The Black Death", topic: "History",
     passage:
 `The Black Death, the most devastating pandemic in European history, swept through the continent between 1347 and 1351. Modern genetic analysis of skeletons buried in mass graves has confirmed that the disease was bubonic plague, caused by the bacterium Yersinia pestis and spread mainly by fleas living on rats.
 
@@ -2521,7 +2590,7 @@ Estimates of the death toll vary, but most historians now accept that between on
 `1 → Yersinia pestis. 2 → rats. 3 → feudal system / feudalism.`,
   },
   {
-    id: "sa-007", type: "short_answer", title: "The Suez Canal", topic: "Engineering · History",
+    id: "sa-007", type: "short_answer", level: "B1", title: "The Suez Canal", topic: "Engineering · History",
     passage:
 `The Suez Canal, an artificial waterway cutting through the Egyptian desert to link the Mediterranean and Red Seas, was opened in November 1869 after a decade of construction supervised by the French engineer Ferdinand de Lesseps. Although Egyptian and French interests had financed it, control passed to Britain in 1875 when the Egyptian government, near bankruptcy, sold its shares.
 
@@ -2538,7 +2607,7 @@ The canal transformed global shipping by removing the need to sail around Africa
 
   // ───────── 10. Sentence Completion ─────────
   {
-    id: "sc-004", type: "sentence_completion", title: "The Eiffel Tower", topic: "History · Engineering",
+    id: "sc-004", type: "sentence_completion", level: "B1", title: "The Eiffel Tower", topic: "History · Engineering",
     passage:
 `The Eiffel Tower was built between 1887 and 1889 as the centrepiece of the World Fair held in Paris to mark the centenary of the French Revolution. Designed by the engineer Gustave Eiffel and his team, it was originally intended to stand for only twenty years before being dismantled. At 300 metres tall, it remained the world's tallest structure for over four decades, until the completion of New York's Chrysler Building in 1930.
 
@@ -2553,7 +2622,7 @@ Many Parisians initially hated the tower, signing a petition that called it a "u
 `1 → World Fair. 2 → 300. 3 → radio antenna.`,
   },
   {
-    id: "sc-005", type: "sentence_completion", title: "Marie Curie", topic: "Science",
+    id: "sc-005", type: "sentence_completion", level: "B1", title: "Marie Curie", topic: "Science",
     passage:
 `Born Maria Skłodowska in Warsaw in 1867, Marie Curie moved to Paris as a young woman to study physics and chemistry. With her husband Pierre she discovered two new radioactive elements — polonium, named after her native Poland, and radium — and shared the 1903 Nobel Prize in Physics with him and Henri Becquerel.
 
@@ -2568,7 +2637,7 @@ After Pierre's accidental death in 1906, Marie continued the research alone and 
 `1 → Warsaw. 2 → Poland. 3 → 1911.`,
   },
   {
-    id: "sc-006", type: "sentence_completion", title: "The Great Wall of China", topic: "History",
+    id: "sc-006", type: "sentence_completion", level: "B1", title: "The Great Wall of China", topic: "History",
     passage:
 `The structure popularly called the Great Wall is in fact a series of fortifications built and rebuilt over more than two thousand years. The earliest sections were constructed in the seventh century BCE, but most of what tourists visit today dates from the Ming dynasty in the fourteenth to seventeenth centuries.
 
@@ -2583,7 +2652,7 @@ Together, the walls stretch for an estimated 21,000 kilometres across northern C
 `1 → Ming. 2 → 21,000. 3 → nomadic peoples.`,
   },
   {
-    id: "sc-007", type: "sentence_completion", title: "How Solar Panels Work", topic: "Science · Energy",
+    id: "sc-007", type: "sentence_completion", level: "B1", title: "How Solar Panels Work", topic: "Science · Energy",
     passage:
 `A solar panel converts sunlight directly into electricity using the photovoltaic effect, first observed by the French physicist Edmond Becquerel in 1839. A modern panel consists of dozens of silicon cells, each treated with chemical impurities that create a layer with extra electrons and a layer that is short of them. When sunlight strikes the cell, the energy frees electrons from the silicon atoms; the chemical layout pushes them through an external circuit, producing an electric current.
 
@@ -2600,7 +2669,7 @@ The efficiency of commercial silicon panels is currently around 22 per cent, mea
 
   // ───────── 11. Summary Completion ─────────
   {
-    id: "smc-004", type: "summary_completion", title: "Why Bee Numbers Are Falling", topic: "Ecology",
+    id: "smc-004", type: "summary_completion", level: "B1", title: "Why Bee Numbers Are Falling", topic: "Ecology",
     passage:
 `Honeybees and many wild bee species have suffered sharp population declines in recent decades. Researchers point to several converging causes: parasitic mites that weaken individual bees and spread viruses through colonies; widespread use of pesticides, particularly the family known as neonicotinoids; loss of varied wildflower habitat as agriculture turns to large monoculture fields; and warmer winters that disrupt natural cycles of overwintering.
 
@@ -2616,7 +2685,7 @@ Practical responses are spreading. Several European countries have restricted ne
 `1 → mites. 2 → neonicotinoids. 3 → monoculture. 4 → strips.`,
   },
   {
-    id: "smc-005", type: "summary_completion", title: "The Amazon Rainforest", topic: "Environment",
+    id: "smc-005", type: "summary_completion", level: "B1", title: "The Amazon Rainforest", topic: "Environment",
     passage:
 `The Amazon rainforest covers around 5.5 million square kilometres of South America, almost two thirds of which lies within Brazil. It contains an estimated 10 per cent of the world's known plant and animal species and stores billions of tonnes of carbon in its trees and soils. The forest also generates much of its own rainfall, recycling moisture released by transpiration from leaves.
 
@@ -2632,7 +2701,7 @@ Deforestation, primarily for cattle ranching and soybean farming, has cleared ro
 `1 → 10. 2 → transpiration. 3 → soybean. 4 → savanna.`,
   },
   {
-    id: "smc-006", type: "summary_completion", title: "Kelp Forests", topic: "Marine ecology",
+    id: "smc-006", type: "summary_completion", level: "B1", title: "Kelp Forests", topic: "Marine ecology",
     passage:
 `Kelp forests are dense underwater stands of large brown algae that grow along temperate coastlines around the world. They thrive in cool, nutrient-rich water and can grow more than 30 centimetres in a single day, forming towering canopies that shelter fish, sea otters, urchins and many other species.
 
@@ -2648,7 +2717,7 @@ In recent decades, several kelp forests have been damaged or destroyed by warmin
 `1 → 30. 2 → sea urchins. 3 → sea otters. 4 → harvesting.`,
   },
   {
-    id: "smc-007", type: "summary_completion", title: "The Rise of Renewable Electricity", topic: "Energy",
+    id: "smc-007", type: "summary_completion", level: "B1", title: "The Rise of Renewable Electricity", topic: "Energy",
     passage:
 `Worldwide, the share of electricity coming from renewable sources has more than doubled since 2000. Solar and wind power, in particular, have benefited from rapid falls in cost: a unit of solar electricity now costs around a tenth of what it cost in 2010. Many countries now generate more than half of their electricity from low-carbon sources, although progress varies sharply by region.
 
@@ -2666,7 +2735,7 @@ Two challenges remain. The intermittent nature of solar and wind requires invest
 
   // ───────── 12. Table Completion ─────────
   {
-    id: "tc-004", type: "table_completion", title: "Three Great Rivers", topic: "Geography",
+    id: "tc-004", type: "table_completion", level: "B1", title: "Three Great Rivers", topic: "Geography",
     passage:
 `The world's longest rivers flow across continents and shape the cultures along their banks. The Nile, traditionally regarded as the longest, runs roughly 6,650 kilometres from sources in East Africa to its delta on the Mediterranean. It supports more than 250 million people in eleven countries.
 
@@ -2691,7 +2760,7 @@ The Yangtze in China, at around 6,300 kilometres, is the longest river entirely 
 `(1) → 6,650. (2) → volume (or discharge). (3) → Dam.`,
   },
   {
-    id: "tc-005", type: "table_completion", title: "Three Major World Religions", topic: "History · Religion",
+    id: "tc-005", type: "table_completion", level: "B1", title: "Three Major World Religions", topic: "History · Religion",
     passage:
 `Three of the world's largest religions trace their origins to specific regions and individuals. Christianity emerged in the first century CE in Roman-controlled Judea, founded on the teachings of Jesus of Nazareth, and now claims around 2.4 billion followers worldwide. Islam was founded in the seventh century in the Arabian city of Mecca by the prophet Muhammad and has approximately 1.9 billion adherents today. Buddhism began in northern India in the fifth century BCE through the teachings of the Buddha, Siddhartha Gautama, and counts roughly 500 million followers, mostly in Asia.
 
@@ -2714,7 +2783,7 @@ The three traditions also share certain characteristics: scriptures considered a
 `(1) → Jesus. (2) → 7th. (3) → 500.`,
   },
   {
-    id: "tc-006", type: "table_completion", title: "Three National Space Agencies", topic: "Science · Technology",
+    id: "tc-006", type: "table_completion", level: "B1", title: "Three National Space Agencies", topic: "Science · Technology",
     passage:
 `Three of the world's most active space agencies operate from very different contexts. NASA, the United States agency, was founded in 1958 in response to the Soviet launch of Sputnik. It currently has the largest space-exploration budget of any single agency, at roughly 25 billion dollars a year.
 
@@ -2737,7 +2806,7 @@ The European Space Agency, ESA, founded in 1975, is funded jointly by 22 member 
 `(1) → 1958. (2) → 22. (3) → far side.`,
   },
   {
-    id: "tc-007", type: "table_completion", title: "Three Olympic Host Cities", topic: "Sport · History",
+    id: "tc-007", type: "table_completion", level: "B1", title: "Three Olympic Host Cities", topic: "Sport · History",
     passage:
 `The modern Summer Olympic Games are held every four years in a different host city. The 2008 Games in Beijing, China, are remembered for their elaborate opening ceremony watched by an estimated 1.5 billion television viewers. The 2012 Games in London made the city the first to have hosted the Games three times, after earlier turns in 1908 and 1948. The 2020 Games, held in Tokyo, Japan, were postponed by a year because of the global Covid-19 pandemic and took place in 2021 with no spectators in the stands.`,
     instructions: "Complete the table using NO MORE THAN TWO WORDS OR A NUMBER for each gap.",
@@ -2760,7 +2829,7 @@ The European Space Agency, ESA, founded in 1975, is funded jointly by 22 member 
 
   // ───────── 13. Flow Chart Completion ─────────
   {
-    id: "fc-004", type: "flow_chart_completion", title: "From Coffee Cherry to Roasted Bean", topic: "Agriculture · Food",
+    id: "fc-004", type: "flow_chart_completion", level: "B1", title: "From Coffee Cherry to Roasted Bean", topic: "Agriculture · Food",
     passage:
 `Coffee begins as a small red fruit called a cherry, which grows in clusters on tropical shrubs. Once ripe, the cherries are picked — by hand on the best estates — and taken to a processing plant within a few hours. There, the outer flesh is removed in one of two ways. In the "wet" method, water washes away the pulp; in the "dry" method, the cherries are spread out in the sun to shrivel for several weeks before the pulp is mechanically separated from the inner beans.
 
@@ -2789,7 +2858,7 @@ Step 6: Cooled beans packed and sold.`,
 `(1) → dry. (2) → 11. (3) → roastery.`,
   },
   {
-    id: "fc-005", type: "flow_chart_completion", title: "How Wine Is Made", topic: "Food science",
+    id: "fc-005", type: "flow_chart_completion", level: "B1", title: "How Wine Is Made", topic: "Food science",
     passage:
 `Winemaking begins with the harvest. Ripe grapes are picked, sorted to remove leaves and damaged fruit, and transferred to a crusher that gently breaks the skins without smashing the pips. The resulting mixture of juice, skins and pulp, called must, is then transferred to fermentation tanks.
 
@@ -2818,7 +2887,7 @@ Step 6: Filtered, bottled and stored.`,
 `(1) → crusher. (2) → carbon dioxide. (3) → oak.`,
   },
   {
-    id: "fc-006", type: "flow_chart_completion", title: "Steel Production", topic: "Industry",
+    id: "fc-006", type: "flow_chart_completion", level: "B1", title: "Steel Production", topic: "Industry",
     passage:
 `Modern steel begins with iron ore extracted from open-cast mines. The crushed ore is fed into a blast furnace along with coke (a treated form of coal) and limestone. Inside the furnace, hot air is blown up through the mixture; the coke burns at extremely high temperatures, releasing carbon monoxide that strips oxygen from the iron oxide and produces molten iron known as pig iron.
 
@@ -2847,7 +2916,7 @@ Step 6: Molten steel poured into moulds, cooled into (3) ___ and rolled.`,
 `(1) → coke. (2) → carbon. (3) → slabs.`,
   },
   {
-    id: "fc-007", type: "flow_chart_completion", title: "How Tap Water Is Treated", topic: "Engineering",
+    id: "fc-007", type: "flow_chart_completion", level: "B1", title: "How Tap Water Is Treated", topic: "Engineering",
     passage:
 `Treating raw water from a river or reservoir for safe drinking involves several stages. The water first enters large tanks where it is mixed with a chemical called a coagulant. The coagulant causes tiny suspended particles of mud and organic matter to clump together into larger flakes, which then settle to the bottom of the tank during a slower process called sedimentation.
 
@@ -2874,7 +2943,7 @@ Step 5: pH adjusted; water sent through distribution pipes.`,
 
   // ───────── 14. Diagram Completion ─────────
   {
-    id: "dc-004", type: "diagram_completion", title: "A Plant Cell", topic: "Biology",
+    id: "dc-004", type: "diagram_completion", level: "B1", title: "A Plant Cell", topic: "Biology",
     passage:
 `A typical plant cell is enclosed by a rigid cell wall made of cellulose, which gives the cell its shape. Just inside the wall lies the cell membrane, a thin layer that controls the movement of substances in and out of the cell. The inside of the cell is filled with a jelly-like fluid called cytoplasm, in which numerous specialised structures are suspended.
 
@@ -2901,7 +2970,7 @@ The largest of these structures, the nucleus, contains the cell's genetic materi
 `(1) → cell wall. (2) → chloroplasts. (3) → nucleus.`,
   },
   {
-    id: "dc-005", type: "diagram_completion", title: "Cross-Section of a Volcano", topic: "Earth science",
+    id: "dc-005", type: "diagram_completion", level: "B1", title: "Cross-Section of a Volcano", topic: "Earth science",
     passage:
 `Inside the Earth, partially molten rock called magma collects in a large underground pool known as the magma chamber, often several kilometres beneath the surface. From the chamber, a roughly vertical channel called the main vent rises through the volcano's cone and reaches the open air at an opening called the crater.
 
@@ -2929,7 +2998,7 @@ When pressure in the chamber becomes high enough, magma is forced up the vent an
 `(1) → magma chamber. (2) → main vent. (3) → crater.`,
   },
   {
-    id: "dc-006", type: "diagram_completion", title: "Inside a Camera", topic: "Optics",
+    id: "dc-006", type: "diagram_completion", level: "B1", title: "Inside a Camera", topic: "Optics",
     passage:
 `A digital camera collects light through a curved glass lens at the front, which bends incoming rays so they converge at a single plane inside the body. Between the lens and the rest of the camera lies an adjustable aperture, an opening that can be made wider or narrower to control how much light enters in any moment.
 
@@ -2950,7 +3019,7 @@ Behind the aperture, a thin shutter blocks the light path until the photographer
 `(1) → lens. (2) → aperture. (3) → image sensor.`,
   },
   {
-    id: "dc-007", type: "diagram_completion", title: "Chambers of the Human Heart", topic: "Biology",
+    id: "dc-007", type: "diagram_completion", level: "B1", title: "Chambers of the Human Heart", topic: "Biology",
     passage:
 `The human heart has four chambers — two smaller upper chambers called atria, and two larger lower chambers called ventricles. Blood returning from the body, low in oxygen, enters the right atrium and then drops into the right ventricle, which pumps it through the pulmonary artery to the lungs to pick up oxygen.
 
@@ -2973,6 +3042,899 @@ The newly oxygenated blood returns to the left atrium and passes into the left v
     ],
     analysis:
 `(1) → atrium. (2) → ventricle. (3) → left.`,
+  },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // ░░░░░░░░░░░░░░░░░░░░░░░░░  A2 ELEMENTARY LEVEL  ░░░░░░░░░░░░░░░░░░░░░░░░░
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  // ── A2 · 1. Skimming ──
+  {
+    id: "sk-a2-001",
+    type: "skimming",
+    level: "A2",
+    title: "My Cat Milo",
+    topic: "Pets · Daily life",
+    passage:
+`I have a cat. His name is Milo. He is two years old and he is black and white. Milo likes to sleep on my bed in the morning. In the afternoon, he plays with a small ball. Milo eats fish food two times a day. I love my cat very much.`,
+    instructions: "Skim the passage and choose the BEST answer.",
+    options: [
+      { label: "A", text: "How to buy a cat" },
+      { label: "B", text: "A girl and her pet cat" },
+      { label: "C", text: "Different kinds of cat food" },
+      { label: "D", text: "Why cats sleep a lot" },
+    ],
+    items: [{ prompt: "What is the passage mainly about?", answer: "B" }],
+    analysis:
+`B is correct. The whole text is about the writer's pet cat Milo — his colour, what he does, and what he eats.
+
+A: buying a cat is not mentioned.
+C: only one type of food (fish) is named, not different kinds.
+D: the cat sleeps in the morning, but the text is not really about why cats sleep.`,
+  },
+
+  // ── A2 · 2. Scanning ──
+  {
+    id: "scn-a2-001",
+    type: "scanning",
+    level: "A2",
+    title: "Anna's School Day",
+    topic: "School · Routines",
+    passage:
+`Anna is 12 years old. She lives in Madrid. She goes to school by bus at 8 o'clock. School starts at 8:30 and finishes at 3 o'clock. Her favourite subject is art. After school, she does her homework for one hour. On Saturdays, Anna plays football with her friends in the park.`,
+    instructions: "Scan the passage to find the answers. Write ONE word or a number for each.",
+    items: [
+      { prompt: "How old is Anna?", answer: "12", acceptable: ["12 years old", "twelve"] },
+      { prompt: "What time does school start?", answer: "8:30", acceptable: ["8.30", "half past eight"] },
+      { prompt: "What is Anna's favourite subject?", answer: "art", acceptable: ["Art"] },
+      { prompt: "On what day does she play football?", answer: "Saturday", acceptable: ["Saturdays", "saturday"] },
+    ],
+    analysis:
+`Scanning means looking for specific words like numbers, times and names. You don't need to read every word — just look for the key word in the question and check the line near it.`,
+  },
+
+  // ── A2 · 3. Matching Headings ──
+  {
+    id: "mh-a2-001",
+    type: "matching_headings",
+    level: "A2",
+    title: "My Family",
+    topic: "Family · Personal",
+    passage:
+`[A] My name is Tom. I live in a small house with my mum, my dad and my little sister Lily. We are a happy family.
+
+[B] My dad is a teacher. He works at a school in our town. My mum works at a hospital. She is a nurse.
+
+[C] On Sundays, we always eat lunch together. My mum cooks pasta and my dad makes a salad. Lily and I help to put the plates on the table.`,
+    instructions: "Match each paragraph (A–C) with the correct heading from the list.",
+    options: [
+      { label: "i",   text: "Sunday lunch at home" },
+      { label: "ii",  text: "What my parents do for work" },
+      { label: "iii", text: "A family holiday at the beach" },
+      { label: "iv",  text: "The people in my family" },
+      { label: "v",   text: "How I get to school" },
+    ],
+    items: [
+      { prompt: "Paragraph A", answer: "iv" },
+      { prompt: "Paragraph B", answer: "ii" },
+      { prompt: "Paragraph C", answer: "i" },
+    ],
+    analysis:
+`A → iv: Tom lists the people he lives with (mum, dad, sister).
+B → ii: Both parents and their jobs (teacher, nurse).
+C → i: A description of Sunday lunch.
+
+iii (holiday) and v (school) are distractors — they are never mentioned in the text.`,
+  },
+
+  // ── A2 · 4. Matching Information ──
+  {
+    id: "mi-a2-001",
+    type: "matching_information",
+    level: "A2",
+    title: "Three Friends and Their Hobbies",
+    topic: "People · Hobbies",
+    passage:
+`[A] Sara is from Brazil. She loves football. She plays in a team every Saturday morning. Her favourite player is Marta.
+
+[B] Kenji lives in Tokyo. He likes to draw. He has a small notebook and he draws people in the park every weekend.
+
+[C] Emma is from Ireland. She enjoys reading. She reads two books every week, usually stories about animals.`,
+    instructions: "Which paragraph (A, B or C) contains the following information?",
+    options: [
+      { label: "A", text: "Sara — football" },
+      { label: "B", text: "Kenji — drawing" },
+      { label: "C", text: "Emma — reading" },
+    ],
+    items: [
+      { prompt: "1. The name of a person who plays in a team.", answer: "A" },
+      { prompt: "2. A person who reads many books in a week.", answer: "C" },
+      { prompt: "3. A person who uses a notebook for their hobby.", answer: "B" },
+      { prompt: "4. A person whose favourite player is named.", answer: "A" },
+    ],
+    analysis:
+`1 → A: "She plays in a team every Saturday morning."
+2 → C: "She reads two books every week."
+3 → B: "He has a small notebook and he draws."
+4 → A: "Her favourite player is Marta."`,
+  },
+
+  // ── A2 · 5. Matching Features ──
+  {
+    id: "mf-a2-001",
+    type: "matching_features",
+    level: "A2",
+    title: "Three Cities",
+    topic: "Geography · Cities",
+    passage:
+`Paris is in France. It is famous for the Eiffel Tower. Many people visit Paris every year.
+
+Cairo is in Egypt. It is famous for the pyramids. The pyramids are very old.
+
+Sydney is in Australia. It is famous for the Opera House, a big white building near the sea.`,
+    instructions: "Match each city (A–C) with the famous place that is in that city.",
+    options: [
+      { label: "A", text: "Paris" },
+      { label: "B", text: "Cairo" },
+      { label: "C", text: "Sydney" },
+    ],
+    items: [
+      { prompt: "1. The Eiffel Tower", answer: "A" },
+      { prompt: "2. The pyramids",     answer: "B" },
+      { prompt: "3. The Opera House",  answer: "C" },
+    ],
+    analysis:
+`Each landmark is named once in the passage, right next to its city. Look for the landmark name in the text and check the city in the same sentence.`,
+  },
+
+  // ── A2 · 6. Matching Sentence Endings ──
+  {
+    id: "mse-a2-001",
+    type: "matching_sentence_endings",
+    level: "A2",
+    title: "A Trip to the Zoo",
+    topic: "Animals · Free time",
+    passage:
+`Last Sunday I went to the zoo with my brother. We saw many animals. The elephants were very big and they ate a lot of fruit. The monkeys were funny because they jumped from tree to tree. My favourite animal was the lion. It was sleeping in the sun. We took photos of the giraffes too. They are tall and have long necks. We had a great day.`,
+    instructions: "Complete each sentence by choosing the correct ending (A–E) from the list.",
+    options: [
+      { label: "A", text: "ate a lot of fruit." },
+      { label: "B", text: "have long necks." },
+      { label: "C", text: "was sleeping in the sun." },
+      { label: "D", text: "live in cold countries." },
+      { label: "E", text: "jumped from tree to tree." },
+    ],
+    items: [
+      { prompt: "1. The elephants…", answer: "A" },
+      { prompt: "2. The monkeys…",   answer: "E" },
+      { prompt: "3. The lion…",      answer: "C" },
+      { prompt: "4. The giraffes…",  answer: "B" },
+    ],
+    analysis:
+`Each animal action is in the same sentence as the animal name. D ("live in cold countries") is the distractor — no animal in this passage is described that way.`,
+  },
+
+  // ── A2 · 7. True / False / Not Given ──
+  {
+    id: "tfng-a2-001",
+    type: "true_false_not_given",
+    level: "A2",
+    title: "Pizza for Dinner",
+    topic: "Food · Family",
+    passage:
+`Every Friday, my family eats pizza for dinner. My dad makes the pizza at home. He puts cheese, tomato and mushrooms on top. My little sister doesn't like mushrooms, so dad puts only cheese on her piece. We eat the pizza in front of the TV and watch a film together. My mum drinks tea, but the children drink water.`,
+    instructions: "Decide if each statement is TRUE, FALSE, or NOT GIVEN.",
+    items: [
+      { prompt: "1. The family eats pizza every Friday.",            answer: "TRUE" },
+      { prompt: "2. The pizza is made at a restaurant.",             answer: "FALSE" },
+      { prompt: "3. The little sister likes mushrooms on her pizza.", answer: "FALSE" },
+      { prompt: "4. The pizza costs ten dollars.",                   answer: "NOT GIVEN" },
+      { prompt: "5. The family watches TV while they eat.",          answer: "TRUE" },
+    ],
+    analysis:
+`1 TRUE: "Every Friday, my family eats pizza for dinner."
+2 FALSE: "My dad makes the pizza at home" — not at a restaurant.
+3 FALSE: "My little sister doesn't like mushrooms."
+4 NOT GIVEN: the price is never mentioned.
+5 TRUE: "We eat the pizza in front of the TV."`,
+  },
+
+  // ── A2 · 8. Multiple Choice ──
+  {
+    id: "mc-a2-001",
+    type: "multiple_choice",
+    level: "A2",
+    title: "The Weather Today",
+    topic: "Weather · Daily life",
+    passage:
+`Today the weather is cold but sunny. There are no clouds in the sky. It is 8 degrees in the morning and 12 degrees in the afternoon. There is no rain today, but tomorrow it will rain all day. People in the city are wearing warm coats and hats.`,
+    instructions: "Read the passage and choose the correct answer.",
+    options: [
+      { label: "A", text: "It is hot and rainy." },
+      { label: "B", text: "It is cold and sunny." },
+      { label: "C", text: "It is warm and cloudy." },
+      { label: "D", text: "It is cold and rainy." },
+    ],
+    items: [{ prompt: "What is the weather like today?", answer: "B" }],
+    analysis:
+`B is correct. The first sentence says clearly: "Today the weather is cold but sunny."
+
+D is wrong: rain is for TOMORROW, not today. A and C contradict the cold/sunny description.`,
+  },
+
+  // ── A2 · 9. List Selection ──
+  {
+    id: "ls-a2-001",
+    type: "list_selection",
+    level: "A2",
+    title: "What's in My Bag?",
+    topic: "Objects · School",
+    passage:
+`I am a student. Every day I take my school bag with me. Inside my bag there is a notebook, three pens, my English book and a small bottle of water. I do not have a laptop in my bag because it is too heavy. I also bring an apple to eat at break time. My phone is in my pocket, not in my bag.`,
+    instructions: "Which THREE items are in the writer's bag? Choose THREE letters.",
+    options: [
+      { label: "A", text: "a notebook" },
+      { label: "B", text: "a laptop" },
+      { label: "C", text: "an apple" },
+      { label: "D", text: "a phone" },
+      { label: "E", text: "an English book" },
+      { label: "F", text: "a sandwich" },
+    ],
+    items: [{ prompt: "Choose THREE items that are in the bag.", answer: ["A", "C", "E"] }],
+    analysis:
+`A, C and E are correct (notebook, apple, English book — and water and pens, which are not options).
+
+B is wrong: "I do not have a laptop in my bag."
+D is wrong: "My phone is in my pocket, not in my bag."
+F is wrong: a sandwich is never mentioned.`,
+  },
+
+  // ── A2 · 10. Choose a Title ──
+  {
+    id: "ct-a2-001",
+    type: "choose_title",
+    level: "A2",
+    title: "Best title?",
+    topic: "Holidays · Travel",
+    passage:
+`Last summer my family went to the beach for one week. We stayed in a small hotel near the sea. Every morning we swam in the warm water and built castles in the sand. In the afternoon we ate ice cream. In the evening we walked along the beach and looked at the stars. It was the best holiday of my life.`,
+    instructions: "Choose the BEST title for this passage.",
+    options: [
+      { label: "A", text: "How to swim in the sea" },
+      { label: "B", text: "A perfect week at the beach" },
+      { label: "C", text: "The history of ice cream" },
+      { label: "D", text: "Hotels in my country" },
+    ],
+    items: [{ prompt: "Best title for the passage:", answer: "B" }],
+    analysis:
+`B is correct. The passage describes one happy week at the beach (swimming, sandcastles, ice cream, evening walks).
+
+A: swimming is mentioned, but it is just one activity.
+C and D: never the topic.`,
+  },
+
+  // ── A2 · 11. Short Answer Questions ──
+  {
+    id: "sa-a2-001",
+    type: "short_answer",
+    level: "A2",
+    title: "Tom's New Bike",
+    topic: "Daily life · Family",
+    passage:
+`Last week, Tom's father bought him a new bike for his birthday. The bike is red. Tom is eight years old. Now he rides his bike to school every day with his best friend Jack. They take ten minutes to get there. On Saturdays, Tom rides his bike to the park.`,
+    instructions: "Answer the questions. Use NO MORE THAN TWO WORDS for each answer.",
+    items: [
+      { prompt: "1. Who bought the bike?",         answer: "his father", acceptable: ["father", "Tom's father"] },
+      { prompt: "2. What colour is the bike?",     answer: "red" },
+      { prompt: "3. How old is Tom?",              answer: "eight", acceptable: ["8", "eight years"] },
+      { prompt: "4. Who does Tom ride to school with?", answer: "Jack", acceptable: ["his friend", "best friend"] },
+    ],
+    analysis:
+`Each answer is a single word or short phrase taken directly from the passage. Stay within the word limit (max 2 words).`,
+  },
+
+  // ── A2 · 12. Sentence Completion ──
+  {
+    id: "sc-a2-001",
+    type: "sentence_completion",
+    level: "A2",
+    title: "My Brother the Footballer",
+    topic: "Sport · Family",
+    passage:
+`My brother Mark is 15 years old and he loves football. He plays for his school team every Wednesday. His coach says Mark is the best player in the team. Mark trains for two hours every day after school. His dream is to be a famous football player one day.`,
+    instructions: "Complete the sentences. Use NO MORE THAN TWO WORDS from the passage.",
+    items: [
+      { prompt: "1. Mark plays football for his ______ team.",        answer: "school" },
+      { prompt: "2. The team plays every ______.",                   answer: "Wednesday", acceptable: ["wednesday"] },
+      { prompt: "3. Mark trains for ______ every day.",              answer: "two hours" },
+      { prompt: "4. He wants to be a famous ______ one day.",        answer: "football player", acceptable: ["footballer"] },
+    ],
+    analysis:
+`Pick the exact word(s) from the passage. Don't change form (no plural/singular changes) and respect the word limit.`,
+  },
+
+  // ── A2 · 13. Summary Completion ──
+  {
+    id: "smc-a2-001",
+    type: "summary_completion",
+    level: "A2",
+    title: "A Visit to the Park",
+    topic: "Free time · Daily life",
+    passage:
+`On Saturday morning, Lina went to the park with her dog Max. The park was very busy. Many children were playing on the grass. Lina sat on a bench and read her book for one hour. Max ran after a small ball. After lunch, they walked home together. Lina was tired but happy.`,
+    instructions: "Complete the summary. Choose ONE letter (A–G) for each gap.",
+    options: [
+      { label: "A", text: "school" },
+      { label: "B", text: "park" },
+      { label: "C", text: "happy" },
+      { label: "D", text: "ball" },
+      { label: "E", text: "morning" },
+      { label: "F", text: "tea" },
+      { label: "G", text: "book" },
+    ],
+    items: [
+      { prompt: "On Saturday (1) ______, Lina went to the (2) ______ with her dog. She sat on a bench and read her (3) ______ while Max played with a (4) ______. At the end of the day Lina felt tired but (5) ______.", answer: "E" },
+      { prompt: "Gap 2:", answer: "B" },
+      { prompt: "Gap 3:", answer: "G" },
+      { prompt: "Gap 4:", answer: "D" },
+      { prompt: "Gap 5:", answer: "C" },
+    ],
+    analysis:
+`(1) E morning — "On Saturday morning". (2) B park. (3) G book. (4) D ball. (5) C happy — "Lina was tired but happy."
+
+A (school) and F (tea) are distractors not used.`,
+  },
+
+  // ── A2 · 14. Table Completion ──
+  {
+    id: "tc-a2-001",
+    type: "table_completion",
+    level: "A2",
+    title: "School Timetable",
+    topic: "School · Information",
+    passage:
+`Maria is at primary school. On Monday morning at 9 o'clock she has English. On Tuesday morning at 9 o'clock she has Maths. On Wednesday morning she has Science. The Maths teacher is Mr Brown and the English teacher is Miss Lopez. Maria's favourite teacher is Miss Lopez.`,
+    instructions: "Complete the table. Use ONE word for each answer.",
+    visual:
+`┌───────────┬──────────┬─────────────┐
+│ Day       │ Subject  │ Teacher     │
+├───────────┼──────────┼─────────────┤
+│ Monday    │ English  │ Miss (1)___ │
+│ Tuesday   │ (2)___   │ Mr Brown    │
+│ Wednesday │ (3)___   │ —           │
+└───────────┴──────────┴─────────────┘`,
+    items: [
+      { prompt: "Cell (1)", answer: "Lopez", acceptable: ["lopez"] },
+      { prompt: "Cell (2)", answer: "Maths", acceptable: ["maths", "math"] },
+      { prompt: "Cell (3)", answer: "Science", acceptable: ["science"] },
+    ],
+    analysis:
+`(1) Lopez — "the English teacher is Miss Lopez". (2) Maths — Tuesday is Maths. (3) Science — Wednesday is Science.`,
+  },
+
+  // ── A2 · 15. Flow Chart Completion ──
+  {
+    id: "fc-a2-001",
+    type: "flow_chart_completion",
+    level: "A2",
+    title: "How to Make a Sandwich",
+    topic: "Food · Instructions",
+    passage:
+`Making a cheese sandwich is very easy. First, take two pieces of bread. Then, put butter on one side of each piece. After that, put a slice of cheese in the middle. Finally, cut the sandwich in two pieces and eat it.`,
+    instructions: "Complete the flow chart. Use ONE word for each answer.",
+    visual:
+`Take two pieces of (1)______
+            ↓
+Put (2)______ on one side of each piece
+            ↓
+Put a slice of (3)______ in the middle
+            ↓
+(4)______ the sandwich in two pieces`,
+    items: [
+      { prompt: "Step (1)", answer: "bread" },
+      { prompt: "Step (2)", answer: "butter" },
+      { prompt: "Step (3)", answer: "cheese" },
+      { prompt: "Step (4)", answer: "Cut", acceptable: ["cut"] },
+    ],
+    analysis:
+`Each step matches the order in the passage: bread → butter → cheese → cut.`,
+  },
+
+  // ── A2 · 16. Diagram Completion ──
+  {
+    id: "dc-a2-001",
+    type: "diagram_completion",
+    level: "A2",
+    title: "Parts of a House",
+    topic: "Home · Vocabulary",
+    passage:
+`My house has four main rooms. When you open the front door, you go into the living room. Next to the living room is the kitchen, where we cook. Upstairs there are two bedrooms — one for my parents and one for me. There is also a small bathroom upstairs.`,
+    instructions: "Label the diagram. Use ONE word for each answer.",
+    visual:
+`        ┌─────────────────┐
+UPSTAIRS│ bedroom │(2)____│
+        ├─────────┼───────┤
+        │ (3)____ room    │
+        └────────┬────────┘
+                 │
+        ┌────────┴────────┐
+GROUND  │ living  │(1)____│
+FLOOR   │ room    │       │
+        └─────────┴───────┘`,
+    items: [
+      { prompt: "Label (1) — next to the living room", answer: "kitchen" },
+      { prompt: "Label (2) — second room upstairs",    answer: "bedroom" },
+      { prompt: "Label (3) — small room upstairs",     answer: "bath", acceptable: ["bathroom"] },
+    ],
+    analysis:
+`(1) kitchen — "Next to the living room is the kitchen".
+(2) bedroom — "Upstairs there are two bedrooms".
+(3) bath/bathroom — "There is also a small bathroom upstairs".`,
+  },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // ░░░░░░░░░░░░░░░  B2 UPPER-INTERMEDIATE — CAMBRIDGE IELTS STYLE  ░░░░░░░░░░
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  // ── B2 · 1. Skimming ──
+  {
+    id: "sk-b2-001",
+    type: "skimming",
+    level: "B2",
+    title: "The Decline of Honeybees",
+    topic: "Environment · Biology",
+    passage:
+`Over the past two decades, populations of the western honeybee, Apis mellifera, have suffered alarming declines across Europe and North America. Researchers initially attributed the losses to a single pathogen, but a growing consensus now points to the combined effect of several stressors: the parasitic Varroa mite, viral infections it transmits, large-scale exposure to neonicotinoid pesticides, and the loss of diverse forage caused by industrial monoculture. Beekeepers report unusually high winter mortality, sometimes losing entire colonies in a single season. Although managed hives can be rebuilt, the implications for agriculture are profound: an estimated three-quarters of leading global food crops depend, at least in part, on insect pollination. Without coordinated action — from reducing pesticide use to restoring wildflower margins — economists warn of substantial declines in yields of fruit, nuts and vegetables within a generation.`,
+    instructions: "Skim the passage and choose the BEST answer.",
+    options: [
+      { label: "A", text: "How honey is produced commercially in Europe" },
+      { label: "B", text: "The reasons behind honeybee decline and its agricultural consequences" },
+      { label: "C", text: "A new pesticide that has eliminated the Varroa mite" },
+      { label: "D", text: "The history of beekeeping in North America" },
+    ],
+    items: [{ prompt: "What is the writer's main purpose?", answer: "B" }],
+    analysis:
+`B is correct. The passage identifies multiple causes of decline (mites, viruses, pesticides, monoculture) and links them to consequences for food crops.
+
+A: production methods are not discussed.
+C: no new pesticide is mentioned — the opposite, pesticides are part of the problem.
+D: history is not the focus.
+
+Cambridge tip: when a passage moves from CAUSES to CONSEQUENCES, the main idea usually combines both.`,
+  },
+
+  // ── B2 · 2. Scanning ──
+  {
+    id: "scn-b2-001",
+    type: "scanning",
+    level: "B2",
+    title: "The Voyager Missions",
+    topic: "Space · Science",
+    passage:
+`NASA launched Voyager 2 on 20 August 1977, followed by Voyager 1 on 5 September 1977. Despite the order of launch, Voyager 1 reached Jupiter first, in March 1979, taking advantage of a faster trajectory. Each spacecraft carried a Golden Record, curated by a committee chaired by astronomer Carl Sagan, containing 116 images and a wide range of natural sounds. Voyager 1 crossed the heliopause — the boundary marking the edge of the Sun's influence — in August 2012 and is now travelling at roughly 17 kilometres per second. Voyager 2 followed in November 2018. Mission engineers expect that the on-board radioisotope generators will continue to provide power until around 2027, after which both probes will fall silent but continue to drift through interstellar space.`,
+    instructions: "Scan the passage and answer with NO MORE THAN THREE WORDS or a number.",
+    items: [
+      { prompt: "1. On what exact date was Voyager 1 launched?", answer: "5 September 1977", acceptable: ["September 5 1977", "5 September, 1977"] },
+      { prompt: "2. How many images are on the Golden Record?",  answer: "116" },
+      { prompt: "3. Who chaired the Golden Record committee?",   answer: "Carl Sagan" },
+      { prompt: "4. In what year did Voyager 2 cross the heliopause?", answer: "2018" },
+      { prompt: "5. Until roughly which year will the generators provide power?", answer: "2027" },
+    ],
+    analysis:
+`Scan for the type of information in each question — dates for 1, 4 and 5; a number for 2; a proper name for 3. Capital letters and numerals stand out visually, which makes scanning faster.`,
+  },
+
+  // ── B2 · 3. Matching Headings ──
+  {
+    id: "mh-b2-001",
+    type: "matching_headings",
+    level: "B2",
+    title: "The Rise of Solar Power",
+    topic: "Energy · Technology",
+    passage:
+`[A] In the late 1950s, photovoltaic cells were prohibitively expensive and produced electricity at roughly three hundred times the cost of conventional generation. Their use was therefore restricted to specialised applications such as powering early communications satellites, where weight and reliability outweighed cost.
+
+[B] The picture changed dramatically as manufacturing scale increased and silicon-processing techniques matured. Between 2010 and 2020, the price of solar modules fell by more than ninety per cent, transforming the technology from a niche product into one of the cheapest sources of new electricity in many regions of the world.
+
+[C] Yet the dramatic fall in module prices alone does not guarantee a smooth transition. Solar generation is intermittent: panels produce nothing at night and far less under heavy cloud. Integrating large quantities of solar power into national grids therefore requires substantial investment in storage, demand management, and long-distance transmission lines.
+
+[D] Looking ahead, analysts expect solar capacity to continue its rapid growth, particularly in countries with abundant sunshine and rising electricity demand. Several governments now treat solar deployment as a central pillar of their climate strategy, although the pace of progress remains highly uneven between regions.`,
+    instructions: "Match each paragraph (A–D) with the correct heading from the list.",
+    options: [
+      { label: "i",   text: "Early uses limited by high costs" },
+      { label: "ii",  text: "How solar panels are manufactured today" },
+      { label: "iii", text: "Why integrating solar into the grid is difficult" },
+      { label: "iv",  text: "A dramatic collapse in module prices" },
+      { label: "v",   text: "Solar power and the destruction of habitats" },
+      { label: "vi",  text: "An uneven future driven by policy choices" },
+      { label: "vii", text: "The discovery of the photovoltaic effect" },
+    ],
+    items: [
+      { prompt: "Paragraph A", answer: "i" },
+      { prompt: "Paragraph B", answer: "iv" },
+      { prompt: "Paragraph C", answer: "iii" },
+      { prompt: "Paragraph D", answer: "vi" },
+    ],
+    analysis:
+`A → i: high prices restricted use to satellites.
+B → iv: 90%+ price collapse 2010–2020.
+C → iii: intermittency requires grid investment.
+D → vi: uneven future, government policies.
+
+ii (manufacturing process), v (habitats) and vii (discovery) are distractors not supported by the text.`,
+  },
+
+  // ── B2 · 4. Matching Information ──
+  {
+    id: "mi-b2-001",
+    type: "matching_information",
+    level: "B2",
+    title: "The Story of Modern Antarctica",
+    topic: "Geography · History",
+    passage:
+`[A] Although early Polynesian voyagers may have glimpsed Antarctic ice, the first confirmed sighting of the continent itself is generally credited to a Russian expedition led by Fabian von Bellingshausen in January 1820. Even then, several decades passed before any human set foot on the mainland.
+
+[B] Throughout the late nineteenth and early twentieth centuries, exploration was driven largely by national pride. Expeditions led by figures such as Roald Amundsen and Robert Falcon Scott raced to reach the geographic South Pole, with mixed and sometimes tragic results.
+
+[C] After the Second World War, scientific cooperation gradually replaced competition. The 1959 Antarctic Treaty, signed initially by twelve nations, set aside the entire continent below 60° South for peaceful, scientific use, and prohibited military activity, mineral mining and the disposal of nuclear waste.
+
+[D] Today more than fifty countries participate in the Treaty system, and around forty year-round research stations operate across the continent. Climate scientists value Antarctica for the long environmental record preserved in its ice cores, which can stretch back hundreds of thousands of years.`,
+    instructions: "Which paragraph (A–D) contains the following information?",
+    options: [
+      { label: "A", text: "Paragraph A" },
+      { label: "B", text: "Paragraph B" },
+      { label: "C", text: "Paragraph C" },
+      { label: "D", text: "Paragraph D" },
+    ],
+    items: [
+      { prompt: "1. A reference to bans on certain activities in Antarctica.", answer: "C" },
+      { prompt: "2. The number of countries currently involved in Antarctic governance.", answer: "D" },
+      { prompt: "3. A mention of competition between national expeditions.", answer: "B" },
+      { prompt: "4. The name of the leader of the first confirmed sighting.", answer: "A" },
+      { prompt: "5. A scientific use of Antarctic ice.", answer: "D" },
+    ],
+    analysis:
+`1 → C: prohibitions on military, mining, nuclear waste.
+2 → D: "more than fifty countries".
+3 → B: Amundsen vs. Scott race to the Pole.
+4 → A: Bellingshausen, January 1820.
+5 → D: ice cores preserve a long environmental record.`,
+  },
+
+  // ── B2 · 5. Matching Features ──
+  {
+    id: "mf-b2-001",
+    type: "matching_features",
+    level: "B2",
+    title: "Three Pioneers of Computing",
+    topic: "History · Science",
+    passage:
+`Charles Babbage, working in early-Victorian London, designed the Difference Engine and later the more ambitious Analytical Engine, conceived as a fully mechanical, programmable calculator. Although the latter was never completed in his lifetime, its conceptual leap is widely regarded as the first description of a general-purpose computer.
+
+Ada Lovelace, the daughter of the poet Lord Byron, collaborated closely with Babbage. In 1843 she published a set of detailed notes on the Analytical Engine that included an algorithm for computing Bernoulli numbers, often cited as the world's first computer program.
+
+A century later, the British mathematician Alan Turing transformed the field by formalising what computation actually is. His 1936 paper introduced the abstract Turing machine, providing the theoretical foundation on which all modern programmable computers rest.`,
+    instructions: "Match each statement with the correct person (A, B or C).",
+    options: [
+      { label: "A", text: "Charles Babbage" },
+      { label: "B", text: "Ada Lovelace" },
+      { label: "C", text: "Alan Turing" },
+    ],
+    items: [
+      { prompt: "1. Provided the theoretical foundation of modern computing.", answer: "C" },
+      { prompt: "2. Designed a fully mechanical programmable calculator.",     answer: "A" },
+      { prompt: "3. Wrote what is often called the first computer program.",   answer: "B" },
+      { prompt: "4. Published an influential paper in 1936.",                  answer: "C" },
+      { prompt: "5. Worked on the Analytical Engine but never finished it.",   answer: "A" },
+    ],
+    analysis:
+`Each statement maps to one person via a key term (Turing machine → C; Analytical Engine designer → A; algorithm for Bernoulli numbers → B; 1936 paper → C; never completed → A). Cambridge tip: features can be re-used, so check each statement on its own.`,
+  },
+
+  // ── B2 · 6. Matching Sentence Endings ──
+  {
+    id: "mse-b2-001",
+    type: "matching_sentence_endings",
+    level: "B2",
+    title: "Coral Bleaching",
+    topic: "Marine biology · Climate",
+    passage:
+`Reef-building corals live in a remarkable symbiotic partnership with single-celled algae known as zooxanthellae. The algae shelter inside coral tissue and, through photosynthesis, supply most of the host's energy. When sea surface temperatures rise even one or two degrees above the local seasonal maximum and remain elevated for several weeks, the partnership breaks down. Stressed corals expel their algal partners, exposing the white limestone skeleton beneath and producing the dramatic phenomenon known as bleaching. Bleached corals are not necessarily dead; if cooler conditions return quickly, the algae can recolonise the tissue and the reef recovers. Repeated, prolonged events, however, frequently lead to mass mortality, and recovery is further hampered when corals are also weakened by ocean acidification or coastal pollution.`,
+    instructions: "Complete each sentence with the best ending (A–F).",
+    options: [
+      { label: "A", text: "supply most of the coral's energy through photosynthesis." },
+      { label: "B", text: "is exposed when the algae are expelled." },
+      { label: "C", text: "produce poisonous chemicals to defend the reef." },
+      { label: "D", text: "if cooler conditions return quickly enough." },
+      { label: "E", text: "are usually destroyed by deep-sea predators." },
+      { label: "F", text: "is made worse by acidification and pollution." },
+    ],
+    items: [
+      { prompt: "1. The zooxanthellae living inside coral tissue…", answer: "A" },
+      { prompt: "2. The white limestone skeleton…",                 answer: "B" },
+      { prompt: "3. A bleached reef may still recover…",            answer: "D" },
+      { prompt: "4. The damage caused by repeated bleaching…",      answer: "F" },
+    ],
+    analysis:
+`1 → A: algae provide energy via photosynthesis.
+2 → B: skeleton is exposed when algae are lost.
+3 → D: recovery depends on cool conditions returning.
+4 → F: acidification + pollution worsen the impact.
+
+C and E describe events not in the passage and are distractors.`,
+  },
+
+  // ── B2 · 7. True / False / Not Given ──
+  {
+    id: "tfng-b2-001",
+    type: "true_false_not_given",
+    level: "B2",
+    title: "The Lost Library of Alexandria",
+    topic: "History · Culture",
+    passage:
+`Founded in the third century BCE under the Ptolemaic rulers of Egypt, the Great Library of Alexandria came to symbolise the intellectual ambitions of the ancient Mediterranean. At its height, the library is thought to have housed several hundred thousand scrolls and to have employed scholars whose work shaped fields ranging from geography to literary criticism. Recent historians, however, have urged caution about the most dramatic accounts of its destruction. The popular image of a single catastrophic fire — often blamed on Julius Caesar in 48 BCE — does not fit the scattered surviving evidence, which instead suggests a long, uneven decline driven by political instability, shifting patronage and physical neglect. By the time Arab armies reached the city in the seventh century CE, the library as an institution had probably ceased to function for some time.`,
+    instructions: "Decide if each statement is TRUE, FALSE, or NOT GIVEN according to the passage.",
+    items: [
+      { prompt: "1. The library was founded under Greek-speaking rulers of Egypt.", answer: "TRUE" },
+      { prompt: "2. Modern historians agree that Julius Caesar destroyed the library in a single fire.", answer: "FALSE" },
+      { prompt: "3. The library's scholars contributed to several different academic fields.", answer: "TRUE" },
+      { prompt: "4. The library held more scrolls than any other library of its time.", answer: "NOT GIVEN" },
+      { prompt: "5. The library was probably no longer functioning by the time Arab armies arrived.", answer: "TRUE" },
+    ],
+    analysis:
+`1 TRUE: "Ptolemaic rulers" were Greek-speaking Macedonians.
+2 FALSE: the passage explicitly questions that account.
+3 TRUE: "geography to literary criticism".
+4 NOT GIVEN: no comparison to other libraries is made.
+5 TRUE: "had probably ceased to function for some time".`,
+  },
+
+  // ── B2 · 8. Multiple Choice ──
+  {
+    id: "mc-b2-001",
+    type: "multiple_choice",
+    level: "B2",
+    title: "Why Languages Disappear",
+    topic: "Linguistics · Society",
+    passage:
+`Linguists estimate that of the roughly seven thousand languages spoken today, nearly half may fall silent before the end of the century. Although natural change has always reshaped the world's linguistic map, the current rate of loss is historically exceptional. Migration to cities, schooling delivered exclusively in dominant national languages, and economic incentives that reward fluency in English, Mandarin or Spanish all encourage parents to bring up their children in the dominant tongue rather than the one their grandparents spoke. The damage is rarely the result of overt prohibition; far more often, it follows from a quiet, generational drift in which a language is gradually used in fewer settings, learnt by fewer children, and finally remembered only by elderly speakers.`,
+    instructions: "Choose the BEST answer.",
+    options: [
+      { label: "A", text: "The main cause of language loss today is government bans on minority languages." },
+      { label: "B", text: "Most language loss happens slowly, through choices made by ordinary families." },
+      { label: "C", text: "Languages have always died at the same rate as today." },
+      { label: "D", text: "Migration to cities has had no measurable effect on language use." },
+    ],
+    items: [{ prompt: "Which statement best reflects the writer's view?", answer: "B" }],
+    analysis:
+`B is correct: "rarely the result of overt prohibition... a quiet, generational drift" — i.e. ordinary family choices.
+
+A directly contradicts the text. C is wrong: the rate is "historically exceptional". D is wrong: migration is listed as a cause.`,
+  },
+
+  // ── B2 · 9. List Selection ──
+  {
+    id: "ls-b2-001",
+    type: "list_selection",
+    level: "B2",
+    title: "What Drives Volcanic Eruptions",
+    topic: "Geology · Science",
+    passage:
+`Volcanologists draw a basic distinction between two main eruption styles. Effusive eruptions occur when magma is relatively low in dissolved gas and viscosity is moderate; lava streams from a vent and travels downslope at walking pace, posing limited danger to people who can move out of its path. Explosive eruptions, by contrast, involve viscous, gas-rich magma that fragments violently as it nears the surface. They can hurl ash and pumice many kilometres into the stratosphere, generate fast-moving pyroclastic flows that incinerate everything in their path, and trigger lahars when fresh ash mixes with rainwater or melting snow. Tsunamis are a further hazard when an eruption occurs underwater or causes a flank of the volcano to collapse into the sea.`,
+    instructions: "Which THREE hazards of EXPLOSIVE eruptions are mentioned in the passage? Choose THREE letters.",
+    options: [
+      { label: "A", text: "Pyroclastic flows" },
+      { label: "B", text: "Slow-moving lava streams" },
+      { label: "C", text: "Lahars (mudflows)" },
+      { label: "D", text: "Geyser eruptions" },
+      { label: "E", text: "Earthquakes lasting several days" },
+      { label: "F", text: "Ash thrown into the stratosphere" },
+    ],
+    items: [{ prompt: "Choose THREE explosive-eruption hazards.", answer: ["A", "C", "F"] }],
+    analysis:
+`A pyroclastic flows, C lahars, F ash to the stratosphere — all explicitly listed.
+
+B describes effusive (not explosive) eruptions.
+D and E are not mentioned at all.`,
+  },
+
+  // ── B2 · 10. Choose a Title ──
+  {
+    id: "ct-b2-001",
+    type: "choose_title",
+    level: "B2",
+    title: "Best title?",
+    topic: "Society · Cities",
+    passage:
+`The recent revival of interest in urban cycling owes as much to public policy as to changing personal taste. In cities that have invested heavily in protected lanes, secure parking and integrated public-transport links — Copenhagen, Bogotá and Utrecht among them — cycling has shifted from a marginal activity into a mainstream form of transport, used daily by people of all ages and incomes. Where infrastructure has been neglected, by contrast, even strong environmental motivations have failed to produce comparable change. The lesson, planners increasingly argue, is that travel choices are shaped less by individual virtue than by the streets and networks that surround the traveller.`,
+    instructions: "Choose the BEST title for the passage.",
+    options: [
+      { label: "A", text: "How Copenhagen invented modern cycling" },
+      { label: "B", text: "Why infrastructure matters more than virtue in shaping how people travel" },
+      { label: "C", text: "The health benefits of riding a bicycle to work" },
+      { label: "D", text: "A history of public transport in European capitals" },
+    ],
+    items: [{ prompt: "Best title:", answer: "B" }],
+    analysis:
+`B captures the central thesis: infrastructure and policy, not personal virtue, drive cycling uptake.
+
+A: Copenhagen is one example, not the topic.
+C: health benefits are never discussed.
+D: only one mode (cycling) is the focus.`,
+  },
+
+  // ── B2 · 11. Short Answer Questions ──
+  {
+    id: "sa-b2-001",
+    type: "short_answer",
+    level: "B2",
+    title: "The Discovery of Penicillin",
+    topic: "Medicine · History",
+    passage:
+`In September 1928, the Scottish bacteriologist Alexander Fleming returned from holiday to his laboratory at St Mary's Hospital in London to find a stack of culture plates contaminated by a stray mould. Around one colony of the mould, the bacteria he had been growing had been destroyed. Fleming identified the contaminant as a Penicillium species and named the antibacterial substance it produced "penicillin". Although he published his findings in 1929, the chemical was unstable and difficult to purify, and clinical use only became possible after a team at Oxford, led by Howard Florey and Ernst Chain, developed reliable purification methods in the early 1940s. The three men shared the Nobel Prize for Physiology or Medicine in 1945.`,
+    instructions: "Answer the questions with NO MORE THAN THREE WORDS or a number from the passage.",
+    items: [
+      { prompt: "1. In what month and year did Fleming make the discovery?", answer: "September 1928" },
+      { prompt: "2. Which type of mould produced the antibacterial substance?", answer: "Penicillium", acceptable: ["a Penicillium species", "Penicillium species"] },
+      { prompt: "3. Which university hosted the team that purified penicillin?", answer: "Oxford" },
+      { prompt: "4. In which year was the Nobel Prize awarded?", answer: "1945" },
+    ],
+    analysis:
+`Each answer comes directly from the passage. Stay within the word limit and do not paraphrase — the markers expect text from the passage.`,
+  },
+
+  // ── B2 · 12. Sentence Completion ──
+  {
+    id: "sc-b2-001",
+    type: "sentence_completion",
+    level: "B2",
+    title: "The Spread of Printing",
+    topic: "History · Technology",
+    passage:
+`Although movable type had been used in East Asia for centuries, Johannes Gutenberg's introduction of a metal-type printing press in Mainz around 1450 transformed the production of books in Europe. Within fifty years, presses had been established in more than two hundred European cities. The cost of producing a substantial volume fell to a small fraction of the manuscript price, allowing texts to circulate among an expanding class of literate readers. Historians often link the resulting "print revolution" to the Reformation, the rise of vernacular literature and the gradual standardisation of national languages.`,
+    instructions: "Complete the sentences with NO MORE THAN TWO WORDS from the passage.",
+    items: [
+      { prompt: "1. Gutenberg's press used pieces of ______ type.",                          answer: "metal" },
+      { prompt: "2. Within fifty years, presses had appeared in more than ______ cities.",   answer: "two hundred", acceptable: ["200"] },
+      { prompt: "3. Printing greatly reduced the cost compared with the ______ price.",      answer: "manuscript" },
+      { prompt: "4. Printing helped lead to the standardisation of national ______.",        answer: "languages" },
+    ],
+    analysis:
+`Each gap is filled by a word taken directly from the passage. Make sure the word fits both grammatically and within the word limit.`,
+  },
+
+  // ── B2 · 13. Summary Completion ──
+  {
+    id: "smc-b2-001",
+    type: "summary_completion",
+    level: "B2",
+    title: "Sleep and Memory",
+    topic: "Neuroscience · Health",
+    passage:
+`Recent research has shown that sleep plays an active rather than a passive role in the formation of long-term memories. During slow-wave sleep, the brain replays patterns of activity recorded earlier in the day, gradually transferring information from temporary storage in the hippocampus to more durable networks in the cortex — a process known as consolidation. Subsequent rapid-eye-movement (REM) sleep appears to favour the integration of new material with existing knowledge, supporting both creative problem solving and emotional regulation. Conversely, even a single night of severely restricted sleep impairs the ability to form new memories the following day and dulls performance on tasks that depend on flexible thinking.`,
+    instructions: "Complete the summary using letters from the box. Each option may be used ONCE.",
+    options: [
+      { label: "A", text: "consolidation" },
+      { label: "B", text: "REM" },
+      { label: "C", text: "hippocampus" },
+      { label: "D", text: "cortex" },
+      { label: "E", text: "creativity" },
+      { label: "F", text: "exercise" },
+      { label: "G", text: "blood pressure" },
+    ],
+    items: [
+      { prompt: "During slow-wave sleep, memories are transferred from the (1) ______ to the (2) ______ in a process called (3) ______. (4) ______ sleep then helps integrate new material with existing knowledge and supports (5) ______. — Gap 1:", answer: "C" },
+      { prompt: "Gap 2:", answer: "D" },
+      { prompt: "Gap 3:", answer: "A" },
+      { prompt: "Gap 4:", answer: "B" },
+      { prompt: "Gap 5:", answer: "E" },
+    ],
+    analysis:
+`(1) C hippocampus → (2) D cortex; (3) A consolidation; (4) B REM sleep; (5) E creative problem solving.
+
+F (exercise) and G (blood pressure) are distractors not discussed in the passage.`,
+  },
+
+  // ── B2 · 14. Table Completion ──
+  {
+    id: "tc-b2-001",
+    type: "table_completion",
+    level: "B2",
+    title: "Three Renewable Sources Compared",
+    topic: "Energy · Environment",
+    passage:
+`Among renewable sources of electricity, hydropower remains the largest contributor worldwide, supplying roughly sixteen per cent of global generation. It depends on the controlled release of water through turbines and is therefore concentrated in countries with major river systems. Wind power, by contrast, exploits atmospheric movement and has expanded fastest in coastal Europe and the central United States; modern offshore turbines now exceed twelve megawatts of capacity each. Solar photovoltaic, which converts sunlight directly into electricity using semiconductor cells, has experienced the steepest cost reductions of the three since 2010 and is the dominant new source being added each year in tropical and subtropical regions.`,
+    instructions: "Complete the table. Use NO MORE THAN TWO WORDS from the passage.",
+    visual:
+`┌─────────────────┬───────────────────────┬─────────────────────────────┐
+│ Source          │ Resource exploited    │ Strongest growth region     │
+├─────────────────┼───────────────────────┼─────────────────────────────┤
+│ Hydropower      │ (1) ______            │ countries with major rivers │
+│ Wind            │ atmospheric movement  │ coastal Europe / central (2)│
+│ Solar PV        │ (3) ______            │ (4) ______ regions          │
+└─────────────────┴───────────────────────┴─────────────────────────────┘`,
+    items: [
+      { prompt: "Cell (1)", answer: "water" },
+      { prompt: "Cell (2)", answer: "United States", acceptable: ["US", "USA"] },
+      { prompt: "Cell (3)", answer: "sunlight" },
+      { prompt: "Cell (4)", answer: "tropical", acceptable: ["subtropical", "tropical and subtropical"] },
+    ],
+    analysis:
+`(1) water — "controlled release of water through turbines".
+(2) United States — "coastal Europe and the central United States".
+(3) sunlight — "converts sunlight directly into electricity".
+(4) tropical (or subtropical) — "tropical and subtropical regions".`,
+  },
+
+  // ── B2 · 15. Flow Chart Completion ──
+  {
+    id: "fc-b2-001",
+    type: "flow_chart_completion",
+    level: "B2",
+    title: "How a Volcano is Born",
+    topic: "Geology · Process",
+    passage:
+`Most of the world's volcanoes form along plate boundaries. At a subduction zone, an oceanic plate is forced beneath a lighter continental plate. As the descending slab reaches depths of around one hundred kilometres, water trapped in its sediments is released into the overlying mantle wedge. This water lowers the melting point of the surrounding rock, generating buoyant magma. The magma rises through fractures in the crust and accumulates in shallow reservoirs known as magma chambers. When pressure in the chamber eventually exceeds the strength of the overlying rock, an eruption occurs, building a volcanic edifice over many cycles.`,
+    instructions: "Complete the flow chart. Use NO MORE THAN TWO WORDS from the passage.",
+    visual:
+`Oceanic plate is forced beneath a continental plate
+            ↓
+Slab releases (1) ______ into the mantle wedge
+            ↓
+The melting point of nearby rock is (2) ______
+            ↓
+Buoyant magma rises and collects in (3) ______
+            ↓
+(4) ______ exceeds the strength of overlying rock
+            ↓
+Eruption occurs`,
+    items: [
+      { prompt: "Step (1)", answer: "water" },
+      { prompt: "Step (2)", answer: "lowered", acceptable: ["reduced"] },
+      { prompt: "Step (3)", answer: "magma chambers", acceptable: ["shallow reservoirs", "a magma chamber"] },
+      { prompt: "Step (4)", answer: "pressure" },
+    ],
+    analysis:
+`(1) water — released from the descending slab.
+(2) lowered — "lowers the melting point".
+(3) magma chambers — "accumulates in shallow reservoirs known as magma chambers".
+(4) pressure — "When pressure in the chamber eventually exceeds the strength of the overlying rock".`,
+  },
+
+  // ── B2 · 16. Diagram Completion ──
+  {
+    id: "dc-b2-001",
+    type: "diagram_completion",
+    level: "B2",
+    title: "The Water Cycle",
+    topic: "Earth science · Process",
+    passage:
+`Solar energy drives the global water cycle. Heat from the Sun causes water at the surface of the oceans to change from liquid to vapour, a process called evaporation. The vapour rises, cools as it ascends and condenses into tiny droplets that form clouds. When these droplets coalesce and become heavy enough, they fall as precipitation — rain, snow or hail. A portion of the precipitation that lands on the ground returns to rivers and lakes through surface run-off, while the rest soaks into the soil and slowly recharges underground reservoirs called aquifers, eventually flowing back to the sea.`,
+    instructions: "Label the diagram. Use NO MORE THAN TWO WORDS from the passage.",
+    visual:
+`           ☁ ☁ ☁  ←  (3) ______ falls as rain/snow
+            ↑
+   (2) ______ → forms clouds
+            ↑
+   (1) ______ from ocean surface
+            ↑
+        ☼ Sun ☼
+                                    ↓
+                ground ──→ surface (4) ______ → rivers
+                       └─→ soaks into soil → (5) ______`,
+    items: [
+      { prompt: "Label (1) — process at the ocean surface", answer: "Evaporation", acceptable: ["evaporation"] },
+      { prompt: "Label (2) — vapour cools and turns to droplets", answer: "Condensation", acceptable: ["condensation"] },
+      { prompt: "Label (3) — water falling from clouds",   answer: "Precipitation", acceptable: ["precipitation"] },
+      { prompt: "Label (4) — water flowing across ground", answer: "run-off", acceptable: ["runoff", "surface run-off"] },
+      { prompt: "Label (5) — underground reservoirs",      answer: "aquifers", acceptable: ["aquifer"] },
+    ],
+    analysis:
+`(1) Evaporation — surface water becomes vapour.
+(2) Condensation — vapour cools and forms droplets/clouds.
+(3) Precipitation — droplets fall as rain/snow/hail.
+(4) run-off — surface flow back to rivers.
+(5) aquifers — underground reservoirs.`,
   },
 ];
 
