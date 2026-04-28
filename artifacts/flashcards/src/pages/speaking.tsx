@@ -1662,7 +1662,7 @@ export default function SpeakingPage() {
               {/* Friendly placeholder while we wait for Churchill's first
                   token (or for the report transition). Shown ONLY when we're
                   awaiting an AI response and nothing has streamed back yet. */}
-              {isLoading && streamingContent === null && session.phase !== "idle" && session.phase !== "report-loading" && (
+              {isLoading && streamingContent === null && (
                 <div className="flex items-start gap-2.5">
                   <div className="shrink-0 w-9 h-9 rounded-full overflow-hidden border-2 border-primary/30">
                     <img src="/churchill.png" alt="Churchill AI" className="w-full h-full object-cover object-top" />

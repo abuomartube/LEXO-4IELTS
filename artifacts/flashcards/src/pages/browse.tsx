@@ -6,7 +6,7 @@ import { LevelBadge } from "@/components/level-badge";
 import { Input } from "@/components/ui/input";
 import { Search, CheckCircle2, Bookmark, BookmarkCheck } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import type { ListFlashcardsLevel } from "@workspace/api-client-react/src/generated/api.schemas";
+import type { ListFlashcardsLevel } from "@workspace/api-client-react";
 
 export default function Browse() {
   const [search, setSearch] = useState("");

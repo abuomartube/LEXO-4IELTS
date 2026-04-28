@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { cn } from "@/lib/utils";
-import type { Flashcard } from "@workspace/api-client-react/src/generated/api.schemas";
+import type { Flashcard } from "@workspace/api-client-react";
 import { LevelBadge } from "./level-badge";
 import { PronounceButton } from "./pronounce-button";
 import synonymsRaw from "@/data/synonyms-data.json";

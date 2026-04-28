@@ -901,9 +901,9 @@ export default function EssayChecker() {
       if (!finalResult) throw new Error("Grading ended unexpectedly. Please try again.");
 
       if (assignment.category === "paragraph") {
-        setParagraphResult(finalResult as ParagraphResult);
+        setParagraphResult(finalResult as unknown as ParagraphResult);
       } else {
-        setResult(finalResult as EssayResult);
+        setResult(finalResult as unknown as EssayResult);
       }
       // Track that this assignment is now submitted (not just skipped)
       setCategoryProgress((prev) => {
@@ -1002,9 +1002,9 @@ export default function EssayChecker() {
 
       if (controller.signal.aborted) return;
       if (submittedMode === "paragraph") {
-        setFreeParagraphResult(finalResult as ParagraphResult);
+        setFreeParagraphResult(finalResult as unknown as ParagraphResult);
       } else {
-        setFreeResult(finalResult as EssayResult);
+        setFreeResult(finalResult as unknown as EssayResult);
       }
       setScreen("freeresult");
       setTimeout(() => resultRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 100);

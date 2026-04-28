@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import type { FlashcardLevel } from "@workspace/api-client-react/src/generated/api.schemas";
+import type { FlashcardLevel } from "@workspace/api-client-react";
 
 export function LevelBadge({ level, className }: { level: FlashcardLevel | string; className?: string }) {
   const styles = {

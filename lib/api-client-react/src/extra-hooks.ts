@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { customFetch } from "./custom-fetch";
+import type { FlashcardLevel } from "./generated/api.schemas";
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -7,7 +8,7 @@ export interface WordOfDay {
   id: number;
   english: string;
   arabic: string;
-  level: string;
+  level: FlashcardLevel;
   category: string;
   exampleSentence?: string;
   exampleSentenceArabic?: string;

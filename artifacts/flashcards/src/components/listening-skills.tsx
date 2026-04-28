@@ -429,7 +429,7 @@ function AudioPlayer({ testId, lines, onFirstPlay }:{ testId: string; lines: Aud
     try {
       for (let i = 0; i < lines.length; i++) {
         if (cancelledRef.current) return null;
-        const url = await fetchLine(lines[i]);
+        const url = await fetchLine(lines[i], i);
         urls.push(url);
         setLoadProgress(Math.round(((i + 1) / lines.length) * 100));
       }

@@ -164,7 +164,10 @@ export function GuidedTour({ onComplete }: { onComplete: () => void }) {
       return () => { cancelled = true; observer?.disconnect(); clearTimeout(fallback); };
     }
 
-    return () => { cancelled = true; observer?.disconnect(); };
+    return () => {
+      cancelled = true;
+      (observer as MutationObserver | null)?.disconnect();
+    };
   }, [step.target, syncHighlight]);
 
   useEffect(() => {

@@ -10,7 +10,7 @@ import { CheckCircle2, XCircle, ArrowRight, ArrowLeft, RefreshCw, Filter, BookOp
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { useActivityPosition } from "@/hooks/use-activity-position";
-import type { ListFlashcardsLevel } from "@workspace/api-client-react/src/generated/api.schemas";
+import type { ListFlashcardsLevel } from "@workspace/api-client-react";
 
 type StudyMode = "all" | "srs" | "bookmarks" | "unknown";
 

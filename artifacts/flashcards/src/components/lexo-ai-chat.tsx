@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, type FormEvent } from "react";
+import { useState, useRef, useEffect, type FormEvent, type ReactElement } from "react";
 import { MessageCircle, X, Send, Sparkles, Loader2, Trash2 } from "lucide-react";
 
 interface ChatMessage {
@@ -60,8 +60,8 @@ function saveHistory(messages: ChatMessage[]) {
   }
 }
 
-function renderInline(text: string): (string | JSX.Element)[] {
-  const parts: (string | JSX.Element)[] = [];
+function renderInline(text: string): (string | ReactElement)[] {
+  const parts: (string | ReactElement)[] = [];
   const regex = /\*\*(.+?)\*\*/g;
   let lastIndex = 0;
   let match: RegExpExecArray | null;

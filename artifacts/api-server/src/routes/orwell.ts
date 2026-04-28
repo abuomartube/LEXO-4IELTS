@@ -972,7 +972,7 @@ async function fetchHistoryChart(emailParam: string): Promise<ChartSeries> {
   const out: ChartSeries = { task1: [], task2: [], paragraph: [], freecheck: [] };
   for (const r of rows) {
     if (typeof r.band !== "number") continue;
-    const bucket = (out as Record<string, ChartPoint[]>)[r.category];
+    const bucket = (out as unknown as Record<string, ChartPoint[]>)[r.category];
     if (!bucket) continue;
     bucket.push({ date: r.createdAt.toISOString(), band: r.band });
   }
@@ -1171,7 +1171,7 @@ router.post("/orwell/history/:id/compare", async (req, res): Promise<void> => {
   if (!Number.isInteger(id) || id <= 0) { res.status(400).json({ error: "Bad id" }); return; }
   const force = req.query.force === "1" || (req.body && (req.body as { force?: boolean }).force === true);
   const result = await buildCompareForId(email, id, !!force);
-  if ("error" in result) { res.status(result.status).json({ error: result.error }); return; }
+  if ("error" in result) { res.status(result.status ?? 500).json({ error: result.error }); return; }
   res.json({ report: result.report });
 });
 
@@ -1341,7 +1341,7 @@ router.post("/orwell/coach-summary", async (req, res): Promise<void> => {
   if (!email) { res.status(401).json({ error: "Unauthorized" }); return; }
   const force = req.query.force === "1" || (req.body && (req.body as { force?: boolean }).force === true);
   const result = await buildCoachSummary(email, !!force);
-  if ("error" in result) { res.status(result.status).json({ error: result.error }); return; }
+  if ("error" in result) { res.status(result.status ?? 500).json({ error: result.error }); return; }
   res.json(result);
 });
 
@@ -1349,7 +1349,7 @@ router.get("/orwell/coach-summary", async (req, res): Promise<void> => {
   const email = await verifyStudentEmail(req);
   if (!email) { res.status(401).json({ error: "Unauthorized" }); return; }
   const result = await buildCoachSummary(email, false);
-  if ("error" in result) { res.status(result.status).json({ error: result.error }); return; }
+  if ("error" in result) { res.status(result.status ?? 500).json({ error: result.error }); return; }
   res.json(result);
 });
 
@@ -1390,7 +1390,7 @@ router.get("/admin/students/:email/orwell-coach-summary", async (req, res): Prom
   const studentEmail = req.params.email.trim().toLowerCase();
   if (!studentEmail) { res.status(400).json({ error: "Bad email" }); return; }
   const result = await buildCoachSummary(studentEmail, false);
-  if ("error" in result) { res.status(result.status).json({ error: result.error }); return; }
+  if ("error" in result) { res.status(result.status ?? 500).json({ error: result.error }); return; }
   res.json(result);
 });
 
