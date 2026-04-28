@@ -222,108 +222,168 @@ Skimming tip: when a passage explains BOTH a problem and practical solutions, it
     topic: "History · Landmarks",
     passage:
 `The Great Wall of China is one of the most famous landmarks in the world. It is not just one long wall, but a series of walls built over many centuries to protect the Chinese Empire. The first parts of the wall were constructed as early as the 7th century BC. However, the most famous and well-preserved sections were built during the Ming Dynasty, between 1368 and 1644. The total length of the wall is estimated to be about 21,196 kilometres. Today, it attracts over 10 million visitors every year. The most popular section for tourists to visit is Badaling, which is located near Beijing.`,
-    instructions: "Scan the passage to find the answer. Type your answer in the box (numbers or short words only).",
+    instructions: "Scan the passage to find each answer. Type short answers (numbers or short words only).",
     items: [
       {
         prompt: "1. In which century were the first parts of the wall constructed?",
         answer: "7th century BC",
         acceptable: ["7th century", "7th", "the 7th century BC", "the 7th century", "seventh century BC", "seventh century"],
       },
-    ],
-    analysis:
-`Answer: 7th century BC.
-
-Scan for the keywords "first parts" or "constructed" → "the first parts of the wall were constructed as early as the 7th century BC."
-
-Scanning tip: when a question asks about a TIME, look for numbers, years, or words like "century", "year", "between" in the passage.`,
-  },
-  {
-    id: "scn-002",
-    type: "scanning",
-    title: "The Great Wall of China — Length",
-    topic: "History · Landmarks",
-    passage:
-`The Great Wall of China is one of the most famous landmarks in the world. It is not just one long wall, but a series of walls built over many centuries to protect the Chinese Empire. The first parts of the wall were constructed as early as the 7th century BC. However, the most famous and well-preserved sections were built during the Ming Dynasty, between 1368 and 1644. The total length of the wall is estimated to be about 21,196 kilometres. Today, it attracts over 10 million visitors every year. The most popular section for tourists to visit is Badaling, which is located near Beijing.`,
-    instructions: "Scan the passage to find the answer. Type your answer in the box.",
-    items: [
       {
-        prompt: "2. What is the estimated total length of the Great Wall (in kilometres)?",
+        prompt: "2. What is the estimated total length of the wall (in kilometres)?",
         answer: "21,196",
         acceptable: ["21196", "21,196 kilometres", "21,196 km", "21196 km", "21196 kilometres", "about 21,196", "about 21196"],
       },
+      {
+        prompt: "3. How many visitors does the wall attract each year?",
+        answer: "10 million",
+        acceptable: ["over 10 million", "10,000,000", "ten million", "more than 10 million", "10 million visitors", "over 10 million visitors"],
+      },
     ],
     analysis:
-`Answer: 21,196 kilometres.
+`1. 7th century BC — Scan for "first parts" / "constructed" → "the first parts of the wall were constructed as early as the 7th century BC."
 
-Scan for the keywords "length" or any large number → "total length of the wall is estimated to be about 21,196 kilometres."
+2. 21,196 kilometres — Scan for "length" or a large number → "total length of the wall is estimated to be about 21,196 kilometres."
 
-Scanning tip: a number is one of the easiest things to spot — let your eye jump straight to digits on the page instead of reading every word.`,
+3. Over 10 million — Scan for "visitors" or "every year" → "attracts over 10 million visitors every year."
+
+Scanning tip: when a question asks about a TIME, NUMBER or QUANTITY, your eyes can jump straight to digits on the page — no need to read every word.`,
   },
   {
-    id: "scn-003",
+    id: "scn-002",
     type: "scanning",
     title: "The Eiffel Tower",
     topic: "Landmarks · Architecture",
     passage:
 `The Eiffel Tower is one of the most recognised structures in the world and the symbol of Paris. It was designed by the engineer Gustave Eiffel and built for the 1889 World Fair, which celebrated the 100th anniversary of the French Revolution. At the time of completion, the tower stood 300 metres tall — by far the tallest building in the world — and held this record for 41 years. Today, with its broadcasting antenna, it reaches a height of 330 metres. Around 7 million people visit the Eiffel Tower every year, making it the most-visited paid monument on the planet.`,
-    instructions: "Scan the passage to find the answer. Type your answer in the box.",
+    instructions: "Scan the passage to find each answer. Type short answers only.",
     items: [
       {
-        prompt: "In which year was the Eiffel Tower built?",
+        prompt: "1. In which year was the Eiffel Tower built?",
         answer: "1889",
         acceptable: ["in 1889", "the year 1889"],
       },
+      {
+        prompt: "2. Who designed the Eiffel Tower?",
+        answer: "Gustave Eiffel",
+        acceptable: ["Eiffel", "the engineer Gustave Eiffel", "gustave eiffel"],
+      },
+      {
+        prompt: "3. How tall is the tower today, including its broadcasting antenna (in metres)?",
+        answer: "330",
+        acceptable: ["330 metres", "330m", "330 m"],
+      },
     ],
     analysis:
-`Answer: 1889.
+`1. 1889 — Scan for "built" or any 4-digit year → "built for the 1889 World Fair."
 
-Scan for the keyword "built" or any year → "built for the 1889 World Fair."
+2. Gustave Eiffel — Scan for "designed" or capitalised names → "designed by the engineer Gustave Eiffel."
 
-Scanning tip: dates are usually written as 4-digit numbers — your eyes can find them in seconds without reading sentences word by word.`,
+3. 330 metres — Scan for "antenna" or "height" → "with its broadcasting antenna, it reaches a height of 330 metres." Be careful: 300 m was the ORIGINAL height — the question asks about today.
+
+Scanning tip: dates appear as 4-digit numbers and names start with capital letters — both are easy targets for the eyes.`,
   },
   {
-    id: "scn-004",
+    id: "scn-003",
     type: "scanning",
     title: "Mount Everest",
     topic: "Geography · Mountains",
     passage:
 `Mount Everest, known in Nepali as Sagarmatha and in Tibetan as Chomolungma, is the highest mountain on Earth above sea level. Its summit lies on the border between Nepal and the Tibet Autonomous Region of China. According to the most recent measurement, agreed jointly by China and Nepal in 2020, Everest stands 8,849 metres tall. The first confirmed climbers to reach the summit were Edmund Hillary of New Zealand and Tenzing Norgay, a Nepalese Sherpa, on 29 May 1953. Today, hundreds of climbers attempt the dangerous ascent each spring season.`,
-    instructions: "Scan the passage to find the answer. Type your answer in the box.",
+    instructions: "Scan the passage to find each answer. Type short answers only.",
     items: [
       {
-        prompt: "How tall is Mount Everest, in metres?",
+        prompt: "1. How tall is Mount Everest, in metres?",
         answer: "8,849",
         acceptable: ["8849", "8,849 metres", "8849 metres", "8,849 m", "8849 m"],
       },
+      {
+        prompt: "2. In what year did China and Nepal agree on the most recent measurement?",
+        answer: "2020",
+        acceptable: ["in 2020", "the year 2020"],
+      },
+      {
+        prompt: "3. What is the Nepali name for Mount Everest?",
+        answer: "Sagarmatha",
+        acceptable: ["sagarmatha"],
+      },
     ],
     analysis:
-`Answer: 8,849 metres.
+`1. 8,849 metres — Scan for "tall", "height" or large numbers → "Everest stands 8,849 metres tall."
 
-Scan for "tall", "height", "metres" or large numbers → "Everest stands 8,849 metres tall."
+2. 2020 — Scan for "measurement" or "agreed" → "agreed jointly by China and Nepal in 2020."
 
-Scanning tip: you don't need to know what Sagarmatha or Sherpa mean to answer — just locate the number that matches the question (height in metres).`,
+3. Sagarmatha — Scan for "Nepali" → "known in Nepali as Sagarmatha." Don't confuse it with Chomolungma, which is the TIBETAN name.
+
+Scanning tip: you don't need to understand every word in the passage — just match the keyword in the question (e.g. "Nepali") to the same word in the text.`,
   },
   {
-    id: "scn-005",
+    id: "scn-004",
     type: "scanning",
     title: "The Modern Olympic Games",
     topic: "Sport · History",
     passage:
 `The modern Olympic Games are the world's largest sporting event. They were revived by a French educator named Pierre de Coubertin, who believed that sport could promote peace and understanding between nations. The first modern Olympic Games were held in Athens, Greece, in 1896, with athletes from 14 countries competing in 43 events. Since then, the Games have taken place every four years, except during the two World Wars. Today, more than 200 countries take part, and the Olympics are watched by an audience of around 3 billion people worldwide.`,
-    instructions: "Scan the passage to find the answer. Type your answer in the box.",
+    instructions: "Scan the passage to find each answer. Type short answers only.",
     items: [
       {
-        prompt: "In which city were the first modern Olympic Games held?",
+        prompt: "1. In which city were the first modern Olympic Games held?",
         answer: "Athens",
         acceptable: ["Athens, Greece", "in Athens"],
       },
+      {
+        prompt: "2. Who revived the modern Olympic Games?",
+        answer: "Pierre de Coubertin",
+        acceptable: ["de Coubertin", "Coubertin", "pierre de coubertin"],
+      },
+      {
+        prompt: "3. How many countries took part in the first modern Olympic Games?",
+        answer: "14",
+        acceptable: ["14 countries", "fourteen", "fourteen countries"],
+      },
     ],
     analysis:
-`Answer: Athens.
+`1. Athens — Scan for "first" or "held in" → "The first modern Olympic Games were held in Athens, Greece, in 1896."
 
-Scan for "first" or "Games were held" → "The first modern Olympic Games were held in Athens, Greece, in 1896."
+2. Pierre de Coubertin — Scan for "revived" or capitalised names → "revived by a French educator named Pierre de Coubertin."
 
-Scanning tip: for "where" questions, look for capitalised words (place names) in the passage — your eye finds them faster than full sentences.`,
+3. 14 — Scan for "countries" or numbers → "athletes from 14 countries competing in 43 events." Be careful not to confuse 14 (countries) with 43 (events).
+
+Scanning tip: when two numbers appear close together, read the words AROUND each number to be sure which one answers the question.`,
+  },
+  {
+    id: "scn-005",
+    type: "scanning",
+    title: "The Amazon Rainforest",
+    topic: "Geography · Environment",
+    passage:
+`The Amazon Rainforest is the largest tropical forest on Earth. It covers an area of about 5.5 million square kilometres and stretches across nine countries in South America, with most of it lying inside Brazil. Scientists estimate that the Amazon is home to around 10% of all known species on the planet, including the famous jaguar, the giant otter and over 2,500 species of fish. The forest also plays a crucial role in regulating the world's climate, as its trees absorb roughly 2 billion tonnes of carbon dioxide every year. However, deforestation remains a serious threat, with thousands of square kilometres of forest lost annually to farming and logging.`,
+    instructions: "Scan the passage to find each answer. Type short answers only.",
+    items: [
+      {
+        prompt: "1. How many countries does the Amazon Rainforest stretch across?",
+        answer: "9",
+        acceptable: ["nine", "9 countries", "nine countries"],
+      },
+      {
+        prompt: "2. What percentage of all known species on the planet live in the Amazon?",
+        answer: "10%",
+        acceptable: ["10", "10 percent", "ten percent", "ten %", "around 10%", "about 10%"],
+      },
+      {
+        prompt: "3. Roughly how many tonnes of carbon dioxide do its trees absorb each year?",
+        answer: "2 billion",
+        acceptable: ["two billion", "2 billion tonnes", "2,000,000,000", "roughly 2 billion"],
+      },
+    ],
+    analysis:
+`1. Nine — Scan for "countries" → "stretches across nine countries in South America."
+
+2. 10% — Scan for "species" or "%" → "home to around 10% of all known species on the planet."
+
+3. 2 billion (tonnes) — Scan for "carbon dioxide" or "tonnes" → "trees absorb roughly 2 billion tonnes of carbon dioxide every year."
+
+Scanning tip: words like "around", "about" and "roughly" often appear right next to the number you need — they are reliable signposts when scanning for quantities.`,
   },
 
   // ───────────────────── 3. Matching Headings ─────────────────────
