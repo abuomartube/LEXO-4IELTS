@@ -236,7 +236,7 @@ function LandingPage({ onLogin, onRegister }: { onLogin: () => void; onRegister:
             </div>
 
             <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black tracking-tight mb-6 leading-[1.1]">
-              <span className="text-white">LEXO</span>
+              <span className="text-white">LEXO - 4IELTS</span>
             </h1>
 
             <p className="text-lg sm:text-xl text-white/60 leading-relaxed mb-8 max-w-lg mx-auto lg:mx-0">
