@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo, useCallback } from "react";
 import {
   GraduationCap, Flame, Star, AlertTriangle, BookOpen,
   Trophy, ArrowUpDown, Search, X, LogIn, Eye, EyeOff,
-  RefreshCw, Users, TrendingUp, PlayCircle, Plus, Trash2, Loader2,
+  RefreshCw, Users, TrendingUp, PlayCircle, Plus, Trash2, Loader2, Pencil,
   UserCheck, UserX, KeyRound, Copy, Check, Bell, Mail, Clock, ArrowRight,
   Send, Megaphone, Sparkles, Eye as EyeIcon, Info, ShieldAlert, DollarSign, Brain,
 } from "lucide-react";
@@ -148,6 +148,11 @@ export default function TeacherDashboard() {
   const [newCourse, setNewCourse] = useState<"intro" | "advanced">("intro");
   const [creating, setCreating] = useState(false);
   const [deletingId, setDeletingId] = useState<number | null>(null);
+  const [editingId, setEditingId] = useState<number | null>(null);
+  const [editTitle, setEditTitle] = useState("");
+  const [editUrl, setEditUrl] = useState("");
+  const [editCourse, setEditCourse] = useState<"intro" | "advanced">("intro");
+  const [savingEditId, setSavingEditId] = useState<number | null>(null);
 
   // Approval queue state
   const [pendingRequests, setPendingRequests] = useState<AccessRequest[]>([]);
@@ -473,6 +478,49 @@ export default function TeacherDashboard() {
       setLessonsError("Network error");
     } finally {
       setCreating(false);
+    }
+  }
+
+  function startEditLesson(l: AdminLesson) {
+    setEditingId(l.id);
+    setEditTitle(l.title);
+    setEditUrl(l.vimeoUrl);
+    setEditCourse(l.course === "advanced" ? "advanced" : "intro");
+    setLessonsError("");
+  }
+
+  function cancelEditLesson() {
+    setEditingId(null);
+    setEditTitle("");
+    setEditUrl("");
+    setEditCourse("intro");
+  }
+
+  async function saveEditLesson(id: number) {
+    if (!editTitle.trim() || !editUrl.trim()) return;
+    setSavingEditId(id);
+    setLessonsError("");
+    try {
+      const res = await fetch(`${API}/api/admin/lessons/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json", "x-admin-password": password },
+        body: JSON.stringify({
+          title: editTitle.trim(),
+          vimeoUrl: editUrl.trim(),
+          course: editCourse,
+        }),
+      });
+      if (!res.ok) {
+        const j = await res.json().catch(() => ({}));
+        setLessonsError(j.error || "Could not save changes");
+        return;
+      }
+      cancelEditLesson();
+      await fetchLessons();
+    } catch {
+      setLessonsError("Network error");
+    } finally {
+      setSavingEditId(null);
     }
   }
 
@@ -1342,40 +1390,100 @@ export default function TeacherDashboard() {
             ) : (
               <ul className="divide-y divide-border">
                 {lessonsData.lessons.map((l, idx) => (
-                  <li key={l.id} className="px-5 py-3 flex items-center gap-3">
-                    <span className="w-7 h-7 rounded-full bg-muted text-xs font-bold text-muted-foreground flex items-center justify-center shrink-0">
-                      {idx + 1}
-                    </span>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <div className="font-bold text-sm text-foreground truncate">{l.title}</div>
-                        <span className={cn(
-                          "text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full shrink-0",
-                          l.course === "advanced"
-                            ? "bg-violet-100 text-violet-700 dark:bg-violet-900/40 dark:text-violet-300"
-                            : "bg-teal-100 text-teal-700 dark:bg-teal-900/40 dark:text-teal-300",
-                        )}>
-                          {COURSE_LABELS[l.course] ?? l.course}
+                  <li key={l.id} className="px-5 py-3">
+                    {editingId === l.id ? (
+                      <div className="flex items-start gap-3">
+                        <span className="w-7 h-7 rounded-full bg-muted text-xs font-bold text-muted-foreground flex items-center justify-center shrink-0 mt-1">
+                          {idx + 1}
                         </span>
+                        <div className="flex-1 min-w-0 grid grid-cols-1 md:grid-cols-[180px_1fr_1fr] gap-2">
+                          <select
+                            value={editCourse}
+                            onChange={(e) => setEditCourse(e.target.value === "advanced" ? "advanced" : "intro")}
+                            className="px-3 py-2 bg-background border border-border rounded-lg text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+                          >
+                            <option value="intro">Brick by Brick (A2–B1)</option>
+                            <option value="advanced">The Upper Leap (B1–C1)</option>
+                          </select>
+                          <input
+                            type="text"
+                            value={editTitle}
+                            onChange={(e) => setEditTitle(e.target.value)}
+                            placeholder="Lesson title"
+                            className="px-3 py-2 bg-background border border-border rounded-lg text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+                          />
+                          <input
+                            type="text"
+                            value={editUrl}
+                            onChange={(e) => setEditUrl(e.target.value)}
+                            placeholder="Vimeo URL or video ID"
+                            className="px-3 py-2 bg-background border border-border rounded-lg text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+                          />
+                        </div>
+                        <div className="flex items-center gap-1 shrink-0">
+                          <button
+                            onClick={() => saveEditLesson(l.id)}
+                            disabled={savingEditId === l.id || !editTitle.trim() || !editUrl.trim()}
+                            className="text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 dark:hover:bg-emerald-950/20 p-2 rounded-lg transition-colors disabled:opacity-50"
+                            title="Save changes"
+                          >
+                            {savingEditId === l.id ? <Loader2 className="w-4 h-4 animate-spin" /> : <Check className="w-4 h-4" />}
+                          </button>
+                          <button
+                            onClick={cancelEditLesson}
+                            disabled={savingEditId === l.id}
+                            className="text-muted-foreground hover:text-foreground hover:bg-muted p-2 rounded-lg transition-colors disabled:opacity-50"
+                            title="Cancel"
+                          >
+                            <X className="w-4 h-4" />
+                          </button>
+                        </div>
                       </div>
-                      <a
-                        href={l.embedUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="text-xs text-muted-foreground truncate block hover:text-primary"
-                        title={l.vimeoUrl}
-                      >
-                        {l.vimeoUrl}
-                      </a>
-                    </div>
-                    <button
-                      onClick={() => deleteLesson(l.id)}
-                      disabled={deletingId === l.id}
-                      className="text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/20 p-2 rounded-lg transition-colors disabled:opacity-50"
-                      title="Delete lesson"
-                    >
-                      {deletingId === l.id ? <Loader2 className="w-4 h-4 animate-spin" /> : <Trash2 className="w-4 h-4" />}
-                    </button>
+                    ) : (
+                      <div className="flex items-center gap-3">
+                        <span className="w-7 h-7 rounded-full bg-muted text-xs font-bold text-muted-foreground flex items-center justify-center shrink-0">
+                          {idx + 1}
+                        </span>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <div className="font-bold text-sm text-foreground truncate">{l.title}</div>
+                            <span className={cn(
+                              "text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full shrink-0",
+                              l.course === "advanced"
+                                ? "bg-violet-100 text-violet-700 dark:bg-violet-900/40 dark:text-violet-300"
+                                : "bg-teal-100 text-teal-700 dark:bg-teal-900/40 dark:text-teal-300",
+                            )}>
+                              {COURSE_LABELS[l.course] ?? l.course}
+                            </span>
+                          </div>
+                          <a
+                            href={l.embedUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="text-xs text-muted-foreground truncate block hover:text-primary"
+                            title={l.vimeoUrl}
+                          >
+                            {l.vimeoUrl}
+                          </a>
+                        </div>
+                        <button
+                          onClick={() => startEditLesson(l)}
+                          disabled={editingId !== null || deletingId === l.id}
+                          className="text-primary hover:text-primary hover:bg-primary/10 p-2 rounded-lg transition-colors disabled:opacity-50"
+                          title="Edit lesson"
+                        >
+                          <Pencil className="w-4 h-4" />
+                        </button>
+                        <button
+                          onClick={() => deleteLesson(l.id)}
+                          disabled={editingId !== null || deletingId === l.id}
+                          className="text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/20 p-2 rounded-lg transition-colors disabled:opacity-50"
+                          title="Delete lesson"
+                        >
+                          {deletingId === l.id ? <Loader2 className="w-4 h-4 animate-spin" /> : <Trash2 className="w-4 h-4" />}
+                        </button>
+                      </div>
+                    )}
                   </li>
                 ))}
               </ul>
