@@ -12,3 +12,9 @@ id = "guG8-qeYSJeDsf57uCqQ7"
 uri = "file://exports/lexo-project-export.zip"
 type = "unspecified"
 title = "LEXO Complete Project Export (ZIP)"
+
+[[outputs]]
+id = "wID-EApSCWQmGFyMLtIQk"
+uri = "file://exports/lexo-4ielts-technical-report.pdf"
+type = "pdf"
+title = "LEXO – 4IELTS — Technical Report"
