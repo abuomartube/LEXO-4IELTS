@@ -1,11 +1,60 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useMemo, useState, useCallback } from "react";
 import { Layout } from "@/components/layout";
 import { Button } from "@/components/ui/button";
-import { Loader2, CheckCircle2, Circle, PlayCircle, BookOpen, AlertCircle, RefreshCw } from "lucide-react";
+import {
+  Loader2,
+  CheckCircle2,
+  Circle,
+  PlayCircle,
+  BookOpen,
+  AlertCircle,
+  RefreshCw,
+  ArrowLeft,
+  ChevronRight,
+  Clock,
+  Layers,
+  Sparkles,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
+
+type CourseKey = "intro" | "advanced";
+
+interface CourseMeta {
+  key: CourseKey;
+  title: string;
+  level: string;
+  description: string;
+  gradient: string;
+  ring: string;
+  icon: typeof Layers;
+}
+
+const COURSES: CourseMeta[] = [
+  {
+    key: "intro",
+    title: "Brick by Brick",
+    level: "A2 – B1",
+    description:
+      "Build your IELTS foundation step by step — vocabulary habits, sentence skills, and the core strategies you'll use in every section of the exam.",
+    gradient: "from-teal-500 via-cyan-500 to-sky-600",
+    ring: "ring-teal-500/30",
+    icon: Layers,
+  },
+  {
+    key: "advanced",
+    title: "The Upper Leap",
+    level: "B1 – C1",
+    description:
+      "Push from a confident intermediate to a top band score — advanced reading techniques, sophisticated writing, and exam-day timing.",
+    gradient: "from-violet-500 via-fuchsia-500 to-rose-500",
+    ring: "ring-violet-500/30",
+    icon: Sparkles,
+  },
+];
 
 interface LessonItem {
   id: number;
+  course: CourseKey | string;
   title: string;
   vimeoUrl: string;
   embedUrl: string;
@@ -28,11 +77,28 @@ function getStudentAuthHeaders(): Record<string, string> {
   } catch { return {}; }
 }
 
+const SELECTED_COURSE_KEY = "lexo:selected_course";
+
 export default function Lessons() {
   const [data, setData] = useState<LessonsResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [pendingId, setPendingId] = useState<number | null>(null);
+  const [selectedCourse, setSelectedCourse] = useState<CourseKey | null>(() => {
+    try {
+      const v = sessionStorage.getItem(SELECTED_COURSE_KEY);
+      return v === "intro" || v === "advanced" ? v : null;
+    } catch { return null; }
+  });
+
+  // Keep selection in sessionStorage so refreshing the page keeps the user
+  // inside the course they were watching.
+  useEffect(() => {
+    try {
+      if (selectedCourse) sessionStorage.setItem(SELECTED_COURSE_KEY, selectedCourse);
+      else sessionStorage.removeItem(SELECTED_COURSE_KEY);
+    } catch { /* ignore */ }
+  }, [selectedCourse]);
 
   const fetchLessons = useCallback(async () => {
     setLoading(true);
@@ -60,7 +126,6 @@ export default function Lessons() {
     if (pendingId !== null) return;
     setPendingId(lesson.id);
     const newCompleted = !lesson.completed;
-    // Optimistic update
     setData((prev) => prev ? {
       ...prev,
       lessons: prev.lessons.map((l) => l.id === lesson.id ? { ...l, completed: newCompleted } : l),
@@ -72,7 +137,6 @@ export default function Lessons() {
       });
       if (!res.ok) throw new Error();
     } catch {
-      // Revert on failure
       setData((prev) => prev ? {
         ...prev,
         lessons: prev.lessons.map((l) => l.id === lesson.id ? { ...l, completed: !newCompleted } : l),
@@ -82,10 +146,178 @@ export default function Lessons() {
     }
   }
 
-  const completedCount = data?.lessons.filter((l) => l.completed).length ?? 0;
-  const totalCount = data?.lessons.length ?? 0;
-  const pct = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
+  // Group lessons by course key.
+  const byCourse = useMemo(() => {
+    const map: Record<CourseKey, LessonItem[]> = { intro: [], advanced: [] };
+    if (!data) return map;
+    for (const l of data.lessons) {
+      const k: CourseKey = l.course === "advanced" ? "advanced" : "intro";
+      map[k].push(l);
+    }
+    for (const k of Object.keys(map) as CourseKey[]) {
+      map[k].sort((a, b) => a.orderIndex - b.orderIndex || a.id - b.id);
+    }
+    return map;
+  }, [data]);
 
+  // ── Loading / global error states ────────────────────────────────────────
+  if (loading) {
+    return (
+      <Layout>
+        <div className="text-center py-20 text-muted-foreground">
+          <Loader2 className="w-8 h-8 mx-auto mb-3 animate-spin opacity-60" />
+          Loading your courses…
+        </div>
+      </Layout>
+    );
+  }
+  if (error) {
+    return (
+      <Layout>
+        <div className="flex items-start gap-3 p-4 rounded-2xl bg-destructive/10 border border-destructive/30 text-destructive text-sm">
+          <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
+          <p>{error}</p>
+        </div>
+      </Layout>
+    );
+  }
+
+  // ── Drill-down: a course is selected ────────────────────────────────────
+  if (selectedCourse) {
+    const meta = COURSES.find((c) => c.key === selectedCourse)!;
+    const lessons = byCourse[selectedCourse];
+    const completedCount = lessons.filter((l) => l.completed).length;
+    const totalCount = lessons.length;
+    const pct = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
+    const Icon = meta.icon;
+
+    return (
+      <Layout>
+        <div className="space-y-5">
+          {/* Back + header */}
+          <button
+            onClick={() => setSelectedCourse(null)}
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            All courses
+          </button>
+
+          <div className={cn("relative overflow-hidden rounded-3xl p-6 sm:p-7 text-white bg-gradient-to-br", meta.gradient)}>
+            <div className="absolute inset-0 opacity-20 pointer-events-none">
+              <div className="absolute -right-16 -top-16 w-56 h-56 rounded-full bg-white/30 blur-3xl" />
+              <div className="absolute -left-12 bottom-0 w-44 h-44 rounded-full bg-black/20 blur-2xl" />
+            </div>
+            <div className="relative">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 text-white/95 text-[11px] font-bold uppercase tracking-wider mb-3">
+                <Icon className="w-3.5 h-3.5" />
+                {meta.level}
+              </div>
+              <h1 className="text-2xl sm:text-3xl font-extrabold leading-tight mb-1.5">{meta.title}</h1>
+              <p className="text-white/85 text-sm max-w-2xl">{meta.description}</p>
+            </div>
+          </div>
+
+          {totalCount > 0 && (
+            <div className="bg-card border border-border rounded-2xl p-5">
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-2 text-sm">
+                  <CheckCircle2 className="w-4 h-4 text-green-500" />
+                  <span className="font-bold text-foreground">{completedCount}</span>
+                  <span className="text-muted-foreground">/ {totalCount} lessons completed</span>
+                </div>
+                <span className="text-sm font-bold text-primary">{pct}%</span>
+              </div>
+              <div className="h-2 bg-muted rounded-full overflow-hidden">
+                <div className="h-full bg-gradient-to-r from-primary to-primary/70 transition-all" style={{ width: `${pct}%` }} />
+              </div>
+            </div>
+          )}
+
+          <div className="flex justify-end">
+            <Button variant="outline" size="sm" onClick={() => void fetchLessons()} className="rounded-full">
+              <RefreshCw className="w-4 h-4 mr-2" />
+              Refresh
+            </Button>
+          </div>
+
+          {/* Coming soon card when this course is empty */}
+          {totalCount === 0 && (
+            <div className="bg-card border border-dashed border-border rounded-3xl p-10 text-center space-y-3">
+              <div className="w-14 h-14 mx-auto rounded-2xl bg-muted flex items-center justify-center">
+                <Clock className="w-7 h-7 text-muted-foreground" />
+              </div>
+              <h3 className="text-lg font-extrabold text-foreground">Coming soon</h3>
+              <p className="text-sm text-muted-foreground max-w-md mx-auto">
+                The lessons for <b>{meta.title}</b> are being prepared. Check back here shortly — they'll appear automatically as soon as your instructor adds them.
+              </p>
+              <p className="text-xs text-muted-foreground" dir="rtl" lang="ar">قريباً — سيتم إضافة الدروس قريباً</p>
+            </div>
+          )}
+
+          {/* Lesson list */}
+          {lessons.map((lesson, idx) => (
+            <article
+              key={lesson.id}
+              className={cn(
+                "bg-card border rounded-2xl overflow-hidden transition-colors",
+                lesson.completed ? "border-green-300 dark:border-green-800" : "border-border"
+              )}
+            >
+              <div className="px-5 pt-5 pb-3 flex items-start justify-between gap-3">
+                <div className="flex items-start gap-3 min-w-0">
+                  <span className="shrink-0 w-8 h-8 rounded-full bg-muted text-muted-foreground text-sm font-bold flex items-center justify-center">
+                    {idx + 1}
+                  </span>
+                  <h2 className="text-base font-bold text-foreground leading-snug pt-1">{lesson.title}</h2>
+                </div>
+                {lesson.completed && (
+                  <span className="shrink-0 inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-full bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300">
+                    <CheckCircle2 className="w-3 h-3" />
+                    Done
+                  </span>
+                )}
+              </div>
+
+              <div className="relative bg-black" style={{ paddingTop: "56.25%" }}>
+                <iframe
+                  src={lesson.embedUrl}
+                  className="absolute inset-0 w-full h-full"
+                  title={lesson.title}
+                  allow="autoplay; fullscreen; picture-in-picture"
+                  allowFullScreen
+                  loading="lazy"
+                />
+              </div>
+
+              <div className="p-4 flex items-center justify-end">
+                <Button
+                  onClick={() => void toggleComplete(lesson)}
+                  disabled={pendingId === lesson.id}
+                  variant={lesson.completed ? "outline" : "default"}
+                  className={cn(
+                    "rounded-full",
+                    lesson.completed && "border-green-300 text-green-700 dark:text-green-400 hover:bg-green-50 dark:hover:bg-green-900/20"
+                  )}
+                >
+                  {pendingId === lesson.id ? (
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  ) : lesson.completed ? (
+                    <CheckCircle2 className="w-4 h-4 mr-2" />
+                  ) : (
+                    <Circle className="w-4 h-4 mr-2" />
+                  )}
+                  {lesson.completed ? "Completed" : "Mark as completed"}
+                </Button>
+              </div>
+            </article>
+          ))}
+        </div>
+      </Layout>
+    );
+  }
+
+  // ── Course-picker view ──────────────────────────────────────────────────
   return (
     <Layout>
       <div className="space-y-6">
@@ -96,123 +328,83 @@ export default function Lessons() {
               <PlayCircle className="w-6 h-6 text-primary" />
             </div>
             <div className="min-w-0">
-              <h1 className="text-2xl font-extrabold text-foreground truncate">
-                Pro Tips
-              </h1>
+              <h1 className="text-2xl font-extrabold text-foreground truncate">Lessons</h1>
               <p className="text-sm text-muted-foreground">
-                Watch the lessons in order to get the most out of your prep.
+                Choose your course and learn at your own pace.
               </p>
+              <p className="text-xs text-muted-foreground mt-0.5" dir="rtl" lang="ar">اختر مسارك وابدأ التعلّم</p>
             </div>
           </div>
-          <Button variant="outline" size="sm" onClick={() => void fetchLessons()} disabled={loading} className="rounded-full shrink-0">
-            <RefreshCw className={cn("w-4 h-4 mr-2", loading && "animate-spin")} />
+          <Button variant="outline" size="sm" onClick={() => void fetchLessons()} className="rounded-full shrink-0">
+            <RefreshCw className="w-4 h-4 mr-2" />
             Refresh
           </Button>
         </div>
 
-        {/* Progress strip */}
-        {data && totalCount > 0 && (
-          <div className="bg-card border border-border rounded-2xl p-5">
-            <div className="flex items-center justify-between mb-3">
-              <div className="flex items-center gap-2 text-sm">
-                <CheckCircle2 className="w-4 h-4 text-green-500" />
-                <span className="font-bold text-foreground">{completedCount}</span>
-                <span className="text-muted-foreground">/ {totalCount} lessons completed</span>
-              </div>
-              <span className="text-sm font-bold text-primary">{pct}%</span>
-            </div>
-            <div className="h-2 bg-muted rounded-full overflow-hidden">
-              <div
-                className="h-full bg-gradient-to-r from-primary to-primary/70 transition-all"
-                style={{ width: `${pct}%` }}
-              />
-            </div>
-          </div>
-        )}
-
-        {loading && (
-          <div className="text-center py-16 text-muted-foreground">
-            <Loader2 className="w-8 h-8 mx-auto mb-3 animate-spin opacity-60" />
-            Loading your course…
-          </div>
-        )}
-
-        {error && !loading && (
-          <div className="flex items-start gap-3 p-4 rounded-2xl bg-destructive/10 border border-destructive/30 text-destructive text-sm">
-            <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
-            <p>{error}</p>
-          </div>
-        )}
-
-        {!loading && data && totalCount === 0 && (
-          <div className="bg-card border border-border rounded-2xl p-10 text-center space-y-3">
-            <BookOpen className="w-10 h-10 mx-auto text-muted-foreground/60" />
-            <h3 className="font-bold text-foreground">No lessons yet</h3>
-            <p className="text-sm text-muted-foreground">
-              Your instructor hasn't added any lessons for this course yet. Check back soon!
-            </p>
-          </div>
-        )}
-
-        {/* Lesson list */}
-        {!loading && data && data.lessons.map((lesson, idx) => (
-          <article
-            key={lesson.id}
-            className={cn(
-              "bg-card border rounded-2xl overflow-hidden transition-colors",
-              lesson.completed ? "border-green-300 dark:border-green-800" : "border-border"
-            )}
-          >
-            <div className="px-5 pt-5 pb-3 flex items-start justify-between gap-3">
-              <div className="flex items-start gap-3 min-w-0">
-                <span className="shrink-0 w-8 h-8 rounded-full bg-muted text-muted-foreground text-sm font-bold flex items-center justify-center">
-                  {idx + 1}
-                </span>
-                <h2 className="text-base font-bold text-foreground leading-snug pt-1">
-                  {lesson.title}
-                </h2>
-              </div>
-              {lesson.completed && (
-                <span className="shrink-0 inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-full bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300">
-                  <CheckCircle2 className="w-3 h-3" />
-                  Done
-                </span>
-              )}
-            </div>
-
-            <div className="relative bg-black" style={{ paddingTop: "56.25%" }}>
-              <iframe
-                src={lesson.embedUrl}
-                className="absolute inset-0 w-full h-full"
-                title={lesson.title}
-                allow="autoplay; fullscreen; picture-in-picture"
-                allowFullScreen
-                loading="lazy"
-              />
-            </div>
-
-            <div className="p-4 flex items-center justify-end">
-              <Button
-                onClick={() => void toggleComplete(lesson)}
-                disabled={pendingId === lesson.id}
-                variant={lesson.completed ? "outline" : "default"}
+        {/* Two course cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {COURSES.map((c) => {
+            const lessons = byCourse[c.key];
+            const total = lessons.length;
+            const done = lessons.filter((l) => l.completed).length;
+            const Icon = c.icon;
+            return (
+              <button
+                key={c.key}
+                onClick={() => setSelectedCourse(c.key)}
                 className={cn(
-                  "rounded-full",
-                  lesson.completed && "border-green-300 text-green-700 dark:text-green-400 hover:bg-green-50 dark:hover:bg-green-900/20"
+                  "group text-left relative overflow-hidden rounded-3xl p-6 text-white bg-gradient-to-br shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5 ring-1 ring-white/10",
+                  c.gradient
                 )}
               >
-                {pendingId === lesson.id ? (
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                ) : lesson.completed ? (
-                  <CheckCircle2 className="w-4 h-4 mr-2" />
-                ) : (
-                  <Circle className="w-4 h-4 mr-2" />
-                )}
-                {lesson.completed ? "Completed" : "Mark as completed"}
-              </Button>
-            </div>
-          </article>
-        ))}
+                <div className="absolute inset-0 opacity-20 pointer-events-none">
+                  <div className="absolute -right-12 -top-12 w-48 h-48 rounded-full bg-white/30 blur-3xl" />
+                  <div className="absolute -left-10 bottom-0 w-40 h-40 rounded-full bg-black/20 blur-2xl" />
+                </div>
+
+                <div className="relative">
+                  <div className="flex items-start justify-between gap-3 mb-3">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 text-white/95 text-[11px] font-bold uppercase tracking-wider">
+                      <Icon className="w-3.5 h-3.5" />
+                      {c.level}
+                    </div>
+                    {total === 0 ? (
+                      <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-full bg-white/20">
+                        <Clock className="w-3 h-3" />
+                        Coming soon
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-full bg-white/20">
+                        <BookOpen className="w-3 h-3" />
+                        {total} {total === 1 ? "lesson" : "lessons"}
+                      </span>
+                    )}
+                  </div>
+
+                  <h2 className="text-2xl font-extrabold leading-tight mb-1.5">{c.title}</h2>
+                  <p className="text-white/85 text-sm leading-relaxed mb-5">{c.description}</p>
+
+                  {total > 0 && (
+                    <div className="mb-5">
+                      <div className="flex items-center justify-between text-[11px] font-semibold text-white/85 mb-1.5">
+                        <span>{done} / {total} completed</span>
+                        <span>{Math.round((done / total) * 100)}%</span>
+                      </div>
+                      <div className="h-1.5 bg-white/20 rounded-full overflow-hidden">
+                        <div className="h-full bg-white transition-all" style={{ width: `${(done / total) * 100}%` }} />
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="inline-flex items-center gap-1.5 text-sm font-bold text-white/95 group-hover:gap-2.5 transition-all">
+                    {total === 0 ? "Take a peek" : "Start watching"}
+                    <ChevronRight className="w-4 h-4" />
+                  </div>
+                </div>
+              </button>
+            );
+          })}
+        </div>
       </div>
     </Layout>
   );

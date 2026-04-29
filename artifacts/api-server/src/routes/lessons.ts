@@ -11,6 +11,16 @@ import { and, asc, desc, eq, sql } from "drizzle-orm";
 
 const LIBRARY_TITLE = "Pro Tips";
 
+// Allowed course identifiers stored in the DB. Display names live on the
+// client (Brick by Brick / The Upper Leap) so admins can rebrand without a
+// migration. Anything outside this set is rejected by the admin endpoints.
+const ALLOWED_COURSES = new Set(["intro", "advanced"]);
+function normalizeCourse(value: unknown): string | null {
+  if (typeof value !== "string") return null;
+  const v = value.trim().toLowerCase();
+  return ALLOWED_COURSES.has(v) ? v : null;
+}
+
 const router: IRouter = Router();
 
 const SESSION_SECRET = process.env["SESSION_SECRET"] ?? "fallback-secret";
@@ -101,6 +111,7 @@ router.get("/lessons", async (req, res): Promise<void> => {
     libraryTitle: LIBRARY_TITLE,
     lessons: lessons.map((l) => ({
       id: l.id,
+      course: l.course,
       title: l.title,
       vimeoUrl: l.vimeoUrl,
       embedUrl: toEmbedUrl(l.vimeoUrl),
@@ -161,7 +172,7 @@ router.get("/admin/lessons", async (req, res): Promise<void> => {
 // POST /api/admin/lessons → create a new lesson.
 router.post("/admin/lessons", async (req, res): Promise<void> => {
   if (!await requireAdmin(req, res)) return;
-  const { title, vimeoUrl } = req.body ?? {};
+  const { title, vimeoUrl, course } = req.body ?? {};
 
   if (!title || typeof title !== "string" || !title.trim()) {
     res.status(400).json({ error: "Title is required" });
@@ -171,15 +182,18 @@ router.post("/admin/lessons", async (req, res): Promise<void> => {
     res.status(400).json({ error: "A valid Vimeo URL or numeric video ID is required" });
     return;
   }
+  const courseKey = normalizeCourse(course) ?? "intro";
 
+  // Order is per-course so each track has its own 1..N sequence.
   const [maxRow] = await db
     .select({ max: sql<number>`coalesce(max(${lessonsTable.orderIndex}), 0)::int` })
-    .from(lessonsTable);
+    .from(lessonsTable)
+    .where(eq(lessonsTable.course, courseKey));
   const nextIndex = (maxRow?.max ?? 0) + 1;
 
   const [created] = await db
     .insert(lessonsTable)
-    .values({ course: "intro", title: title.trim(), vimeoUrl: vimeoUrl.trim(), orderIndex: nextIndex })
+    .values({ course: courseKey, title: title.trim(), vimeoUrl: vimeoUrl.trim(), orderIndex: nextIndex })
     .returning();
 
   res.json({ ...created, embedUrl: toEmbedUrl(created.vimeoUrl) });
@@ -190,12 +204,14 @@ router.patch("/admin/lessons/:id", async (req, res): Promise<void> => {
   if (!await requireAdmin(req, res)) return;
   const id = Number(req.params.id);
   if (!Number.isFinite(id)) { res.status(400).json({ error: "Bad id" }); return; }
-  const { title, vimeoUrl, orderIndex } = req.body ?? {};
+  const { title, vimeoUrl, orderIndex, course } = req.body ?? {};
 
-  const updates: Partial<{ title: string; vimeoUrl: string; orderIndex: number }> = {};
+  const updates: Partial<{ title: string; vimeoUrl: string; orderIndex: number; course: string }> = {};
   if (typeof title === "string" && title.trim()) updates.title = title.trim();
   if (typeof vimeoUrl === "string" && isValidVimeoUrl(vimeoUrl)) updates.vimeoUrl = vimeoUrl.trim();
   if (typeof orderIndex === "number" && Number.isFinite(orderIndex)) updates.orderIndex = orderIndex;
+  const normalizedCourse = normalizeCourse(course);
+  if (normalizedCourse) updates.course = normalizedCourse;
   if (Object.keys(updates).length === 0) { res.status(400).json({ error: "Nothing to update" }); return; }
 
   const [updated] = await db

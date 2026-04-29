@@ -52,11 +52,17 @@ interface StudentRow {
 
 interface AdminLesson {
   id: number;
+  course: "intro" | "advanced" | string;
   title: string;
   vimeoUrl: string;
   embedUrl: string;
   orderIndex: number;
 }
+
+const COURSE_LABELS: Record<string, string> = {
+  intro: "Brick by Brick (A2–B1)",
+  advanced: "The Upper Leap (B1–C1)",
+};
 
 interface AdminLessonsResponse {
   libraryTitle: string;
@@ -139,6 +145,7 @@ export default function TeacherDashboard() {
   const [lessonsError, setLessonsError] = useState("");
   const [newTitle, setNewTitle] = useState("");
   const [newUrl, setNewUrl] = useState("");
+  const [newCourse, setNewCourse] = useState<"intro" | "advanced">("intro");
   const [creating, setCreating] = useState(false);
   const [deletingId, setDeletingId] = useState<number | null>(null);
 
@@ -452,7 +459,7 @@ export default function TeacherDashboard() {
       const res = await fetch(`${API}/api/admin/lessons`, {
         method: "POST",
         headers: { "Content-Type": "application/json", "x-admin-password": password },
-        body: JSON.stringify({ title: newTitle.trim(), vimeoUrl: newUrl.trim() }),
+        body: JSON.stringify({ title: newTitle.trim(), vimeoUrl: newUrl.trim(), course: newCourse }),
       });
       if (!res.ok) {
         const j = await res.json().catch(() => ({}));
@@ -1281,7 +1288,16 @@ export default function TeacherDashboard() {
           </div>
 
           {/* Add lesson form */}
-          <form onSubmit={createLesson} className="p-5 grid grid-cols-1 md:grid-cols-[1fr_1fr_auto] gap-3">
+          <form onSubmit={createLesson} className="p-5 grid grid-cols-1 md:grid-cols-[180px_1fr_1fr_auto] gap-3">
+            <select
+              value={newCourse}
+              onChange={(e) => setNewCourse(e.target.value === "advanced" ? "advanced" : "intro")}
+              className="px-3 py-2.5 bg-muted/40 border border-border rounded-xl text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+              title="Course"
+            >
+              <option value="intro">Brick by Brick (A2–B1)</option>
+              <option value="advanced">The Upper Leap (B1–C1)</option>
+            </select>
             <input
               type="text"
               value={newTitle}
@@ -1331,7 +1347,17 @@ export default function TeacherDashboard() {
                       {idx + 1}
                     </span>
                     <div className="flex-1 min-w-0">
-                      <div className="font-bold text-sm text-foreground truncate">{l.title}</div>
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <div className="font-bold text-sm text-foreground truncate">{l.title}</div>
+                        <span className={cn(
+                          "text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full shrink-0",
+                          l.course === "advanced"
+                            ? "bg-violet-100 text-violet-700 dark:bg-violet-900/40 dark:text-violet-300"
+                            : "bg-teal-100 text-teal-700 dark:bg-teal-900/40 dark:text-teal-300",
+                        )}>
+                          {COURSE_LABELS[l.course] ?? l.course}
+                        </span>
+                      </div>
                       <a
                         href={l.embedUrl}
                         target="_blank"
