@@ -1,1 +1,2 @@
 exports/lexo-project-export.zip filter=lfs diff=lfs merge=lfs -text
+exports/lexo-full-system.zip filter=lfs diff=lfs merge=lfs -text

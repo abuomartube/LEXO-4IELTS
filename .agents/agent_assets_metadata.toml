@@ -18,3 +18,9 @@ id = "wID-EApSCWQmGFyMLtIQk"
 uri = "file://exports/lexo-4ielts-technical-report.pdf"
 type = "pdf"
 title = "LEXO – 4IELTS — Technical Report"
+
+[[outputs]]
+id = "iAk3htmZiJL85fYJPR46M"
+uri = "file://exports/lexo-full-system.zip"
+type = "unspecified"
+title = "LEXO – Full System (code + database dump)"
