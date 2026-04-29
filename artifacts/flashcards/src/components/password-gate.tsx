@@ -385,7 +385,7 @@ function AuthShell({ children, footer, videoEmbedUrl }: { children: ReactNode; f
             <span className="text-[10px] font-semibold tracking-widest uppercase text-teal-600 dark:text-teal-400 mt-1">
               AI-Powered By 4IELTS
             </span>
-            <h1 className="text-2xl font-extrabold text-gray-900 dark:text-white mt-2">LEXO</h1>
+            <h1 className="text-2xl font-extrabold text-gray-900 dark:text-white mt-2">LEXO - 4IELTS</h1>
           </div>
           {children}
           {footer}
