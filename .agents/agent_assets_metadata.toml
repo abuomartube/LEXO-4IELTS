@@ -24,3 +24,9 @@ id = "iAk3htmZiJL85fYJPR46M"
 uri = "file://exports/lexo-full-system.zip"
 type = "unspecified"
 title = "LEXO – Full System (code + database dump)"
+
+[[outputs]]
+id = "FKJsDa2uxhlPf35tfstze"
+uri = "file://exports/lexo-code-and-database.zip"
+type = "unspecified"
+title = "LEXO – Code + Database (lighter, ~82 MB)"
