@@ -78,3 +78,9 @@ id = "OOmkBx4JTs1ZVv1HkOZio"
 uri = "file://exports/lexo-part6-audio-clips.zip"
 type = "unspecified"
 title = "Part 6 – Short Audio Clips folder (130 files) – 30.7 MB"
+
+[[outputs]]
+id = "Ov-u1xkyyYfTXv6k1soXx"
+uri = "file://exports/lexo-part7-documents-and-data.zip"
+type = "unspecified"
+title = "Part 7 – PDFs, Vocabulary Data, Screenshots, Technical Report – 48 MB"

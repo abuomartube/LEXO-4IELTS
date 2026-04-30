@@ -1,3 +1,4 @@
 exports/lexo-project-export.zip filter=lfs diff=lfs merge=lfs -text
 exports/lexo-full-system.zip filter=lfs diff=lfs merge=lfs -text
 exports/lexo-code-and-database.zip filter=lfs diff=lfs merge=lfs -text
+exports/lexo-part7-attached-assets.zip filter=lfs diff=lfs merge=lfs -text
