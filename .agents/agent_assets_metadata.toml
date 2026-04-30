@@ -30,3 +30,15 @@ id = "FKJsDa2uxhlPf35tfstze"
 uri = "file://exports/lexo-code-and-database.zip"
 type = "unspecified"
 title = "LEXO – Code + Database (lighter, ~82 MB)"
+
+[[outputs]]
+id = "OTgO2t6xGPtVwOmV1lqja"
+uri = "file://exports/lexo-source-code.zip"
+type = "unspecified"
+title = "LEXO – Source Code (1.8 MB)"
+
+[[outputs]]
+id = "AMzpO09pXyZikCrVzws12"
+uri = "file://exports/lexo-database.zip"
+type = "unspecified"
+title = "LEXO – Full Database – all students, lessons, progress (385 KB)"
