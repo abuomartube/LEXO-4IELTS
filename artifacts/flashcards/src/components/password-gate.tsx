@@ -192,7 +192,7 @@ function LandingReviews() {
   );
 }
 
-function LandingPage({ onLogin, onRegister }: { onLogin: () => void; onRegister: () => void }) {
+function LandingPage({ onLogin, onRegister, videoEmbedUrl }: { onLogin: () => void; onRegister: () => void; videoEmbedUrl?: string | null }) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-950 via-teal-950 to-sky-950 text-white overflow-hidden relative">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -275,26 +275,40 @@ function LandingPage({ onLogin, onRegister }: { onLogin: () => void; onRegister:
           </div>
 
           <div className="w-full max-w-md lg:max-w-sm xl:max-w-md">
-            <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-6 sm:p-8 shadow-2xl">
-              <h2 className="text-lg font-bold text-white mb-6 flex items-center gap-2">
-                <Sparkles className="w-5 h-5 text-teal-400" />
-                Features
-              </h2>
-              <div className="space-y-3">
-                {landingFeatures.map((f, i) => (
-                  <div
-                    key={i}
-                    className="flex items-center gap-3 py-2 px-3 rounded-xl hover:bg-white/5 transition-colors group"
-                  >
-                    <div className={`w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center shrink-0 group-hover:bg-white/10 transition-colors`}>
-                      <f.icon className={`w-4 h-4 ${f.color}`} />
-                    </div>
-                    <span className="text-sm text-white/80 font-medium">{f.text}</span>
-                    {f.text === "Daily streak" && <span className="text-lg">🔥</span>}
-                  </div>
-                ))}
+            {videoEmbedUrl ? (
+              <div className="rounded-3xl overflow-hidden shadow-2xl ring-1 ring-white/10 bg-black">
+                <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
+                  <iframe
+                    src={videoEmbedUrl}
+                    className="absolute inset-0 w-full h-full"
+                    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    title="LEXO intro video"
+                  />
+                </div>
               </div>
-            </div>
+            ) : (
+              <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-6 sm:p-8 shadow-2xl">
+                <h2 className="text-lg font-bold text-white mb-6 flex items-center gap-2">
+                  <Sparkles className="w-5 h-5 text-teal-400" />
+                  Features
+                </h2>
+                <div className="space-y-3">
+                  {landingFeatures.map((f, i) => (
+                    <div
+                      key={i}
+                      className="flex items-center gap-3 py-2 px-3 rounded-xl hover:bg-white/5 transition-colors group"
+                    >
+                      <div className={`w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center shrink-0 group-hover:bg-white/10 transition-colors`}>
+                        <f.icon className={`w-4 h-4 ${f.color}`} />
+                      </div>
+                      <span className="text-sm text-white/80 font-medium">{f.text}</span>
+                      {f.text === "Daily streak" && <span className="text-lg">🔥</span>}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </main>
 
@@ -640,7 +654,7 @@ export function PasswordGate({ children }: PasswordGateProps) {
   if (phase === "unlocked") return <PasswordGateUnlocked>{children}</PasswordGateUnlocked>;
 
   if (phase === "landing") {
-    return <LandingPage onLogin={() => goToLogin()} onRegister={() => goToRegister()} />;
+    return <LandingPage onLogin={() => goToLogin()} onRegister={() => goToRegister()} videoEmbedUrl={regVideoEmbedUrl} />;
   }
 
   if (phase === "expired") {
@@ -775,7 +789,7 @@ export function PasswordGate({ children }: PasswordGateProps) {
 
   if (phase === "register") {
     return (
-      <AuthShell videoEmbedUrl={regVideoEmbedUrl} footer={
+      <AuthShell footer={
         <p className="text-xs text-center text-gray-500 dark:text-gray-400 mt-6">
           Already have an account?{" "}
           <button onClick={() => goToLogin()} className="text-teal-600 hover:underline font-semibold">Log in</button>
@@ -828,7 +842,7 @@ export function PasswordGate({ children }: PasswordGateProps) {
 
   // ── Login screen (default) ────────────────────────────────────────
   return (
-    <AuthShell videoEmbedUrl={regVideoEmbedUrl} footer={
+    <AuthShell footer={
       <p className="text-xs text-center text-gray-500 dark:text-gray-400 mt-6">
         New here?{" "}
         <button onClick={goToRegister} className="text-teal-600 hover:underline font-semibold">Create an account</button>

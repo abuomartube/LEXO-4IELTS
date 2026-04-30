@@ -1499,7 +1499,7 @@ export default function TeacherDashboard() {
             </div>
             <div className="flex-1 min-w-0">
               <h2 className="text-base font-extrabold text-foreground">Registration Page Video</h2>
-              <p className="text-xs text-muted-foreground">Paste a YouTube URL — it appears embedded above the login/register form. Leave blank to hide.</p>
+              <p className="text-xs text-muted-foreground">Paste a YouTube URL — it appears on the main homepage (right panel). Leave blank to show the features list instead.</p>
             </div>
           </div>
           <div className="p-5 space-y-3">
