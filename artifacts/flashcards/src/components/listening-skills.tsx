@@ -364,6 +364,7 @@ function AudioPlayer({ testId, lines, onFirstPlay }:{ testId: string; lines: Aud
   const blobUrlsRef = useRef<string[]>([]);
   const cancelledRef = useRef(false);
   const playedOnce = useRef(false);
+  const bgLoadPromiseRef = useRef<Promise<void> | null>(null);
 
   // Cleanup blob URLs on unmount
   useEffect(() => {
@@ -375,14 +376,33 @@ function AudioPlayer({ testId, lines, onFirstPlay }:{ testId: string; lines: Aud
     };
   }, []);
 
-  // Reset cache when lines change
+  // Reset cache when lines change and start background preloading
   useEffect(() => {
+    cancelledRef.current = true;
+    if (audioRef.current) { audioRef.current.pause(); audioRef.current.src = ""; audioRef.current = null; }
     blobUrlsRef.current.forEach(u => URL.revokeObjectURL(u));
     blobUrlsRef.current = [];
     setState("idle");
     setCurrentLine(-1);
     setError(null);
     setLoadProgress(0);
+    cancelledRef.current = false;
+
+    // Silently preload all audio in the background so Play is instant
+    bgLoadPromiseRef.current = (async () => {
+      const urls: string[] = [];
+      try {
+        for (let i = 0; i < lines.length; i++) {
+          if (cancelledRef.current) return;
+          const url = await fetchLine(lines[i], i);
+          urls.push(url);
+        }
+        if (!cancelledRef.current) blobUrlsRef.current = urls;
+      } catch {
+        urls.forEach(u => URL.revokeObjectURL(u));
+      }
+    })();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lines]);
 
   const fetchLine = async (line: AudioLine, idx: number): Promise<string> => {
@@ -392,15 +412,14 @@ function AudioPlayer({ testId, lines, onFirstPlay }:{ testId: string; lines: Aud
       const staticRes = await fetch(staticUrl);
       if (staticRes.ok) {
         const ct = staticRes.headers.get("content-type") || "";
-        // Some dev servers return index.html for missing files — only accept audio
-        if (ct.includes("audio") || ct.includes("octet-stream") || ct === "" ) {
+        if (ct.includes("audio") || ct.includes("octet-stream")) {
           const blob = await staticRes.blob();
           if (blob.size > 1000) return URL.createObjectURL(blob);
         }
       }
     } catch { /* fall through to API */ }
 
-    // 2) Fallback: live TTS via the API (e.g. for new tests not yet pre-generated)
+    // 2) Fallback: live TTS via the API
     const voice = line.voice === "f" ? "nova" : "alloy";
     const res = await fetch("/api/speaking/tts", {
       method: "POST",
@@ -420,7 +439,7 @@ function AudioPlayer({ testId, lines, onFirstPlay }:{ testId: string; lines: Aud
     return URL.createObjectURL(blob);
   };
 
-  const ensureLoaded = async (): Promise<string[] | null> => {
+  const loadWithProgress = async (): Promise<string[] | null> => {
     if (blobUrlsRef.current.length === lines.length) return blobUrlsRef.current;
     setState("loading");
     setError(null);
@@ -445,7 +464,7 @@ function AudioPlayer({ testId, lines, onFirstPlay }:{ testId: string; lines: Aud
   };
 
   const playFrom = (urls: string[], startIdx: number) => {
-    if (startIdx >= urls.length) { setState("idle"); setCurrentLine(-1); return; }
+    if (startIdx >= urls.length || cancelledRef.current) { setState("idle"); setCurrentLine(-1); return; }
     setCurrentLine(startIdx);
     setState("playing");
     const audio = new Audio(urls[startIdx]);
@@ -458,8 +477,27 @@ function AudioPlayer({ testId, lines, onFirstPlay }:{ testId: string; lines: Aud
   const play = async () => {
     if (!playedOnce.current) { playedOnce.current = true; onFirstPlay?.(); }
     cancelledRef.current = false;
-    const urls = await ensureLoaded();
-    if (!urls) return;
+
+    // Fast path: audio already preloaded — play instantly (no async gap)
+    if (blobUrlsRef.current.length === lines.length) {
+      playFrom(blobUrlsRef.current, 0);
+      return;
+    }
+
+    // Wait for background load if in progress, else load with visible progress
+    if (bgLoadPromiseRef.current) {
+      setState("loading");
+      await bgLoadPromiseRef.current;
+      bgLoadPromiseRef.current = null;
+      if (blobUrlsRef.current.length === lines.length) {
+        setState("idle");
+        playFrom(blobUrlsRef.current, 0);
+        return;
+      }
+    }
+
+    const urls = await loadWithProgress();
+    if (!urls || cancelledRef.current) return;
     playFrom(urls, 0);
   };
 
