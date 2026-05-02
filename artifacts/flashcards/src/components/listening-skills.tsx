@@ -362,51 +362,12 @@ function AudioPlayer({ testId, lines, onFirstPlay }:{ testId: string; lines: Aud
   const [error, setError] = useState<string | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const blobUrlsRef = useRef<string[]>([]);
-  const cancelledRef = useRef(false);
   const playedOnce = useRef(false);
-  const bgLoadPromiseRef = useRef<Promise<void> | null>(null);
-
-  // Cleanup blob URLs on unmount
-  useEffect(() => {
-    return () => {
-      cancelledRef.current = true;
-      if (audioRef.current) { audioRef.current.pause(); audioRef.current.src = ""; }
-      blobUrlsRef.current.forEach(u => URL.revokeObjectURL(u));
-      blobUrlsRef.current = [];
-    };
-  }, []);
-
-  // Reset cache when lines change and start background preloading
-  useEffect(() => {
-    cancelledRef.current = true;
-    if (audioRef.current) { audioRef.current.pause(); audioRef.current.src = ""; audioRef.current = null; }
-    blobUrlsRef.current.forEach(u => URL.revokeObjectURL(u));
-    blobUrlsRef.current = [];
-    setState("idle");
-    setCurrentLine(-1);
-    setError(null);
-    setLoadProgress(0);
-    cancelledRef.current = false;
-
-    // Silently preload all audio in the background so Play is instant
-    bgLoadPromiseRef.current = (async () => {
-      const urls: string[] = [];
-      try {
-        for (let i = 0; i < lines.length; i++) {
-          if (cancelledRef.current) return;
-          const url = await fetchLine(lines[i], i);
-          urls.push(url);
-        }
-        if (!cancelledRef.current) blobUrlsRef.current = urls;
-      } catch {
-        urls.forEach(u => URL.revokeObjectURL(u));
-      }
-    })();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [lines]);
+  const playingIdxRef = useRef(-1);
+  const stoppedRef = useRef(false);
 
   const fetchLine = async (line: AudioLine, idx: number): Promise<string> => {
-    // 1) Try the pre-generated static MP3 (instant, no API cost)
+    // 1) Try the pre-generated static MP3 first (instant, no API cost)
     const staticUrl = `${import.meta.env.BASE_URL}audio/listening/${testId}-${idx}.mp3`;
     try {
       const staticRes = await fetch(staticUrl);
@@ -439,23 +400,79 @@ function AudioPlayer({ testId, lines, onFirstPlay }:{ testId: string; lines: Aud
     return URL.createObjectURL(blob);
   };
 
-  const loadWithProgress = async (): Promise<string[] | null> => {
+  // Reset and start background preloading whenever the test (lines) changes
+  useEffect(() => {
+    let cancelled = false;
+    // Stop any current playback and clear old blobs
+    if (audioRef.current) {
+      audioRef.current.pause();
+      try { audioRef.current.removeAttribute("src"); audioRef.current.load(); } catch { /* noop */ }
+    }
+    blobUrlsRef.current.forEach(u => URL.revokeObjectURL(u));
+    blobUrlsRef.current = [];
+    setState("idle");
+    setCurrentLine(-1);
+    setError(null);
+    setLoadProgress(0);
+    playingIdxRef.current = -1;
+    stoppedRef.current = false;
+
+    // Silently preload everything in parallel — much faster than serial
+    (async () => {
+      try {
+        const urls = await Promise.all(lines.map((l, i) => fetchLine(l, i)));
+        if (cancelled) {
+          urls.forEach(u => URL.revokeObjectURL(u));
+          return;
+        }
+        blobUrlsRef.current = urls;
+      } catch {
+        // Errors will surface when the user actually clicks play
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lines, testId]);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      stoppedRef.current = true;
+      if (audioRef.current) {
+        audioRef.current.pause();
+        try { audioRef.current.removeAttribute("src"); audioRef.current.load(); } catch { /* noop */ }
+      }
+      blobUrlsRef.current.forEach(u => URL.revokeObjectURL(u));
+      blobUrlsRef.current = [];
+    };
+  }, []);
+
+  const loadAllWithProgress = async (): Promise<string[] | null> => {
     if (blobUrlsRef.current.length === lines.length) return blobUrlsRef.current;
     setState("loading");
     setError(null);
     setLoadProgress(0);
     const urls: string[] = [];
     try {
-      for (let i = 0; i < lines.length; i++) {
-        if (cancelledRef.current) return null;
-        const url = await fetchLine(lines[i], i);
-        urls.push(url);
-        setLoadProgress(Math.round(((i + 1) / lines.length) * 100));
+      let done = 0;
+      const promises = lines.map(async (l, i) => {
+        const url = await fetchLine(l, i);
+        urls[i] = url;
+        done++;
+        setLoadProgress(Math.round((done / lines.length) * 100));
+      });
+      await Promise.all(promises);
+      if (stoppedRef.current) {
+        urls.forEach(u => u && URL.revokeObjectURL(u));
+        return null;
       }
       blobUrlsRef.current = urls;
       return urls;
     } catch (e) {
-      urls.forEach(u => URL.revokeObjectURL(u));
+      urls.forEach(u => u && URL.revokeObjectURL(u));
       const msg = e instanceof Error ? e.message : "Could not load audio.";
       setError(msg);
       setState("idle");
@@ -463,42 +480,44 @@ function AudioPlayer({ testId, lines, onFirstPlay }:{ testId: string; lines: Aud
     }
   };
 
-  const playFrom = (urls: string[], startIdx: number) => {
-    if (startIdx >= urls.length || cancelledRef.current) { setState("idle"); setCurrentLine(-1); return; }
-    setCurrentLine(startIdx);
+  const playLine = (idx: number) => {
+    const audio = audioRef.current;
+    const urls = blobUrlsRef.current;
+    if (!audio || stoppedRef.current) return;
+    if (idx >= urls.length) {
+      setState("idle");
+      setCurrentLine(-1);
+      playingIdxRef.current = -1;
+      return;
+    }
+    playingIdxRef.current = idx;
+    setCurrentLine(idx);
     setState("playing");
-    const audio = new Audio(urls[startIdx]);
-    audioRef.current = audio;
-    audio.onended = () => playFrom(urls, startIdx + 1);
-    audio.onerror = () => playFrom(urls, startIdx + 1);
-    audio.play().catch(() => playFrom(urls, startIdx + 1));
+    audio.src = urls[idx];
+    audio.play().catch(() => {
+      // If play fails (e.g. autoplay block), skip to next clip
+      if (!stoppedRef.current) setTimeout(() => playLine(idx + 1), 50);
+    });
   };
 
   const play = async () => {
     if (!playedOnce.current) { playedOnce.current = true; onFirstPlay?.(); }
-    cancelledRef.current = false;
+    stoppedRef.current = false;
 
-    // Fast path: audio already preloaded — play instantly (no async gap)
+    // Make sure the <audio> element exists before any async work — preserves
+    // user-gesture context for iOS Safari autoplay rules.
+    if (!audioRef.current) return;
+
+    // Fast path: already preloaded → play immediately (no async gap)
     if (blobUrlsRef.current.length === lines.length) {
-      playFrom(blobUrlsRef.current, 0);
+      playLine(0);
       return;
     }
 
-    // Wait for background load if in progress, else load with visible progress
-    if (bgLoadPromiseRef.current) {
-      setState("loading");
-      await bgLoadPromiseRef.current;
-      bgLoadPromiseRef.current = null;
-      if (blobUrlsRef.current.length === lines.length) {
-        setState("idle");
-        playFrom(blobUrlsRef.current, 0);
-        return;
-      }
-    }
-
-    const urls = await loadWithProgress();
-    if (!urls || cancelledRef.current) return;
-    playFrom(urls, 0);
+    // Otherwise, show progress and load
+    const urls = await loadAllWithProgress();
+    if (!urls || stoppedRef.current) return;
+    playLine(0);
   };
 
   const pause = () => {
@@ -506,27 +525,42 @@ function AudioPlayer({ testId, lines, onFirstPlay }:{ testId: string; lines: Aud
     setState("paused");
   };
   const resume = () => {
-    audioRef.current?.play().then(() => setState("playing")).catch(() => { /* noop */ });
+    const audio = audioRef.current;
+    if (!audio) return;
+    audio.play().then(() => setState("playing")).catch(() => { /* noop */ });
   };
   const stop = () => {
-    if (audioRef.current) {
-      audioRef.current.onended = null;
-      audioRef.current.pause();
-      audioRef.current = null;
+    stoppedRef.current = true;
+    const audio = audioRef.current;
+    if (audio) {
+      audio.pause();
+      audio.currentTime = 0;
     }
     setState("idle");
     setCurrentLine(-1);
+    playingIdxRef.current = -1;
   };
   const replay = () => {
-    stop();
-    setTimeout(() => {
-      if (blobUrlsRef.current.length === lines.length) playFrom(blobUrlsRef.current, 0);
-      else play();
-    }, 100);
+    stoppedRef.current = false;
+    if (blobUrlsRef.current.length === lines.length) {
+      playLine(0);
+    } else {
+      play();
+    }
+  };
+
+  const handleEnded = () => {
+    if (stoppedRef.current) return;
+    playLine(playingIdxRef.current + 1);
+  };
+  const handleError = () => {
+    if (stoppedRef.current) return;
+    playLine(playingIdxRef.current + 1);
   };
 
   return (
     <div className="bg-gradient-to-br from-indigo-500/10 via-card to-card border border-border rounded-2xl p-5 space-y-3">
+      <audio ref={audioRef} onEnded={handleEnded} onError={handleError} preload="auto" />
       <div className="flex items-center justify-between gap-3 flex-wrap">
         <div className="flex items-center gap-2">
           <Volume2 className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
