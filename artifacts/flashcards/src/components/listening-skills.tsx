@@ -360,11 +360,14 @@ function AudioPlayer({ testId, lines, onFirstPlay }:{ testId: string; lines: Aud
   const [currentLine, setCurrentLine] = useState(-1);
   const [loadProgress, setLoadProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
+  const [showScript, setShowScript] = useState(false);
+
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const blobUrlsRef = useRef<string[]>([]);
-  const playedOnce = useRef(false);
   const playingIdxRef = useRef(-1);
   const stoppedRef = useRef(false);
+  // Error throttling: avoid cascading skips when many clips fail.
+  const errorBurstRef = useRef({ count: 0, lastTime: 0 });
 
   const fetchLine = async (line: AudioLine, idx: number): Promise<string> => {
     // 1) Try the pre-generated static MP3 first (instant, no API cost)
@@ -400,14 +403,11 @@ function AudioPlayer({ testId, lines, onFirstPlay }:{ testId: string; lines: Aud
     return URL.createObjectURL(blob);
   };
 
-  // Reset and start background preloading whenever the test (lines) changes
+  // Preload all clips when the test changes (depends only on testId).
+  // We DON'T touch the <audio> element here — that's only modified when the
+  // user explicitly plays/pauses/stops, which avoids spurious error events.
   useEffect(() => {
     let cancelled = false;
-    // Stop any current playback and clear old blobs
-    if (audioRef.current) {
-      audioRef.current.pause();
-      try { audioRef.current.removeAttribute("src"); audioRef.current.load(); } catch { /* noop */ }
-    }
     blobUrlsRef.current.forEach(u => URL.revokeObjectURL(u));
     blobUrlsRef.current = [];
     setState("idle");
@@ -416,8 +416,8 @@ function AudioPlayer({ testId, lines, onFirstPlay }:{ testId: string; lines: Aud
     setLoadProgress(0);
     playingIdxRef.current = -1;
     stoppedRef.current = false;
+    errorBurstRef.current = { count: 0, lastTime: 0 };
 
-    // Silently preload everything in parallel — much faster than serial
     (async () => {
       try {
         const urls = await Promise.all(lines.map((l, i) => fetchLine(l, i)));
@@ -435,15 +435,15 @@ function AudioPlayer({ testId, lines, onFirstPlay }:{ testId: string; lines: Aud
       cancelled = true;
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [lines, testId]);
+  }, [testId]);
 
-  // Cleanup on unmount
+  // Cleanup on unmount only
   useEffect(() => {
     return () => {
       stoppedRef.current = true;
-      if (audioRef.current) {
-        audioRef.current.pause();
-        try { audioRef.current.removeAttribute("src"); audioRef.current.load(); } catch { /* noop */ }
+      const audio = audioRef.current;
+      if (audio) {
+        audio.pause();
       }
       blobUrlsRef.current.forEach(u => URL.revokeObjectURL(u));
       blobUrlsRef.current = [];
@@ -494,27 +494,22 @@ function AudioPlayer({ testId, lines, onFirstPlay }:{ testId: string; lines: Aud
     setCurrentLine(idx);
     setState("playing");
     audio.src = urls[idx];
-    audio.play().catch(() => {
-      // If play fails (e.g. autoplay block), skip to next clip
-      if (!stoppedRef.current) setTimeout(() => playLine(idx + 1), 50);
-    });
+    // Promise rejection here is handled by the audio element's error event,
+    // so we swallow it to avoid double-handling that creates skip cascades.
+    audio.play().catch(() => { /* handled by handleError */ });
   };
 
   const play = async () => {
-    if (!playedOnce.current) { playedOnce.current = true; onFirstPlay?.(); }
-    stoppedRef.current = false;
-
-    // Make sure the <audio> element exists before any async work — preserves
-    // user-gesture context for iOS Safari autoplay rules.
     if (!audioRef.current) return;
+    onFirstPlay?.();
+    stoppedRef.current = false;
+    errorBurstRef.current = { count: 0, lastTime: 0 };
 
-    // Fast path: already preloaded → play immediately (no async gap)
     if (blobUrlsRef.current.length === lines.length) {
       playLine(0);
       return;
     }
 
-    // Otherwise, show progress and load
     const urls = await loadAllWithProgress();
     if (!urls || stoppedRef.current) return;
     playLine(0);
@@ -534,7 +529,7 @@ function AudioPlayer({ testId, lines, onFirstPlay }:{ testId: string; lines: Aud
     const audio = audioRef.current;
     if (audio) {
       audio.pause();
-      audio.currentTime = 0;
+      try { audio.currentTime = 0; } catch { /* noop */ }
     }
     setState("idle");
     setCurrentLine(-1);
@@ -542,6 +537,7 @@ function AudioPlayer({ testId, lines, onFirstPlay }:{ testId: string; lines: Aud
   };
   const replay = () => {
     stoppedRef.current = false;
+    errorBurstRef.current = { count: 0, lastTime: 0 };
     if (blobUrlsRef.current.length === lines.length) {
       playLine(0);
     } else {
@@ -551,12 +547,38 @@ function AudioPlayer({ testId, lines, onFirstPlay }:{ testId: string; lines: Aud
 
   const handleEnded = () => {
     if (stoppedRef.current) return;
+    // Reset error burst on a successful clip end
+    errorBurstRef.current = { count: 0, lastTime: 0 };
     playLine(playingIdxRef.current + 1);
   };
   const handleError = () => {
     if (stoppedRef.current) return;
+    // If the audio has no src (e.g. just cleared on stop), ignore the error.
+    const audio = audioRef.current;
+    if (!audio || !audio.currentSrc) return;
+    const now = Date.now();
+    const burst = errorBurstRef.current;
+    if (now - burst.lastTime < 500) burst.count++;
+    else burst.count = 1;
+    burst.lastTime = now;
+    if (burst.count >= 3) {
+      // 3+ rapid errors — bail out, don't cascade through every clip.
+      stoppedRef.current = true;
+      setState("idle");
+      setCurrentLine(-1);
+      playingIdxRef.current = -1;
+      setError("Some audio clips failed to load. Try replaying or refreshing the page.");
+      return;
+    }
     playLine(playingIdxRef.current + 1);
   };
+
+  // Stable text for the "now playing" indicator. Reserved height so the panel
+  // never grows or shrinks → no layout shift, no jitter.
+  const nowPlayingText =
+    currentLine >= 0 && currentLine < lines.length
+      ? `Line ${currentLine + 1} of ${lines.length} · ${lines[currentLine].speaker}`
+      : "\u00A0";
 
   return (
     <div className="bg-gradient-to-br from-indigo-500/10 via-card to-card border border-border rounded-2xl p-5 space-y-3">
@@ -615,11 +637,14 @@ function AudioPlayer({ testId, lines, onFirstPlay }:{ testId: string; lines: Aud
         </div>
       </div>
 
-      {state === "loading" && (
-        <div className="w-full bg-muted/40 rounded-full h-2 overflow-hidden">
-          <div className="h-full bg-gradient-to-r from-indigo-500 to-purple-500 transition-all duration-300" style={{ width: `${loadProgress}%` }} />
-        </div>
-      )}
+      {/* Loading bar — fixed height container so it never collapses the layout. */}
+      <div className="h-2">
+        {state === "loading" && (
+          <div className="w-full bg-muted/40 rounded-full h-2 overflow-hidden">
+            <div className="h-full bg-gradient-to-r from-indigo-500 to-purple-500 transition-all duration-300" style={{ width: `${loadProgress}%` }} />
+          </div>
+        )}
+      </div>
 
       {error && (
         <div className="bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-800 rounded-xl p-3 text-sm text-rose-700 dark:text-rose-300">
@@ -627,68 +652,49 @@ function AudioPlayer({ testId, lines, onFirstPlay }:{ testId: string; lines: Aud
         </div>
       )}
 
-      {(state === "playing" || state === "paused") && (
-        <FollowAlongScript lines={lines} currentLine={currentLine} />
-      )}
-      <p className="text-xs text-muted-foreground italic">
-        🎧 Audio uses natural AI voices (alloy &amp; nova). Use headphones for the best experience. In a real IELTS exam you only hear the audio once — but here you may replay it for practice.
-      </p>
+      {/* Stable now-playing indicator — single line, reserved height (no jitter). */}
+      <div className="bg-muted/30 rounded-lg px-3 py-2 text-xs text-muted-foreground font-medium h-8 flex items-center">
+        {nowPlayingText}
+      </div>
+
+      <div className="flex items-center justify-between gap-2">
+        <p className="text-xs text-muted-foreground italic flex-1">
+          🎧 AI voices (alloy &amp; nova). Use headphones for best results. You may replay the audio for practice.
+        </p>
+        <button
+          onClick={() => setShowScript(s => !s)}
+          className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline whitespace-nowrap"
+        >
+          {showScript ? "Hide" : "Show"} script
+        </button>
+      </div>
+
+      {/* Static script panel — only shown when toggled. NO auto-scroll, NO highlight, no animation = no flicker. */}
+      {showScript && <StaticScript lines={lines} />}
     </div>
   );
 }
 
-// ─────────── FOLLOW-ALONG SCRIPT (during playback) ───────────
+// ─────────── STATIC SCRIPT (toggle-only, no animation) ───────────
 
-function FollowAlongScript({ lines, currentLine }: { lines: AudioLine[]; currentLine: number }) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const activeRef = useRef<HTMLDivElement>(null);
-
-  // Auto-scroll the active line into view as audio progresses
-  useEffect(() => {
-    const el = activeRef.current;
-    const container = containerRef.current;
-    if (!el || !container) return;
-    const elTop = el.offsetTop - container.offsetTop;
-    const target = elTop - container.clientHeight / 2 + el.clientHeight / 2;
-    container.scrollTo({ top: Math.max(0, target), behavior: "smooth" });
-  }, [currentLine]);
-
-  // Single-line monologue (Section 2/3/4): split into paragraphs for readability.
-  // Multi-line dialogue (Section 1/3): show each speaker turn, highlight active.
+function StaticScript({ lines }: { lines: AudioLine[] }) {
   const isMonologue = lines.length === 1;
-  const blocks: { speaker: string; text: string; idx: number }[] = isMonologue
+  const blocks = isMonologue
     ? lines[0].text.split(/\n\s*\n/).filter(p => p.trim()).map((p, i) => ({
-        speaker: lines[0].speaker, text: p.trim(), idx: i,
+        speaker: i === 0 ? lines[0].speaker : "", text: p.trim(),
       }))
-    : lines.map((l, i) => ({ speaker: l.speaker, text: l.text, idx: i }));
+    : lines.map(l => ({ speaker: l.speaker, text: l.text }));
 
   return (
-    <div
-      ref={containerRef}
-      className="bg-muted/30 rounded-xl border border-border max-h-64 overflow-y-auto p-3 space-y-2 text-sm scroll-smooth"
-    >
-      <div className="text-[10px] uppercase tracking-wide font-bold text-muted-foreground mb-1 sticky top-0 bg-muted/80 backdrop-blur-sm py-1 -m-1 px-1">
-        Follow-along script {isMonologue ? "(monologue · paragraphs)" : ""}
-      </div>
-      {blocks.map((b) => {
-        const isActive = !isMonologue && b.idx === currentLine;
-        return (
-          <div
-            key={b.idx}
-            ref={isActive ? activeRef : null}
-            className={`rounded-lg p-2 border transition-colors ${
-              isActive
-                ? "bg-emerald-100 dark:bg-emerald-900/30 border-emerald-300 dark:border-emerald-700"
-                : "bg-card/50 border-transparent"
-            }`}
-          >
-            <span className={`text-xs font-bold mr-2 ${isActive ? "text-emerald-700 dark:text-emerald-300" : "text-purple-600 dark:text-purple-400"}`}>
-              {b.speaker}:
-            </span>
-            <span className={isActive ? "text-foreground" : "text-muted-foreground"}>{b.text}</span>
-          </div>
-        );
-      })}
+    <div className="bg-muted/30 rounded-xl border border-border p-3 space-y-2 text-sm">
+      {blocks.map((b, i) => (
+        <div key={i} className="rounded-lg p-2 bg-card/50">
+          {b.speaker && (
+            <span className="text-xs font-bold mr-2 text-purple-600 dark:text-purple-400">{b.speaker}:</span>
+          )}
+          <span className="text-foreground">{b.text}</span>
+        </div>
+      ))}
     </div>
   );
 }
