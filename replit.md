@@ -6,7 +6,7 @@ Key capabilities include:
 -   **Extensive Flashcard System**: 2,198 CEFR-corrected flashcards with Arabic translations and bilingual example sentences.
 -   **Interactive Study Modes**: Study, Quiz, Browse, Spell It (timed game with TTS), and Spaced Repetition (SM-2 algorithm).
 -   **AI-Powered Tools**: Orwell AI for IELTS essay checking and LEXO AI Chat Assistant for IELTS-specific queries.
--   **Comprehensive Testing**: Full IELTS Listening, Reading, and Mock Tests with auto-grading and feedback.
+-   **Comprehensive Testing**: Full IELTS Listening, Reading, and Mock Tests with auto-grading and feedback. Listening Tests 1 & 2 use original Cambridge IELTS 20 recordings supplied by the user; Listening Tests 3 & 4 use original IELTS-style scripts authored in-repo and rendered with OpenAI TTS (script: `artifacts/flashcards/scripts/generate-cambridge-test-audio.mjs`).
 -   **Personalized Learning**: Daily streaks, weak-word decks, progress tracking, and onboarding for customized study plans.
 -   **Teacher Dashboard**: Admin interface for monitoring student progress, activity, and in-app/web push notification management.
 -   **Public Reviews with Admin Replies**: Approved student reviews displayed on the landing page, with admin reply functionality.

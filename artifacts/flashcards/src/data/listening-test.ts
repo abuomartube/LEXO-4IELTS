@@ -372,7 +372,7 @@ export const listeningTests: ListeningTest[] = [
   {
     id: "listening-3",
     label: "Test 3",
-    source: "Cambridge IELTS 20 — Test 3",
+    source: "IELTS-style Test 3 — LEXO original audio",
     parts: [
       {
         id: 1,
@@ -559,7 +559,7 @@ export const listeningTests: ListeningTest[] = [
   {
     id: "listening-4",
     label: "Test 4",
-    source: "Cambridge IELTS 20 — Test 4",
+    source: "IELTS-style Test 4 — LEXO original audio",
     parts: [
       {
         id: 1,
