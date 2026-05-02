@@ -627,15 +627,68 @@ function AudioPlayer({ testId, lines, onFirstPlay }:{ testId: string; lines: Aud
         </div>
       )}
 
-      {(state === "playing" || state === "paused") && currentLine >= 0 && (
-        <div className="bg-muted/40 rounded-xl p-3 border border-border text-sm">
-          <span className="text-xs font-bold text-purple-600 dark:text-purple-400 mr-2">{lines[currentLine].speaker}:</span>
-          <span className="text-muted-foreground">{lines[currentLine].text}</span>
-        </div>
+      {(state === "playing" || state === "paused") && (
+        <FollowAlongScript lines={lines} currentLine={currentLine} />
       )}
       <p className="text-xs text-muted-foreground italic">
         🎧 Audio uses natural AI voices (alloy &amp; nova). Use headphones for the best experience. In a real IELTS exam you only hear the audio once — but here you may replay it for practice.
       </p>
+    </div>
+  );
+}
+
+// ─────────── FOLLOW-ALONG SCRIPT (during playback) ───────────
+
+function FollowAlongScript({ lines, currentLine }: { lines: AudioLine[]; currentLine: number }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const activeRef = useRef<HTMLDivElement>(null);
+
+  // Auto-scroll the active line into view as audio progresses
+  useEffect(() => {
+    const el = activeRef.current;
+    const container = containerRef.current;
+    if (!el || !container) return;
+    const elTop = el.offsetTop - container.offsetTop;
+    const target = elTop - container.clientHeight / 2 + el.clientHeight / 2;
+    container.scrollTo({ top: Math.max(0, target), behavior: "smooth" });
+  }, [currentLine]);
+
+  // Single-line monologue (Section 2/3/4): split into paragraphs for readability.
+  // Multi-line dialogue (Section 1/3): show each speaker turn, highlight active.
+  const isMonologue = lines.length === 1;
+  const blocks: { speaker: string; text: string; idx: number }[] = isMonologue
+    ? lines[0].text.split(/\n\s*\n/).filter(p => p.trim()).map((p, i) => ({
+        speaker: lines[0].speaker, text: p.trim(), idx: i,
+      }))
+    : lines.map((l, i) => ({ speaker: l.speaker, text: l.text, idx: i }));
+
+  return (
+    <div
+      ref={containerRef}
+      className="bg-muted/30 rounded-xl border border-border max-h-64 overflow-y-auto p-3 space-y-2 text-sm scroll-smooth"
+    >
+      <div className="text-[10px] uppercase tracking-wide font-bold text-muted-foreground mb-1 sticky top-0 bg-muted/80 backdrop-blur-sm py-1 -m-1 px-1">
+        Follow-along script {isMonologue ? "(monologue · paragraphs)" : ""}
+      </div>
+      {blocks.map((b) => {
+        const isActive = !isMonologue && b.idx === currentLine;
+        return (
+          <div
+            key={b.idx}
+            ref={isActive ? activeRef : null}
+            className={`rounded-lg p-2 border transition-colors ${
+              isActive
+                ? "bg-emerald-100 dark:bg-emerald-900/30 border-emerald-300 dark:border-emerald-700"
+                : "bg-card/50 border-transparent"
+            }`}
+          >
+            <span className={`text-xs font-bold mr-2 ${isActive ? "text-emerald-700 dark:text-emerald-300" : "text-purple-600 dark:text-purple-400"}`}>
+              {b.speaker}:
+            </span>
+            <span className={isActive ? "text-foreground" : "text-muted-foreground"}>{b.text}</span>
+          </div>
+        );
+      })}
     </div>
   );
 }
@@ -709,12 +762,25 @@ function ResultView({ test, result, onRetry, onMore, onSecs }:{
           <Mic2 className="w-4 h-4 text-purple-500" /> Show audio transcript
         </summary>
         <div className="mt-4 space-y-2 text-sm">
-          {test.audioLines.map((l, i) => (
-            <div key={i} className="bg-muted/40 rounded-lg p-2.5">
-              <span className="text-xs font-bold text-purple-600 dark:text-purple-400 mr-2">{l.speaker}:</span>
-              <span className="text-foreground">{l.text}</span>
-            </div>
-          ))}
+          {test.audioLines.length === 1
+            ? // Monologue: split by paragraph breaks for readability
+              test.audioLines[0].text.split(/\n\s*\n/).filter(p => p.trim()).map((para, i) => (
+                <div key={i} className="bg-muted/40 rounded-lg p-2.5">
+                  {i === 0 && (
+                    <span className="text-xs font-bold text-purple-600 dark:text-purple-400 mr-2">
+                      {test.audioLines[0].speaker}:
+                    </span>
+                  )}
+                  <span className="text-foreground">{para.trim()}</span>
+                </div>
+              ))
+            : // Dialogue: one bubble per speaker turn
+              test.audioLines.map((l, i) => (
+                <div key={i} className="bg-muted/40 rounded-lg p-2.5">
+                  <span className="text-xs font-bold text-purple-600 dark:text-purple-400 mr-2">{l.speaker}:</span>
+                  <span className="text-foreground">{l.text}</span>
+                </div>
+              ))}
         </div>
       </details>
 
