@@ -357,19 +357,33 @@ function ItemEditor({ item, index, value, onChange, qType, options }:{
 
 function AudioPlayer({ testId, lines, onFirstPlay }:{ testId: string; lines: AudioLine[]; onFirstPlay?: () => void }) {
   const [state, setState] = useState<"idle" | "loading" | "playing" | "paused">("idle");
-  const [currentLine, setCurrentLine] = useState(-1);
   const [loadProgress, setLoadProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [showScript, setShowScript] = useState(false);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const blobUrlsRef = useRef<string[]>([]);
-  const playingIdxRef = useRef(-1);
+  // Single combined blob URL containing ALL lines stitched into one MP3 stream.
+  // Browsers decode joined MP3 frames natively, so this lets us avoid the
+  // fragile per-clip chaining (audio.src swap on `ended`) that previously
+  // triggered cascading error events on multi-line tests.
+  const combinedUrlRef = useRef<string | null>(null);
+  // Generation token — incremented every time the test changes. Only the
+  // latest generation may assign `combinedUrlRef`, preventing stale preloads
+  // from overwriting a fresh build.
+  const genRef = useRef(0);
+  // Shared in-flight build promise so preload + play don't trigger duplicate
+  // network/decode work and don't race to assign different URLs.
+  const buildPromiseRef = useRef<Promise<string | null> | null>(null);
   const stoppedRef = useRef(false);
-  // Error throttling: avoid cascading skips when many clips fail.
-  const errorBurstRef = useRef({ count: 0, lastTime: 0 });
 
-  const fetchLine = async (line: AudioLine, idx: number): Promise<string> => {
+  // Replace the current combined URL, revoking any previous one to avoid leaks.
+  const setCombinedUrl = (url: string | null) => {
+    const prev = combinedUrlRef.current;
+    if (prev && prev !== url) URL.revokeObjectURL(prev);
+    combinedUrlRef.current = url;
+  };
+
+  const fetchBlob = async (line: AudioLine, idx: number): Promise<Blob> => {
     // 1) Try the pre-generated static MP3 first (instant, no API cost)
     const staticUrl = `${import.meta.env.BASE_URL}audio/listening/${testId}-${idx}.mp3`;
     try {
@@ -378,7 +392,7 @@ function AudioPlayer({ testId, lines, onFirstPlay }:{ testId: string; lines: Aud
         const ct = staticRes.headers.get("content-type") || "";
         if (ct.includes("audio") || ct.includes("octet-stream")) {
           const blob = await staticRes.blob();
-          if (blob.size > 1000) return URL.createObjectURL(blob);
+          if (blob.size > 1000) return blob;
         }
       }
     } catch { /* fall through to API */ }
@@ -399,41 +413,83 @@ function AudioPlayer({ testId, lines, onFirstPlay }:{ testId: string; lines: Aud
       } catch { /* noop */ }
       throw new Error(msg);
     }
-    const blob = await res.blob();
-    return URL.createObjectURL(blob);
+    return await res.blob();
   };
 
-  // Preload all clips when the test changes (depends only on testId).
-  // We DON'T touch the <audio> element here — that's only modified when the
-  // user explicitly plays/pauses/stops, which avoids spurious error events.
+  const buildCombinedBlob = async (
+    onProgress?: (pct: number) => void,
+  ): Promise<Blob> => {
+    const blobs: Blob[] = new Array(lines.length);
+    let done = 0;
+    await Promise.all(
+      lines.map(async (l, i) => {
+        blobs[i] = await fetchBlob(l, i);
+        done++;
+        onProgress?.(Math.round((done / lines.length) * 100));
+      }),
+    );
+    // Concatenate all MP3 byte streams into a single blob. MP3 decoders
+    // sync to frame headers, so naive concatenation plays back as one
+    // continuous audio stream in all modern browsers.
+    return new Blob(blobs, { type: "audio/mpeg" });
+  };
+
+  // Build (or return the in-flight build for) the combined blob URL.
+  // Single producer: preload and play share the same promise so they cannot
+  // race and stomp on each other's URLs. The result is only assigned if the
+  // generation token still matches (i.e. the user hasn't switched tests).
+  const ensureCombinedUrl = (showLoading: boolean): Promise<string | null> => {
+    if (combinedUrlRef.current) return Promise.resolve(combinedUrlRef.current);
+    if (buildPromiseRef.current) return buildPromiseRef.current;
+
+    const myGen = genRef.current;
+    if (showLoading) {
+      setState("loading");
+      setError(null);
+      setLoadProgress(0);
+    }
+
+    const run = async (): Promise<string | null> => {
+      try {
+        const combined = await buildCombinedBlob(pct => {
+          if (genRef.current === myGen && showLoading) setLoadProgress(pct);
+        });
+        if (genRef.current !== myGen) return null;
+        const url = URL.createObjectURL(combined);
+        setCombinedUrl(url);
+        return url;
+      } catch (e) {
+        if (genRef.current !== myGen) return null;
+        const msg = e instanceof Error ? e.message : "Could not load audio.";
+        setError(msg);
+        setState("idle");
+        return null;
+      }
+    };
+
+    const p = run();
+    buildPromiseRef.current = p;
+    p.finally(() => {
+      if (buildPromiseRef.current === p) buildPromiseRef.current = null;
+    });
+    return p;
+  };
+
+  // Preload + combine on test change. We DON'T touch the <audio> element
+  // here — only when the user explicitly interacts with playback.
   useEffect(() => {
-    let cancelled = false;
-    blobUrlsRef.current.forEach(u => URL.revokeObjectURL(u));
-    blobUrlsRef.current = [];
+    genRef.current += 1;
+    setCombinedUrl(null);
+    buildPromiseRef.current = null;
     setState("idle");
-    setCurrentLine(-1);
     setError(null);
     setLoadProgress(0);
-    playingIdxRef.current = -1;
     stoppedRef.current = false;
-    errorBurstRef.current = { count: 0, lastTime: 0 };
 
-    (async () => {
-      try {
-        const urls = await Promise.all(lines.map((l, i) => fetchLine(l, i)));
-        if (cancelled) {
-          urls.forEach(u => URL.revokeObjectURL(u));
-          return;
-        }
-        blobUrlsRef.current = urls;
-      } catch {
-        // Errors will surface when the user actually clicks play
-      }
-    })();
-
-    return () => {
-      cancelled = true;
-    };
+    // Kick off background preload via the shared producer (silent — no
+    // loading UI; the user only sees that when they explicitly hit Play
+    // before preload has finished).
+    void ensureCombinedUrl(false);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [testId]);
 
@@ -441,78 +497,35 @@ function AudioPlayer({ testId, lines, onFirstPlay }:{ testId: string; lines: Aud
   useEffect(() => {
     return () => {
       stoppedRef.current = true;
+      genRef.current += 1;
+      buildPromiseRef.current = null;
       const audio = audioRef.current;
-      if (audio) {
-        audio.pause();
-      }
-      blobUrlsRef.current.forEach(u => URL.revokeObjectURL(u));
-      blobUrlsRef.current = [];
+      if (audio) audio.pause();
+      setCombinedUrl(null);
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const loadAllWithProgress = async (): Promise<string[] | null> => {
-    if (blobUrlsRef.current.length === lines.length) return blobUrlsRef.current;
-    setState("loading");
-    setError(null);
-    setLoadProgress(0);
-    const urls: string[] = [];
-    try {
-      let done = 0;
-      const promises = lines.map(async (l, i) => {
-        const url = await fetchLine(l, i);
-        urls[i] = url;
-        done++;
-        setLoadProgress(Math.round((done / lines.length) * 100));
-      });
-      await Promise.all(promises);
-      if (stoppedRef.current) {
-        urls.forEach(u => u && URL.revokeObjectURL(u));
-        return null;
-      }
-      blobUrlsRef.current = urls;
-      return urls;
-    } catch (e) {
-      urls.forEach(u => u && URL.revokeObjectURL(u));
-      const msg = e instanceof Error ? e.message : "Could not load audio.";
-      setError(msg);
-      setState("idle");
-      return null;
-    }
-  };
-
-  const playLine = (idx: number) => {
-    const audio = audioRef.current;
-    const urls = blobUrlsRef.current;
-    if (!audio || stoppedRef.current) return;
-    if (idx >= urls.length) {
-      setState("idle");
-      setCurrentLine(-1);
-      playingIdxRef.current = -1;
-      return;
-    }
-    playingIdxRef.current = idx;
-    setCurrentLine(idx);
-    setState("playing");
-    audio.src = urls[idx];
-    // Promise rejection here is handled by the audio element's error event,
-    // so we swallow it to avoid double-handling that creates skip cascades.
-    audio.play().catch(() => { /* handled by handleError */ });
-  };
-
   const play = async () => {
-    if (!audioRef.current) return;
+    const audio = audioRef.current;
+    if (!audio) return;
     onFirstPlay?.();
     stoppedRef.current = false;
-    errorBurstRef.current = { count: 0, lastTime: 0 };
 
-    if (blobUrlsRef.current.length === lines.length) {
-      playLine(0);
-      return;
+    // If preload is still in flight, surface a loading indicator while we
+    // wait for the shared build promise to resolve.
+    if (!combinedUrlRef.current && state !== "loading") setState("loading");
+    const url = await ensureCombinedUrl(true);
+    if (!url || stoppedRef.current || !audioRef.current) return;
+
+    if (audio.src !== url) {
+      audio.src = url;
+      try { audio.currentTime = 0; } catch { /* noop */ }
     }
-
-    const urls = await loadAllWithProgress();
-    if (!urls || stoppedRef.current) return;
-    playLine(0);
+    setState("playing");
+    audio.play().then(() => setState("playing")).catch(() => {
+      // Surfaced via the audio element's `error` event handler.
+    });
   };
 
   const pause = () => {
@@ -532,53 +545,36 @@ function AudioPlayer({ testId, lines, onFirstPlay }:{ testId: string; lines: Aud
       try { audio.currentTime = 0; } catch { /* noop */ }
     }
     setState("idle");
-    setCurrentLine(-1);
-    playingIdxRef.current = -1;
   };
   const replay = () => {
     stoppedRef.current = false;
-    errorBurstRef.current = { count: 0, lastTime: 0 };
-    if (blobUrlsRef.current.length === lines.length) {
-      playLine(0);
+    const audio = audioRef.current;
+    if (audio && combinedUrlRef.current) {
+      try { audio.currentTime = 0; } catch { /* noop */ }
+      setState("playing");
+      audio.play().then(() => setState("playing")).catch(() => { /* noop */ });
     } else {
-      play();
+      void play();
     }
   };
 
   const handleEnded = () => {
     if (stoppedRef.current) return;
-    // Reset error burst on a successful clip end
-    errorBurstRef.current = { count: 0, lastTime: 0 };
-    playLine(playingIdxRef.current + 1);
+    setState("idle");
   };
   const handleError = () => {
     if (stoppedRef.current) return;
-    // If the audio has no src (e.g. just cleared on stop), ignore the error.
     const audio = audioRef.current;
     if (!audio || !audio.currentSrc) return;
-    const now = Date.now();
-    const burst = errorBurstRef.current;
-    if (now - burst.lastTime < 500) burst.count++;
-    else burst.count = 1;
-    burst.lastTime = now;
-    if (burst.count >= 3) {
-      // 3+ rapid errors — bail out, don't cascade through every clip.
-      stoppedRef.current = true;
-      setState("idle");
-      setCurrentLine(-1);
-      playingIdxRef.current = -1;
-      setError("Some audio clips failed to load. Try replaying or refreshing the page.");
-      return;
-    }
-    playLine(playingIdxRef.current + 1);
+    setError("Audio failed to load. Please try replaying or refreshing the page.");
+    setState("idle");
   };
 
-  // Stable text for the "now playing" indicator. Reserved height so the panel
-  // never grows or shrinks → no layout shift, no jitter.
+  // Stable now-playing indicator (reserved height to avoid layout jitter).
   const nowPlayingText =
-    currentLine >= 0 && currentLine < lines.length
-      ? `Line ${currentLine + 1} of ${lines.length} · ${lines[currentLine].speaker}`
-      : "\u00A0";
+    state === "playing" ? `Playing · ${lines.length} ${lines.length === 1 ? "clip" : "clips"} stitched together` :
+    state === "paused"  ? "Paused" :
+    "\u00A0";
 
   return (
     <div className="bg-gradient-to-br from-indigo-500/10 via-card to-card border border-border rounded-2xl p-5 space-y-3">
