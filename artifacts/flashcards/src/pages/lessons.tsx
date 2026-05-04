@@ -161,6 +161,10 @@ function VimeoPlayer({
       dnt: true,
       pip: true,
       speed: true,
+      title: false,
+      byline: false,
+      portrait: false,
+      badge: false,
     };
 
     const p = new Player(el, opts);
@@ -247,7 +251,7 @@ function VimeoPlayer({
       <div className="space-y-0">
         <div className="relative bg-black rounded-lg overflow-hidden" style={{ paddingTop: "56.25%" }}>
           <iframe
-            src={`${lesson.embedUrl}${lesson.embedUrl.includes("?") ? "&" : "?"}autoplay=1&quality=auto&speed=1`}
+            src={`${lesson.embedUrl}${lesson.embedUrl.includes("?") ? "&" : "?"}autoplay=1&quality=auto&speed=1&title=0&byline=0&portrait=0&badge=0&dnt=1`}
             className="absolute inset-0 w-full h-full"
             title={lesson.title}
             allow="autoplay; fullscreen; picture-in-picture"
