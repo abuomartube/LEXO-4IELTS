@@ -6,6 +6,8 @@ import {
   CheckCircle2,
   Circle,
   PlayCircle,
+  Play,
+  Pause,
   BookOpen,
   AlertCircle,
   RefreshCw,
@@ -17,6 +19,7 @@ import {
   Gauge,
   Settings2,
   RotateCcw,
+  Maximize,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Player from "@vimeo/player";
@@ -126,6 +129,7 @@ function VimeoPlayer({
   const playerRef = useRef<Player | null>(null);
   const [playerState, setPlayerState] = useState<"loading" | "ready" | "error">("loading");
   const [buffering, setBuffering] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true);
   const [speed, setSpeed] = useState(1);
   const [quality, setQuality] = useState<QualityOption>("auto");
   const [showControls, setShowControls] = useState(false);
@@ -161,6 +165,7 @@ function VimeoPlayer({
       dnt: true,
       pip: true,
       speed: true,
+      controls: false,
       title: false,
       byline: false,
       portrait: false,
@@ -194,12 +199,15 @@ function VimeoPlayer({
 
     p.on("bufferstart", () => setBuffering(true));
     p.on("bufferend", () => setBuffering(false));
+    p.on("play", () => setIsPlaying(true));
+    p.on("pause", () => setIsPlaying(false));
 
     p.on("timeupdate", (data: { seconds: number; duration: number }) => {
       setProgress({ current: data.seconds, duration: data.duration });
     });
 
     p.on("ended", () => {
+      setIsPlaying(false);
       clearPosition(lesson.id);
     });
 
@@ -243,6 +251,25 @@ function VimeoPlayer({
     setRetryCount((c) => c + 1);
   };
 
+  const togglePlayPause = useCallback(() => {
+    const p = playerRef.current;
+    if (!p || playerState !== "ready") return;
+    if (isPlaying) {
+      p.pause().catch(() => {});
+    } else {
+      p.play().catch(() => {});
+    }
+  }, [isPlaying, playerState]);
+
+  const toggleFullscreen = useCallback(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const iframe = el.querySelector("iframe");
+    if (iframe) {
+      if (iframe.requestFullscreen) iframe.requestFullscreen();
+    }
+  }, []);
+
   const savedPos = getSavedPosition(lesson.id);
   const pct = progress.duration > 0 ? (progress.current / progress.duration) * 100 : 0;
 
@@ -266,6 +293,20 @@ function VimeoPlayer({
     <div className="space-y-0">
       <div className="relative bg-black rounded-t-lg overflow-hidden" style={{ paddingTop: "56.25%" }}>
         <div ref={containerRef} className="absolute inset-0 w-full h-full [&>div]:!w-full [&>div]:!h-full [&>iframe]:!w-full [&>iframe]:!h-full" />
+
+        {playerState === "ready" && !buffering && (
+          <button
+            onClick={togglePlayPause}
+            className="absolute inset-0 z-10 cursor-pointer bg-transparent"
+            aria-label={isPlaying ? "Pause" : "Play"}
+          >
+            {!isPlaying && (
+              <div className="absolute inset-0 flex items-center justify-center bg-black/30">
+                <Play className="w-16 h-16 text-white/90 drop-shadow-lg" fill="white" fillOpacity={0.9} />
+              </div>
+            )}
+          </button>
+        )}
 
         {playerState === "loading" && (
           <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/60 z-10">
@@ -297,9 +338,16 @@ function VimeoPlayer({
 
       {playerState === "ready" && (
         <div className="flex items-center justify-between gap-2 px-3 py-2 bg-card/80 border-x border-b border-border rounded-b-lg">
-          <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+          <div className="flex items-center gap-2">
+            <button
+              onClick={togglePlayPause}
+              className="inline-flex items-center justify-center w-8 h-8 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
+              title={isPlaying ? "Pause" : "Play"}
+            >
+              {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+            </button>
             {progress.duration > 0 && (
-              <span className="font-mono tabular-nums">
+              <span className="font-mono tabular-nums text-xs text-muted-foreground">
                 {formatTime(progress.current)} / {formatTime(progress.duration)}
               </span>
             )}
@@ -318,6 +366,13 @@ function VimeoPlayer({
             >
               <Settings2 className="w-3.5 h-3.5" />
               Settings
+            </button>
+            <button
+              onClick={toggleFullscreen}
+              className="inline-flex items-center justify-center w-8 h-8 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
+              title="Fullscreen"
+            >
+              <Maximize className="w-3.5 h-3.5" />
             </button>
           </div>
         </div>
