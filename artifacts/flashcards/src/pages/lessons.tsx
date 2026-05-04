@@ -79,11 +79,17 @@ function getStudentAuthHeaders(): Record<string, string> {
 
 const SELECTED_COURSE_KEY = "lexo:selected_course";
 
+function extractVimeoId(embedUrl: string): string | null {
+  const m = embedUrl.match(/player\.vimeo\.com\/video\/(\d+)/);
+  return m ? m[1] : null;
+}
+
 export default function Lessons() {
   const [data, setData] = useState<LessonsResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [pendingId, setPendingId] = useState<number | null>(null);
+  const [activeVideoId, setActiveVideoId] = useState<number | null>(null);
   const [selectedCourse, setSelectedCourse] = useState<CourseKey | null>(() => {
     try {
       const v = sessionStorage.getItem(SELECTED_COURSE_KEY);
@@ -280,14 +286,40 @@ export default function Lessons() {
               </div>
 
               <div className="relative bg-black" style={{ paddingTop: "56.25%" }}>
-                <iframe
-                  src={lesson.embedUrl}
-                  className="absolute inset-0 w-full h-full"
-                  title={lesson.title}
-                  allow="autoplay; fullscreen; picture-in-picture"
-                  allowFullScreen
-                  loading="lazy"
-                />
+                {activeVideoId === lesson.id ? (
+                  <iframe
+                    src={`${lesson.embedUrl}${lesson.embedUrl.includes("?") ? "&" : "?"}autoplay=1`}
+                    className="absolute inset-0 w-full h-full"
+                    title={lesson.title}
+                    allow="autoplay; fullscreen; picture-in-picture"
+                    allowFullScreen
+                  />
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => setActiveVideoId(lesson.id)}
+                    className="absolute inset-0 w-full h-full flex flex-col items-center justify-center gap-3 group cursor-pointer bg-gradient-to-b from-gray-900 to-black"
+                    aria-label={`Play ${lesson.title}`}
+                  >
+                    {(() => {
+                      const vid = extractVimeoId(lesson.embedUrl);
+                      return vid ? (
+                        <img
+                          src={`https://vumbnail.com/${vid}.jpg`}
+                          alt=""
+                          className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity"
+                          loading="lazy"
+                        />
+                      ) : null;
+                    })()}
+                    <div className="relative z-10 w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center group-hover:bg-white/30 group-hover:scale-110 transition-all shadow-lg">
+                      <PlayCircle className="w-10 h-10 text-white drop-shadow-md" />
+                    </div>
+                    <span className="relative z-10 text-white/80 text-sm font-medium group-hover:text-white transition-colors">
+                      Tap to load video
+                    </span>
+                  </button>
+                )}
               </div>
 
               <div className="p-4 flex items-center justify-end">
