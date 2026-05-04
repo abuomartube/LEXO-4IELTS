@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, useCallback } from "react";
+import { useEffect, useMemo, useState, useCallback, useRef } from "react";
 import { Layout } from "@/components/layout";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,8 +14,12 @@ import {
   Clock,
   Layers,
   Sparkles,
+  Gauge,
+  Settings2,
+  RotateCcw,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import Player from "@vimeo/player";
 
 type CourseKey = "intro" | "advanced";
 
@@ -77,12 +81,280 @@ function getStudentAuthHeaders(): Record<string, string> {
   } catch { return {}; }
 }
 
-const SELECTED_COURSE_KEY = "lexo:selected_course";
-
 function extractVimeoId(embedUrl: string): string | null {
   const m = embedUrl.match(/player\.vimeo\.com\/video\/(\d+)/);
   return m ? m[1] : null;
 }
+
+const SPEED_OPTIONS = [0.75, 1, 1.25, 1.5];
+const QUALITY_OPTIONS = ["auto", "1080p", "720p", "540p", "360p"] as const;
+type QualityOption = (typeof QUALITY_OPTIONS)[number];
+
+function getSavedPosition(lessonId: number): number {
+  try {
+    const v = localStorage.getItem(`lexo:lesson_pos:${lessonId}`);
+    return v ? parseFloat(v) || 0 : 0;
+  } catch { return 0; }
+}
+
+function savePosition(lessonId: number, seconds: number) {
+  try {
+    localStorage.setItem(`lexo:lesson_pos:${lessonId}`, seconds.toFixed(1));
+  } catch { /* ignore */ }
+}
+
+function clearPosition(lessonId: number) {
+  try {
+    localStorage.removeItem(`lexo:lesson_pos:${lessonId}`);
+  } catch { /* ignore */ }
+}
+
+function formatTime(s: number): string {
+  const m = Math.floor(s / 60);
+  const sec = Math.floor(s % 60);
+  return `${m}:${sec.toString().padStart(2, "0")}`;
+}
+
+function VimeoPlayer({
+  lesson,
+  onReady,
+}: {
+  lesson: LessonItem;
+  onReady?: () => void;
+}) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const playerRef = useRef<Player | null>(null);
+  const [playerState, setPlayerState] = useState<"loading" | "ready" | "error">("loading");
+  const [buffering, setBuffering] = useState(false);
+  const [speed, setSpeed] = useState(1);
+  const [quality, setQuality] = useState<QualityOption>("auto");
+  const [showControls, setShowControls] = useState(false);
+  const [progress, setProgress] = useState({ current: 0, duration: 0 });
+  const [retryCount, setRetryCount] = useState(0);
+  const saveTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const vid = extractVimeoId(lesson.embedUrl);
+  const hashMatch = lesson.embedUrl.match(/[?&]h=([a-zA-Z0-9]+)/);
+  const hash = hashMatch ? hashMatch[1] : undefined;
+
+  useEffect(() => {
+    if (!containerRef.current || !vid) return;
+
+    const el = containerRef.current;
+    el.innerHTML = "";
+
+    const opts: Record<string, unknown> = {
+      id: parseInt(vid, 10),
+      width: el.clientWidth || 640,
+      autoplay: true,
+      responsive: true,
+      quality: quality === "auto" ? "auto" : quality,
+      dnt: true,
+      pip: true,
+      speed: true,
+    };
+    if (hash) opts.h = hash;
+
+    const p = new Player(el, opts);
+    playerRef.current = p;
+
+    p.ready()
+      .then(async () => {
+        setPlayerState("ready");
+        onReady?.();
+
+        try { await p.setPlaybackRate(speed); } catch { /* noop */ }
+
+        const saved = getSavedPosition(lesson.id);
+        if (saved > 2) {
+          try { await p.setCurrentTime(saved); } catch { /* noop */ }
+        }
+      })
+      .catch(() => {
+        setPlayerState("error");
+      });
+
+    p.on("bufferstart", () => setBuffering(true));
+    p.on("bufferend", () => setBuffering(false));
+
+    p.on("timeupdate", (data: { seconds: number; duration: number }) => {
+      setProgress({ current: data.seconds, duration: data.duration });
+    });
+
+    p.on("ended", () => {
+      clearPosition(lesson.id);
+    });
+
+    p.on("error", () => {
+      setPlayerState("error");
+    });
+
+    saveTimerRef.current = setInterval(async () => {
+      try {
+        const t = await p.getCurrentTime();
+        if (t > 2) savePosition(lesson.id, t);
+      } catch { /* player destroyed */ }
+    }, 5000);
+
+    return () => {
+      if (saveTimerRef.current) clearInterval(saveTimerRef.current);
+      p.getCurrentTime()
+        .then((t) => { if (t > 2) savePosition(lesson.id, t); })
+        .catch(() => { /* noop */ });
+      p.destroy().catch(() => { /* noop */ });
+      playerRef.current = null;
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [vid, hash, retryCount]);
+
+  useEffect(() => {
+    const p = playerRef.current;
+    if (!p || playerState !== "ready") return;
+    p.setPlaybackRate(speed).catch(() => { /* noop */ });
+  }, [speed, playerState]);
+
+  useEffect(() => {
+    if (quality === "auto" || !playerRef.current || playerState !== "ready") return;
+    playerRef.current.setQuality(quality).catch(() => { /* noop */ });
+  }, [quality, playerState]);
+
+  const handleRetry = () => {
+    setPlayerState("loading");
+    setRetryCount((c) => c + 1);
+  };
+
+  const savedPos = getSavedPosition(lesson.id);
+  const pct = progress.duration > 0 ? (progress.current / progress.duration) * 100 : 0;
+
+  return (
+    <div className="space-y-0">
+      <div className="relative bg-black rounded-t-lg overflow-hidden" style={{ paddingTop: "56.25%" }}>
+        <div ref={containerRef} className="absolute inset-0 w-full h-full [&>div]:!w-full [&>div]:!h-full [&>iframe]:!w-full [&>iframe]:!h-full" />
+
+        {playerState === "loading" && (
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/60 z-10">
+            <Loader2 className="w-10 h-10 text-white animate-spin mb-3" />
+            <span className="text-white/80 text-sm font-medium">Loading video…</span>
+            {savedPos > 2 && (
+              <span className="text-white/60 text-xs mt-1">
+                Resuming from {formatTime(savedPos)}
+              </span>
+            )}
+          </div>
+        )}
+
+        {buffering && playerState === "ready" && (
+          <div className="absolute inset-0 flex items-center justify-center bg-black/40 z-10 pointer-events-none">
+            <Loader2 className="w-8 h-8 text-white animate-spin" />
+          </div>
+        )}
+
+        {playerState === "error" && (
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 z-10 gap-3">
+            <AlertCircle className="w-10 h-10 text-red-400" />
+            <p className="text-white/90 text-sm font-medium">Video failed to load</p>
+            <button
+              onClick={handleRetry}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 text-white text-sm font-medium hover:bg-white/25 transition-colors"
+            >
+              <RotateCcw className="w-4 h-4" />
+              Retry
+            </button>
+          </div>
+        )}
+      </div>
+
+      {progress.duration > 0 && (
+        <div className="h-1 bg-muted/30 rounded-none overflow-hidden">
+          <div
+            className="h-full bg-primary transition-all duration-300"
+            style={{ width: `${pct}%` }}
+          />
+        </div>
+      )}
+
+      {playerState === "ready" && (
+        <div className="flex items-center justify-between gap-2 px-3 py-2 bg-card/80 border-x border-b border-border rounded-b-lg">
+          <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+            {progress.duration > 0 && (
+              <span className="font-mono tabular-nums">
+                {formatTime(progress.current)} / {formatTime(progress.duration)}
+              </span>
+            )}
+          </div>
+
+          <div className="flex items-center gap-1">
+            <button
+              onClick={() => setShowControls((v) => !v)}
+              className={cn(
+                "inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium transition-colors",
+                showControls
+                  ? "bg-primary/15 text-primary"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+              )}
+              title="Playback settings"
+            >
+              <Settings2 className="w-3.5 h-3.5" />
+              Settings
+            </button>
+          </div>
+        </div>
+      )}
+
+      {showControls && playerState === "ready" && (
+        <div className="border border-t-0 border-border rounded-b-lg bg-card/60 backdrop-blur-sm px-4 py-3 space-y-3 -mt-[1px]">
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-1.5 text-xs text-muted-foreground shrink-0">
+              <Gauge className="w-3.5 h-3.5" />
+              Speed
+            </div>
+            <div className="flex gap-1">
+              {SPEED_OPTIONS.map((s) => (
+                <button
+                  key={s}
+                  onClick={() => setSpeed(s)}
+                  className={cn(
+                    "px-2.5 py-1 rounded-md text-xs font-bold transition-colors",
+                    speed === s
+                      ? "bg-primary text-primary-foreground shadow-sm"
+                      : "bg-muted/50 text-muted-foreground hover:bg-muted hover:text-foreground"
+                  )}
+                >
+                  {s === 1 ? "1x" : `${s}x`}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-1.5 text-xs text-muted-foreground shrink-0">
+              <Settings2 className="w-3.5 h-3.5" />
+              Quality
+            </div>
+            <div className="flex gap-1 flex-wrap">
+              {QUALITY_OPTIONS.map((q) => (
+                <button
+                  key={q}
+                  onClick={() => setQuality(q)}
+                  className={cn(
+                    "px-2.5 py-1 rounded-md text-xs font-bold transition-colors capitalize",
+                    quality === q
+                      ? "bg-primary text-primary-foreground shadow-sm"
+                      : "bg-muted/50 text-muted-foreground hover:bg-muted hover:text-foreground"
+                  )}
+                >
+                  {q === "auto" ? "Auto" : q === "1080p" ? "HD" : q === "720p" ? "720p" : q === "540p" ? "SD" : "Low"}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+const SELECTED_COURSE_KEY = "lexo:selected_course";
 
 export default function Lessons() {
   const [data, setData] = useState<LessonsResponse | null>(null);
@@ -97,8 +369,6 @@ export default function Lessons() {
     } catch { return null; }
   });
 
-  // Keep selection in sessionStorage so refreshing the page keeps the user
-  // inside the course they were watching.
   useEffect(() => {
     try {
       if (selectedCourse) sessionStorage.setItem(SELECTED_COURSE_KEY, selectedCourse);
@@ -152,7 +422,6 @@ export default function Lessons() {
     }
   }
 
-  // Group lessons by course key.
   const byCourse = useMemo(() => {
     const map: Record<CourseKey, LessonItem[]> = { intro: [], advanced: [] };
     if (!data) return map;
@@ -166,7 +435,6 @@ export default function Lessons() {
     return map;
   }, [data]);
 
-  // ── Loading / global error states ────────────────────────────────────────
   if (loading) {
     return (
       <Layout>
@@ -188,7 +456,6 @@ export default function Lessons() {
     );
   }
 
-  // ── Drill-down: a course is selected ────────────────────────────────────
   if (selectedCourse) {
     const meta = COURSES.find((c) => c.key === selectedCourse)!;
     const lessons = byCourse[selectedCourse];
@@ -200,9 +467,8 @@ export default function Lessons() {
     return (
       <Layout>
         <div className="space-y-5">
-          {/* Back + header */}
           <button
-            onClick={() => setSelectedCourse(null)}
+            onClick={() => { setSelectedCourse(null); setActiveVideoId(null); }}
             className="inline-flex items-center gap-1.5 text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
@@ -247,7 +513,6 @@ export default function Lessons() {
             </Button>
           </div>
 
-          {/* Coming soon card when this course is empty */}
           {totalCount === 0 && (
             <div className="bg-card border border-dashed border-border rounded-3xl p-10 text-center space-y-3">
               <div className="w-14 h-14 mx-auto rounded-2xl bg-muted flex items-center justify-center">
@@ -261,7 +526,6 @@ export default function Lessons() {
             </div>
           )}
 
-          {/* Lesson list */}
           {lessons.map((lesson, idx) => (
             <article
               key={lesson.id}
@@ -285,44 +549,45 @@ export default function Lessons() {
                 )}
               </div>
 
-              <div className="relative bg-black" style={{ paddingTop: "56.25%" }}>
+              <div className="px-5 pb-4">
                 {activeVideoId === lesson.id ? (
-                  <iframe
-                    src={`${lesson.embedUrl}${lesson.embedUrl.includes("?") ? "&" : "?"}autoplay=1`}
-                    className="absolute inset-0 w-full h-full"
-                    title={lesson.title}
-                    allow="autoplay; fullscreen; picture-in-picture"
-                    allowFullScreen
-                  />
+                  <VimeoPlayer lesson={lesson} />
                 ) : (
-                  <button
-                    type="button"
-                    onClick={() => setActiveVideoId(lesson.id)}
-                    className="absolute inset-0 w-full h-full flex flex-col items-center justify-center gap-3 group cursor-pointer bg-gradient-to-b from-gray-900 to-black"
-                    aria-label={`Play ${lesson.title}`}
-                  >
-                    {(() => {
-                      const vid = extractVimeoId(lesson.embedUrl);
-                      return vid ? (
-                        <img
-                          src={`https://vumbnail.com/${vid}.jpg`}
-                          alt=""
-                          className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity"
-                          loading="lazy"
-                        />
-                      ) : null;
-                    })()}
-                    <div className="relative z-10 w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center group-hover:bg-white/30 group-hover:scale-110 transition-all shadow-lg">
-                      <PlayCircle className="w-10 h-10 text-white drop-shadow-md" />
-                    </div>
-                    <span className="relative z-10 text-white/80 text-sm font-medium group-hover:text-white transition-colors">
-                      Tap to load video
-                    </span>
-                  </button>
+                  <div className="relative bg-black rounded-lg overflow-hidden" style={{ paddingTop: "56.25%" }}>
+                    <button
+                      type="button"
+                      onClick={() => setActiveVideoId(lesson.id)}
+                      className="absolute inset-0 w-full h-full flex flex-col items-center justify-center gap-3 group cursor-pointer bg-gradient-to-b from-gray-900 to-black"
+                      aria-label={`Play ${lesson.title}`}
+                    >
+                      {(() => {
+                        const id = extractVimeoId(lesson.embedUrl);
+                        return id ? (
+                          <img
+                            src={`https://vumbnail.com/${id}.jpg`}
+                            alt=""
+                            className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity"
+                            loading="lazy"
+                          />
+                        ) : null;
+                      })()}
+                      <div className="relative z-10 w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center group-hover:bg-white/30 group-hover:scale-110 transition-all shadow-lg">
+                        <PlayCircle className="w-10 h-10 text-white drop-shadow-md" />
+                      </div>
+                      <span className="relative z-10 text-white/80 text-sm font-medium group-hover:text-white transition-colors">
+                        Tap to play
+                      </span>
+                      {getSavedPosition(lesson.id) > 2 && (
+                        <span className="relative z-10 text-white/60 text-xs">
+                          Resume from {formatTime(getSavedPosition(lesson.id))}
+                        </span>
+                      )}
+                    </button>
+                  </div>
                 )}
               </div>
 
-              <div className="p-4 flex items-center justify-end">
+              <div className="px-5 pb-4 flex items-center justify-end">
                 <Button
                   onClick={() => void toggleComplete(lesson)}
                   disabled={pendingId === lesson.id}
@@ -349,11 +614,9 @@ export default function Lessons() {
     );
   }
 
-  // ── Course-picker view ──────────────────────────────────────────────────
   return (
     <Layout>
       <div className="space-y-6">
-        {/* Header */}
         <div className="flex items-start justify-between gap-3">
           <div className="flex items-center gap-3 min-w-0">
             <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center shrink-0">
@@ -373,7 +636,6 @@ export default function Lessons() {
           </Button>
         </div>
 
-        {/* Two course cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {COURSES.map((c) => {
             const lessons = byCourse[c.key];
