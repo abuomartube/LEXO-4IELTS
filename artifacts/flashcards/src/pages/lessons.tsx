@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, useCallback, useRef } from "react";
+import { useEffect, useMemo, useState, useCallback, useRef, type JSX } from "react";
 import { Layout } from "@/components/layout";
 import { Button } from "@/components/ui/button";
 import {
@@ -134,17 +134,26 @@ function VimeoPlayer({
   const saveTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const vid = extractVimeoId(lesson.embedUrl);
-  const hashMatch = lesson.embedUrl.match(/[?&]h=([a-zA-Z0-9]+)/);
-  const hash = hashMatch ? hashMatch[1] : undefined;
+  const [useFallbackIframe, setUseFallbackIframe] = useState(false);
+
+  const cleanVimeoUrl = useMemo(() => {
+    try {
+      const u = new URL(lesson.vimeoUrl);
+      u.search = "";
+      return u.toString();
+    } catch {
+      return lesson.vimeoUrl.split("?")[0];
+    }
+  }, [lesson.vimeoUrl]);
 
   useEffect(() => {
-    if (!containerRef.current || !vid) return;
+    if (useFallbackIframe || !containerRef.current || !vid) return;
 
     const el = containerRef.current;
     el.innerHTML = "";
 
     const opts: Record<string, unknown> = {
-      id: parseInt(vid, 10),
+      url: cleanVimeoUrl,
       width: el.clientWidth || 640,
       autoplay: true,
       responsive: true,
@@ -153,13 +162,17 @@ function VimeoPlayer({
       pip: true,
       speed: true,
     };
-    if (hash) opts.h = hash;
 
     const p = new Player(el, opts);
     playerRef.current = p;
 
+    const readyTimeout = setTimeout(() => {
+      setUseFallbackIframe(true);
+    }, 15000);
+
     p.ready()
       .then(async () => {
+        clearTimeout(readyTimeout);
         setPlayerState("ready");
         onReady?.();
 
@@ -171,7 +184,8 @@ function VimeoPlayer({
         }
       })
       .catch(() => {
-        setPlayerState("error");
+        clearTimeout(readyTimeout);
+        setUseFallbackIframe(true);
       });
 
     p.on("bufferstart", () => setBuffering(true));
@@ -186,7 +200,8 @@ function VimeoPlayer({
     });
 
     p.on("error", () => {
-      setPlayerState("error");
+      clearTimeout(readyTimeout);
+      setUseFallbackIframe(true);
     });
 
     saveTimerRef.current = setInterval(async () => {
@@ -197,6 +212,7 @@ function VimeoPlayer({
     }, 5000);
 
     return () => {
+      clearTimeout(readyTimeout);
       if (saveTimerRef.current) clearInterval(saveTimerRef.current);
       p.getCurrentTime()
         .then((t) => { if (t > 2) savePosition(lesson.id, t); })
@@ -205,7 +221,7 @@ function VimeoPlayer({
       playerRef.current = null;
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [vid, hash, retryCount]);
+  }, [vid, cleanVimeoUrl, retryCount, useFallbackIframe]);
 
   useEffect(() => {
     const p = playerRef.current;
@@ -225,6 +241,22 @@ function VimeoPlayer({
 
   const savedPos = getSavedPosition(lesson.id);
   const pct = progress.duration > 0 ? (progress.current / progress.duration) * 100 : 0;
+
+  if (useFallbackIframe) {
+    return (
+      <div className="space-y-0">
+        <div className="relative bg-black rounded-lg overflow-hidden" style={{ paddingTop: "56.25%" }}>
+          <iframe
+            src={`${lesson.embedUrl}${lesson.embedUrl.includes("?") ? "&" : "?"}autoplay=1&quality=auto&speed=1`}
+            className="absolute inset-0 w-full h-full"
+            title={lesson.title}
+            allow="autoplay; fullscreen; picture-in-picture"
+            allowFullScreen
+          />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-0">
@@ -246,20 +278,6 @@ function VimeoPlayer({
         {buffering && playerState === "ready" && (
           <div className="absolute inset-0 flex items-center justify-center bg-black/40 z-10 pointer-events-none">
             <Loader2 className="w-8 h-8 text-white animate-spin" />
-          </div>
-        )}
-
-        {playerState === "error" && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 z-10 gap-3">
-            <AlertCircle className="w-10 h-10 text-red-400" />
-            <p className="text-white/90 text-sm font-medium">Video failed to load</p>
-            <button
-              onClick={handleRetry}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 text-white text-sm font-medium hover:bg-white/25 transition-colors"
-            >
-              <RotateCcw className="w-4 h-4" />
-              Retry
-            </button>
           </div>
         )}
       </div>
