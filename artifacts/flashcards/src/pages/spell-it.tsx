@@ -394,8 +394,8 @@ export default function SpellIt() {
       }
     }, 1000);
     revealTimerRef.current = setTimeout(() => {
-      const currentLetters = inputRefs.current.map((el) => (el?.value ?? "").toLowerCase());
       const target = forCard.english.split("").filter((ch) => /[a-z]/i.test(ch)).map((c) => c.toLowerCase());
+      const currentLetters = inputRefs.current.slice(0, target.length).map((el) => (el?.value ?? "").toLowerCase());
       const isCorrect = currentLetters.length === target.length && currentLetters.every((l, i) => l === target[i]);
       revealAnswerImpl(isCorrect, forCard);
     }, seconds * 1000);
@@ -487,6 +487,10 @@ export default function SpellIt() {
     setRemaining(seconds);                   // displayed but not counting down
     const lettersOnly = nextCard.english.split("").filter((ch) => /[a-z]/i.test(ch));
     setLetters(new Array(lettersOnly.length).fill(""));
+    // Reset input refs to match the new word's letter count. Without this, a
+    // shorter follow-up word would inherit stale ref slots from the previous
+    // (longer) word, breaking the length-equality check in submit/timeout.
+    inputRefs.current = new Array(lettersOnly.length).fill(null);
 
     // Show the cached clue immediately if we already have it (so the student
     // sees the right text before pressing Hear It). Otherwise wait for preload.
@@ -659,8 +663,8 @@ export default function SpellIt() {
   // box is filled.
   function submitAnswer() {
     if (!card || phase !== "playing") return;
-    const currentLetters = inputRefs.current.map((el) => (el?.value ?? "").toLowerCase());
     const target = card.english.split("").filter((ch) => /[a-z]/i.test(ch)).map((c) => c.toLowerCase());
+    const currentLetters = inputRefs.current.slice(0, target.length).map((el) => (el?.value ?? "").toLowerCase());
     const filled = currentLetters.length === target.length && currentLetters.every((c) => c.length === 1);
     const isCorrect = filled && currentLetters.every((l, i) => l === target[i]);
     revealAnswerImpl(isCorrect, card, isCorrect ? "correct" : "submit");
