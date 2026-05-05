@@ -38,11 +38,21 @@ async function verifyStudentEmail(req: import("express").Request): Promise<strin
   return email;
 }
 
-// Each completed lesson is treated as ~10 minutes of study time. This is
-// a deliberate, configurable estimate — the schema does not currently
-// store actual watched seconds, and the user explicitly chose this
-// estimation strategy for Phase 1.
+// Estimated minutes of effort per XP-earning activity event. We deliberately
+// count XP events instead of just lesson completions so flashcards / quizzes
+// / essays — which is where students actually spend most of their time —
+// show up in the dashboard. These numbers are calibrated estimates, not
+// measured time; we'll replace them with real heartbeat tracking later.
 const MINUTES_PER_LESSON = 10;
+const MINUTES_PER_ACTIVITY: Record<string, number> = {
+  flashcard_review: 0.5, // one card flipped/marked
+  quiz_correct: 0.5,     // one quiz answer
+  story_quiz: 5,         // a full story comprehension quiz
+  story_writing: 10,     // a written story exercise
+  essay_check: 15,       // a full IELTS essay submission
+};
+// Fallback for any future activity type that hasn't been calibrated yet.
+const MINUTES_PER_ACTIVITY_DEFAULT = 1;
 
 // ── GET /api/me/xp ────────────────────────────────────────────────────────
 // Returns the student's lifetime XP total and the timestamp of their most
@@ -156,19 +166,44 @@ router.get("/english/me/study-time", async (req, res): Promise<void> => {
   }
 
   const days = 7;
+  const dayWindow = sql.raw(String(days - 1));
 
-  const rows = await db.execute<{ day: string; count: number }>(sql`
-    SELECT (completed_at AT TIME ZONE 'UTC')::date::text AS day,
-           COUNT(*)::int                                   AS count
-      FROM lesson_completions
-     WHERE email = ${email}
-       AND completed_at >= (now() AT TIME ZONE 'UTC')::date - INTERVAL '${sql.raw(String(days - 1))} days'
-     GROUP BY day
-  `);
+  // Pull XP events bucketed by (day, activity) and lesson completions
+  // bucketed by day, both filtered to the last `days` UTC days. Two small
+  // queries in parallel are simpler than one UNION ALL with mixed columns.
+  const [xpRowsRaw, lessonRowsRaw] = await Promise.all([
+    db.execute<{ day: string; activity: string; n: number }>(sql`
+      SELECT (created_at AT TIME ZONE 'UTC')::date::text AS day,
+             activity,
+             COUNT(*)::int                                AS n
+        FROM xp_events
+       WHERE email = ${email}
+         AND created_at >= (now() AT TIME ZONE 'UTC')::date - INTERVAL '${dayWindow} days'
+       GROUP BY day, activity
+    `),
+    db.execute<{ day: string; n: number }>(sql`
+      SELECT (completed_at AT TIME ZONE 'UTC')::date::text AS day,
+             COUNT(*)::int                                  AS n
+        FROM lesson_completions
+       WHERE email = ${email}
+         AND completed_at >= (now() AT TIME ZONE 'UTC')::date - INTERVAL '${dayWindow} days'
+       GROUP BY day
+    `),
+  ]);
 
-  const counts = new Map<string, number>();
-  for (const r of (rows as unknown as { rows: { day: string; count: number }[] }).rows) {
-    counts.set(r.day, r.count);
+  const xpRows = (xpRowsRaw as unknown as { rows: { day: string; activity: string; n: number }[] }).rows;
+  const lessonRows = (lessonRowsRaw as unknown as { rows: { day: string; n: number }[] }).rows;
+
+  const minutesPerDay = new Map<string, number>();
+  const add = (day: string, mins: number): void => {
+    minutesPerDay.set(day, (minutesPerDay.get(day) ?? 0) + mins);
+  };
+  for (const r of xpRows) {
+    const perEvent = MINUTES_PER_ACTIVITY[r.activity] ?? MINUTES_PER_ACTIVITY_DEFAULT;
+    add(r.day, r.n * perEvent);
+  }
+  for (const r of lessonRows) {
+    add(r.day, r.n * MINUTES_PER_LESSON);
   }
 
   // Always emit a row per day in the window so the client can render a
@@ -179,7 +214,7 @@ router.get("/english/me/study-time", async (req, res): Promise<void> => {
   let totalMinutes = 0;
   for (let i = days - 1; i >= 0; i--) {
     const date = new Date(todayMs - i * ONE_DAY).toISOString().slice(0, 10);
-    const minutes = (counts.get(date) ?? 0) * MINUTES_PER_LESSON;
+    const minutes = Math.round(minutesPerDay.get(date) ?? 0);
     dailyBreakdown.push({ date, minutes });
     totalMinutes += minutes;
   }
