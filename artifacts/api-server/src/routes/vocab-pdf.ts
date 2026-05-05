@@ -15,17 +15,21 @@ const CACHED_PDF = path.join(CACHE_DIR, "ielts-vocabulary-2198.pdf");
 let generatingPdf = false;
 let pdfGenerationError: Error | null = null;
 
+// Pre-warm is intentionally a no-op now: cold-launching headless Chrome at
+// server boot has been unreliable in the deployment container (Chrome's
+// internal startup can exceed 30s on first run, causing a launch timeout
+// that pollutes the logs even though no user has requested the PDF yet).
+// We now generate on first user request only — with retries — and serve
+// the cached file on every subsequent request.
 export function warmUpPdf(): void {
-  if (fs.existsSync(CACHED_PDF) || generatingPdf) return;
-  generatingPdf = true;
-  pdfGenerationError = null;
-  logger.info("Pre-generating PDF at startup...");
-  generatePdf()
-    .then(() => { generatingPdf = false; logger.info("PDF pre-generation complete"); })
-    .catch((err) => { generatingPdf = false; pdfGenerationError = err; logger.error({ err }, "PDF pre-generation failed"); });
+  if (fs.existsSync(CACHED_PDF)) {
+    logger.info("PDF cache present at startup, skipping pre-generation");
+  } else {
+    logger.info("PDF cache empty; will lazily generate on first request");
+  }
 }
 
-async function generatePdf(): Promise<void> {
+async function generatePdfOnce(): Promise<void> {
   if (!fs.existsSync(HTML_FILE)) {
     throw new Error(`HTML source not found: ${HTML_FILE}`);
   }
@@ -57,6 +61,9 @@ async function generatePdf(): Promise<void> {
   const browser = await puppeteer.launch({
     executablePath: chromiumPath,
     headless: true,
+    // Chrome cold-start in the deployment container can take well past the
+    // 30s default. Give it a generous launch budget before bailing.
+    timeout: 90_000,
     // NOTE: do NOT add "--single-process" — it triggers TargetCloseError
     // (Protocol error: Target.createTarget: Target closed) on Chromium in
     // our deployment container. "--no-zygote" is also omitted because it
@@ -99,6 +106,27 @@ async function generatePdf(): Promise<void> {
   } finally {
     await browser.close();
   }
+}
+
+// Wrapper that retries the PDF build a couple of times before giving up.
+// Chrome's first cold launch in the deployment container is the slowest;
+// subsequent attempts almost always succeed because the binary and its
+// shared libraries are now in the page cache.
+async function generatePdf(): Promise<void> {
+  const MAX_ATTEMPTS = 3;
+  let lastErr: unknown;
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    try {
+      await generatePdfOnce();
+      return;
+    } catch (err) {
+      lastErr = err;
+      logger.warn({ err, attempt, maxAttempts: MAX_ATTEMPTS }, "PDF generation attempt failed; will retry");
+      // Brief backoff before the next attempt.
+      await new Promise((r) => setTimeout(r, 2000));
+    }
+  }
+  throw lastErr instanceof Error ? lastErr : new Error("PDF generation failed");
 }
 
 router.get("/vocab-pdf", async (req, res): Promise<void> => {
