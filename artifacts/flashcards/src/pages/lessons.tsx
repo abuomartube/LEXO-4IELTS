@@ -129,7 +129,7 @@ function VimeoPlayer({
   const playerRef = useRef<Player | null>(null);
   const [playerState, setPlayerState] = useState<"loading" | "ready" | "error">("loading");
   const [buffering, setBuffering] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(false);
   const [speed, setSpeed] = useState(1);
   const [quality, setQuality] = useState<QualityOption>("auto");
   const [showControls, setShowControls] = useState(false);
@@ -156,10 +156,15 @@ function VimeoPlayer({
     const el = containerRef.current;
     el.innerHTML = "";
 
+    // IMPORTANT: do NOT enable autoplay. Modern browsers block autoplay with
+    // sound and Vimeo's SDK falls back to muting the video to satisfy the
+    // policy — which is why some students reported no audio. By starting
+    // paused we guarantee the first user-initiated play is unmuted.
     const opts: Record<string, unknown> = {
       url: cleanVimeoUrl,
       width: el.clientWidth || 640,
-      autoplay: true,
+      autoplay: false,
+      muted: false,
       responsive: true,
       quality: quality === "auto" ? "auto" : quality,
       dnt: true,
@@ -278,7 +283,7 @@ function VimeoPlayer({
       <div className="space-y-0">
         <div className="relative bg-black rounded-lg overflow-hidden" style={{ paddingTop: "56.25%" }}>
           <iframe
-            src={`${lesson.embedUrl}${lesson.embedUrl.includes("?") ? "&" : "?"}autoplay=1&quality=auto&speed=1&title=0&byline=0&portrait=0&badge=0&dnt=1`}
+            src={`${lesson.embedUrl}${lesson.embedUrl.includes("?") ? "&" : "?"}quality=auto&speed=1&title=0&byline=0&portrait=0&badge=0&dnt=1`}
             className="absolute inset-0 w-full h-full"
             title={lesson.title}
             allow="autoplay; fullscreen; picture-in-picture"
