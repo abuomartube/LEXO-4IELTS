@@ -18,6 +18,7 @@ import lessonsRouter from "./lessons";
 import sentenceCheckRouter from "./sentence-check";
 import sentenceSessionsRouter from "./sentence-sessions";
 import spellItRouter from "./spell-it";
+import meStatsRouter from "./me-stats";
 
 const router: IRouter = Router();
 
@@ -40,5 +41,6 @@ router.use(lessonsRouter);
 router.use(sentenceCheckRouter);
 router.use(sentenceSessionsRouter);
 router.use(spellItRouter);
+router.use(meStatsRouter);
 
 export default router;
