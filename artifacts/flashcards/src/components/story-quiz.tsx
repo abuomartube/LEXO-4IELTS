@@ -46,6 +46,7 @@ function encouragement(score: number): string {
 
 export function StoryQuiz({ storyId, onComplete }: StoryQuizProps) {
   const [questions, setQuestions] = useState<PublicQuestion[] | null>(null);
+  const [quizHash, setQuizHash] = useState<string | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -53,6 +54,7 @@ export function StoryQuiz({ storyId, onComplete }: StoryQuizProps) {
   const [submitting, setSubmitting] = useState(false);
   const [results, setResults] = useState<GradeResponse | null>(null);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [driftNotice, setDriftNotice] = useState<string | null>(null);
 
   // Generation token: every call to loadQuiz() bumps this; in-flight fetches
   // from older calls discard their results when they finally resolve. This
@@ -77,12 +79,15 @@ export function StoryQuiz({ storyId, onComplete }: StoryQuizProps) {
     setResults(null);
     setAnswers({});
     setQuestions(null);
+    setQuizHash(null);
     try {
-      const data = await customFetch<{ questions: PublicQuestion[] }>(
-        `/api/stories/${storyId}/quiz`,
-      );
+      const data = await customFetch<{
+        questions: PublicQuestion[];
+        quizHash: string;
+      }>(`/api/stories/${storyId}/quiz`);
       if (loadGenRef.current !== myGen) return; // stale — superseded
       setQuestions(data.questions);
+      setQuizHash(data.quizHash ?? null);
     } catch (err) {
       if (loadGenRef.current !== myGen) return;
       const e = err as { data?: { error?: string }; message?: string } | null;
@@ -100,33 +105,33 @@ export function StoryQuiz({ storyId, onComplete }: StoryQuizProps) {
   async function handleSubmit() {
     if (!questions || !allAnswered || submitting) return;
     const myGen = ++submitGenRef.current;
-    // Snapshot the (questions, answers) pair the student actually saw, so
-    // the results we render can't drift if state changes mid-request.
+    // Snapshot the (questions, hash, answers) the student actually saw.
     const submittedQuestions = questions;
     const submittedAnswers = answers;
+    const submittedHash = quizHash;
     setSubmitting(true);
     setSubmitError(null);
+    setDriftNotice(null);
     try {
-      const data = await customFetch<GradeResponse>(
+      const graded = await customFetch<GradeResponse>(
         `/api/stories/${storyId}/quiz/grade`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ answers: submittedAnswers }),
+          body: JSON.stringify({
+            answers: submittedAnswers,
+            quizHash: submittedHash,
+          }),
         },
       );
       if (submitGenRef.current !== myGen) return;
 
-      // Defense-in-depth: validate the server's response against the exact
-      // questions+choices the student saw. If anything drifted (e.g. the
-      // server-side cache was regenerated mid-flight), the verdicts and
-      // "correct" letters reference a different choice set — rendering them
-      // would be the very bug we're trying to fix. Force a clean reload
-      // rather than display contradictory results.
+      // Defense-in-depth: even with the hash check, validate the response
+      // against the exact questions the student saw. Mismatch → reload.
       const byId = new Map(submittedQuestions.map((q) => [q.id, q]));
       const drift =
-        data.results.length !== submittedQuestions.length ||
-        data.results.some((r) => {
+        graded.results.length !== submittedQuestions.length ||
+        graded.results.some((r) => {
           const original = byId.get(r.id);
           if (!original) return true;
           return (
@@ -137,10 +142,9 @@ export function StoryQuiz({ storyId, onComplete }: StoryQuizProps) {
           );
         });
       if (drift) {
-        setSubmitError(
-          "We refreshed this quiz while you were answering. Loading the latest version…",
+        setDriftNotice(
+          "The quiz was refreshed while you were answering. Loading the latest version…",
         );
-        // Reload (which bumps both gen tokens, clearing this submission).
         loadQuiz();
         return;
       }
@@ -148,15 +152,53 @@ export function StoryQuiz({ storyId, onComplete }: StoryQuizProps) {
       // Trust the server's verdicts, but always echo the answers we
       // actually submitted (snapshot) so a malformed server `chosen` value
       // can't show the student a choice they didn't pick.
-      const reconciled: GradedQuestion[] = data.results.map((r) => ({
+      const reconciled: GradedQuestion[] = graded.results.map((r) => ({
         ...r,
         chosen: submittedAnswers[r.id] ?? null,
       }));
-      setResults({ ...data, results: reconciled });
+      setResults({ ...graded, results: reconciled });
       onComplete?.();
     } catch (err) {
       if (submitGenRef.current !== myGen) return;
-      const e = err as { data?: { error?: string }; message?: string } | null;
+      // 409 Conflict from server = quiz fingerprint drifted between GET and
+      // POST. The body contains the fresh questions+hash; show them
+      // immediately and surface a friendly notice. This is the SERVER-SIDE
+      // guarantee that bricks the original "results show choices I never
+      // saw" bug — no matter the cause of cache change, the student will
+      // never see graded results for a quiz they didn't take.
+      const e = err as {
+        status?: number;
+        data?: {
+          error?: string;
+          message?: string;
+          questions?: PublicQuestion[];
+          quizHash?: string;
+        };
+        message?: string;
+      } | null;
+      if (
+        e?.status === 409 &&
+        e.data?.error === "quiz_changed" &&
+        Array.isArray(e.data.questions) &&
+        e.data.questions.length > 0
+      ) {
+        // NOTE: do NOT bump submitGenRef here — the `finally` below relies
+        // on `submitGenRef.current === myGen` to call setSubmitting(false).
+        // Bumping it would leave the button stuck in a spinner forever.
+        // We also bump loadGenRef so any in-flight loadQuiz() (e.g. from a
+        // rapid story switch) can't overwrite the fresh questions we're
+        // installing here.
+        loadGenRef.current++;
+        setResults(null);
+        setAnswers({});
+        setQuestions(e.data.questions);
+        setQuizHash(typeof e.data.quizHash === "string" ? e.data.quizHash : null);
+        setDriftNotice(
+          e.data.message ??
+            "The quiz was refreshed while you were answering. Loading the latest version…",
+        );
+        return;
+      }
       setSubmitError(e?.data?.error ?? e?.message ?? "Could not submit your answers.");
     } finally {
       if (submitGenRef.current === myGen) setSubmitting(false);
@@ -321,6 +363,9 @@ export function StoryQuiz({ storyId, onComplete }: StoryQuizProps) {
         })}
       </div>
 
+      {driftNotice && (
+        <p className="text-sm text-amber-600 dark:text-amber-400">{driftNotice}</p>
+      )}
       {submitError && (
         <p className="text-sm text-destructive">{submitError}</p>
       )}

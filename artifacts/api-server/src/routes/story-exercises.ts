@@ -277,6 +277,30 @@ function publicView(qs: QuizQuestion[]): PublicQuizQuestion[] {
   return qs.map((q) => ({ id: q.id, question: q.question, choices: q.choices }));
 }
 
+/**
+ * Deterministic fingerprint of the quiz the student saw. The client stores
+ * this on GET and sends it back on POST; if the server's cached quiz no
+ * longer matches (e.g. the cache row was regenerated between the two
+ * requests), we refuse to grade and ask the client to reload — otherwise
+ * the student sees results referencing choices they never picked.
+ *
+ * Hashes the public projection (question + choices) only; that's the entire
+ * surface the student observed and the only thing whose drift can confuse
+ * them.
+ */
+function quizFingerprint(qs: QuizQuestion[]): string {
+  const canonical = qs.map((q) => ({
+    id: q.id,
+    question: q.question,
+    choices: q.choices,
+  }));
+  return crypto
+    .createHash("sha256")
+    .update(JSON.stringify(canonical))
+    .digest("hex")
+    .slice(0, 16);
+}
+
 // ── Routes ────────────────────────────────────────────────────────────────
 
 router.get("/stories/:id/quiz", async (req, res) => {
@@ -292,7 +316,10 @@ router.get("/stories/:id/quiz", async (req, res) => {
   }
   try {
     const quiz = await loadOrGenerateQuiz(storyId);
-    res.json({ questions: publicView(quiz) });
+    res.json({
+      questions: publicView(quiz),
+      quizHash: quizFingerprint(quiz),
+    });
   } catch (err) {
     if ((err as Error).message === "story_not_found") {
       res.status(404).json({ error: "Story not found." });
@@ -314,8 +341,12 @@ router.post("/stories/:id/quiz/grade", async (req, res) => {
     res.status(400).json({ error: "Invalid story id." });
     return;
   }
-  const body = req.body as { answers?: Record<string, unknown> };
+  const body = req.body as {
+    answers?: Record<string, unknown>;
+    quizHash?: unknown;
+  };
   const answers = body?.answers;
+  const submittedHash = typeof body?.quizHash === "string" ? body.quizHash : null;
   if (!answers || typeof answers !== "object") {
     res.status(400).json({ error: "Missing answers." });
     return;
@@ -329,6 +360,29 @@ router.post("/stories/:id/quiz/grade", async (req, res) => {
       loadOrGenerateQuiz(storyId),
       getTodayXpTotal(email, "story_quiz"),
     ]);
+
+    // Refuse to grade if the cached quiz drifted from the one the student
+    // actually saw. Without this, a cache regeneration between the GET and
+    // this POST would cause us to grade Quiz B's choices against the
+    // student's answers for Quiz A — exactly the bug students reported
+    // ("results show choices I never picked"). Returning 409 lets the
+    // client reload silently and re-render with the fresh, matching quiz.
+    const currentHash = quizFingerprint(quiz);
+    if (submittedHash && submittedHash !== currentHash) {
+      logger.warn(
+        { storyId, email, submittedHash, currentHash },
+        "Story quiz drift on grade — refusing to grade",
+      );
+      res.status(409).json({
+        error: "quiz_changed",
+        message:
+          "The quiz was refreshed while you were answering. Loading the latest version…",
+        questions: publicView(quiz),
+        quizHash: currentHash,
+      });
+      return;
+    }
+
     const results = quiz.map((q) => {
       const chosen = (answers[q.id] as string | undefined) ?? null;
       const isRight = chosen === q.correct;
