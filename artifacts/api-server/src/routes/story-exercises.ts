@@ -145,13 +145,25 @@ function parseJsonObject(text: string): unknown {
 }
 
 function validateQuiz(raw: unknown): QuizQuestion[] {
-  const obj = raw as { questions?: unknown };
-  if (!obj || !Array.isArray(obj.questions) || obj.questions.length !== 5) {
+  // Accept BOTH shapes:
+  //  - AI raw response:   { questions: [...] }
+  //  - Cached DB payload: [...]   (we store JSON.stringify(quiz) where quiz
+  //                                 is QuizQuestion[]; without this branch
+  //                                 every cache read throws "wrong number
+  //                                 of questions" and triggers a self-heal
+  //                                 regen, which is the bug behind the
+  //                                 production drift on every submit).
+  const list: unknown[] | null = Array.isArray(raw)
+    ? raw
+    : Array.isArray((raw as { questions?: unknown } | null)?.questions)
+      ? ((raw as { questions: unknown[] }).questions)
+      : null;
+  if (!list || list.length !== 5) {
     throw new Error("AI returned the wrong number of questions.");
   }
   const out: QuizQuestion[] = [];
   for (let i = 0; i < 5; i++) {
-    const q = obj.questions[i] as Partial<QuizQuestion>;
+    const q = list[i] as Partial<QuizQuestion>;
     const id = `q${i + 1}`;
     if (
       !q ||
