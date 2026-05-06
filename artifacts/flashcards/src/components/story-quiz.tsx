@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { customFetch } from "@workspace/api-client-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -54,26 +54,41 @@ export function StoryQuiz({ storyId, onComplete }: StoryQuizProps) {
   const [results, setResults] = useState<GradeResponse | null>(null);
   const [submitError, setSubmitError] = useState<string | null>(null);
 
+  // Generation token: every call to loadQuiz() bumps this; in-flight fetches
+  // from older calls discard their results when they finally resolve. This
+  // prevents a slow earlier request from clobbering the current question set
+  // (which used to cause "results show choices I never saw" — students would
+  // answer one set of questions but the grader was given the next set).
+  const loadGenRef = useRef(0);
+  const submitGenRef = useRef(0);
+
   const allAnswered = useMemo(
     () => questions !== null && questions.every((q) => answers[q.id] !== undefined),
     [questions, answers],
   );
 
   async function loadQuiz() {
+    const myGen = ++loadGenRef.current;
+    // Also invalidate any in-flight submission — its answers belong to the
+    // OLD question set and would be graded against the NEW one.
+    submitGenRef.current++;
     setLoading(true);
     setLoadError(null);
     setResults(null);
     setAnswers({});
+    setQuestions(null);
     try {
       const data = await customFetch<{ questions: PublicQuestion[] }>(
         `/api/stories/${storyId}/quiz`,
       );
+      if (loadGenRef.current !== myGen) return; // stale — superseded
       setQuestions(data.questions);
     } catch (err) {
+      if (loadGenRef.current !== myGen) return;
       const e = err as { data?: { error?: string }; message?: string } | null;
       setLoadError(e?.data?.error ?? e?.message ?? "Could not load the quiz.");
     } finally {
-      setLoading(false);
+      if (loadGenRef.current === myGen) setLoading(false);
     }
   }
 
@@ -84,6 +99,11 @@ export function StoryQuiz({ storyId, onComplete }: StoryQuizProps) {
 
   async function handleSubmit() {
     if (!questions || !allAnswered || submitting) return;
+    const myGen = ++submitGenRef.current;
+    // Snapshot the (questions, answers) pair the student actually saw, so
+    // the results we render can't drift if state changes mid-request.
+    const submittedQuestions = questions;
+    const submittedAnswers = answers;
     setSubmitting(true);
     setSubmitError(null);
     try {
@@ -92,16 +112,54 @@ export function StoryQuiz({ storyId, onComplete }: StoryQuizProps) {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ answers }),
+          body: JSON.stringify({ answers: submittedAnswers }),
         },
       );
-      setResults(data);
+      if (submitGenRef.current !== myGen) return;
+
+      // Defense-in-depth: validate the server's response against the exact
+      // questions+choices the student saw. If anything drifted (e.g. the
+      // server-side cache was regenerated mid-flight), the verdicts and
+      // "correct" letters reference a different choice set — rendering them
+      // would be the very bug we're trying to fix. Force a clean reload
+      // rather than display contradictory results.
+      const byId = new Map(submittedQuestions.map((q) => [q.id, q]));
+      const drift =
+        data.results.length !== submittedQuestions.length ||
+        data.results.some((r) => {
+          const original = byId.get(r.id);
+          if (!original) return true;
+          return (
+            original.choices.A !== r.choices.A ||
+            original.choices.B !== r.choices.B ||
+            original.choices.C !== r.choices.C ||
+            original.choices.D !== r.choices.D
+          );
+        });
+      if (drift) {
+        setSubmitError(
+          "We refreshed this quiz while you were answering. Loading the latest version…",
+        );
+        // Reload (which bumps both gen tokens, clearing this submission).
+        loadQuiz();
+        return;
+      }
+
+      // Trust the server's verdicts, but always echo the answers we
+      // actually submitted (snapshot) so a malformed server `chosen` value
+      // can't show the student a choice they didn't pick.
+      const reconciled: GradedQuestion[] = data.results.map((r) => ({
+        ...r,
+        chosen: submittedAnswers[r.id] ?? null,
+      }));
+      setResults({ ...data, results: reconciled });
       onComplete?.();
     } catch (err) {
+      if (submitGenRef.current !== myGen) return;
       const e = err as { data?: { error?: string }; message?: string } | null;
       setSubmitError(e?.data?.error ?? e?.message ?? "Could not submit your answers.");
     } finally {
-      setSubmitting(false);
+      if (submitGenRef.current === myGen) setSubmitting(false);
     }
   }
 

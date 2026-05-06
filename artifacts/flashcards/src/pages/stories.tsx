@@ -699,7 +699,10 @@ function StoryReader({ story, onBack, isCompleted, onMarkComplete }: { story: St
             <p className="text-xs text-muted-foreground mb-3">
               Answer 5 questions about the story to test your understanding.
             </p>
-            <StoryQuiz storyId={story.id} onComplete={() => setQuizDone(true)} />
+            {/* `key={story.id}` forces a clean remount whenever the student
+                opens a different story — guarantees no in-flight fetches or
+                answer state from the previous story can leak across. */}
+            <StoryQuiz key={story.id} storyId={story.id} onComplete={() => setQuizDone(true)} />
           </div>
 
           <div>
